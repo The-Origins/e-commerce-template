@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Link, useMediaQuery } from "@mui/material";
+import { Box, Button, Link, Typography, useMediaQuery } from "@mui/material";
 import data from "../../lib/data";
 import OrderElement from "./orderElement";
 
@@ -19,6 +19,16 @@ const OrderPageComponent = () => {
         flexDirection={"column"}
         gap={"30px"}
       >
+        <Typography
+          alignSelf={"center"}
+          variant="h2"
+          sx={{
+            fontFamily: "Pacifico",
+            fontSize: "clamp(1rem, 7vw, 3rem)",
+          }}
+        >
+          My Orders
+        </Typography>
         {data.orders.map((order) => (
           <OrderElement {...order} />
         ))}

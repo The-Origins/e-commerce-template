@@ -30,7 +30,7 @@ const ProductDetails = (props) => {
 
   useEffect(() => {
     let event = {};
-    if (!props.productDetails.length) {
+    if (!props.productDetails) {
       if (props.product.type === "cake") {
         event.target = {
           name: "weight",
@@ -55,6 +55,8 @@ const ProductDetails = (props) => {
       }
     }
   }, [props.product]);
+
+  console.log(props.productDetails)
 
   return (
     <Backdrop sx={{ color: "#fff", zIndex: 2 }} open={props.isProductDetails}>

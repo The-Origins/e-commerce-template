@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import {
-  ThemeProvider,
-} from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import theme from "../../theme";
 import Contact from "./contact";
 import "../../index.css";
@@ -13,9 +11,13 @@ import Footer from "./footer";
 const Layout = ({ children }) => {
   const [product, setProduct] = useState({});
   const [productDetailsTitle, setProductDetailsTitle] = useState();
-  const [productDetails, setProductDetails] = useState({})
+  const [productDetails, setProductDetails] = useState({
+    icing: "whipped cream",
+    color: "white",
+    weight: 3,
+  });
   const [isProductDetails, setIsProductDetails] = useState(false);
-  const [isContact, setIsContact] = useState(false)
+  const [isContact, setIsContact] = useState(false);
 
   const changeProduct = (product) => {
     setProduct(product);
@@ -25,20 +27,17 @@ const Layout = ({ children }) => {
     setIsProductDetails(state);
   };
 
-  const changeProductDetailsTitle = (title) =>
-  {
-    setProductDetailsTitle(title)
-  }
+  const changeProductDetailsTitle = (title) => {
+    setProductDetailsTitle(title);
+  };
 
-  const changeProductDetails = (details) =>
-  {
-    setProductDetails(details)
-  }
+  const changeProductDetails = (details) => {
+    setProductDetails(details);
+  };
 
-  const changeIsContact = (state) =>
-  {
-    setIsContact(state)
-  }
+  const changeIsContact = (state) => {
+    setIsContact(state);
+  };
 
   const childrenWithProps = React.Children.map(children, (child) =>
     React.cloneElement(child, {
@@ -46,7 +45,7 @@ const Layout = ({ children }) => {
       changeIsProductDetails,
       changeProductDetailsTitle,
       changeProductDetails,
-      changeIsContact
+      changeIsContact,
     })
   );
 

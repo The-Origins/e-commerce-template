@@ -64,7 +64,14 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu }) => {
           logged in
         </Typography>
       </Box>
-      <Link href={"/orders"} sx={{ textDecoration: "none", color: "black", ":hover":{color:"primary.main"} }}>
+      <Link
+        href={"/user/orders"}
+        sx={{
+          textDecoration: "none",
+          color: "black",
+          ":hover": { color: "primary.main" },
+        }}
+      >
         <MenuItem onClick={() => switchIsUserMenu(false)}>
           <ListItemIcon>
             <BookmarkAdded />
@@ -72,13 +79,22 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu }) => {
           My Orders
         </MenuItem>
       </Link>
-      <MenuItem onClick={() => switchIsUserMenu(false)}>
-        {" "}
-        <ListItemIcon>
-          <Favorite />
-        </ListItemIcon>
-        My Favourites
-      </MenuItem>
+      <Link
+        href={"/user/favourites"}
+        sx={{
+          textDecoration: "none",
+          color: "black",
+          ":hover": { color: "primary.main" },
+        }}
+      >
+        <MenuItem onClick={() => switchIsUserMenu(false)}>
+          {" "}
+          <ListItemIcon>
+            <Favorite />
+          </ListItemIcon>
+          My Favourites
+        </MenuItem>
+      </Link>
       <MenuItem onClick={() => switchIsUserMenu(false)}>
         {" "}
         <ListItemIcon>

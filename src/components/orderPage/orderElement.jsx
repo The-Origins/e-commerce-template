@@ -1,28 +1,30 @@
 import React from "react";
 import { Box, Link, Typography, useTheme } from "@mui/material";
 import { CalendarMonth } from "@mui/icons-material";
+import UserProductCard from "../product/userProductCard";
+
+const statusColors = {
+  processing: "#0382FF",
+  fulfilling: "#FF9000",
+  fulfilled: "#15FF02",
+};
 
 const OrderElement = (props) => {
   const theme = useTheme();
-  const statusColors = {
-    processing: "#0382FF",
-    fulfilling: "#FF9000",
-    fulfilled: "#15FF02",
-  };
 
   return (
     <Link
-      href={`/orders/items?i=${props.id}`}
+      href={`/user/orders/items?id=${props.id}`}
       width={"100%"}
       sx={{ textDecoration: "none", color: "black" }}
     >
       <Box
-        width={"100%"}
+        maxWidth={"100%"}
         border={`1px solid ${theme.palette.grey[400]}`}
         display={"flex"}
         flexDirection={"column"}
-        padding={"20px"}
         borderRadius={"25px"}
+        padding={"20px"}
         sx={{
           transition: "0.3s",
           ":hover": {
@@ -50,8 +52,11 @@ const OrderElement = (props) => {
             </Typography>
           </Box>
           <Box display={"flex"} gap={"1px"}>
-            <CalendarMonth />
-            <Typography color={"text.secondary"}>
+            <CalendarMonth fontSize={"clamp(0.8rem, 3vw, 1rem)"} />
+            <Typography
+              color={"text.secondary"}
+              fontSize={"clamp(0.8rem, 3vw, 1rem)"}
+            >
               {props.dateCreated}
             </Typography>
           </Box>
@@ -64,65 +69,7 @@ const OrderElement = (props) => {
           gap={"10px"}
         >
           {props.items.map((item, index) => (
-            <Box
-            key={`order-item-${props.id}-item-${index}`}
-              width={"90%"}
-              minHeight={"100px"}
-              display={"flex"}
-              alignItems={"center"}
-              boxShadow={`0px 0px 10px 0px ${theme.palette.grey[300]}`}
-              borderRadius={"20px"}
-              padding={"20px"}
-              sx={{ transition: "0.3s" }}
-            >
-              <Box
-                height={"90px"}
-                width={"100px"}
-                margin={"0px 20px"}
-                sx={{
-                  backgroundImage: `url(${item.product.images[0]})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  borderRadius: "5px",
-                }}
-              />
-              <Box
-                pl={"10px"}
-                display={"flex"}
-                flexDirection={"column"}
-                width={"100%"}
-                height={"100%"}
-                justifyContent={"space-evenly"}
-                gap={"5px"}
-              >
-                <Typography
-                  fontWeight={"bold"}
-                  fontSize={"clamp(1rem, 6vw, 1.2rem)"}
-                >
-                  {item.product.name}
-                </Typography>
-                <Typography
-                  key={`cartItem-details`}
-                  fontSize={"clamp(0.7rem, 2vw, 0.9rem)"}
-                  color={"text.secondary"}
-                >
-                  {Object.keys(item.details)
-                    .map(
-                      (detail) =>
-                        `${
-                          detail.charAt(0).toUpperCase() + detail.substring(1)
-                        }: ${item.details[detail]}${
-                          detail === "weight" && "Kg"
-                        }`
-                    )
-                    .join(", ")}
-                </Typography>
-                <Typography>
-                  {item.product.unitPrice.currency}{" "}
-                  {item.details.weight * item.product.unitPrice.amount}
-                </Typography>
-              </Box>
-            </Box>
+            <UserProductCard id={index} item={item} />
           ))}
         </Box>
       </Box>

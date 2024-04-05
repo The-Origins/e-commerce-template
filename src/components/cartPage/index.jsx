@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import data from "../../lib/data";
-import CartElement from "./cartElement";
+import UserProductCard from "../product/userProductCard";
 
 const CartPageComponent = (props) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -73,15 +73,25 @@ const CartPageComponent = (props) => {
               </Box>
             </Box>
           )}
-          {data.user.cart.items.map((cartItem, index) => (
-            <CartElement
-              cartItem={cartItem}
-              id={index}
-              changeProductDetailsTitle={props.changeProductDetailsTitle}
-              changeProduct={props.changeProduct}
-              changeIsProductDetails={props.changeIsProductDetails}
-            />
-          ))}
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            gap={"20px"}
+            width={"90%"}
+          >
+            {data.user.cart.items.map((cartItem, index) => (
+              <UserProductCard
+                item={cartItem}
+                isLink={true}
+                type={"cart"}
+                id={index}
+                changeProductDetailsTitle={props.changeProductDetailsTitle}
+                changeProduct={props.changeProduct}
+                changeIsProductDetails={props.changeIsProductDetails}
+                changeProductDetails={props.changeProductDetails}
+              />
+            ))}
+          </Box>
           <Link href="/" sx={{ alignSelf: "center", margin: "50px 0px" }}>
             <Button variant="contained" disableElevation>
               Continue Shopping

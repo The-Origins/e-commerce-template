@@ -5,7 +5,20 @@ const data = {
       status: "processing",
       dateCreated: "13th may 2012",
       total: 33000,
-      deliveryLocation: {country:"Kenya", city:"Nairobi", street:"Karen", address:"The hub karen"},
+      payment: {
+        method: "M-pesa",
+        details: { number: "+25470000000" },
+        status: "pending",
+      },
+      delivery: {
+        status: "pending",
+        location: {
+          country: "Kenya",
+          city: "Nairobi",
+          street: "Karen",
+          address: "The hub karen",
+        },
+      },
       items: [
         {
           product: {
@@ -25,7 +38,7 @@ const data = {
             },
             allergenAdvice: ["contains dairy", "contains nuts"],
             variants: [
-              { title: "Icing", options: ["whipped cream", "fondant"] },
+              { title: "icing", options: ["whipped cream", "fondant"] },
               { title: "color", options: ["white", "blue"] },
             ],
             rating: {
@@ -90,7 +103,7 @@ const data = {
             },
             allergenAdvice: ["contains nuts"],
             variants: [
-              { title: "Icing", options: ["whipped cream", "fondant"] },
+              { title: "icing", options: ["whipped cream", "fondant"] },
               { title: "color", options: ["white", "blue"] },
             ],
             rating: {
@@ -141,7 +154,20 @@ const data = {
       status: "fulfilling",
       dateCreated: "13th may 2012",
       total: 33000,
-      deliveryLocation:{},
+      payment: {
+        method: "M-pesa",
+        details: { "phone number": "+25470000000" },
+        status: "pending",
+      },
+      delivery: {
+        status: "pending",
+        location: {
+          country: "Kenya",
+          city: "Nairobi",
+          street: "Karen",
+          address: "The hub karen",
+        },
+      },
       items: [
         {
           product: {
@@ -161,7 +187,7 @@ const data = {
             },
             allergenAdvice: ["contains dairy", "contains nuts"],
             variants: [
-              { title: "Icing", options: ["whipped cream", "fondant"] },
+              { title: "icing", options: ["whipped cream", "fondant"] },
               { title: "color", options: ["white", "blue"] },
             ],
             rating: {
@@ -226,7 +252,7 @@ const data = {
             },
             allergenAdvice: ["contains nuts"],
             variants: [
-              { title: "Icing", options: ["whipped cream", "fondant"] },
+              { title: "icing", options: ["whipped cream", "fondant"] },
               { title: "color", options: ["white", "blue"] },
             ],
             rating: {
@@ -276,8 +302,21 @@ const data = {
       id: 3,
       status: "fulfilled",
       dateCreated: "13th may 2012",
-      total:22200,
-      deliveryLocation: {country:"Kenya", city:"Nairobi", street:"Karen", address:"The hub karen"},
+      total: 22200,
+      payment: {
+        method: "M-pesa",
+        details: { "phone number": "+25470000000" },
+        status: "paid",
+      },
+      delivery: {
+        status: "delivered",
+        location: {
+          country: "Kenya",
+          city: "Nairobi",
+          street: "Karen",
+          address: "The hub karen",
+        },
+      },
       items: [
         {
           product: {
@@ -297,7 +336,7 @@ const data = {
             },
             allergenAdvice: ["contains dairy", "contains nuts"],
             variants: [
-              { title: "Icing", options: ["whipped cream", "fondant"] },
+              { title: "icing", options: ["whipped cream", "fondant"] },
               { title: "color", options: ["white", "blue"] },
             ],
             rating: {
@@ -362,7 +401,7 @@ const data = {
             },
             allergenAdvice: ["contains nuts"],
             variants: [
-              { title: "Icing", options: ["whipped cream", "fondant"] },
+              { title: "icing", options: ["whipped cream", "fondant"] },
               { title: "color", options: ["white", "blue"] },
             ],
             rating: {
@@ -413,6 +452,133 @@ const data = {
     name: { first: "John", last: "Doe" },
     region: { currency: "KSH" },
     orders: [1, 2, 3, 4],
+    favourites: {
+      1: {
+        product: {
+          images: [
+            "https://images.pexels.com/photos/2525682/pexels-photo-2525682.png",
+            "https://images.pexels.com/photos/1055272/pexels-photo-1055272.jpeg",
+            "https://images.pexels.com/photos/1055271/pexels-photo-1055271.jpeg",
+          ],
+          name: "My Product 1",
+          flavours: ["Chocolate"],
+          description:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+          unitPrice: {
+            currency: "$",
+            amount: 2000,
+            unit: "kg",
+          },
+          allergenAdvice: ["contains dairy", "contains nuts"],
+          variants: [
+            { title: "icing", options: ["whipped cream", "fondant"] },
+            { title: "color", options: ["white", "blue"] },
+          ],
+          rating: {
+            votes: [4, 3, 3, 4, 5],
+            score: 4.3,
+            reviews: [
+              {
+                userName: "John Doe",
+                date: "10/10/2023",
+                rating: 4,
+                review: {
+                  title: "Very Good!",
+                  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
+                },
+              },
+              {
+                userName: "John Doe",
+                date: "10/10/2023",
+                rating: 4,
+                review: {
+                  title: "Very Good!",
+                  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
+                },
+              },
+              {
+                userName: "John Doe",
+                date: "10/10/2023",
+                rating: 4,
+                review: {
+                  title: "Very Good!",
+                  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
+                },
+              },
+            ],
+          },
+          stock: 200,
+          state: "In stock",
+          categories: ["nuts", "chocolate", "birthday", "vegan", "trending"],
+          id: 1,
+          type: "cake",
+        },
+        details: { icing: "whipped cream", color: "white", weight: 3 },
+      },
+      2: {
+        product: {
+          images: [
+            "https://images.pexels.com/photos/2525682/pexels-photo-2525682.png",
+            "https://images.pexels.com/photos/1055272/pexels-photo-1055272.jpeg",
+            "https://images.pexels.com/photos/1055271/pexels-photo-1055271.jpeg",
+          ],
+          name: "My Product 2",
+          type: "cake",
+          offer: 24,
+          flavours: ["Chocolate"],
+          description:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+          unitPrice: {
+            currency: "$",
+            amount: 4000,
+            unit: "kg",
+          },
+          allergenAdvice: ["contains nuts"],
+          variants: [
+            { title: "icing", options: ["whipped cream", "fondant"] },
+            { title: "color", options: ["white", "blue"] },
+          ],
+          rating: {
+            votes: [4, 3, 3, 4, 5],
+            score: 4,
+            reviews: [
+              {
+                userName: "John Doe",
+                date: "10/10/2023",
+                rating: 4,
+                review: {
+                  title: "Very Good!",
+                  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
+                },
+              },
+              {
+                userName: "John Doe",
+                date: "10/10/2023",
+                rating: 4,
+                review: {
+                  title: "Very Good!",
+                  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
+                },
+              },
+              {
+                userName: "John Doe",
+                date: "10/10/2023",
+                rating: 4,
+                review: {
+                  title: "Very Good!",
+                  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
+                },
+              },
+            ],
+          },
+          stock: 200,
+          state: "In stock",
+          categories: ["no sugar", "chocolate", "birthday", "vegan", "cakes"],
+          id: 2,
+        },
+        details: { icing: "fondant", color: "blue", weight: 5 },
+      },
+    },
     cart: {
       total: 44000,
       items: [
@@ -434,7 +600,7 @@ const data = {
             },
             allergenAdvice: ["contains dairy", "contains nuts"],
             variants: [
-              { title: "Icing", options: ["whipped cream", "fondant"] },
+              { title: "icing", options: ["whipped cream", "fondant"] },
               { title: "color", options: ["white", "blue"] },
             ],
             rating: {
@@ -499,7 +665,7 @@ const data = {
             },
             allergenAdvice: ["contains nuts"],
             variants: [
-              { title: "Icing", options: ["whipped cream", "fondant"] },
+              { title: "icing", options: ["whipped cream", "fondant"] },
               { title: "color", options: ["white", "blue"] },
             ],
             rating: {
@@ -562,7 +728,7 @@ const data = {
               unit: "kg",
             },
             variants: [
-              { title: "Icing", options: ["whipped cream", "fondant"] },
+              { title: "icing", options: ["whipped cream", "fondant"] },
               { title: "color", options: ["white", "blue"] },
             ],
             rating: { votes: [4, 3, 3, 4, 5], score: 4.7 },
@@ -595,7 +761,7 @@ const data = {
       },
       allergenAdvice: ["contains dairy", "contains nuts"],
       variants: [
-        { title: "Icing", options: ["whipped cream", "fondant"] },
+        { title: "icing", options: ["whipped cream", "fondant"] },
         { title: "color", options: ["white", "blue"] },
       ],
       rating: {
@@ -656,7 +822,7 @@ const data = {
       },
       allergenAdvice: ["contains nuts"],
       variants: [
-        { title: "Icing", options: ["whipped cream", "fondant"] },
+        { title: "icing", options: ["whipped cream", "fondant"] },
         { title: "color", options: ["white", "blue"] },
       ],
       rating: {
@@ -715,7 +881,7 @@ const data = {
         unit: "kg",
       },
       variants: [
-        { title: "Icing", options: ["whipped cream", "fondant"] },
+        { title: "icing", options: ["whipped cream", "fondant"] },
         { title: "color", options: ["white", "blue"] },
       ],
       rating: { votes: [4, 3, 3, 4, 5], score: 4.7 },
