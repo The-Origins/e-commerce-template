@@ -450,6 +450,16 @@ const data = {
   ],
   user: {
     name: { first: "John", last: "Doe" },
+    email: "useremail@email.com",
+    phone: { code: "+245", number: "140000000" },
+    addresses: [
+      {
+        country: "Kenya",
+        city: "Nairobi",
+        street: "Karen",
+        address: "The hub karen",
+      },
+    ],
     region: { currency: "KSH" },
     orders: [1, 2, 3, 4],
     favourites: {

@@ -137,16 +137,23 @@ const Header = () => {
                 </IconButton>
               </Link>
               {isNotPhone && (
-                <IconButton
-                  onClick={() => {
-                    switchIsUserMenu(true);
-                  }}
+                <Badge
+                  color="primary"
+                  variant="dot"
+                  overlap="circular"
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                 >
-                  <Avatar
-                    alt="profile image"
-                    sx={{ bgcolor: isUserMenu ? "primary.main" : undefined }}
-                  />
-                </IconButton>
+                  <IconButton
+                    onClick={() => {
+                      switchIsUserMenu(true);
+                    }}
+                  >
+                    <Avatar
+                      alt="profile image"
+                      sx={{ bgcolor: isUserMenu ? "primary.main" : undefined }}
+                    />
+                  </IconButton>
+                </Badge>
               )}
             </Box>
           </Box>

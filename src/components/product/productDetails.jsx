@@ -29,38 +29,30 @@ const ProductDetails = (props) => {
   };
 
   useEffect(() => {
-    let event = {};
-    if (!props.productDetails) {
+    let details = {};
+    if (!props.productDetails.length) {
       if (props.product.type === "cake") {
-        event.target = {
-          name: "weight",
-          value: 1,
-        };
-        handleProductDetailsChange(event);
+        details = { ...details, weight: 1 };
       } else if (props.product.type === "pastry") {
-        event.target = {
-          name: "quantity",
-          value: 1,
-        };
-        handleProductDetailsChange(event);
+        details = { ...details, quantity: 1 };
       }
       if (props.product.variants) {
         props.product.variants.forEach((variant) => {
-          event.target = {
-            name: variant.title,
-            value: variant.options[0],
+          details = {
+            ...details,
+            [variant.title]: variant.options[0],
           };
-          handleProductDetailsChange(event);
         });
       }
+      if (!props.productDetails.length) {
+        props.changeProductDetails(details);
+      }
     }
-  }, [props.product]);
-
-  console.log(props.productDetails)
+  }, [product]);
 
   return (
     <Backdrop sx={{ color: "#fff", zIndex: 2 }} open={props.isProductDetails}>
-      {product.name && (
+      {product.name && props.productDetails && (
         <Box
           width={isNotPhone ? "50%" : "80%"}
           minHeight={"400px"}

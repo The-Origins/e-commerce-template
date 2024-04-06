@@ -11,11 +11,7 @@ import Footer from "./footer";
 const Layout = ({ children }) => {
   const [product, setProduct] = useState({});
   const [productDetailsTitle, setProductDetailsTitle] = useState();
-  const [productDetails, setProductDetails] = useState({
-    icing: "whipped cream",
-    color: "white",
-    weight: 3,
-  });
+  const [productDetails, setProductDetails] = useState({});
   const [isProductDetails, setIsProductDetails] = useState(false);
   const [isContact, setIsContact] = useState(false);
 
@@ -58,6 +54,7 @@ const Layout = ({ children }) => {
         productDetails={productDetails}
         setProductDetails={setProductDetails}
         changeIsProductDetails={changeIsProductDetails}
+        changeProductDetails={changeProductDetails}
         isProductDetails={isProductDetails}
       />
       <Contact isContact={isContact} changeIsContact={changeIsContact} />

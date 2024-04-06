@@ -17,6 +17,7 @@ const UserProductCard = (props) => {
 
   const editItem = (title) => {
     props.changeProduct(props.item.product);
+    props.changeProductDetails(props.item.details)
     props.changeIsProductDetails(true);
   };
 
@@ -24,7 +25,7 @@ const UserProductCard = (props) => {
     <Box
       key={`${props.type}-item-${props.id}-item-${props.id}`}
       minHeight={"100px"}
-      maxWidth={"90%"}
+      maxWidth={"100%"}
       display={"flex"}
       alignItems={"center"}
       boxShadow={`0px 0px 10px 0px ${theme.palette.grey[300]}`}

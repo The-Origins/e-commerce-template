@@ -10,8 +10,14 @@ import {
   useMediaQuery,
   Avatar,
   Link,
+  Badge,
 } from "@mui/material";
-import { BookmarkAdded, Cake, Favorite } from "@mui/icons-material";
+import {
+  BookmarkAdded,
+  Cake,
+  Favorite,
+  NotificationsSharp,
+} from "@mui/icons-material";
 import data from "../../lib/data";
 
 const UserMenu = ({ isUserMenu, switchIsUserMenu }) => {
@@ -45,7 +51,7 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu }) => {
       flexDirection={"column"}
       justifyContent={"center"}
       gap={"20px"}
-      height={isUserMenu ? "400px" : "0%"}
+      height={isUserMenu ? "500px" : "0%"}
       width={"min(300px, 100%)"}
       borderRadius={"0px 0px 10px 10px"}
       bgcolor={"white"}
@@ -53,19 +59,47 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu }) => {
       overflow={"hidden"}
       sx={{ transition: "0.3s ease-in-out", zIndex: 3 }}
     >
-      <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
-        <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
-          <Avatar sx={{ fontSize: "15px" }} />
-          <Typography fontWeight={"bold"} fontSize={"1.2rem"}>
-            {data.user.name.first} {data.user.name.last}
-          </Typography>
-        </Box>
-        <Typography fontSize={"0.5rem"} color={"text.secondary"}>
-          logged in
-        </Typography>
-      </Box>
       <Link
-        href={"/user/orders"}
+        href={"/user/#"}
+        sx={{
+          textDecoration: "none",
+          color: "black",
+        }}
+      >
+        <MenuItem
+          sx={{ display: "flex", flexDirection: "column" }}
+          onClick={() => switchIsUserMenu(false)}
+        >
+          <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
+            <Avatar sx={{ fontSize: "15px" }} />
+            <Typography fontWeight={"bold"} fontSize={"1.2rem"}>
+              {data.user.name.first} {data.user.name.last}
+            </Typography>
+          </Box>
+          <Typography fontSize={"0.5rem"} color={"text.secondary"}>
+            logged in
+          </Typography>
+        </MenuItem>
+      </Link>
+      <Link
+        href={"/user/#notifications"}
+        sx={{
+          textDecoration: "none",
+          color: "black",
+          ":hover": { color: "primary.main" },
+        }}
+      >
+        <MenuItem onClick={() => switchIsUserMenu(false)}>
+          <ListItemIcon>
+            <Badge color="primary" variant="dot" overlap="circular">
+              <NotificationsSharp />
+            </Badge>
+          </ListItemIcon>
+          My Notifications
+        </MenuItem>
+      </Link>
+      <Link
+        href={"/user/#orders"}
         sx={{
           textDecoration: "none",
           color: "black",
@@ -80,7 +114,7 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu }) => {
         </MenuItem>
       </Link>
       <Link
-        href={"/user/favourites"}
+        href={"/user/#favourites"}
         sx={{
           textDecoration: "none",
           color: "black",
@@ -95,13 +129,23 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu }) => {
           My Favourites
         </MenuItem>
       </Link>
-      <MenuItem onClick={() => switchIsUserMenu(false)}>
-        {" "}
-        <ListItemIcon>
-          <Cake />
-        </ListItemIcon>
-        My Custom Cakes
-      </MenuItem>
+      <Link
+        href={"/user/#custom-cakes"}
+        sx={{
+          textDecoration: "none",
+          color: "black",
+          ":hover": { color: "primary.main" },
+        }}
+      >
+        <MenuItem onClick={() => switchIsUserMenu(false)}>
+          {" "}
+          <ListItemIcon>
+            <Cake />
+          </ListItemIcon>
+          My Custom Cakes
+        </MenuItem>
+      </Link>
+
       <Divider />
       <Button
         onClick={() => switchIsUserMenu(false)}
