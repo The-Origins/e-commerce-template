@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -10,17 +10,19 @@ import {
   useTheme,
 } from "@mui/material";
 import { AddShoppingCart, Delete, Edit } from "@mui/icons-material";
+import ProductDetails from "./productDetails";
 
 const UserProductCard = (props) => {
+  const [productDetails, setProductDetails] = useState(props.item.details)
+  const [isProductDetails, setIsProductDetails] = useState(false)
+
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
 
-  const editItem = (title) => {
-    props.changeProduct(props.item.product);
-    props.changeProductDetails(props.item.details)
-    props.changeIsProductDetails(true);
+  const switchIsProductDetails = () => {
+    setIsProductDetails((prev) => !prev);
   };
-
+  
   return (
     <Box
       key={`${props.type}-item-${props.id}-item-${props.id}`}
@@ -44,6 +46,14 @@ const UserProductCard = (props) => {
       }}
       padding={"20px"}
     >
+      <ProductDetails
+        title={"Edit your prefrences"}
+        product={props.item.product}
+        productDetails={productDetails}
+        setProductDetails={setProductDetails}
+        switchIsProductDetails={switchIsProductDetails}
+        isProductDetails={isProductDetails}
+      />
       <Box
         height={"90px"}
         width={"100px"}
@@ -114,7 +124,7 @@ const UserProductCard = (props) => {
                 disableElevation
                 size="small"
                 sx={{ alignSelf: "flex-start" }}
-                onClick={() => editItem("Confirm a few details first")}
+                onClick={switchIsProductDetails}
                 startIcon={<AddShoppingCart />}
               >
                 Add to cart
@@ -131,7 +141,7 @@ const UserProductCard = (props) => {
             >
               <Button
                 sx={{ ":hover": { color: "primary.main" } }}
-                onClick={editItem}
+                onClick={switchIsProductDetails}
                 startIcon={<Edit />}
                 size="small"
               >
@@ -161,7 +171,7 @@ const UserProductCard = (props) => {
           <Tooltip title="Edit" placement="right">
             <IconButton
               sx={{ ":hover": { color: "primary.main" } }}
-              onClick={editItem}
+              onClick={switchIsProductDetails}
             >
               <Edit />
             </IconButton>

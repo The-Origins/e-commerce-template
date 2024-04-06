@@ -1,65 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 import { ThemeProvider } from "@mui/material";
 import theme from "../../theme";
 import Contact from "./contact";
 import "../../index.css";
 import Modal from "./modal";
-import ProductDetails from "../product/productDetails";
 import Header from "./header";
 import Footer from "./footer";
+import { useDispatch, useSelector } from "react-redux";
+import { switchIsContact } from "../../state/store";
 
 const Layout = ({ children }) => {
-  const [product, setProduct] = useState({});
-  const [productDetailsTitle, setProductDetailsTitle] = useState();
-  const [productDetails, setProductDetails] = useState({});
-  const [isProductDetails, setIsProductDetails] = useState(false);
-  const [isContact, setIsContact] = useState(false);
-
-  const changeProduct = (product) => {
-    setProduct(product);
+  const dispatch = useDispatch();
+  const isContact = useSelector((state) => state.isContact);
+  const changeIsContact = () => {
+    dispatch(switchIsContact());
   };
-
-  const changeIsProductDetails = (state) => {
-    setIsProductDetails(state);
-  };
-
-  const changeProductDetailsTitle = (title) => {
-    setProductDetailsTitle(title);
-  };
-
-  const changeProductDetails = (details) => {
-    setProductDetails(details);
-  };
-
-  const changeIsContact = (state) => {
-    setIsContact(state);
-  };
-
-  const childrenWithProps = React.Children.map(children, (child) =>
-    React.cloneElement(child, {
-      changeProduct,
-      changeIsProductDetails,
-      changeProductDetailsTitle,
-      changeProductDetails,
-      changeIsContact,
-    })
-  );
 
   return (
     <ThemeProvider theme={theme}>
       <Modal />
-      <ProductDetails
-        title={productDetailsTitle}
-        product={product}
-        productDetails={productDetails}
-        setProductDetails={setProductDetails}
-        changeIsProductDetails={changeIsProductDetails}
-        changeProductDetails={changeProductDetails}
-        isProductDetails={isProductDetails}
-      />
       <Contact isContact={isContact} changeIsContact={changeIsContact} />
       <Header />
-      {childrenWithProps}
+      {children}
       <Footer changeIsContact={changeIsContact} />
     </ThemeProvider>
   );

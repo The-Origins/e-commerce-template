@@ -55,9 +55,9 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu }) => {
       width={"min(300px, 100%)"}
       borderRadius={"0px 0px 10px 10px"}
       bgcolor={"white"}
-      boxShadow={`0px 5px 10px 0px ${theme.palette.grey[400]}`}
+      boxShadow={`0px 5px 10px 0px ${theme.palette.grey[500]}`}
       overflow={"hidden"}
-      sx={{ transition: "0.3s ease-in-out", zIndex: 3 }}
+      sx={{ transition: "0.3s ease-in-out", zIndex: 4 }}
     >
       <Link
         href={"/user/#"}

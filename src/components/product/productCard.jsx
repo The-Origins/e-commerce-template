@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AddCircle, Favorite } from "@mui/icons-material";
 import {
   useTheme,
@@ -10,15 +10,34 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import CategorizeComponent from "./categorizeComponent";
+import ProductDetails from "./productDetails";
 
 const ProductCard = (props) => {
+  const [productDetails, setProductDetails] = useState({});
+  const [isProductDetails, setIsProductDetails] = useState(false);
+
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
 
-  const addToCart = () => {
-    props.changeProduct(props.product);
-    props.changeIsProductDetails(true);
+  const switchIsProductDetails = () => {
+    setIsProductDetails((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (props.product.type === "cake") {
+      setProductDetails((prev) => ({ ...prev, weight: 1 }));
+    } else if (props.product.type === "pastry") {
+      setProductDetails((prev) => ({ ...prev, quantity: 1 }));
+    }
+    if (props.product.variants) {
+      props.product.variants.forEach((variant) => {
+        setProductDetails((prev) => ({
+          ...prev,
+          [variant.title]: variant.options[0],
+        }));
+      });
+    }
+  }, [props.product]);
 
   return (
     <Box
@@ -36,6 +55,13 @@ const ProductCard = (props) => {
         },
       }}
     >
+      <ProductDetails
+        product={props.product}
+        productDetails={productDetails}
+        setProductDetails={setProductDetails}
+        switchIsProductDetails={switchIsProductDetails}
+        isProductDetails={isProductDetails}
+      />
       <Box
         display={"flex"}
         flexDirection={"column"}
@@ -64,7 +90,7 @@ const ProductCard = (props) => {
             <IconButton>
               <Favorite sx={{ color: "white" }} />
             </IconButton>
-            <IconButton onClick={addToCart}>
+            <IconButton onClick={switchIsProductDetails}>
               <AddCircle sx={{ color: "white" }} />
             </IconButton>
           </Box>

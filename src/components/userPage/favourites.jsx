@@ -19,10 +19,6 @@ const UserFavourites = (props) => {
           id={index}
           item={data.user.favourites[favourite]}
           type="favourites"
-          changeProductDetailsTitle={props.changeProductDetailsTitle}
-          changeProduct={props.changeProduct}
-          changeIsProductDetails={props.changeIsProductDetails}
-          changeProductDetails={props.changeProductDetails}
         />
       ))}
     </Box>

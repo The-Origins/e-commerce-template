@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Link, Typography, useTheme } from "@mui/material";
 import { CalendarMonth } from "@mui/icons-material";
 import UserProductCard from "../product/userProductCard";
+import data from "../../lib/data";
 
 const statusColors = {
   processing: "#0382FF",
@@ -9,7 +10,7 @@ const statusColors = {
   fulfilled: "#15FF02",
 };
 
-const UserOrders = (props) => {
+const UserOrders = () => {
   const theme = useTheme();
 
   return (
@@ -22,7 +23,7 @@ const UserOrders = (props) => {
       height={"100%"}
       sx={{ overflowY: "scroll" }}
     >
-      {props.orders.map((order) => (
+      {data.orders.map((order) => (
         <Link
           href={`/user/#order/${order.id}`}
           width={"100%"}

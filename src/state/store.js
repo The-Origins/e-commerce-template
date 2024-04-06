@@ -14,13 +14,8 @@ const storeSLice = createSlice({
     isContact: false,
   },
   reducers: {
-    changeIsContact: (state, payload) => {
-      state.isContact =
-        payload === "close"
-          ? false
-          : payload === "open"
-          ? true
-          : !state.isContact;
+    switchIsContact:(state) => {
+      state.isContact = !state.isContact;
     },
     changeIsLoading: (state, payload) => {
       state.isLoading = !state.isLoading;
@@ -50,7 +45,7 @@ export const {
   setlocation,
   activateModal,
   deactivateModal,
-  changeIsContact,
+  switchIsContact,
   changeIsLoading,
 } = storeSLice.actions;
 
