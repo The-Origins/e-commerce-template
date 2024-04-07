@@ -148,8 +148,7 @@ const ProductCard = (props) => {
           )}
         </Box>
         <Link
-          href={`/product?p=${props.id + 1}`}
-          key={`product-${props.id}`}
+          href={`/product?p=${props.product.id}`}
           width={"100%"}
           height={"50%"}
           sx={{

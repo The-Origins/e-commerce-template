@@ -7,6 +7,8 @@ import {
   Box,
   IconButton,
   Link,
+  TextField,
+  InputAdornment,
   useMediaQuery,
 } from "@mui/material";
 import {
@@ -16,12 +18,11 @@ import {
   Search,
   ShoppingCart,
 } from "@mui/icons-material";
-import data from "../../lib/data";
 import { useTheme } from "@emotion/react";
 import { useSelector } from "react-redux";
 
 const Header = () => {
-  const user = useSelector((state) => state.user)
+  const user = useSelector((state) => state.user);
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
   const [yScroll, setYScroll] = useState(0);
@@ -107,14 +108,19 @@ const Header = () => {
               </Link>
             </Box>
             {isNotPhone && (
-              <input
+              <TextField
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton>
+                        <Search />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
                 type="search"
                 placeholder="search for what you desire..."
-                style={{
-                  width: "40%",
-                  height: "50px",
-                  backgroundColor: theme.palette.grey,
-                }}
+                sx={{ width: "40%", "& > div": { borderRadius: "25px" } }}
               />
             )}
             <Box
@@ -132,7 +138,9 @@ const Header = () => {
                 <IconButton>
                   <Badge
                     color="primary"
-                    badgeContent={user.cart && Object.keys(user.cart.items).length}
+                    badgeContent={
+                      user.cart && Object.keys(user.cart.items).length
+                    }
                   >
                     <ShoppingCart />
                   </Badge>

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import {useSelector } from "react-redux";
 import {
   Box,
   Typography,
@@ -41,6 +42,7 @@ const ResultsPage = () => {
   let page = Number(params.get("p")) || 1;
   const pageLimit = 4;
   const search = params.get("search");
+  const user = useSelector((state => state.user))
   const [results, setResults] = useState([]);
   const [categories, setCategories] = useState(["All"]);
   const [filters, setFilters] = useState({ category: "All", types: {} });
@@ -442,7 +444,7 @@ const ResultsPage = () => {
                 width={"100%"}
               >
                 {results[page - 1].map((result, index) => (
-                  <ProductCard id={index} product={result} />
+                  <ProductCard id={index} product={result} user={user} />
                 ))}
               </Box>
             )}
