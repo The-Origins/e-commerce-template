@@ -6,7 +6,7 @@ const ProductMenuItem = (props) => {
   const theme = useTheme();
   return (
     <Link
-      href={`/cake?c=${props.id}`}
+      href={`/product?p=${props.id}`}
       sx={{
         textDecoration: "none",
         width: "min(400px,100%)",

@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   Avatar,
   Badge,
@@ -11,7 +12,6 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import data from "../lib/data";
 import {
   BookmarkAdded,
   Cake,
@@ -24,24 +24,28 @@ import OrderDetails from "../components/userPage/orderDetails";
 import UserFavourites from "../components/userPage/favourites";
 import UserProfile from "../components/userPage/profile";
 
-const stages = {
-  orders: <UserOrders />,
-  order: <OrderDetails />,
-  favourites: <UserFavourites />,
-};
-
 const UserPage = () => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
+  const user = useSelector((state) => state.user);
+  const [stages, setStages] = useState({});
   let stage = String(window.location.hash).includes("/")
     ? window.location.hash.substring(1, window.location.hash.indexOf("/"))
     : window.location.hash.substring(1);
 
   useEffect(() => {
-    document.title = `My ${stage.charAt(0).toUpperCase()}${stage.substring(
-      1
-    )} | Wendoh Cakes`;
+    document.title = `My ${
+      stage ? stage.charAt(0).toUpperCase() : "Profile"
+    }${stage.substring(1)} | Wendoh Cakes`;
   }, [stage]);
+
+  useEffect(() => {
+    setStages({
+      orders: <UserOrders />,
+      order: <OrderDetails />,
+      favourites: <UserFavourites user={user}/>,
+    });
+  }, [user]);
 
   return (
     <Box
@@ -59,7 +63,7 @@ const UserPage = () => {
         overflow={"hidden"}
         borderRadius={"25px"}
       >
-        {isNotPhone && (
+        {isNotPhone && user.name && (
           <Box
             width={"400px"}
             height={"100%"}
@@ -88,7 +92,7 @@ const UserPage = () => {
                 >
                   <Avatar />
                   <Typography fontWeight={"bold"} fontSize={"1.6rem"}>
-                    {data.user.name.first} {data.user.name.last}
+                    {user.name.first} {user.name.last}
                   </Typography>
                 </Box>
                 <Typography fontSize={"0.8rem"} color={"text.secondary"}>
@@ -139,7 +143,7 @@ const UserPage = () => {
           </Box>
         )}
         <Box width={"100%"} height={"100%"}>
-          {!stage && <UserProfile />}
+          {!stage && <UserProfile user={user}/>}
           {stages[stage]}
         </Box>
       </Box>

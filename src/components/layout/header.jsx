@@ -18,8 +18,10 @@ import {
 } from "@mui/icons-material";
 import data from "../../lib/data";
 import { useTheme } from "@emotion/react";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const user = useSelector((state) => state.user)
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
   const [yScroll, setYScroll] = useState(0);
@@ -130,30 +132,25 @@ const Header = () => {
                 <IconButton>
                   <Badge
                     color="primary"
-                    badgeContent={data.user.cart.items.length}
+                    badgeContent={user.cart && Object.keys(user.cart.items).length}
                   >
                     <ShoppingCart />
                   </Badge>
                 </IconButton>
               </Link>
               {isNotPhone && (
-                <Badge
-                  color="primary"
-                  variant="dot"
-                  overlap="circular"
-                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                <IconButton
+                  onClick={() => {
+                    switchIsUserMenu(true);
+                  }}
                 >
-                  <IconButton
-                    onClick={() => {
-                      switchIsUserMenu(true);
-                    }}
-                  >
+                  <Badge color="primary" variant="dot" overlap="circular">
                     <Avatar
                       alt="profile image"
                       sx={{ bgcolor: isUserMenu ? "primary.main" : undefined }}
                     />
-                  </IconButton>
-                </Badge>
+                  </Badge>
+                </IconButton>
               )}
             </Box>
           </Box>

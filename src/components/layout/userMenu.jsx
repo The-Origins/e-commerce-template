@@ -37,11 +37,12 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, []); //eslint: react-hooks/exhaustive-deps
 
   return (
     <Box
       ref={userMenuRef}
+      zIndex={4}
       className="user-menu"
       position={"absolute"}
       right={isNotPhone ? 0 : undefined}
@@ -57,7 +58,7 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu }) => {
       bgcolor={"white"}
       boxShadow={`0px 5px 10px 0px ${theme.palette.grey[500]}`}
       overflow={"hidden"}
-      sx={{ transition: "0.3s ease-in-out", zIndex: 4 }}
+      sx={{ transition: "0.3s ease-in-out" }}
     >
       <Link
         href={"/user/#"}

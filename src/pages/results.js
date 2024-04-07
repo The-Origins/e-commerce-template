@@ -290,7 +290,7 @@ const ResultsPage = () => {
                     name="min"
                     value={priceRange[0]}
                     onChange={handlePriceRangeChangeInput}
-                    sx={{ "& > div": { color: "black", fontSize: "13px" } }}
+                    sx={{ "& > div": { fontSize: "13px" } }}
                   />
                   <TextField
                     step="10"
@@ -300,7 +300,7 @@ const ResultsPage = () => {
                     name="max"
                     value={priceRange[1]}
                     onChange={handlePriceRangeChangeInput}
-                    sx={{ "& > div": { color: "black", fontSize: "13px" } }}
+                    sx={{ "& > div": { fontSize: "13px" } }}
                   />
                 </Box>
                 <Slider

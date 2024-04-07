@@ -591,8 +591,8 @@ const data = {
     },
     cart: {
       total: 44000,
-      items: [
-        {
+      items: {
+        1: {
           product: {
             images: [
               "https://images.pexels.com/photos/2525682/pexels-photo-2525682.png",
@@ -655,7 +655,7 @@ const data = {
           details: { icing: "whipped cream", color: "white", weight: 3 },
           total: 0,
         },
-        {
+        2: {
           product: {
             images: [
               "https://images.pexels.com/photos/2525682/pexels-photo-2525682.png",
@@ -719,7 +719,7 @@ const data = {
           details: { icing: "whipped cream", color: "white", weight: 3 },
           total: 0,
         },
-        {
+        3: {
           product: {
             images: [
               "https://images.pexels.com/photos/2525682/pexels-photo-2525682.png",
@@ -750,7 +750,7 @@ const data = {
           details: { icing: "whipped cream", color: "white", weight: 3 },
           total: 0,
         },
-      ],
+      },
     },
   },
   products: [

@@ -1,6 +1,5 @@
 import React from "react";
 import { Box } from "@mui/material";
-import data from "../../lib/data";
 import UserProductCard from "../product/userProductCard";
 
 const UserFavourites = (props) => {
@@ -14,10 +13,10 @@ const UserFavourites = (props) => {
       flexDirection={"column"}
       gap={"20px"}
     >
-      {Object.keys(data.user.favourites).map((favourite, index) => (
+      {Object.keys(props.user.favourites).map((favourite, index) => (
         <UserProductCard
           id={index}
-          item={data.user.favourites[favourite]}
+          item={props.user.favourites[favourite]}
           type="favourites"
         />
       ))}

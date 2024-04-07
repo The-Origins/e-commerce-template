@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ThemeProvider } from "@mui/material";
 import theme from "../../theme";
 import Contact from "./contact";
@@ -7,7 +7,8 @@ import Modal from "./modal";
 import Header from "./header";
 import Footer from "./footer";
 import { useDispatch, useSelector } from "react-redux";
-import { switchIsContact } from "../../state/store";
+import { switchIsContact, setUser } from "../../state/store";
+import data from "../../lib/data";
 
 const Layout = ({ children }) => {
   const dispatch = useDispatch();
@@ -15,6 +16,10 @@ const Layout = ({ children }) => {
   const changeIsContact = () => {
     dispatch(switchIsContact());
   };
+
+  useEffect(() => {
+    dispatch(setUser(data.user))
+  }, [])
 
   return (
     <ThemeProvider theme={theme}>

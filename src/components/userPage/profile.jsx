@@ -11,7 +11,7 @@ import {
 import UserProfileDetail from "./profileDetail";
 import AddressItem from "./addressItem";
 
-const UserProfile = () => {
+const UserProfile = (props) => {
   const theme = useTheme();
   return (
     <Box
@@ -22,23 +22,25 @@ const UserProfile = () => {
       flexDirection={"column"}
       gap={"20px"}
     >
-      <Box display={"flex"} flexWrap={"wrap"} gap={"20px"}>
-        <UserProfileDetail
-          icon={<AccountCircle />}
-          title={"Name"}
-          value={`${data.user.name.first} ${data.user.name.last}`}
-        />
-        <UserProfileDetail
-          icon={<Mail />}
-          title={"Email"}
-          value={data.user.email}
-        />
-        <UserProfileDetail
-          icon={<Phone />}
-          title={"Phone no"}
-          value={`(${data.user.phone.code}) ${data.user.phone.number}`}
-        />
-      </Box>
+      {props.user.name && (
+        <Box display={"flex"} flexWrap={"wrap"} gap={"20px"}>
+          <UserProfileDetail
+            icon={<AccountCircle />}
+            title={"Name"}
+            value={`${props.user.name.first} ${props.user.name.last}`}
+          />
+          <UserProfileDetail
+            icon={<Mail />}
+            title={"Email"}
+            value={props.user.email}
+          />
+          <UserProfileDetail
+            icon={<Phone />}
+            title={"Phone no"}
+            value={`(${props.user.phone.code}) ${props.user.phone.number}`}
+          />
+        </Box>
+      )}
       <Box
         display={"flex"}
         flexDirection={"column"}
@@ -73,7 +75,7 @@ const UserProfile = () => {
           gap={"20px"}
           sx={{ overflowY: "scroll" }}
         >
-          {data.user.addresses.map((add) => (
+          {props.user.name && props.user.addresses.map((add) => (
             <AddressItem {...add} />
           ))}
         </Box>

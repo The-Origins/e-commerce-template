@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AddCircle, Favorite } from "@mui/icons-material";
+import { AddCircle, CheckCircle, Favorite } from "@mui/icons-material";
 import {
   useTheme,
   Box,
@@ -8,19 +8,32 @@ import {
   Typography,
   Link,
   useMediaQuery,
+  Tooltip,
 } from "@mui/material";
+import data from "../../lib/data";
 import CategorizeComponent from "./categorizeComponent";
 import ProductDetails from "./productDetails";
+import { navigate } from "gatsby";
 
 const ProductCard = (props) => {
   const [productDetails, setProductDetails] = useState({});
   const [isProductDetails, setIsProductDetails] = useState(false);
+  const [isLiked, setIsLiked] = useState(false)
+  const [isInCart, setIsInCart] = useState(false)
 
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
 
   const switchIsProductDetails = () => {
     setIsProductDetails((prev) => !prev);
+  };
+
+  const addToCart = () => {
+    if (isInCart) {
+      navigate("/cart");
+    } else {
+      switchIsProductDetails();
+    }
   };
 
   useEffect(() => {
@@ -38,6 +51,13 @@ const ProductCard = (props) => {
       });
     }
   }, [props.product]);
+  useEffect(() => {
+    if(props.user.name)
+    {
+      setIsLiked(Boolean(props.user.favourites[props.product.id]))
+      setIsInCart(Boolean(props.user.cart.items[props.product.id]))
+    }
+  }, [props.user])
 
   return (
     <Box
@@ -87,12 +107,20 @@ const ProductCard = (props) => {
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <IconButton>
-              <Favorite sx={{ color: "white" }} />
-            </IconButton>
-            <IconButton onClick={switchIsProductDetails}>
-              <AddCircle sx={{ color: "white" }} />
-            </IconButton>
+            <Tooltip title={isLiked  ? "Favourited" : "Add to favourites"}>
+              <IconButton>
+                <Favorite sx={{ color: isLiked  ? "primary.main" : "white" }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title={isInCart ? "added to cart" : "add to cart"}>
+              <IconButton onClick={addToCart}>
+                {isInCart ? (
+                  <CheckCircle sx={{ color: "white" }} />
+                ) : (
+                  <AddCircle sx={{ color: "white" }} />
+                )}
+              </IconButton>
+            </Tooltip>
           </Box>
           {props.product.offer && (
             <Box

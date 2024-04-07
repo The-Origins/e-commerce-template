@@ -14,25 +14,24 @@ const storeSLice = createSlice({
     isContact: false,
   },
   reducers: {
-    switchIsContact:(state) => {
+    switchIsContact: (state) => {
       state.isContact = !state.isContact;
     },
-    changeIsLoading: (state, payload) => {
+    changeIsLoading: (state) => {
       state.isLoading = !state.isLoading;
     },
-    activateModal: (state, payload) => {
+    activateModal: (state, action) => {
       state.modal.on = true;
-      state.modal.message = payload.payload.message;
-      state.modal.modalType =
-        payload.payload.modalType || state.modal.modalType;
+      state.modal.message = action.payload.message;
+      state.modal.modalType = action.payload.modalType || state.modal.modalType;
     },
     deactivateModal: (state) => {
       state.modal.on = false;
       state.modal.message = { title: "", description: "" };
       state.modal.modalType = "info";
     },
-    setUser: (state, payload) => {
-      state.user = payload;
+    setUser: (state, action) => {
+      state.user = action.payload;
     },
     setlocation: (state, payload) => {
       state.location = payload;

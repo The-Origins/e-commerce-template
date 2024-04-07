@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { activateModal, switchIsContact } from "../state/store";
 import {
   Box,
@@ -22,8 +22,8 @@ import { navigate } from "gatsby";
 const Home = (props) => {
   const dispatch = useDispatch();
   const theme = useTheme();
-
   const isNotPhone = useMediaQuery("(min-width:1000px)");
+  const user = useSelector((state => state.user))
 
   useEffect(() => {
     let params = new URLSearchParams(window.location.search);
@@ -44,6 +44,7 @@ const Home = (props) => {
     document.title = "Wendoh Cakes | Made with love";
     return () => (params = undefined);
   }, []);
+
 
   return (
     <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
@@ -149,8 +150,7 @@ const Home = (props) => {
                   <ProductCard
                     id={index}
                     product={product}
-                    changeProduct={props.changeProduct}
-                    changeIsProductDetails={props.changeIsProductDetails}
+                    user={user}
                   />
                 );
               }
@@ -172,8 +172,7 @@ const Home = (props) => {
                   <ProductCard
                     id={index}
                     product={product}
-                    changeProduct={props.changeProduct}
-                    changeIsProductDetails={props.changeIsProductDetails}
+                    user={user}
                   />
                 );
               }
@@ -195,8 +194,7 @@ const Home = (props) => {
                   <ProductCard
                     id={index}
                     product={product}
-                    changeProduct={props.changeProduct}
-                    changeIsProductDetails={props.changeIsProductDetails}
+                    user={user}
                   />
                 );
               }

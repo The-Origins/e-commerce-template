@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useSelector } from "react-redux";
 import {
   useTheme,
   useMediaQuery,
@@ -8,39 +9,48 @@ import {
   Typography,
   Button,
   Rating,
+  Tooltip,
 } from "@mui/material";
 import {
   AddShoppingCart,
+  CheckCircle,
   ChevronLeft,
   ChevronRight,
+  Favorite,
   PersonOff,
+  Share,
 } from "@mui/icons-material";
 import data from "../lib/data";
 import RatingDistributionComponent from "../components/productPage/ratingDistribution";
 import ReviewComponent from "../components/productPage/reviewComponent";
-import ProductOptions from "../components/productPage/productOptions";
 import ProductCardContainer from "../components/product/productCardContainer";
 import ProductCard from "../components/product/productCard";
+import ProductDetails from "../components/product/productDetails";
 
 const ProductPage = () => {
+  let params = new URLSearchParams(window.location.search);
+  const id = Number(params.get("p")) 
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
+  const user = useSelector((state => state.user))
+  const [isLiked, setIsLiked] = useState(false)
+  const [isInCart, setIsInCart] = useState(false)
   const [imageIndex, setImageIndex] = useState(0);
-  const [isProductOptions, setIsProductOptions] = useState(false);
   const [product, setProduct] = useState({
     images: [],
     unitPrice: {},
     rating: { score: 0, votes: [], reviews: [] },
     allergenAdvice: [],
   });
+  const [productDetails, setProductDetails] = useState(
+    Object.fromEntries(params.entries())
+  );
+  const [isProductDetails, setIsProductDetails] = useState(false);
   const [ratingDistribution, setRatingDistribution] = useState({});
   const maxImageIndex = product.images.length;
 
   useEffect(() => {
-    let params = new URLSearchParams(window.location.search);
-    const productIndex = Number(params.get("p"));
-    setProduct(data.products.find((element) => element.id === productIndex));
-    return () => (params = undefined);
+    setProduct(data.products.find((element) => element.id === id));
   }, []);
 
   useEffect(() => {
@@ -48,6 +58,14 @@ const ProductPage = () => {
       document.title = product.name + " | Wendo Cakes";
     }
   }, [product]);
+
+  useEffect(() => {
+    if(user.name)
+    {
+      setIsLiked(Boolean(user.favourites[id]))
+      setIsInCart(Boolean(user.cart.items[id]))
+    }
+  }, [user])
 
   useEffect(() => {
     const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
@@ -63,6 +81,24 @@ const ProductPage = () => {
     setRatingDistribution(distribution);
   }, [product.rating.votes]);
 
+  useEffect(() => {
+    if (!productDetails.weight && !productDetails.quantity) {
+      if (product.type === "cake") {
+        setProductDetails((prev) => ({ ...prev, weight: 1 }));
+      } else if (product.type === "pastry") {
+        setProductDetails((prev) => ({ ...prev, quantity: 1 }));
+      }
+      if (product.variants) {
+        product.variants.forEach((variant) => {
+          setProductDetails((prev) => ({
+            ...prev,
+            [variant.title]: variant.options[0],
+          }));
+        });
+      }
+    }
+  }, [product]);
+
   const next = () => {
     setImageIndex((prev) => prev + 1);
   };
@@ -74,15 +110,26 @@ const ProductPage = () => {
     setImageIndex(Number(target.value));
   };
 
-  const switchIsProductOptions = (state) => {
-    setIsProductOptions(state);
+  const switchIsProductDetails = () => {
+    setIsProductDetails((prev) => !prev);
   };
 
   const addToCart = () => {
+    switchIsProductDetails();
   };
+
+  const like = () => {};
 
   return (
     <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
+      <ProductDetails
+        title={isInCart && "Change your prefrences"}
+        product={product}
+        productDetails={productDetails}
+        setProductDetails={setProductDetails}
+        switchIsProductDetails={switchIsProductDetails}
+        isProductDetails={isProductDetails}
+      />
       <Box width={isNotPhone ? "80%" : "90%"}>
         <Box
           mt={"50px"}
@@ -261,10 +308,13 @@ const ProductPage = () => {
                   >
                     {product.name}
                   </Typography>
-                  <ProductOptions
-                    switchIsProductOptions={switchIsProductOptions}
-                    isProductOptions={isProductOptions}
-                  />
+                  <Tooltip
+                    title={isLiked ? "added to favourites" : "add to favourites"}
+                  >
+                    <IconButton sx={{ color: isLiked && "primary.main" }}>
+                      <Favorite />
+                    </IconButton>
+                  </Tooltip>
                 </Box>
                 <Typography>{product.description}</Typography>
                 {product.allergenAdvice && (
@@ -302,16 +352,31 @@ const ProductPage = () => {
                   ></Box>
                 </Box>
                 {isNotPhone && (
-                  <Button
-                    disableElevation
-                    fullWidth
-                    sx={{ height: "50px" }}
-                    variant="contained"
-                    startIcon={<AddShoppingCart />}
-                    onClick={addToCart}
+                  <Box
+                    width={"100%"}
+                    display={"flex"}
+                    alignItems={"center"}
+                    justifyContent={"space-between"}
+                    gap={"20px"}
                   >
-                    add to cart
-                  </Button>
+                    <Tooltip title="share">
+                      <IconButton onClick={like}>
+                        <Share />
+                      </IconButton>
+                    </Tooltip>
+                    <Button
+                      disableElevation
+                      color={isInCart ? "success" : "primary"}
+                      sx={{ height: "50px", width: "100%", }}
+                      variant="contained"
+                      startIcon={
+                        isInCart ? <CheckCircle /> : <AddShoppingCart />
+                      }
+                      onClick={addToCart}
+                    >
+                      {isInCart ? "added to cart" : "add to cart"}
+                    </Button>
+                  </Box>
                 )}
               </Box>
             </Box>
@@ -422,7 +487,7 @@ const ProductPage = () => {
         </Box>
         <Box
           width={"100%"}
-          height={"90vh"}
+          height={"70vh"}
           display={"flex"}
           justifyContent={"center"}
           alignItems={"center"}
@@ -430,12 +495,7 @@ const ProductPage = () => {
           <ProductCardContainer containerTitle="More in Category">
             {data.products.map((product, index) => {
               if (index < 4) {
-                return (
-                  <ProductCard
-                    id={index}
-                    product={product}
-                  />
-                );
+                return <ProductCard id={index} product={product} user={user} />;
               }
               return <></>;
             })}
@@ -443,20 +503,19 @@ const ProductPage = () => {
         </Box>
         <Box
           width={"100%"}
-          height={"90vh"}
+          height={"70vh"}
           display={"flex"}
           justifyContent={"center"}
           alignItems={"center"}
+          mb={"80px"}
         >
-          <ProductCardContainer containerTitle="Recently viewed">
+          <ProductCardContainer
+            containerTitle="Recently viewed"
+            isRecent={true}
+          >
             {data.products.map((product, index) => {
               if (index < 4) {
-                return (
-                  <ProductCard
-                    id={index}
-                    product={product}
-                  />
-                );
+                return <ProductCard id={index} product={product} user={user} />;
               }
               return <></>;
             })}

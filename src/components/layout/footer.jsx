@@ -128,7 +128,6 @@ const Footer = (props) => {
                       width: "100%",
                       height: "30px",
                       textAlign: "center",
-                      "& > div > input": { color: "black" },
                       mb: "30px",
                     }}
                   ></TextField>

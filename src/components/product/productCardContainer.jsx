@@ -12,11 +12,12 @@ const ProductCardContainer = (props) => {
       display={"flex"}
       flexDirection={"column"}
       position={"relative"}
+      margin={"30px 0px"}
     >
       <Typography margin={"20px"} color={"text.secondary"}>
         {props.containerTitle}
       </Typography>
-      <Box
+      {!props.isRecent && <Box
         position={"absolute"}
         bottom={18}
         height={"50px"}
@@ -26,7 +27,9 @@ const ProductCardContainer = (props) => {
         alignItems={"center"}
       >
         <Link
-          href={`/results?search=${String(props.containerTitle).split(" ").join("+")}`}
+          href={`/results?search=${String(props.containerTitle)
+            .split(" ")
+            .join("+")}`}
           sx={{
             display: "flex",
             alignItems: "center",
@@ -39,7 +42,7 @@ const ProductCardContainer = (props) => {
           View more
           <ArrowRightAlt sx={{ ml: "5px" }} />
         </Link>
-      </Box>
+      </Box>}
       <Box
         width={"100%"}
         borderRadius={"25px"}
