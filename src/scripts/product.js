@@ -4,5 +4,6 @@ class Product {
         this.product = product
     }
 
+    
 
 }

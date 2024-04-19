@@ -1,16 +1,16 @@
 import { Edit } from "@mui/icons-material";
-import { Box, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Tooltip, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React from "react";
 
 const UserProfileDetail = (props) => {
   const theme = useTheme();
+  const isNotPhone = useMediaQuery("(min-width:1000px)")
   return (
     <Box
       position={"relative"}
       flexBasis={200}
       height={"100px"}
       flexGrow={1}
-      maxWidth={"40%"}
       display={"flex"}
       flexDirection={"column"}
       gap={"5px"}
@@ -39,20 +39,22 @@ const UserProfileDetail = (props) => {
       <Typography sx={{ transition: "0.3s" }} color={"text.secondary"}>
         {props.value}
       </Typography>
-      <Tooltip title="edit" placement="right">
-        <IconButton
-          className="profile-detail-edit"
-          sx={{
-            position: "absolute",
-            bottom: 10,
-            right: 10,
-            opacity: 0,
-            transition: "0.3s",
-          }}
-        >
-          <Edit />
-        </IconButton>
-      </Tooltip>
+      {!props.notChange && (
+        <Tooltip title="edit" placement="right">
+          <IconButton
+            className="profile-detail-edit"
+            sx={{
+              position: "absolute",
+              bottom: 10,
+              right: 10,
+              opacity: isNotPhone ? 0 : 1,
+              transition: "0.3s",
+            }}
+          >
+            <Edit />
+          </IconButton>
+        </Tooltip>
+      )}
     </Box>
   );
 };

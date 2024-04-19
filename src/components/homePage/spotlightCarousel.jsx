@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
 import data from "../../lib/data";
-import { Box, Button, IconButton, Link, MobileStepper, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Link,
+  MobileStepper,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 const SpotlightCarousel = (props) => {
   const theme = useTheme();
+  const isNotPhone = useMediaQuery("(min-width:1000px)");
   const [spotlightIndex, setSpotlightIndex] = useState(0);
   const maxIndex = data.spotlights.length;
-
-  const isNotPhone = useMediaQuery("(min-width:1000px)");
 
   const next = () => {
     if (spotlightIndex < maxIndex - 1) {
@@ -38,6 +46,17 @@ const SpotlightCarousel = (props) => {
       position={"relative"}
       display={"flex"}
       alignItems={"center"}
+      sx={{ overflowX: !isNotPhone && "scroll" }}
+      style={{
+        boxShadow: `0px 0px 10px 0px ${theme.palette.grey[400]}`,
+        overflowX: isNotPhone ? "hidden" : "scroll",
+        width: "100%",
+        height: "70%",
+        borderRadius: "20px",
+        position: "relative",
+        display: "relative",
+        alignItems: "center",
+      }}
     >
       <Box
         position={"absolute"}

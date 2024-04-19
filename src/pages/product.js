@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   useTheme,
   useMediaQuery,
@@ -29,12 +29,12 @@ import ProductDetails from "../components/product/productDetails";
 
 const ProductPage = () => {
   let params = new URLSearchParams(window.location.search);
-  const id = Number(params.get("p")) 
+  const id = Number(params.get("p"));
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
-  const user = useSelector((state => state.user))
-  const [isLiked, setIsLiked] = useState(false)
-  const [isInCart, setIsInCart] = useState(false)
+  const user = useSelector((state) => state.user);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [product, setProduct] = useState({
     images: [],
@@ -42,16 +42,15 @@ const ProductPage = () => {
     rating: { score: 0, votes: [], reviews: [] },
     allergenAdvice: [],
   });
-  const [productDetails, setProductDetails] = useState(
-    Object.fromEntries(params.entries())
-  );
+  let paramDetails = Object.fromEntries(params.entries());
+  const [productDetails, setProductDetails] = useState(paramDetails);
   const [isProductDetails, setIsProductDetails] = useState(false);
   const [ratingDistribution, setRatingDistribution] = useState({});
   const maxImageIndex = product.images.length;
 
   useEffect(() => {
     setProduct(data.products.find((element) => element.id === id));
-  }, []);
+  }, []); 
 
   useEffect(() => {
     if (product.name) {
@@ -60,12 +59,11 @@ const ProductPage = () => {
   }, [product]);
 
   useEffect(() => {
-    if(user.name)
-    {
-      setIsLiked(Boolean(user.favourites[id]))
-      setIsInCart(Boolean(user.cart.items[id]))
+    if (user.name) {
+      setIsLiked(Boolean(user.favourites[id]));
+      setIsInCart(Boolean(user.cart.items[id]));
     }
-  }, [user])
+  }, [user]);
 
   useEffect(() => {
     const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
@@ -82,7 +80,7 @@ const ProductPage = () => {
   }, [product.rating.votes]);
 
   useEffect(() => {
-    if (!productDetails.weight && !productDetails.quantity) {
+    if (Object.keys(productDetails).length < 1) {
       if (product.type === "cake") {
         setProductDetails((prev) => ({ ...prev, weight: 1 }));
       } else if (product.type === "pastry") {
@@ -119,6 +117,7 @@ const ProductPage = () => {
   };
 
   const like = () => {};
+
 
   return (
     <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
@@ -309,7 +308,9 @@ const ProductPage = () => {
                     {product.name}
                   </Typography>
                   <Tooltip
-                    title={isLiked ? "added to favourites" : "add to favourites"}
+                    title={
+                      isLiked ? "added to favourites" : "add to favourites"
+                    }
                   >
                     <IconButton sx={{ color: isLiked && "primary.main" }}>
                       <Favorite />
@@ -367,7 +368,7 @@ const ProductPage = () => {
                     <Button
                       disableElevation
                       color={isInCart ? "success" : "primary"}
-                      sx={{ height: "50px", width: "100%", }}
+                      sx={{ height: "50px", width: "100%" }}
                       variant="contained"
                       startIcon={
                         isInCart ? <CheckCircle /> : <AddShoppingCart />

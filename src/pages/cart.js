@@ -80,7 +80,7 @@ const CartPage = () => {
               display={"flex"}
               flexDirection={"column"}
               gap={"20px"}
-              width={"90%"}
+              width={isNotPhone ? "90%" : "100%"}
             >
               {Object.keys(user.cart.items).map((cartItem, index) => (
                 <UserProductCard
@@ -133,9 +133,11 @@ const CartPage = () => {
               <Typography fontSize={"0.7rem"}>
                 *delivery charges not included
               </Typography>
-              <Button variant="contained" disableElevation>
-                Checkout
-              </Button>
+              <Link href="/checkout" >
+                <Button variant="contained" disableElevation>
+                  Checkout
+                </Button>
+              </Link>
             </Box>
           )}
         </Box>

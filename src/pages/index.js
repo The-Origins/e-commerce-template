@@ -19,7 +19,7 @@ import cupcakes from "../assets/images/cupcakes1.jpg"
 import cupcakes2 from "../assets/images/cupcakes2.jpg";
 import { navigate } from "gatsby";
 
-const Home = (props) => {
+const Home = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -41,10 +41,12 @@ const Home = (props) => {
       navigate("/");
     }
 
+
     document.title = "Wendoh Cakes | Made with love";
     return () => (params = undefined);
   }, []);
 
+ 
 
   return (
     <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>

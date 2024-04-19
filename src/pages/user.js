@@ -23,6 +23,8 @@ import UserOrders from "../components/userPage/orders";
 import OrderDetails from "../components/userPage/orderDetails";
 import UserFavourites from "../components/userPage/favourites";
 import UserProfile from "../components/userPage/profile";
+import Notifications from "../components/userPage/notifications";
+import CustomCakes from "../components/userPage/customCakes";
 
 const UserPage = () => {
   const theme = useTheme();
@@ -36,7 +38,7 @@ const UserPage = () => {
   useEffect(() => {
     document.title = `My ${
       stage ? stage.charAt(0).toUpperCase() : "Profile"
-    }${stage.substring(1)} | Wendoh Cakes`;
+    }${stage.substring(1).replace("-", " ")} | Wendoh Cakes`;
   }, [stage]);
 
   useEffect(() => {
@@ -44,6 +46,8 @@ const UserPage = () => {
       orders: <UserOrders />,
       order: <OrderDetails />,
       favourites: <UserFavourites user={user}/>,
+      notifications: <Notifications user={user}/>,
+      "custom-cakes":<CustomCakes />
     });
   }, [user]);
 
@@ -106,7 +110,7 @@ const UserPage = () => {
                 stage={stage}
                 title={"My notifications"}
                 icon={
-                  <Badge color="primary" variant="dot" overlap="circular">
+                  <Badge color="primary" variant="dot" overlap="circular" invisible={!user.notifications.new}>
                     <NotificationsSharp />
                   </Badge>
                 }

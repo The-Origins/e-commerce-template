@@ -20,7 +20,7 @@ import {
 } from "@mui/icons-material";
 import data from "../../lib/data";
 
-const UserMenu = ({ isUserMenu, switchIsUserMenu }) => {
+const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const userMenuRef = useRef(null);
@@ -92,7 +92,12 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu }) => {
       >
         <MenuItem onClick={() => switchIsUserMenu(false)}>
           <ListItemIcon>
-            <Badge color="primary" variant="dot" overlap="circular">
+            <Badge
+              color="primary"
+              variant="dot"
+              overlap="circular"
+              invisible={user.notifications ? !user.notifications.new : true}
+            >
               <NotificationsSharp />
             </Badge>
           </ListItemIcon>

@@ -26,7 +26,6 @@ const UserProductCard = (props) => {
 
   return (
     <Box
-      key={`${props.type}-item-${props.id}-item-${props.id}`}
       minHeight={"100px"}
       maxWidth={"100%"}
       display={"flex"}

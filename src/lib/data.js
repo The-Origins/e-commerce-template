@@ -38,7 +38,7 @@ const data = {
             },
             allergenAdvice: ["contains dairy", "contains nuts"],
             variants: [
-              { title: "icing", options: ["whipped cream", "fondant"] },
+              { title: "icing", options: ["whipped cream", "fondant"], priceIncrement:500 },
               { title: "color", options: ["white", "blue"] },
             ],
             rating: {
@@ -452,16 +452,56 @@ const data = {
     name: { first: "John", last: "Doe" },
     email: "useremail@email.com",
     phone: { code: "+245", number: "140000000" },
-    addresses: [
-      {
-        country: "Kenya",
-        city: "Nairobi",
-        street: "Karen",
-        address: "The hub karen",
-      },
-    ],
+    recentPayment:{method:"M-pesa", details:{"phone number":"(+245) 140000000"}},
+    address: {
+      country: "Kenya",
+      city: "Nairobi",
+      street: "Karen",
+      address: "The hub karen",
+      fee:400
+    },
+    recentDeliveryLocation: {
+      country: "Kenya",
+      city: "Nairobi",
+      street: "Karen",
+      address: "The hub karen",
+      fee:400
+    },
     region: { currency: "KSH" },
     orders: [1, 2, 3, 4],
+    notifications: {
+      items: [
+        {
+          title: "This is a notification!!",
+          description:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+          dateCreated: "11/11/2013",
+          unread: true,
+        },
+        {
+          title: "This is a notification!!",
+          description:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+          dateCreated: "11/11/2013",
+          unread: true,
+        },
+        {
+          title: "This is a notification!!",
+          description:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+          dateCreated: "11/11/2013",
+          unread: false,
+        },
+        {
+          title: "This is a notification!!",
+          description:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+          dateCreated: "11/11/2013",
+          unread: false,
+        },
+      ],
+      new: true,
+    },
     favourites: {
       1: {
         product: {

@@ -80,6 +80,7 @@ const Header = () => {
           width={isNotPhone ? "80%" : "90%"}
         >
           <UserMenu
+          user={user}
             isUserMenu={isUserMenu}
             switchIsUserMenu={switchIsUserMenu}
           />
@@ -152,7 +153,12 @@ const Header = () => {
                     switchIsUserMenu(true);
                   }}
                 >
-                  <Badge color="primary" variant="dot" overlap="circular">
+                  <Badge
+                    color="primary"
+                    variant="dot"
+                    overlap="circular"
+                    invisible={user.notifications ? !user.notifications.new : true}
+                  >
                     <Avatar
                       alt="profile image"
                       sx={{ bgcolor: isUserMenu ? "primary.main" : undefined }}

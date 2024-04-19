@@ -3,7 +3,17 @@ import { createSlice } from "@reduxjs/toolkit";
 const storeSLice = createSlice({
   name: "store",
   initialState: {
-    user: {},
+    user: {
+      name: {},
+      phone: {},
+      recentPayment: {},
+      address: {},
+      recentDeliveryLocation: {},
+      region: {},
+      notifications: {items:[]},
+      favourites:[],
+      cart:{items:[]} 
+    },
     location: { region: {}, coordinates: {} },
     modal: {
       on: false,
