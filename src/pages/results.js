@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   Box,
   Typography,
@@ -20,6 +20,7 @@ import data from "../lib/data";
 import ProductCard from "../components/product/productCard";
 import { Close, FilterAlt, RotateLeft } from "@mui/icons-material";
 import { navigate } from "gatsby";
+import Product from "../scripts/product";
 
 const importantCategories = [
   "nuts",
@@ -30,20 +31,15 @@ const importantCategories = [
 ];
 
 const typesPlural = { cake: "Cakes", pastry: "Pastries" };
-
-const roundUp = (num) => {
-  return num % 1 !== 0 ? 1 - (num % 1) + num : num;
-};
-
 const ResultsPage = () => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
   const params = new URLSearchParams(window.location.search);
   let page = Number(params.get("p")) || 1;
-  const pageLimit = 4;
+  const pageLimit = 5;
   const search = params.get("search");
-  const user = useSelector((state => state.user))
-  const [results, setResults] = useState([]);
+  const user = useSelector((state) => state.user);
+  const [results, setResults] = useState([[]]);
   const [categories, setCategories] = useState(["All"]);
   const [filters, setFilters] = useState({ category: "All", types: {} });
   const [priceRange, setPriceRange] = useState([20, 33]);
@@ -101,32 +97,10 @@ const ResultsPage = () => {
   }, []);
 
   useEffect(() => {
-    let filteredResults = [];
-    filteredResults = data.products.filter(
-      (product) =>
-        filters.types[typesPlural[product.type]] &&
-        product.unitPrice.amount >= filters.min &&
-        product.unitPrice.amount <= filters.max &&
-        (filters.category === "All" ||
-          product.categories.includes(filters.category))
-    );
+    const product = new Product(data.products);
 
-    if (filteredResults.length) {
-      for (let i = 1; i <= roundUp(filteredResults.length / pageLimit); i++) {
-        if (i === 1) {
-          setResults([
-            filteredResults.slice(pageLimit * i - pageLimit, pageLimit * i),
-          ]);
-        } else {
-          setResults((prev) => [
-            ...prev,
-            filteredResults.slice(pageLimit * i - pageLimit, pageLimit * i),
-          ]);
-        }
-      }
-    } else {
-      setResults([[]]);
-    }
+    let filteredResults = product.filter(filters, typesPlural);
+    setResults(product.paginate(pageLimit, filteredResults));
 
     navigate(`/results?search=${String(search).split(" ").join("+")}&p=1`);
   }, [filters]);
@@ -192,7 +166,6 @@ const ResultsPage = () => {
       `/results?search=${String(search).split(" ").join("+")}&p=${value}`
     );
   };
-
   console.log(results);
 
   return (
@@ -443,8 +416,8 @@ const ResultsPage = () => {
                 padding={"0px 0px 50px 0px"}
                 width={"100%"}
               >
-                {results[page - 1].map((result, index) => (
-                  <ProductCard id={index} product={result} user={user} />
+                {results[page - 1].map((result) => (
+                  <ProductCard product={result} user={user} />
                 ))}
               </Box>
             )}

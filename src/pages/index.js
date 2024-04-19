@@ -170,7 +170,6 @@ const Home = (props) => {
               if (index < 4) {
                 return (
                   <ProductCard
-                    id={index}
                     product={product}
                     user={user}
                   />
