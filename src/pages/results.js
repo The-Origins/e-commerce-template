@@ -22,17 +22,8 @@ import { Close, FilterAlt, RotateLeft } from "@mui/icons-material";
 import { navigate } from "gatsby";
 import ResultsWorker from "../scripts/resultsWorker";
 
-const importantCategories = [
-  "nuts",
-  "vegan",
-  "dairy",
-  "gluten free",
-  "no sugar",
-];
-
 const typesPlural = { cake: "Cakes", pastry: "Pastries" };
 const ResultsPage = () => {
-  const resultsWorker = new ResultsWorker(data.products);
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
   const params = new URLSearchParams(window.location.search);
@@ -50,6 +41,7 @@ const ResultsPage = () => {
   const mobileFiltersRef = useRef(null);
 
   useEffect(() => {
+    const resultsWorker = new ResultsWorker(data.products);
     document.title = `Search results for '${search}'`;
     setFilters((prev) => ({
       ...prev,
@@ -81,6 +73,7 @@ const ResultsPage = () => {
   }, []);
 
   useEffect(() => {
+    const resultsWorker = new ResultsWorker(data.products);
     let filteredResults = resultsWorker.filter(filters, typesPlural);
     setResults(resultsWorker.paginate(filteredResults));
     navigate(`/results?search=${String(search).split(" ").join("+")}&p=1`);

@@ -35,16 +35,15 @@ class ResultsWorker {
     let categories = [];
     this.results.forEach((result) => {
       result.categories.forEach((category) => {
-        result.categories.forEach((category) => {
-          if (this.importantCategories.includes(category)) {
-            if (!categories.includes(category)) {
-              categories = [...categories, category];
-            }
-          }
-        });
+        if (
+          this.importantCategories.includes(category) &&
+          !categories.includes(category)
+        ) {
+          categories.push(category);
+        }
       });
     });
-    return categories
+    return categories;
   }
 
   filter(filters) {
@@ -66,7 +65,7 @@ class ResultsWorker {
     if (filteredResults.length) {
       for (
         let i = 1;
-        i <= this.roundUp(filteredResults.length / this.pageLimit);
+        i <= Math.ceil(filteredResults.length / this.pageLimit);
         i++
       ) {
         results = [
