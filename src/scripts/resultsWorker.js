@@ -56,9 +56,6 @@ class ResultsWorker {
           result.categories.includes(filters.category))
     );
   }
-  roundUp(num) {
-    return num % 1 !== 0 ? 1 - (num % 1) + num : num;
-  }
 
   paginate(filteredResults) {
     let results = [];
