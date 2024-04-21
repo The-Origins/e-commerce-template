@@ -1,6 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import data from "../../lib/data";
-import { Box, Button, IconButton, Link, MobileStepper, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Link,
+  MobileStepper,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 const SpotlightCarousel = (props) => {
@@ -9,6 +18,25 @@ const SpotlightCarousel = (props) => {
   const maxIndex = data.spotlights.length;
 
   const isNotPhone = useMediaQuery("(min-width:1000px)");
+  const carouselRef = useRef(null);
+  const [startX, setStartX] = useState(null);
+
+  const handleTouchStart = (event) => {
+    setStartX(event.touches[0].clientX);
+  };
+
+  const handleTouchMove = (event) => {
+    if (!startX) return;
+    const currentX = event.touches[0].clientX;
+    const diff = startX - currentX;
+    carouselRef.current.scrollLeft += diff;
+    setStartX(currentX);
+  };
+
+  const handleTouchEnd = () => {
+    setStartX(null);
+    next();
+  };
 
   const next = () => {
     if (spotlightIndex < maxIndex - 1) {
@@ -28,16 +56,23 @@ const SpotlightCarousel = (props) => {
     const spotlightInterval = setInterval(() => next(), 5000);
     return () => clearInterval(spotlightInterval);
   }, [spotlightIndex]);
+
   return (
-    <Box
-      boxShadow={`0px 0px 10px 0px ${theme.palette.grey[400]}`}
-      overflow={"hidden"}
-      width={"100%"}
-      height={"70%"}
-      borderRadius={"20px"}
-      position={"relative"}
-      display={"flex"}
-      alignItems={"center"}
+    <div
+      ref={carouselRef}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      style={{
+        boxShadow: `0px 0px 10px 0px ${theme.palette.grey[400]}`,
+        width: "100%",
+        height: "70%",
+        borderRadius: "20px",
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        overflow: "hidden",
+      }}
     >
       <Box
         position={"absolute"}
@@ -170,7 +205,7 @@ const SpotlightCarousel = (props) => {
           sx={{ background: "transparent" }}
         />
       </Box>
-    </Box>
+    </div>
   );
 };
 
