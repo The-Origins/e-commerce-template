@@ -10,16 +10,15 @@ import {
   useMediaQuery,
   Tooltip,
 } from "@mui/material";
-import data from "../../lib/data";
 import CategorizeComponent from "./categorizeComponent";
 import ProductDetails from "./productDetails";
-import { navigate } from "gatsby";
+import ProductWorker from "../../scripts/productWorker";
 
 const ProductCard = (props) => {
   const [productDetails, setProductDetails] = useState({});
   const [isProductDetails, setIsProductDetails] = useState(false);
-  const [isLiked, setIsLiked] = useState(false)
-  const [isInCart, setIsInCart] = useState(false)
+  const [isLiked, setIsLiked] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
 
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -29,35 +28,24 @@ const ProductCard = (props) => {
   };
 
   const addToCart = () => {
-    if (isInCart) {
-      navigate("/cart");
-    } else {
-      switchIsProductDetails();
-    }
+    switchIsProductDetails();
   };
 
   useEffect(() => {
-    if (props.product.type === "cake") {
-      setProductDetails((prev) => ({ ...prev, weight: 1 }));
-    } else if (props.product.type === "pastry") {
-      setProductDetails((prev) => ({ ...prev, quantity: 1 }));
-    }
-    if (props.product.variants) {
-      props.product.variants.forEach((variant) => {
-        setProductDetails((prev) => ({
-          ...prev,
-          [variant.title]: variant.options[0],
-        }));
-      });
-    }
-  }, [props.product]);
+    const productWorker = new ProductWorker(props.product);
+    setProductDetails(
+      productWorker.getProductDetails(
+        props.user.cart.items,
+        props.user.favourites
+      )
+    );
+  }, [props.product, props.user]);
   useEffect(() => {
-    if(props.user.name)
-    {
-      setIsLiked(Boolean(props.user.favourites[props.product.id]))
-      setIsInCart(Boolean(props.user.cart.items[props.product.id]))
+    if (props.user.name) {
+      setIsLiked(Boolean(props.user.favourites[props.product.id]));
+      setIsInCart(Boolean(props.user.cart.items[props.product.id]));
     }
-  }, [props.user])
+  }, [props.user]);
 
   return (
     <Box
@@ -76,6 +64,7 @@ const ProductCard = (props) => {
       }}
     >
       <ProductDetails
+        title={isInCart || isLiked ? "Change your prefrences" : undefined}
         product={props.product}
         productDetails={productDetails}
         setProductDetails={setProductDetails}
@@ -107,9 +96,9 @@ const ProductCard = (props) => {
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <Tooltip title={isLiked  ? "Favourited" : "Add to favourites"}>
+            <Tooltip title={isLiked ? "Favourited" : "Add to favourites"}>
               <IconButton>
-                <Favorite sx={{ color: isLiked  ? "primary.main" : "white" }} />
+                <Favorite sx={{ color: isLiked ? "primary.main" : "white" }} />
               </IconButton>
             </Tooltip>
             <Tooltip title={isInCart ? "added to cart" : "add to cart"}>

@@ -13,7 +13,6 @@ import { AddShoppingCart, Delete, Edit } from "@mui/icons-material";
 import ProductDetails from "./productDetails";
 
 const UserProductCard = (props) => {
-  const paramsDetails = new URLSearchParams(props.item.details)
   const [productDetails, setProductDetails] = useState(props.item.details)
   const [isProductDetails, setIsProductDetails] = useState(false)
 
@@ -67,7 +66,7 @@ const UserProductCard = (props) => {
         }}
       />
       <Link
-        href={props.isLink ? `/product/?p=${props.item.product.id}&${paramsDetails.toString()}` : undefined}
+        href={props.isLink ? `/product/?p=${props.item.product.id}` : undefined}
         sx={{
           color: "black",
           textDecoration: "none",

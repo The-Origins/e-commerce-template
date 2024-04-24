@@ -3,9 +3,24 @@ import { createSlice } from "@reduxjs/toolkit";
 const storeSLice = createSlice({
   name: "store",
   initialState: {
-    user: {},
+    user: {
+      name: {},
+      phone: {},
+      recentPayment: {},
+      address: {},
+      recentDeliveryLocation: {},
+      region: {},
+      notifications: { items: [] },
+      favourites: [],
+      cart: { items: [] },
+    },
     location: { region: {}, coordinates: {} },
     modal: {
+      on: false,
+      message: { title: "", description: "" },
+      modalType: "info",
+    },
+    snackBar: {
       on: false,
       message: { title: "", description: "" },
       modalType: "info",
@@ -30,6 +45,16 @@ const storeSLice = createSlice({
       state.modal.message = { title: "", description: "" };
       state.modal.modalType = "info";
     },
+    activateSnackBar: (state, action) => {
+      state.snackBar.on = true;
+      state.snackBar.message = action.payload.message;
+      state.snackBar.snackBarType = action.payload.snackBarType || state.snackBar.snackBarType;
+    },
+    deactivateSnackBar: (state) => {
+      state.snackBar.on = false;
+      state.snackBar.message = { title: "", description: "" };
+      state.snackBar.snackBarType = "info";
+    },
     setUser: (state, action) => {
       state.user = action.payload;
     },
@@ -44,6 +69,8 @@ export const {
   setlocation,
   activateModal,
   deactivateModal,
+  activateSnackBar,
+  deactivateSnackBar,
   switchIsContact,
   changeIsLoading,
 } = storeSLice.actions;

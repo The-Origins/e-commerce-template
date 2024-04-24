@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   useTheme,
   useMediaQuery,
@@ -21,6 +21,7 @@ import {
   Share,
 } from "@mui/icons-material";
 import data from "../lib/data";
+import ProductWorker from "../scripts/productWorker";
 import RatingDistributionComponent from "../components/productPage/ratingDistribution";
 import ReviewComponent from "../components/productPage/reviewComponent";
 import ProductCardContainer from "../components/product/productCardContainer";
@@ -29,12 +30,12 @@ import ProductDetails from "../components/product/productDetails";
 
 const ProductPage = () => {
   let params = new URLSearchParams(window.location.search);
-  const id = Number(params.get("p")) 
+  const id = Number(params.get("p"));
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
-  const user = useSelector((state => state.user))
-  const [isLiked, setIsLiked] = useState(false)
-  const [isInCart, setIsInCart] = useState(false)
+  const user = useSelector((state) => state.user);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [product, setProduct] = useState({
     images: [],
@@ -42,9 +43,7 @@ const ProductPage = () => {
     rating: { score: 0, votes: [], reviews: [] },
     allergenAdvice: [],
   });
-  const [productDetails, setProductDetails] = useState(
-    Object.fromEntries(params.entries())
-  );
+  const [productDetails, setProductDetails] = useState({});
   const [isProductDetails, setIsProductDetails] = useState(false);
   const [ratingDistribution, setRatingDistribution] = useState({});
   const maxImageIndex = product.images.length;
@@ -60,12 +59,9 @@ const ProductPage = () => {
   }, [product]);
 
   useEffect(() => {
-    if(user.name)
-    {
-      setIsLiked(Boolean(user.favourites[id]))
-      setIsInCart(Boolean(user.cart.items[id]))
-    }
-  }, [user])
+    setIsLiked(Boolean(user.favourites[id]));
+    setIsInCart(Boolean(user.cart.items[id]));
+  }, [user]);
 
   useEffect(() => {
     const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
@@ -82,22 +78,11 @@ const ProductPage = () => {
   }, [product.rating.votes]);
 
   useEffect(() => {
-    if (!productDetails.weight && !productDetails.quantity) {
-      if (product.type === "cake") {
-        setProductDetails((prev) => ({ ...prev, weight: 1 }));
-      } else if (product.type === "pastry") {
-        setProductDetails((prev) => ({ ...prev, quantity: 1 }));
-      }
-      if (product.variants) {
-        product.variants.forEach((variant) => {
-          setProductDetails((prev) => ({
-            ...prev,
-            [variant.title]: variant.options[0],
-          }));
-        });
-      }
-    }
-  }, [product]);
+    const productWorker = new ProductWorker(product);
+    setProductDetails(
+      productWorker.getProductDetails(user.cart.items, user.favourites)
+    );
+  }, [product, user]);
 
   const next = () => {
     setImageIndex((prev) => prev + 1);
@@ -309,7 +294,9 @@ const ProductPage = () => {
                     {product.name}
                   </Typography>
                   <Tooltip
-                    title={isLiked ? "added to favourites" : "add to favourites"}
+                    title={
+                      isLiked ? "added to favourites" : "add to favourites"
+                    }
                   >
                     <IconButton sx={{ color: isLiked && "primary.main" }}>
                       <Favorite />
@@ -367,7 +354,7 @@ const ProductPage = () => {
                     <Button
                       disableElevation
                       color={isInCart ? "success" : "primary"}
-                      sx={{ height: "50px", width: "100%", }}
+                      sx={{ height: "50px", width: "100%" }}
                       variant="contained"
                       startIcon={
                         isInCart ? <CheckCircle /> : <AddShoppingCart />

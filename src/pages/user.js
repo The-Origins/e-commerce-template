@@ -63,7 +63,7 @@ const UserPage = () => {
         overflow={"hidden"}
         borderRadius={"25px"}
       >
-        {isNotPhone && user.name && (
+        {isNotPhone && (
           <Box
             width={"400px"}
             height={"100%"}
