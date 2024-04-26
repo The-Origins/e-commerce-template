@@ -11,13 +11,12 @@ import {
   useTheme,
 } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import SpotlightItem from "./spotlightItem";
 
 const SpotlightCarousel = (props) => {
   const theme = useTheme();
   const [spotlightIndex, setSpotlightIndex] = useState(0);
   const maxIndex = data.spotlights.length;
-
-  const isNotPhone = useMediaQuery("(min-width:1000px)");
   const carouselRef = useRef(null);
   const [startX, setStartX] = useState(null);
 
@@ -86,100 +85,8 @@ const SpotlightCarousel = (props) => {
           })`,
         }}
       >
-        {data.spotlights.map((highlight, index) => (
-          <Box
-            key={index}
-            sx={{
-              display: "inline-block",
-              width: "100%",
-              height: "100%",
-            }}
-          >
-            <Box
-              width={"100%"}
-              height={"100%"}
-              display={"flex"}
-              flexDirection={isNotPhone ? "row" : "column-reverse"}
-            >
-              <Box
-                width={isNotPhone ? "50%" : "100%"}
-                height={isNotPhone ? "100%" : "50%"}
-                display={"flex"}
-                justifyContent={"space-evenly"}
-                alignItems={"center"}
-                position={"relative"}
-              >
-                <Box
-                  width={isNotPhone ? "80%" : "90%"}
-                  height={"100%"}
-                  display={"flex"}
-                  flexDirection={"column"}
-                  justifyContent={"space-evenly"}
-                >
-                  <Box
-                    display={"flex"}
-                    flexDirection={"column"}
-                    gap={isNotPhone ? "20px" : "1px"}
-                  >
-                    <Typography
-                      variant="h3"
-                      fontSize={"clamp(1rem, 7vw, 2.5rem)"}
-                      fontWeight={"bold"}
-                    >
-                      {highlight.spotlight.title}
-                    </Typography>
-                    <Typography>{highlight.spotlight.description}</Typography>
-                    <Typography fontSize={"1.4rem"}>
-                      {highlight.unitPrice.currency}{" "}
-                      {highlight.unitPrice.amount}
-                    </Typography>
-                  </Box>
-                  <Box
-                    display={"flex"}
-                    width={"100%"}
-                    justifyContent={"space-between"}
-                  >
-                    <Link
-                      href={`/product?p=${highlight.id}`}
-                      sx={{
-                        textDecoration: isNotPhone ? "none" : "underline",
-                        fontSize: "clamp(0.2rem, 5vw, 0.9rem)",
-                        height: "50px",
-                        width: isNotPhone ? "200px" : undefined,
-                        border: isNotPhone ? `1px solid #FF2681` : undefined,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderRadius: "20px",
-                        transition: "0.3s",
-                        ":hover": {
-                          color: "white",
-                          bgcolor: "primary.main",
-                          border: "none",
-                        },
-                      }}
-                    >
-                      View Details
-                    </Link>
-                    {highlight.spotlight.type === "product" && (
-                      <Button disableElevation variant="contained">
-                        + add to cart
-                      </Button>
-                    )}
-                  </Box>
-                </Box>
-              </Box>
-              <Box
-                width={isNotPhone ? "50%" : "100%"}
-                height={isNotPhone ? "100%" : "50%"}
-                sx={{
-                  backgroundImage: `url(${highlight.images[0]})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              ></Box>
-            </Box>
-          </Box>
+        {data.spotlights.map((spotlight) => (
+          <SpotlightItem spotlight={spotlight} user={props.user}/>
         ))}
       </Box>
       <Box width={"100%"} display={"flex"} justifyContent={"space-between"}>

@@ -16,6 +16,7 @@ const UserFavourites = (props) => {
       {Object.keys(props.user.favourites).map((favourite, index) => (
         <UserProductCard
           id={index}
+          user={props.user}
           item={props.user.favourites[favourite]}
           type="favourites"
         />

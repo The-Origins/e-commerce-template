@@ -1,4 +1,31 @@
 const data = {
+  spotlights: [
+    {
+      type: "product",
+      productId:1,
+      title: "Today's special",
+      description: "Check out today's special",
+      image: "",
+      action: { title: "View Details", path: "/product?p=1" },
+    },
+    {
+      type: "product",
+      productId:2,
+      title: "New Product!",
+      description: "Check out this new product",
+      image: "",
+      action: { title: "View Details", path: "/product?p=2" },
+    },
+    {
+      type: "news",
+      value:{},
+      title: "50% off!",
+      description: "50% off all products in this category!",
+      image: "https://images.pexels.com/photos/20801061/pexels-photo-20801061/free-photo-of-a-coffee-cup-sitting-on-top-of-a-wooden-stump.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      action: { title: "Shop now", path: "/results?search=this+category" },
+    },
+  ],
+  offers: { 1: 21, 2: 10, 3: 12 },
   orders: [
     {
       id: 1,
@@ -462,6 +489,39 @@ const data = {
     ],
     region: { currency: "KSH" },
     orders: [1, 2, 3, 4],
+    notifications: {
+      items: [
+        {
+          title: "This is a notification!!",
+          description:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+          dateCreated: "11/11/2013",
+          unread: true,
+        },
+        {
+          title: "This is a notification!!",
+          description:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+          dateCreated: "11/11/2013",
+          unread: true,
+        },
+        {
+          title: "This is a notification!!",
+          description:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+          dateCreated: "11/11/2013",
+          unread: false,
+        },
+        {
+          title: "This is a notification!!",
+          description:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+          dateCreated: "11/11/2013",
+          unread: false,
+        },
+      ],
+      new: true,
+    },
     favourites: {
       1: {
         product: {
@@ -1142,76 +1202,6 @@ const data = {
       state: "In stock",
       categories: ["sides", "trending", "gluten free", "pastries"],
       id: 8,
-    },
-  ],
-  spotlights: [
-    {
-      spotlight: {
-        type: "product",
-        title: "Today's Special",
-        action: { path: "/products?p=1" },
-        description: "Check out today's special",
-      },
-      images: [
-        "https://images.pexels.com/photos/2525682/pexels-photo-2525682.png",
-        "https://images.pexels.com/photos/1055272/pexels-photo-1055272.jpeg",
-        "https://images.pexels.com/photos/1055271/pexels-photo-1055271.jpeg",
-      ],
-      name: "My Product 1",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
-      unitPrice: {
-        currency: "$",
-        amount: 2000,
-      },
-      stock: 200,
-      state: "In stock",
-      id: 1,
-    },
-    {
-      spotlight: {
-        type: "product",
-        title: "New Vegan Cake",
-        description: "Try out our new vegan cake",
-      },
-      images: [
-        "https://images.pexels.com/photos/1055270/pexels-photo-1055270.jpeg",
-        "https://images.pexels.com/photos/1055272/pexels-photo-1055272.jpeg",
-        "https://images.pexels.com/photos/1055271/pexels-photo-1055271.jpeg",
-      ],
-      name: "My Vegan 1",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
-      unitPrice: {
-        currency: "$",
-        amount: 2000,
-      },
-      stock: 200,
-      state: "In stock",
-      id: 2,
-    },
-    {
-      spotlight: {
-        type: "product",
-        title: "One of your favourites",
-        action: { path: "/products?p=1" },
-        description: "Endulge in your favourites today",
-      },
-      images: [
-        "https://images.pexels.com/photos/2525682/pexels-photo-2525682.png",
-        "https://images.pexels.com/photos/1055272/pexels-photo-1055272.jpeg",
-        "https://images.pexels.com/photos/1055271/pexels-photo-1055271.jpeg",
-      ],
-      name: "My Custom product",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
-      unitPrice: {
-        currency: "$",
-        amount: 2000,
-      },
-      stock: 200,
-      state: "In stock",
-      id: 3,
     },
   ],
 };

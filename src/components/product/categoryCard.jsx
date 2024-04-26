@@ -7,7 +7,6 @@ const CategoryCard = (props) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   return (
     <Box
-      key={`category-${props.id}`}
       borderRadius={"25px"}
       boxShadow={`0px 0px 10px 0px ${theme.palette.grey[400]}`}
       flexBasis={300}
@@ -51,6 +50,10 @@ const CategoryCard = (props) => {
             </Typography>
           </Box>
           <Link
+            href={`/results?search=${props.title
+              .split(" ")
+              .join("+")
+              .toLowerCase()}`}
             sx={{
               borderRadius: "25px",
               color: "black",

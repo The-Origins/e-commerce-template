@@ -43,7 +43,6 @@ const ProductPage = () => {
     rating: { score: 0, votes: [], reviews: [] },
     allergenAdvice: [],
   });
-  const [productDetails, setProductDetails] = useState({});
   const [isProductDetails, setIsProductDetails] = useState(false);
   const [ratingDistribution, setRatingDistribution] = useState({});
   const maxImageIndex = product.images.length;
@@ -77,13 +76,6 @@ const ProductPage = () => {
     setRatingDistribution(distribution);
   }, [product.rating.votes]);
 
-  useEffect(() => {
-    const productWorker = new ProductWorker(product);
-    setProductDetails(
-      productWorker.getProductDetails(user.cart.items, user.favourites)
-    );
-  }, [product, user]);
-
   const next = () => {
     setImageIndex((prev) => prev + 1);
   };
@@ -110,8 +102,7 @@ const ProductPage = () => {
       <ProductDetails
         title={isInCart && "Change your prefrences"}
         product={product}
-        productDetails={productDetails}
-        setProductDetails={setProductDetails}
+        user={user}
         switchIsProductDetails={switchIsProductDetails}
         isProductDetails={isProductDetails}
       />
@@ -262,13 +253,13 @@ const ProductPage = () => {
                 >
                   <Button
                     disableElevation
-                    fullWidth
-                    sx={{ height: "50px", margin: "10px" }}
+                    color={isInCart ? "success" : "primary"}
+                    sx={{ height: "50px", width: "100%" }}
                     variant="contained"
-                    startIcon={<AddShoppingCart />}
+                    startIcon={isInCart ? <CheckCircle /> : <AddShoppingCart />}
                     onClick={addToCart}
                   >
-                    add to cart
+                    {isInCart ? "added to cart" : "add to cart"}
                   </Button>
                 </Box>
               )}

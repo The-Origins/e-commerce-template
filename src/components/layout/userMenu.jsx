@@ -19,8 +19,9 @@ import {
   NotificationsSharp,
 } from "@mui/icons-material";
 import data from "../../lib/data";
+import { useSelector } from "react-redux";
 
-const UserMenu = ({ isUserMenu, switchIsUserMenu }) => {
+const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const userMenuRef = useRef(null);
@@ -92,7 +93,7 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu }) => {
       >
         <MenuItem onClick={() => switchIsUserMenu(false)}>
           <ListItemIcon>
-            <Badge color="primary" variant="dot" overlap="circular">
+            <Badge color="primary" variant="dot" overlap="circular" invisible={!user.notifications.new}>
               <NotificationsSharp />
             </Badge>
           </ListItemIcon>

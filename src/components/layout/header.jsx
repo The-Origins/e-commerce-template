@@ -82,6 +82,7 @@ const Header = () => {
           <UserMenu
             isUserMenu={isUserMenu}
             switchIsUserMenu={switchIsUserMenu}
+            user={user}
           />
           <Box
             display={"flex"}
@@ -152,7 +153,7 @@ const Header = () => {
                     switchIsUserMenu(true);
                   }}
                 >
-                  <Badge color="primary" variant="dot" overlap="circular">
+                  <Badge color="primary" variant="dot" overlap="circular" invisible={!user.notifications.new}>
                     <Avatar
                       alt="profile image"
                       sx={{ bgcolor: isUserMenu ? "primary.main" : undefined }}

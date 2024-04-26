@@ -9,12 +9,16 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { AddShoppingCart, Delete, Edit } from "@mui/icons-material";
+import {
+  AddShoppingCart,
+  Delete,
+  Edit,
+  PropaneTank,
+} from "@mui/icons-material";
 import ProductDetails from "./productDetails";
 
 const UserProductCard = (props) => {
-  const [productDetails, setProductDetails] = useState(props.item.details)
-  const [isProductDetails, setIsProductDetails] = useState(false)
+  const [isProductDetails, setIsProductDetails] = useState(false);
 
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
@@ -46,14 +50,15 @@ const UserProductCard = (props) => {
       }}
       padding={"20px"}
     >
-      <ProductDetails
-        title={"Edit your prefrences"}
-        product={props.item.product}
-        productDetails={productDetails}
-        setProductDetails={setProductDetails}
-        switchIsProductDetails={switchIsProductDetails}
-        isProductDetails={isProductDetails}
-      />
+      {(props.type === "cart" || props.type === "favourites") && (
+        <ProductDetails
+          title={"Edit your prefrences"}
+          product={props.item.product}
+          user={props.user}
+          switchIsProductDetails={switchIsProductDetails}
+          isProductDetails={isProductDetails}
+        />
+      )}
       <Box
         height={"90px"}
         width={"100px"}

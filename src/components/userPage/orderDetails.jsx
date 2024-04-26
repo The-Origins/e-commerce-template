@@ -162,10 +162,10 @@ const OrderDetails = () => {
             padding={"40px 0px"}
           >
             <Typography display={"flex"} gap={"10px"}>
-              <Payments /> Payment method
+              <Payments /> Payment
             </Typography>
             <Box
-              width={"70%"}
+              width={"90%"}
               padding={"10px"}
               boxShadow={`0px 0px 10px 0px ${theme.palette.grey[300]}`}
               borderRadius={"20px"}
@@ -214,7 +214,7 @@ const OrderDetails = () => {
               <Explore /> Delivery Location
             </Typography>
             <Box
-              width={"70%"}
+              width={"90%"}
               padding={"10px"}
               boxShadow={`0px 0px 10px 0px ${theme.palette.grey[300]}`}
               borderRadius={"20px"}
