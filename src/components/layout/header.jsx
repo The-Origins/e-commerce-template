@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ProductMenuContainer from "../product/productMenuContainer";
 import UserMenu from "./userMenu";
 import {
   Avatar,
@@ -12,7 +11,6 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import {
-  Cake,
   Close,
   MenuOutlined,
   Search,
@@ -28,11 +26,6 @@ const Header = () => {
   const [yScroll, setYScroll] = useState(0);
   const [isUp, setIsUp] = useState(true);
   const [isUserMenu, setIsUserMenu] = useState(false);
-  const [isAllProducts, setIsAllProducts] = useState(false);
-
-  const switchIsAllProducts = (state) => {
-    setIsAllProducts(state);
-  };
 
   const switchIsUserMenu = (state) => {
     setIsUserMenu(state);
@@ -69,10 +62,6 @@ const Header = () => {
         display={"flex"}
         justifyContent={"center"}
       >
-        <ProductMenuContainer
-          isAllProducts={isAllProducts}
-          switchIsAllProducts={switchIsAllProducts}
-        />
         <Box
           position={"relative"}
           display={"flex"}
@@ -105,7 +94,7 @@ const Header = () => {
                   fontFamily: "Pacifico",
                 }}
               >
-                Wendoh Cakes
+                E-commerce
               </Link>
             </Box>
             {isNotPhone && (
@@ -121,7 +110,7 @@ const Header = () => {
                 }}
                 type="search"
                 placeholder="search for what you desire..."
-                sx={{ width: "40%", "& > div": { borderRadius: "25px" } }}
+                sx={{ width: "50%", "& > div": { borderRadius: "25px" } }}
               />
             )}
             <Box
@@ -129,12 +118,6 @@ const Header = () => {
               gap={isNotPhone ? "20px" : undefined}
               alignItems={"center"}
             >
-              <IconButton
-                onClick={() => switchIsAllProducts(true)}
-                sx={{ color: isAllProducts ? "primary.main" : undefined }}
-              >
-                <Cake />
-              </IconButton>
               <Link href="/cart">
                 <IconButton>
                   <Badge
@@ -153,7 +136,12 @@ const Header = () => {
                     switchIsUserMenu(true);
                   }}
                 >
-                  <Badge color="primary" variant="dot" overlap="circular" invisible={!user.notifications.new}>
+                  <Badge
+                    color="primary"
+                    variant="dot"
+                    overlap="circular"
+                    invisible={!user.notifications.new}
+                  >
                     <Avatar
                       alt="profile image"
                       sx={{ bgcolor: isUserMenu ? "primary.main" : undefined }}

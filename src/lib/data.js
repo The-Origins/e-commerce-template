@@ -2,26 +2,27 @@ const data = {
   spotlights: [
     {
       type: "product",
-      productId:1,
       title: "Today's special",
       description: "Check out today's special",
-      image: "",
+      image:
+        "https://images.pexels.com/photos/1055271/pexels-photo-1055271.jpeg",
       action: { title: "View Details", path: "/product?p=1" },
     },
     {
       type: "product",
-      productId:2,
       title: "New Product!",
       description: "Check out this new product",
-      image: "",
+      image:
+        "https://images.pexels.com/photos/2525682/pexels-photo-2525682.png",
       action: { title: "View Details", path: "/product?p=2" },
     },
     {
       type: "news",
-      value:{},
+      value: {},
       title: "50% off!",
       description: "50% off all products in this category!",
-      image: "https://images.pexels.com/photos/20801061/pexels-photo-20801061/free-photo-of-a-coffee-cup-sitting-on-top-of-a-wooden-stump.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      image:
+        "https://images.pexels.com/photos/20801061/pexels-photo-20801061/free-photo-of-a-coffee-cup-sitting-on-top-of-a-wooden-stump.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       action: { title: "Shop now", path: "/results?search=this+category" },
     },
   ],
@@ -479,14 +480,24 @@ const data = {
     name: { first: "John", last: "Doe" },
     email: "useremail@email.com",
     phone: { code: "+245", number: "140000000" },
-    addresses: [
-      {
-        country: "Kenya",
-        city: "Nairobi",
-        street: "Karen",
-        address: "The hub karen",
-      },
-    ],
+    recentPayment: {
+      method: "M-pesa",
+      details: { "phone number": "(+245) 140000000" },
+    },
+    address: {
+      country: "Kenya",
+      city: "Nairobi",
+      street: "Karen",
+      address: "The hub karen",
+      fee: 400,
+    },
+    recentDeliveryLocation: {
+      country: "Kenya",
+      city: "Nairobi",
+      street: "Karen",
+      address: "The hub karen",
+      fee: 400,
+    },
     region: { currency: "KSH" },
     orders: [1, 2, 3, 4],
     notifications: {

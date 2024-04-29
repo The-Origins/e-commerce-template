@@ -45,9 +45,9 @@ const UserPage = () => {
     setStages({
       orders: <UserOrders />,
       order: <OrderDetails />,
-      favourites: <UserFavourites user={user}/>,
-      notifications: <Notifications user={user}/>,
-      "custom-cakes":<CustomCakes />
+      favourites: <UserFavourites user={user} />,
+      notifications: <Notifications user={user} />,
+      "custom-cakes": <CustomCakes />,
     });
   }, [user]);
 
@@ -78,7 +78,12 @@ const UserPage = () => {
           >
             <Link
               href="/user/#"
-              sx={{ height: "40%", color: "black", textDecoration: "none" }}
+              sx={{
+                height: "40%",
+                color: "black",
+                textDecoration: "none",
+                bgcolor: !window.location.hash ? "#F5F5F5" : undefined,
+              }}
             >
               <MenuItem
                 sx={{
@@ -110,7 +115,12 @@ const UserPage = () => {
                 stage={stage}
                 title={"My notifications"}
                 icon={
-                  <Badge color="primary" variant="dot" overlap="circular" invisible={!user.notifications.new}>
+                  <Badge
+                    color="primary"
+                    variant="dot"
+                    overlap="circular"
+                    invisible={!user.notifications.new}
+                  >
                     <NotificationsSharp />
                   </Badge>
                 }
@@ -147,7 +157,7 @@ const UserPage = () => {
           </Box>
         )}
         <Box width={"100%"} height={"100%"}>
-          {!stage && <UserProfile user={user}/>}
+          {!stage && <UserProfile user={user} />}
           {stages[stage]}
         </Box>
       </Box>

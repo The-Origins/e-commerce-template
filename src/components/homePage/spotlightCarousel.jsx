@@ -1,24 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import data from "../../lib/data";
-import {
-  Box,
-  Button,
-  IconButton,
-  Link,
-  MobileStepper,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, IconButton, MobileStepper, useTheme } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import SpotlightItem from "./spotlightItem";
 
-const SpotlightCarousel = (props) => {
+const SpotlightCarousel = () => {
   const theme = useTheme();
   const [spotlightIndex, setSpotlightIndex] = useState(0);
   const maxIndex = data.spotlights.length;
   const carouselRef = useRef(null);
   const [startX, setStartX] = useState(null);
+  const [isHovering, setIsHovering] = useState(false);
 
   const handleTouchStart = (event) => {
     setStartX(event.touches[0].clientX);
@@ -52,17 +44,23 @@ const SpotlightCarousel = (props) => {
   };
 
   useEffect(() => {
-    const spotlightInterval = setInterval(() => next(), 5000);
+    const spotlightInterval = setInterval(() => {
+      if (!isHovering) {
+        next();
+      }
+    }, 5000);
     return () => clearInterval(spotlightInterval);
-  }, [spotlightIndex]);
+  }, [spotlightIndex, isHovering,]);
 
   return (
-    <div
+    <Box
       ref={carouselRef}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      style={{
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+      sx={{
         boxShadow: `0px 0px 10px 0px ${theme.palette.grey[400]}`,
         width: "100%",
         height: "70%",
@@ -86,7 +84,7 @@ const SpotlightCarousel = (props) => {
         }}
       >
         {data.spotlights.map((spotlight) => (
-          <SpotlightItem spotlight={spotlight} user={props.user}/>
+          <SpotlightItem spotlight={spotlight} />
         ))}
       </Box>
       <Box width={"100%"} display={"flex"} justifyContent={"space-between"}>
@@ -112,7 +110,7 @@ const SpotlightCarousel = (props) => {
           sx={{ background: "transparent" }}
         />
       </Box>
-    </div>
+    </Box>
   );
 };
 

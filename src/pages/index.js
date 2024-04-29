@@ -40,7 +40,7 @@ const Home = () => {
           width={"100%"}
           height={"80vh"}
         >
-          <SpotlightCarousel user={user} />
+          <SpotlightCarousel/>
         </Box>
         <Box
           display={"flex"}
@@ -122,7 +122,7 @@ const Home = () => {
         </Box>
         <Box
           width={"100%"}
-          height={"90vh"}
+          height={"80vh"}
           display={"flex"}
           justifyContent={"center"}
           alignItems={"center"}
@@ -144,7 +144,7 @@ const Home = () => {
         </Box>
         <Box
           width={"100%"}
-          height={"90vh"}
+          height={"80vh"}
           display={"flex"}
           justifyContent={"center"}
           alignItems={"center"}
@@ -165,7 +165,7 @@ const Home = () => {
         </Box>
         <Box
           width={"100%"}
-          height={"90vh"}
+          height={"80vh"}
           display={"flex"}
           justifyContent={"center"}
           alignItems={"center"}
