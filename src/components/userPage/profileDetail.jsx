@@ -47,7 +47,7 @@ const UserProfileDetail = (props) => {
         ":hover .profile-detail-title": { color: "primary.main" },
       }}
     >
-      {isEdit && !props.noChange ? (
+      {isEdit ? (
         <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
           <TextField
             value={detail}
@@ -93,23 +93,21 @@ const UserProfileDetail = (props) => {
           <Typography sx={{ transition: "0.3s" }} color={"text.secondary"}>
             {props.value}
           </Typography>
-          {!props.noChange && (
-            <Tooltip title="edit" placement="right">
-              <IconButton
-                onClick={() => setIsEdit(true)}
-                className="profile-detail-edit"
-                sx={{
-                  position: "absolute",
-                  bottom: 10,
-                  right: 10,
-                  opacity: isNotPhone ? 0 : 1,
-                  transition: "0.3s",
-                }}
-              >
-                <Edit />
-              </IconButton>
-            </Tooltip>
-          )}
+          <Tooltip title="edit" placement="right">
+            <IconButton
+              onClick={() => setIsEdit(true)}
+              className="profile-detail-edit"
+              sx={{
+                position: "absolute",
+                bottom: 10,
+                right: 10,
+                opacity: isNotPhone ? 0 : 1,
+                transition: "0.3s",
+              }}
+            >
+              <Edit />
+            </IconButton>
+          </Tooltip>
         </Box>
       )}
     </Box>

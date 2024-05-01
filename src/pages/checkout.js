@@ -27,10 +27,10 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     setCheckoutDetails({
-      total: user.cart.total + user.recentDeliveryLocation.fee,
+      total: user.cart.total + user.addresses.saved[user.addresses.recent].fee,
       items: user.cart.items,
-      payment: user.recentPayment,
-      delivery: user.recentDeliveryLocation,
+      payment: user.payment.recent,
+      delivery: user.addresses.recent,
     });
   }, [user]);
 
@@ -70,7 +70,14 @@ const CheckoutPage = () => {
             height={expandItems ? "100%" : "50vh"}
             sx={{ overflow: "hidden", transition: "0.3s" }}
           >
-            <Box display={"flex"} width={"100%"} flexDirection={"column"} gap={"20px"} padding={"20px"} mb={expandItems ? "50px" : undefined}>
+            <Box
+              display={"flex"}
+              width={"100%"}
+              flexDirection={"column"}
+              gap={"20px"}
+              padding={"20px"}
+              mb={expandItems ? "50px" : undefined}
+            >
               {Object.keys(checkoutDetails.items).map((key) => (
                 <UserProductCard
                   item={checkoutDetails.items[key]}
@@ -108,7 +115,7 @@ const CheckoutPage = () => {
                 borderRadius={"10px"}
               >
                 <Typography color={"white"}>
-                  Subtotal:{" "}{user.region.currency}
+                  Subtotal: {user.region.currency}
                   {checkoutDetails.total - checkoutDetails.delivery.fee}
                 </Typography>
               </Box>
