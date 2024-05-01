@@ -1,15 +1,34 @@
 import { useTheme } from "@emotion/react";
-import { Build, Cake, Copyright, EmailOutlined, Facebook, Info, Instagram, LinkedIn, PhoneInTalk, PlaceOutlined, PublicOutlined, Send, Twitter, WhatsApp } from "@mui/icons-material";
-import { Box, Button, TextField, Typography, useMediaQuery } from "@mui/material";
+import {
+  Copyright,
+  EmailOutlined,
+  Facebook,
+  Info,
+  Instagram,
+  LinkedIn,
+  PhoneInTalk,
+  PlaceOutlined,
+  PublicOutlined,
+  Send,
+  Twitter,
+  WhatsApp,
+} from "@mui/icons-material";
+import {
+  Link,
+  Box,
+  Button,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import React from "react";
 import FooterIconLink from "./footerIconLink";
-import { Link } from "gatsby";
 import FooterLegalLink from "./footerLegalLink";
 import FooterLink from "./footerLink";
 
 const Footer = (props) => {
-    const theme = useTheme()
-    const isNotPhone = useMediaQuery("(min-width:1000px)")
+  const theme = useTheme();
+  const isNotPhone = useMediaQuery("(min-width:1000px)");
   return (
     <footer style={{ width: "100%", display: "flex", flexDirection: "column" }}>
       <Box
@@ -94,7 +113,7 @@ const Footer = (props) => {
               fontFamily: "Pacifico",
             }}
           >
-            Wendoh Cakes
+            E-commerce
           </Link>
           <Typography color={"text.secondary"} mb={"50px"}>
             Made with love
@@ -164,13 +183,7 @@ const Footer = (props) => {
                 </Box>
               )}
             </Box>
-            <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
-              <FooterLink>
-                <Build /> Build your own cake
-              </FooterLink>
-              <FooterLink>
-                <Cake /> Our cake catalogue
-              </FooterLink>
+            <Box display={"flex"} height={"100%"} flexDirection={"column"} gap={"20px"}>
               <FooterLink>
                 <Info />
                 About us
@@ -205,16 +218,14 @@ const Footer = (props) => {
                 <EmailOutlined />
                 myemail@gmail.com
               </FooterLink>
-              <FooterLink path="https://www.website.com">
+              <FooterLink path="https://www.linkedin.com/in/joshua-kanyori-67b83428b/">
                 <PublicOutlined />
                 www.wendohcakes.com
               </FooterLink>
-              <Box display={"flex"}>
+              <FooterLink path="https://www.linkedin.com/in/joshua-kanyori-67b83428b/">
                 <PlaceOutlined />
-                <Typography marginLeft={"10px"} sx={{ fontWeight: "light" }}>
-                  Nairobi, Kenya
-                </Typography>
-              </Box>
+                City, Country
+              </FooterLink>
             </Box>
             {!isNotPhone && (
               <Box display={"flex"} flexDirection={"column"}>

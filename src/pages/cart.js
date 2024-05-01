@@ -8,7 +8,6 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import data from "../lib/data";
 import UserProductCard from "../components/product/userProductCard";
 
 const CartPage = () => {
@@ -69,9 +68,11 @@ const CartPage = () => {
                 <Typography>
                   {user.region.currency} {user.cart.total}
                 </Typography>
-                <Button variant="contained" disableElevation>
-                  Checkout
-                </Button>
+                <Link href="/checkout">
+                  <Button variant="contained" disableElevation>
+                    Checkout
+                  </Button>
+                </Link>
               </Box>
             </Box>
           )}
@@ -133,9 +134,11 @@ const CartPage = () => {
             <Typography fontSize={"0.7rem"}>
               *delivery charges not included
             </Typography>
-            <Button variant="contained" disableElevation>
-              Checkout
-            </Button>
+            <Link href="/checkout">
+              <Button variant="contained" disableElevation>
+                Checkout
+              </Button>
+            </Link>
           </Box>
         )}
       </Box>

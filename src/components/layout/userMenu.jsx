@@ -19,7 +19,6 @@ import {
   NotificationsSharp,
 } from "@mui/icons-material";
 import data from "../../lib/data";
-import { useSelector } from "react-redux";
 
 const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
   const theme = useTheme();
@@ -40,6 +39,11 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
     };
   }, []); //eslint: react-hooks/exhaustive-deps
 
+  const handleClick = () =>
+  {
+    switchIsUserMenu(false)
+  }
+
   return (
     <Box
       ref={userMenuRef}
@@ -53,7 +57,7 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
       flexDirection={"column"}
       justifyContent={"center"}
       gap={"20px"}
-      height={isUserMenu ? "500px" : "0%"}
+      height={isUserMenu ? "400px" : "0%"}
       width={"min(300px, 100%)"}
       borderRadius={"0px 0px 10px 10px"}
       bgcolor={"white"}
@@ -70,7 +74,7 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
       >
         <MenuItem
           sx={{ display: "flex", flexDirection: "column" }}
-          onClick={() => switchIsUserMenu(false)}
+          onClick={handleClick}
         >
           <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
             <Avatar sx={{ fontSize: "15px" }} />
@@ -91,9 +95,14 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
           ":hover": { color: "primary.main" },
         }}
       >
-        <MenuItem onClick={() => switchIsUserMenu(false)}>
+        <MenuItem onClick={handleClick}>
           <ListItemIcon>
-            <Badge color="primary" variant="dot" overlap="circular" invisible={!user.notifications.new}>
+            <Badge
+              color="primary"
+              variant="dot"
+              overlap="circular"
+              invisible={!user.notifications.new}
+            >
               <NotificationsSharp />
             </Badge>
           </ListItemIcon>
@@ -108,7 +117,7 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
           ":hover": { color: "primary.main" },
         }}
       >
-        <MenuItem onClick={() => switchIsUserMenu(false)}>
+        <MenuItem onClick={handleClick}>
           <ListItemIcon>
             <BookmarkAdded />
           </ListItemIcon>
@@ -123,34 +132,16 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
           ":hover": { color: "primary.main" },
         }}
       >
-        <MenuItem onClick={() => switchIsUserMenu(false)}>
-          {" "}
+        <MenuItem onClick={handleClick}>
           <ListItemIcon>
             <Favorite />
           </ListItemIcon>
           My Favourites
         </MenuItem>
       </Link>
-      <Link
-        href={"/user/#custom-cakes"}
-        sx={{
-          textDecoration: "none",
-          color: "black",
-          ":hover": { color: "primary.main" },
-        }}
-      >
-        <MenuItem onClick={() => switchIsUserMenu(false)}>
-          {" "}
-          <ListItemIcon>
-            <Cake />
-          </ListItemIcon>
-          My Custom Cakes
-        </MenuItem>
-      </Link>
-
       <Divider />
       <Button
-        onClick={() => switchIsUserMenu(false)}
+        onClick={handleClick}
         sx={{ alignSelf: "center" }}
         disableElevation
         variant="contained"

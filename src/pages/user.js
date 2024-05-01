@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import {
   BookmarkAdded,
-  Cake,
   Favorite,
   NotificationsSharp,
 } from "@mui/icons-material";
@@ -24,7 +23,6 @@ import OrderDetails from "../components/userPage/orderDetails";
 import UserFavourites from "../components/userPage/favourites";
 import UserProfile from "../components/userPage/profile";
 import Notifications from "../components/userPage/notifications";
-import CustomCakes from "../components/userPage/customCakes";
 
 const UserPage = () => {
   const theme = useTheme();
@@ -47,7 +45,6 @@ const UserPage = () => {
       order: <OrderDetails />,
       favourites: <UserFavourites user={user} />,
       notifications: <Notifications user={user} />,
-      "custom-cakes": <CustomCakes />,
     });
   }, [user]);
 
@@ -136,13 +133,6 @@ const UserPage = () => {
                 stage={stage}
                 title={"My favourites"}
                 icon={<Favorite />}
-              />
-              <SideBarElement
-                path={"custom-cakes"}
-                stage={stage}
-                title={"My custom cakes"}
-                icon={<Cake />}
-                isBottom={true}
               />
               <Divider sx={{ margin: "30px" }} />
               <Button

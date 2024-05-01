@@ -10,12 +10,7 @@ import {
   InputAdornment,
   useMediaQuery,
 } from "@mui/material";
-import {
-  Close,
-  MenuOutlined,
-  Search,
-  ShoppingCart,
-} from "@mui/icons-material";
+import { Close, MenuOutlined, Search, ShoppingCart } from "@mui/icons-material";
 import { useTheme } from "@emotion/react";
 import { useSelector } from "react-redux";
 

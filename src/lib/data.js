@@ -480,6 +480,7 @@ const data = {
     name: { first: "John", last: "Doe" },
     email: "useremail@email.com",
     phone: { code: "+245", number: "140000000" },
+    payment:{currency:"KSH", methods:[{title:"Mpesa", details:""}]},
     recentPayment: {
       method: "M-pesa",
       details: { "phone number": "(+245) 140000000" },
