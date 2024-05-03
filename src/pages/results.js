@@ -301,7 +301,6 @@ const ResultsPage = () => {
                 >
                   {categories.map((category, index) => (
                     <FormControlLabel
-                      key={`filter-category-${category}-0${index}}`}
                       value={category}
                       control={<Radio />}
                       label={
@@ -324,7 +323,6 @@ const ResultsPage = () => {
                 <FormGroup sx={{ ml: "10px" }}>
                   {Object.keys(filters.types).map((type, index) => (
                     <FormControlLabel
-                      key={`result-filter-type-${index}`}
                       checked={filters.types[type]}
                       control={<Checkbox name={type} onClick={switchType} />}
                       label={type}
@@ -333,7 +331,6 @@ const ResultsPage = () => {
                   {(filters["Pastries"] === true ||
                     filters["Pastries"] === false) && (
                     <FormControlLabel
-                      key={`result-filter-Pastries`}
                       checked={filters["Pastries"]}
                       control={
                         <Checkbox name={"Pastries"} onClick={switchType} />

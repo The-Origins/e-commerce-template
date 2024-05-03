@@ -154,7 +154,6 @@ const ProductPage = () => {
                       width={"100%"}
                       height={"100%"}
                       display={"inline-block"}
-                      key={index}
                       sx={{
                         backgroundImage: `url(${image})`,
                         backgroundSize: "cover",

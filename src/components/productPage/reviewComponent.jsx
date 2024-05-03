@@ -6,7 +6,6 @@ const ReviewComponent = (props) => {
   return (
     <Box
       margin={"20px 0px"}
-      key={`user-review-${props.id}`}
       display={"flex"}
       width={"90%"}
       alignItems={"center"}

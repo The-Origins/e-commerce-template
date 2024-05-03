@@ -7,7 +7,6 @@ const ProductCardContainer = (props) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   return (
     <Box
-      key={`container-${props.id}`}
       width={"100%"}
       display={"flex"}
       flexDirection={"column"}

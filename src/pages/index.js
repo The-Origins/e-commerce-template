@@ -26,7 +26,7 @@ const Home = () => {
   const user = useSelector((state => state.user))
 
   useEffect(() => {
-    document.title = "Wendoh Cakes | Made with love";
+    document.title = "E-commerce | my moto";
   }, []);
 
 

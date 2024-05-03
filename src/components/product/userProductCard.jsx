@@ -29,8 +29,6 @@ const UserProductCard = (props) => {
 
   return (
     <Box
-      key={`${props.type}-item-${props.id}-item-${props.id}`}
-      minHeight={"100px"}
       maxWidth={"100%"}
       display={"flex"}
       alignItems={"center"}
@@ -92,7 +90,6 @@ const UserProductCard = (props) => {
             {props.item.product.name}
           </Typography>
           <Typography
-            key={`orderItem-details`}
             fontSize={"clamp(0.7rem, 2vw, 0.9rem)"}
             color={"text.secondary"}
           >

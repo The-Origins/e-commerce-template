@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
   Box,
@@ -14,6 +14,9 @@ const CartPage = () => {
   const user = useSelector((state) => state.user);
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
+  useEffect(() => {
+    document.title = "Cart | E-commerce";
+  }, []);
 
   return (
     <Box

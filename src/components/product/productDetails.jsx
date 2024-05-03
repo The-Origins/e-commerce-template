@@ -128,7 +128,6 @@ const ProductDetails = (props) => {
           product.variants.map((variant, index) => {
             return (
               <Box
-                key={`product-${product.id}-variant-${index}`}
                 display={"flex"}
                 flexDirection={"column"}
                 width={"80%"}
@@ -149,7 +148,6 @@ const ProductDetails = (props) => {
                     >
                       {variant.options.map((option, index) => (
                         <FormControlLabel
-                          key={`product-${product.id}-variant-${index}-option-${index}`}
                           value={option}
                           control={<Radio />}
                           label={

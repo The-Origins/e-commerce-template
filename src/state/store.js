@@ -6,8 +6,8 @@ const storeSLice = createSlice({
     user: {
       name: {},
       phone: {},
-      addresses:{saved:[]},
-      payment:{saved:[]},
+      addresses:{},
+      payment:{},
       recentPayment: {},
       address: {},
       recentDeliveryLocation: {},
