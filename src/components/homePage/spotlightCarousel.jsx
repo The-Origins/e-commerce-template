@@ -1,22 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import data from "../../lib/data";
-import {
-  Box,
-  Button,
-  IconButton,
-  Link,
-  MobileStepper,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, IconButton, MobileStepper, useTheme } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import SpotlightItem from "./spotlightItem";
 
-const SpotlightCarousel = (props) => {
+const SpotlightCarousel = () => {
   const theme = useTheme();
-  const isNotPhone = useMediaQuery("(min-width:1000px)");
   const [spotlightIndex, setSpotlightIndex] = useState(0);
   const maxIndex = data.spotlights.length;
+  const carouselRef = useRef(null);
+  const [startX, setStartX] = useState(null);
+  const [isHovering, setIsHovering] = useState(false);
+
+  const handleTouchStart = (event) => {
+    setStartX(event.touches[0].clientX);
+  };
+
+  const handleTouchMove = (event) => {
+    if (!startX) return;
+    const currentX = event.touches[0].clientX;
+    const diff = startX - currentX;
+    carouselRef.current.scrollLeft += diff;
+    setStartX(currentX);
+  };
+
+  const handleTouchEnd = () => {
+    setStartX(null);
+    next();
+  };
 
   const next = () => {
     if (spotlightIndex < maxIndex - 1) {
@@ -33,29 +44,31 @@ const SpotlightCarousel = (props) => {
   };
 
   useEffect(() => {
-    const spotlightInterval = setInterval(() => next(), 5000);
+    const spotlightInterval = setInterval(() => {
+      if (!isHovering) {
+        next();
+      }
+    }, 5000);
     return () => clearInterval(spotlightInterval);
-  }, [spotlightIndex]);
+  }, [spotlightIndex, isHovering,]);
+
   return (
     <Box
-      boxShadow={`0px 0px 10px 0px ${theme.palette.grey[400]}`}
-      overflow={"hidden"}
-      width={"100%"}
-      height={"70%"}
-      borderRadius={"20px"}
-      position={"relative"}
-      display={"flex"}
-      alignItems={"center"}
-      sx={{ overflowX: !isNotPhone && "scroll" }}
-      style={{
+      ref={carouselRef}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+      sx={{
         boxShadow: `0px 0px 10px 0px ${theme.palette.grey[400]}`,
-        overflowX: isNotPhone ? "hidden" : "scroll",
         width: "100%",
         height: "70%",
         borderRadius: "20px",
         position: "relative",
-        display: "relative",
+        display: "flex",
         alignItems: "center",
+        overflow: "hidden",
       }}
     >
       <Box
@@ -70,100 +83,8 @@ const SpotlightCarousel = (props) => {
           })`,
         }}
       >
-        {data.spotlights.map((highlight, index) => (
-          <Box
-            key={index}
-            sx={{
-              display: "inline-block",
-              width: "100%",
-              height: "100%",
-            }}
-          >
-            <Box
-              width={"100%"}
-              height={"100%"}
-              display={"flex"}
-              flexDirection={isNotPhone ? "row" : "column-reverse"}
-            >
-              <Box
-                width={isNotPhone ? "50%" : "100%"}
-                height={isNotPhone ? "100%" : "50%"}
-                display={"flex"}
-                justifyContent={"space-evenly"}
-                alignItems={"center"}
-                position={"relative"}
-              >
-                <Box
-                  width={isNotPhone ? "80%" : "90%"}
-                  height={"100%"}
-                  display={"flex"}
-                  flexDirection={"column"}
-                  justifyContent={"space-evenly"}
-                >
-                  <Box
-                    display={"flex"}
-                    flexDirection={"column"}
-                    gap={isNotPhone ? "20px" : "1px"}
-                  >
-                    <Typography
-                      variant="h3"
-                      fontSize={"clamp(1rem, 7vw, 2.5rem)"}
-                      fontWeight={"bold"}
-                    >
-                      {highlight.spotlight.title}
-                    </Typography>
-                    <Typography>{highlight.spotlight.description}</Typography>
-                    <Typography fontSize={"1.4rem"}>
-                      {highlight.unitPrice.currency}{" "}
-                      {highlight.unitPrice.amount}
-                    </Typography>
-                  </Box>
-                  <Box
-                    display={"flex"}
-                    width={"100%"}
-                    justifyContent={"space-between"}
-                  >
-                    <Link
-                      href={`/product?p=${highlight.id}`}
-                      sx={{
-                        textDecoration: isNotPhone ? "none" : "underline",
-                        fontSize: "clamp(0.2rem, 5vw, 0.9rem)",
-                        height: "50px",
-                        width: isNotPhone ? "200px" : undefined,
-                        border: isNotPhone ? `1px solid #FF2681` : undefined,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderRadius: "20px",
-                        transition: "0.3s",
-                        ":hover": {
-                          color: "white",
-                          bgcolor: "primary.main",
-                          border: "none",
-                        },
-                      }}
-                    >
-                      View Details
-                    </Link>
-                    {highlight.spotlight.type === "product" && (
-                      <Button disableElevation variant="contained">
-                        + add to cart
-                      </Button>
-                    )}
-                  </Box>
-                </Box>
-              </Box>
-              <Box
-                width={isNotPhone ? "50%" : "100%"}
-                height={isNotPhone ? "100%" : "50%"}
-                sx={{
-                  backgroundImage: `url(${highlight.images[0]})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              ></Box>
-            </Box>
-          </Box>
+        {data.spotlights.map((spotlight) => (
+          <SpotlightItem spotlight={spotlight} />
         ))}
       </Box>
       <Box width={"100%"} display={"flex"} justifyContent={"space-between"}>

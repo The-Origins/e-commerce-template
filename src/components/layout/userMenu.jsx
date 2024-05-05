@@ -1,168 +1,180 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
+import UserMenu from "./userMenu";
 import {
-  useTheme,
-  MenuItem,
-  Box,
-  Button,
-  Divider,
-  ListItemIcon,
-  Typography,
-  useMediaQuery,
   Avatar,
-  Link,
   Badge,
+  Box,
+  IconButton,
+  Link,
+  TextField,
+  InputAdornment,
+  useMediaQuery,
 } from "@mui/material";
-import {
-  BookmarkAdded,
-  Cake,
-  Favorite,
-  NotificationsSharp,
-} from "@mui/icons-material";
-import data from "../../lib/data";
+import { Close, MenuOutlined, Search, ShoppingCart } from "@mui/icons-material";
+import { useTheme } from "@emotion/react";
+import { useSelector } from "react-redux";
 
-const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
-  const theme = useTheme();
+const Header = () => {
+  const user = useSelector((state) => state.user);
   const isNotPhone = useMediaQuery("(min-width:1000px)");
-  const userMenuRef = useRef(null);
+  const theme = useTheme();
+  const [yScroll, setYScroll] = useState(0);
+  const [isUp, setIsUp] = useState(true);
+  const [isUserMenu, setIsUserMenu] = useState(false);
+
+  const switchIsUserMenu = (state) => {
+    setIsUserMenu(state);
+  };
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
-        switchIsUserMenu(false);
-      }
+    window.onscroll = () => {
+      setYScroll((prev) => {
+        if (prev > window.scrollY) {
+          setIsUp(true);
+        } else {
+          setIsUp(false);
+        }
+        return window.scrollY;
+      });
     };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []); //eslint: react-hooks/exhaustive-deps
+    return () => (window.onscroll = undefined);
+  }, []);
 
   return (
-    <Box
-      ref={userMenuRef}
-      zIndex={4}
-      className="user-menu"
-      position={"absolute"}
-      right={isNotPhone ? 0 : undefined}
-      left={isNotPhone ? undefined : 0}
-      top={"100%"}
-      display={"flex"}
-      flexDirection={"column"}
-      justifyContent={"center"}
-      gap={"20px"}
-      height={isUserMenu ? "500px" : "0%"}
-      width={"min(300px, 100%)"}
-      borderRadius={"0px 0px 10px 10px"}
-      bgcolor={"white"}
-      boxShadow={`0px 5px 10px 0px ${theme.palette.grey[500]}`}
-      overflow={"hidden"}
-      sx={{ transition: "0.3s ease-in-out" }}
+    <header
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        backgroundColor: "white",
+        zIndex: 1,
+      }}
     >
-      <Link
-        href={"/user/#"}
-        sx={{
-          textDecoration: "none",
-          color: "black",
-        }}
+      <Box
+        position={"relative"}
+        width={"100%"}
+        display={"flex"}
+        justifyContent={"center"}
       >
-        <MenuItem
-          sx={{ display: "flex", flexDirection: "column" }}
-          onClick={() => switchIsUserMenu(false)}
+        <Box
+          position={"relative"}
+          display={"flex"}
+          flexDirection={"column"}
+          width={isNotPhone ? "80%" : "90%"}
         >
-          <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
-            <Avatar sx={{ fontSize: "15px" }} />
-            <Typography fontWeight={"bold"} fontSize={"1.2rem"}>
-              {data.user.name.first} {data.user.name.last}
-            </Typography>
-          </Box>
-          <Typography fontSize={"0.5rem"} color={"text.secondary"}>
-            logged in
-          </Typography>
-        </MenuItem>
-      </Link>
-      <Link
-        href={"/user/#notifications"}
-        sx={{
-          textDecoration: "none",
-          color: "black",
-          ":hover": { color: "primary.main" },
-        }}
-      >
-        <MenuItem onClick={() => switchIsUserMenu(false)}>
-          <ListItemIcon>
-            <Badge
-              color="primary"
-              variant="dot"
-              overlap="circular"
-              invisible={user.notifications ? !user.notifications.new : true}
+          <UserMenu
+            isUserMenu={isUserMenu}
+            switchIsUserMenu={switchIsUserMenu}
+            user={user}
+          />
+          <Box
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            mt={isNotPhone ? undefined : "5px"}
+          >
+            <Box display={"flex"} alignItems={"center"}>
+              {!isNotPhone && (
+                <IconButton onClick={switchIsUserMenu}>
+                  {isUserMenu ? <Close /> : <MenuOutlined />}
+                </IconButton>
+              )}
+              <Link
+                href="/"
+                fontSize={"clamp(0.2rem, 5vw, 3rem)"}
+                sx={{
+                  textDecoration: "none",
+                  color: "black",
+                  fontFamily: "Pacifico",
+                }}
+              >
+                E-commerce
+              </Link>
+            </Box>
+            {isNotPhone && (
+              <TextField
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton>
+                        <Search />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                type="search"
+                placeholder="search for what you desire..."
+                sx={{ width: "50%", "& > div": { borderRadius: "25px" } }}
+              />
+            )}
+            <Box
+              display={"flex"}
+              gap={isNotPhone ? "20px" : undefined}
+              alignItems={"center"}
             >
-              <NotificationsSharp />
-            </Badge>
-          </ListItemIcon>
-          My Notifications
-        </MenuItem>
-      </Link>
-      <Link
-        href={"/user/#orders"}
-        sx={{
-          textDecoration: "none",
-          color: "black",
-          ":hover": { color: "primary.main" },
-        }}
-      >
-        <MenuItem onClick={() => switchIsUserMenu(false)}>
-          <ListItemIcon>
-            <BookmarkAdded />
-          </ListItemIcon>
-          My Orders
-        </MenuItem>
-      </Link>
-      <Link
-        href={"/user/#favourites"}
-        sx={{
-          textDecoration: "none",
-          color: "black",
-          ":hover": { color: "primary.main" },
-        }}
-      >
-        <MenuItem onClick={() => switchIsUserMenu(false)}>
-          {" "}
-          <ListItemIcon>
-            <Favorite />
-          </ListItemIcon>
-          My Favourites
-        </MenuItem>
-      </Link>
-      <Link
-        href={"/user/#custom-cakes"}
-        sx={{
-          textDecoration: "none",
-          color: "black",
-          ":hover": { color: "primary.main" },
-        }}
-      >
-        <MenuItem onClick={() => switchIsUserMenu(false)}>
-          {" "}
-          <ListItemIcon>
-            <Cake />
-          </ListItemIcon>
-          My Custom Cakes
-        </MenuItem>
-      </Link>
-
-      <Divider />
-      <Button
-        onClick={() => switchIsUserMenu(false)}
-        sx={{ alignSelf: "center" }}
-        disableElevation
-        variant="contained"
-      >
-        Logout
-      </Button>
-    </Box>
+              <Link href="/cart">
+                <IconButton>
+                  <Badge
+                    color="primary"
+                    badgeContent={
+                      user.cart && Object.keys(user.cart.items).length
+                    }
+                  >
+                    <ShoppingCart />
+                  </Badge>
+                </IconButton>
+              </Link>
+              {isNotPhone && (
+                <IconButton
+                  onClick={() => {
+                    switchIsUserMenu(true);
+                  }}
+                >
+                  <Badge
+                    color="primary"
+                    variant="dot"
+                    overlap="circular"
+                    invisible={!user.notifications.new}
+                  >
+                    <Avatar
+                      alt="profile image"
+                      sx={{ bgcolor: isUserMenu ? "primary.main" : undefined }}
+                    />
+                  </Badge>
+                </IconButton>
+              )}
+            </Box>
+          </Box>
+          {!isNotPhone && (
+            <Box
+              display={"flex"}
+              alignItems={"center"}
+              sx={{ transition: "0.2s" }}
+              overflow={"hidden"}
+              height={isUp ? "45px" : "0px"}
+            >
+              <input
+                className="searchbar"
+                type="search"
+                placeholder="search for what you desire..."
+                style={{
+                  width: "100%",
+                  height: "40px",
+                  borderRadius: "25px",
+                  textAlign: "center",
+                  backgroundColor: theme.palette.grey,
+                }}
+              />
+              <IconButton>
+                <Search />
+              </IconButton>
+            </Box>
+          )}
+        </Box>
+      </Box>
+    </header>
   );
 };
 
-export default UserMenu;
+export default Header;

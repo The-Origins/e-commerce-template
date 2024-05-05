@@ -5,7 +5,7 @@ import { Star } from "@mui/icons-material";
 const RatingDistributionComponent = (props) => {
   const theme = useTheme();
   return (
-    <Box key={`rating-distribution-${props.id}`} display={"flex"} alignItems={"center"} gap={"10px"}>
+    <Box display={"flex"} alignItems={"center"} gap={"10px"}>
       <Box display={"flex"} gap={"3px"} alignItems={"center"}>
         <Typography>{props.rating}</Typography>
         <Star sx={{ color: "#FAAF00" }} />

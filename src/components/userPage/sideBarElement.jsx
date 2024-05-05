@@ -17,7 +17,7 @@ const SideBarElement = (props) => {
           bgcolor:
             ((props.stage === "order" && props.path === "orders") ||
               props.path === props.stage) &&
-            "rgba(255 38 129 / 0.2)",
+            "#F5F5F5",
         }}
       >
         <ListItemIcon color="inherit">{props.icon}</ListItemIcon>

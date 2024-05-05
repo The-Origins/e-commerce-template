@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   Box,
   Typography,
@@ -20,69 +20,41 @@ import data from "../lib/data";
 import ProductCard from "../components/product/productCard";
 import { Close, FilterAlt, RotateLeft } from "@mui/icons-material";
 import { navigate } from "gatsby";
-
-const importantCategories = [
-  "nuts",
-  "vegan",
-  "dairy",
-  "gluten free",
-  "no sugar",
-];
+import ResultsWorker from "../scripts/resultsWorker";
 
 const typesPlural = { cake: "Cakes", pastry: "Pastries" };
-
-const roundUp = (num) => {
-  return num % 1 !== 0 ? 1 - (num % 1) + num : num;
-};
-
 const ResultsPage = () => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
   const params = new URLSearchParams(window.location.search);
   let page = Number(params.get("p")) || 1;
-  const pageLimit = 4;
   const search = params.get("search");
-  const user = useSelector((state => state.user))
-  const [results, setResults] = useState([]);
+  const user = useSelector((state) => state.user);
+  const [results, setResults] = useState([[]]);
   const [categories, setCategories] = useState(["All"]);
   const [filters, setFilters] = useState({ category: "All", types: {} });
   const [priceRange, setPriceRange] = useState([20, 33]);
   const [prices, setPrices] = useState([]);
+  const [minPrice, maxPrice] = [Math.min(...prices), Math.max(...prices)];
   const [isPriceChange, setIsPriceChange] = useState(false);
   const [isMobileFilters, setIsMobileFilters] = useState(false);
   const mobileFiltersRef = useRef(null);
 
   useEffect(() => {
+    const resultsWorker = new ResultsWorker(data.products);
     document.title = `Search results for '${search}'`;
-
-    let priceArray = [];
-    data.products.forEach((result) => {
-      priceArray = [...priceArray, result.unitPrice.amount];
-      setFilters((prev) => ({
-        ...prev,
-        types: {
-          ...prev.types,
-          [typesPlural[result.type]]: true,
-        },
-      }));
-      result.categories.forEach((category) => {
-        if (importantCategories.includes(category)) {
-          setCategories((prev) => {
-            if (!prev.includes(category)) {
-              return [...prev, category];
-            }
-            return prev;
-          });
-        }
-      });
-    });
-    setPriceRange([Math.min(...priceArray), Math.max(...priceArray)]);
     setFilters((prev) => ({
       ...prev,
-      min: Math.min(...priceArray),
-      max: Math.max(...priceArray),
+      types: resultsWorker.parseTypes(),
+      min: Math.min(...resultsWorker.parsePrices()),
+      max: Math.max(...resultsWorker.parsePrices()),
     }));
-    setPrices(priceArray);
+    setCategories((prev) => [...prev, ...resultsWorker.parseCategories()]);
+    setPriceRange([
+      Math.min(...resultsWorker.parsePrices()),
+      Math.max(...resultsWorker.parsePrices()),
+    ]);
+    setPrices(resultsWorker.parsePrices());
 
     const handleClickOutside = (event) => {
       if (
@@ -101,33 +73,9 @@ const ResultsPage = () => {
   }, []);
 
   useEffect(() => {
-    let filteredResults = [];
-    filteredResults = data.products.filter(
-      (product) =>
-        filters.types[typesPlural[product.type]] &&
-        product.unitPrice.amount >= filters.min &&
-        product.unitPrice.amount <= filters.max &&
-        (filters.category === "All" ||
-          product.categories.includes(filters.category))
-    );
-
-    if (filteredResults.length) {
-      for (let i = 1; i <= roundUp(filteredResults.length / pageLimit); i++) {
-        if (i === 1) {
-          setResults([
-            filteredResults.slice(pageLimit * i - pageLimit, pageLimit * i),
-          ]);
-        } else {
-          setResults((prev) => [
-            ...prev,
-            filteredResults.slice(pageLimit * i - pageLimit, pageLimit * i),
-          ]);
-        }
-      }
-    } else {
-      setResults([[]]);
-    }
-
+    const resultsWorker = new ResultsWorker(data.products);
+    let filteredResults = resultsWorker.filter(filters, typesPlural);
+    setResults(resultsWorker.paginate(filteredResults));
     navigate(`/results?search=${String(search).split(" ").join("+")}&p=1`);
   }, [filters]);
 
@@ -138,11 +86,11 @@ const ResultsPage = () => {
 
   const handlePriceRangeChangeInput = ({ target }) => {
     if (target.name === "min") {
-      if (target.value < Math.max(...prices)) {
+      if (target.value < maxPrice) {
         setPriceRange((prev) => [target.value, prev[1]]);
       }
     } else if (target.name === "max") {
-      if (target.value < Math.max(...prices)) {
+      if (target.value < maxPrice) {
         setPriceRange((prev) => [prev[0], target.value]);
       }
     }
@@ -150,21 +98,21 @@ const ResultsPage = () => {
   };
 
   const handlePriceSave = () => {
-    if (priceRange[0] < Math.min(...prices)) {
-      setPriceRange((prev) => [Math.min(...prices), prev[1]]);
-    } else if (priceRange[1] > Math.max(...prices)) {
-      setPriceRange((prev) => [prev[0], Math.max(...prices)]);
+    if (priceRange[0] < minPrice) {
+      setPriceRange((prev) => [minPrice, prev[1]]);
+    } else if (priceRange[1] > maxPrice) {
+      setPriceRange((prev) => [prev[0], maxPrice]);
     }
     setFilters((prev) => ({ ...prev, min: priceRange[0], max: priceRange[1] }));
     setIsPriceChange(false);
   };
 
   const handlePriceRangeReset = () => {
-    setPriceRange([Math.min(...prices), Math.max(...prices)]);
+    setPriceRange([minPrice, maxPrice]);
     setFilters((prev) => ({
       ...prev,
-      min: Math.min(...prices),
-      max: Math.max(...prices),
+      min: minPrice,
+      max: maxPrice,
     }));
     setIsPriceChange(false);
   };
@@ -192,8 +140,6 @@ const ResultsPage = () => {
       `/results?search=${String(search).split(" ").join("+")}&p=${value}`
     );
   };
-
-  console.log(results);
 
   return (
     <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
@@ -267,8 +213,7 @@ const ResultsPage = () => {
                 >
                   Price
                 </Typography>
-                {(priceRange[0] !== Math.min(...prices) ||
-                  priceRange[1] !== Math.max(...prices)) && (
+                {(priceRange[0] !== minPrice || priceRange[1] !== maxPrice) && (
                   <Box position={"absolute"} right={5} top={25}>
                     <IconButton onClick={handlePriceRangeReset}>
                       <RotateLeft />
@@ -306,8 +251,8 @@ const ResultsPage = () => {
                   />
                 </Box>
                 <Slider
-                  max={Math.max(...prices)}
-                  min={Math.min(...prices)}
+                  max={maxPrice}
+                  min={minPrice}
                   value={priceRange}
                   onChange={handlePriceRangeChangeSlider}
                   valueLabelDisplay="auto"
@@ -356,7 +301,6 @@ const ResultsPage = () => {
                 >
                   {categories.map((category, index) => (
                     <FormControlLabel
-                      key={`filter-category-${category}-0${index}}`}
                       value={category}
                       control={<Radio />}
                       label={
@@ -379,7 +323,6 @@ const ResultsPage = () => {
                 <FormGroup sx={{ ml: "10px" }}>
                   {Object.keys(filters.types).map((type, index) => (
                     <FormControlLabel
-                      key={`result-filter-type-${index}`}
                       checked={filters.types[type]}
                       control={<Checkbox name={type} onClick={switchType} />}
                       label={type}
@@ -388,7 +331,6 @@ const ResultsPage = () => {
                   {(filters["Pastries"] === true ||
                     filters["Pastries"] === false) && (
                     <FormControlLabel
-                      key={`result-filter-Pastries`}
                       checked={filters["Pastries"]}
                       control={
                         <Checkbox name={"Pastries"} onClick={switchType} />
@@ -443,8 +385,8 @@ const ResultsPage = () => {
                 padding={"0px 0px 50px 0px"}
                 width={"100%"}
               >
-                {results[page - 1].map((result, index) => (
-                  <ProductCard id={index} product={result} user={user} />
+                {results[page - 1].map((result) => (
+                  <ProductCard product={result} user={user} />
                 ))}
               </Box>
             )}

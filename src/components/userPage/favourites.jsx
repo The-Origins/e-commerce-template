@@ -2,7 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 import UserProductCard from "../product/userProductCard";
 
-const UserFavourites = ({user}) => {
+const UserFavourites = (props) => {
   return (
     <Box
       maxWidth={"100%"}
@@ -13,10 +13,11 @@ const UserFavourites = ({user}) => {
       flexDirection={"column"}
       gap={"20px"}
     >
-      {Object.keys(user.favourites).map((favourite, index) => (
+      {Object.keys(props.user.favourites).map((favourite, index) => (
         <UserProductCard
           id={index}
-          item={user.favourites[favourite]}
+          user={props.user}
+          item={props.user.favourites[favourite]}
           type="favourites"
         />
       ))}

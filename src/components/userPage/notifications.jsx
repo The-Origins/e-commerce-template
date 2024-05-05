@@ -1,24 +1,13 @@
-import React from "react";
-import { Box } from "@mui/material";
-import NotificationElement from "./notificationElement";
+import React from 'react'
+import { Box } from '@mui/material'
+import NotificationItem from './notificationItem'
 
 const Notifications = ({user}) => {
   return (
-    <Box
-      maxWidth={"100%"}
-      height={"100%"}
-      padding={"20px"}
-      display={"flex"}
-      flexDirection={"column"}
-      sx={{ overflowY: "scroll" }}
-      gap={"30px"}
-    >
-      {user.notifications &&
-        user.notifications.items.map((notification) => (
-          <NotificationElement {...notification} />
-        ))}
+    <Box width={"100%"} height={"100%"} padding={"20px"} display={"flex"} flexDirection={"column"} gap={"20px"} sx={{overflowY:"scroll"}}>
+        {user.notifications.items.map((notification) => <NotificationItem {...notification} />)}
     </Box>
-  );
-};
+  )
+}
 
-export default Notifications;
+export default Notifications

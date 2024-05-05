@@ -4,7 +4,6 @@ import { Link } from "@mui/material";
 const FooterLink = (props) => {
   return (
     <Link
-    key={`footer-link-${props.id}`}
       href={props.path}
       fontSize={"1rem"}
       sx={{

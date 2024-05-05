@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ProductMenuContainer from "../product/productMenuContainer";
 import UserMenu from "./userMenu";
 import {
   Avatar,
@@ -11,13 +10,7 @@ import {
   InputAdornment,
   useMediaQuery,
 } from "@mui/material";
-import {
-  Cake,
-  Close,
-  MenuOutlined,
-  Search,
-  ShoppingCart,
-} from "@mui/icons-material";
+import { Close, MenuOutlined, Search, ShoppingCart } from "@mui/icons-material";
 import { useTheme } from "@emotion/react";
 import { useSelector } from "react-redux";
 
@@ -28,11 +21,6 @@ const Header = () => {
   const [yScroll, setYScroll] = useState(0);
   const [isUp, setIsUp] = useState(true);
   const [isUserMenu, setIsUserMenu] = useState(false);
-  const [isAllProducts, setIsAllProducts] = useState(false);
-
-  const switchIsAllProducts = (state) => {
-    setIsAllProducts(state);
-  };
 
   const switchIsUserMenu = (state) => {
     setIsUserMenu(state);
@@ -69,10 +57,6 @@ const Header = () => {
         display={"flex"}
         justifyContent={"center"}
       >
-        <ProductMenuContainer
-          isAllProducts={isAllProducts}
-          switchIsAllProducts={switchIsAllProducts}
-        />
         <Box
           position={"relative"}
           display={"flex"}
@@ -80,9 +64,9 @@ const Header = () => {
           width={isNotPhone ? "80%" : "90%"}
         >
           <UserMenu
-          user={user}
             isUserMenu={isUserMenu}
             switchIsUserMenu={switchIsUserMenu}
+            user={user}
           />
           <Box
             display={"flex"}
@@ -105,7 +89,7 @@ const Header = () => {
                   fontFamily: "Pacifico",
                 }}
               >
-                Wendoh Cakes
+                E-commerce
               </Link>
             </Box>
             {isNotPhone && (
@@ -121,7 +105,7 @@ const Header = () => {
                 }}
                 type="search"
                 placeholder="search for what you desire..."
-                sx={{ width: "40%", "& > div": { borderRadius: "25px" } }}
+                sx={{ width: "50%", "& > div": { borderRadius: "25px" } }}
               />
             )}
             <Box
@@ -129,12 +113,6 @@ const Header = () => {
               gap={isNotPhone ? "20px" : undefined}
               alignItems={"center"}
             >
-              <IconButton
-                onClick={() => switchIsAllProducts(true)}
-                sx={{ color: isAllProducts ? "primary.main" : undefined }}
-              >
-                <Cake />
-              </IconButton>
               <Link href="/cart">
                 <IconButton>
                   <Badge
@@ -157,7 +135,7 @@ const Header = () => {
                     color="primary"
                     variant="dot"
                     overlap="circular"
-                    invisible={user.notifications ? !user.notifications.new : true}
+                    invisible={!user.notifications.new}
                   >
                     <Avatar
                       alt="profile image"

@@ -9,13 +9,16 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { AddShoppingCart, Delete, Edit } from "@mui/icons-material";
+import {
+  AddShoppingCart,
+  Delete,
+  Edit,
+  PropaneTank,
+} from "@mui/icons-material";
 import ProductDetails from "./productDetails";
 
 const UserProductCard = (props) => {
-  const paramsDetails = new URLSearchParams(props.item.details)
-  const [productDetails, setProductDetails] = useState(props.item.details)
-  const [isProductDetails, setIsProductDetails] = useState(false)
+  const [isProductDetails, setIsProductDetails] = useState(false);
 
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
@@ -26,7 +29,6 @@ const UserProductCard = (props) => {
 
   return (
     <Box
-      minHeight={"100px"}
       maxWidth={"100%"}
       display={"flex"}
       alignItems={"center"}
@@ -46,14 +48,15 @@ const UserProductCard = (props) => {
       }}
       padding={"20px"}
     >
-      <ProductDetails
-        title={"Edit your prefrences"}
-        product={props.item.product}
-        productDetails={productDetails}
-        setProductDetails={setProductDetails}
-        switchIsProductDetails={switchIsProductDetails}
-        isProductDetails={isProductDetails}
-      />
+      {(props.type === "cart" || props.type === "favourites") && (
+        <ProductDetails
+          title={"Edit your prefrences"}
+          product={props.item.product}
+          user={props.user}
+          switchIsProductDetails={switchIsProductDetails}
+          isProductDetails={isProductDetails}
+        />
+      )}
       <Box
         height={"90px"}
         width={"100px"}
@@ -66,7 +69,7 @@ const UserProductCard = (props) => {
         }}
       />
       <Link
-        href={props.isLink ? `/product/?p=${props.item.product.id}&${paramsDetails.toString()}` : undefined}
+        href={props.isLink ? `/product/?p=${props.item.product.id}` : undefined}
         sx={{
           color: "black",
           textDecoration: "none",
@@ -87,7 +90,6 @@ const UserProductCard = (props) => {
             {props.item.product.name}
           </Typography>
           <Typography
-            key={`orderItem-details`}
             fontSize={"clamp(0.7rem, 2vw, 0.9rem)"}
             color={"text.secondary"}
           >

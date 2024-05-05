@@ -10,16 +10,17 @@ import {
   useMediaQuery,
   Tooltip,
 } from "@mui/material";
-import data from "../../lib/data";
 import CategorizeComponent from "./categorizeComponent";
 import ProductDetails from "./productDetails";
-import { navigate } from "gatsby";
+import data from "../../lib/data";
+import { useSelector } from "react-redux";
 
 const ProductCard = (props) => {
-  const [productDetails, setProductDetails] = useState({});
+  const [offers, setOffers] = useState({});
+  const user = useSelector((state) => state.user);
   const [isProductDetails, setIsProductDetails] = useState(false);
-  const [isLiked, setIsLiked] = useState(false)
-  const [isInCart, setIsInCart] = useState(false)
+  const [isLiked, setIsLiked] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
 
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -29,35 +30,17 @@ const ProductCard = (props) => {
   };
 
   const addToCart = () => {
-    if (isInCart) {
-      navigate("/cart");
-    } else {
-      switchIsProductDetails();
-    }
+    switchIsProductDetails();
   };
 
   useEffect(() => {
-    if (props.product.type === "cake") {
-      setProductDetails((prev) => ({ ...prev, weight: 1 }));
-    } else if (props.product.type === "pastry") {
-      setProductDetails((prev) => ({ ...prev, quantity: 1 }));
-    }
-    if (props.product.variants) {
-      props.product.variants.forEach((variant) => {
-        setProductDetails((prev) => ({
-          ...prev,
-          [variant.title]: variant.options[0],
-        }));
-      });
-    }
-  }, [props.product]);
+    setOffers(data.offers);
+  }, []);
+
   useEffect(() => {
-    if(props.user.name)
-    {
-      setIsLiked(Boolean(props.user.favourites[props.product.id]))
-      setIsInCart(Boolean(props.user.cart.items[props.product.id]))
-    }
-  }, [props.user])
+    setIsLiked(Boolean(props.user.favourites[props.product.id]));
+    setIsInCart(Boolean(props.user.cart.items[props.product.id]));
+  }, [props.user, props.product]);
 
   return (
     <Box
@@ -76,9 +59,9 @@ const ProductCard = (props) => {
       }}
     >
       <ProductDetails
+        title={isInCart || isLiked ? "Change your prefrences" : undefined}
         product={props.product}
-        productDetails={productDetails}
-        setProductDetails={setProductDetails}
+        user={user}
         switchIsProductDetails={switchIsProductDetails}
         isProductDetails={isProductDetails}
       />
@@ -107,9 +90,9 @@ const ProductCard = (props) => {
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <Tooltip title={isLiked  ? "Favourited" : "Add to favourites"}>
+            <Tooltip title={isLiked ? "Favourited" : "Add to favourites"}>
               <IconButton>
-                <Favorite sx={{ color: isLiked  ? "primary.main" : "white" }} />
+                <Favorite sx={{ color: isLiked ? "primary.main" : "white" }} />
               </IconButton>
             </Tooltip>
             <Tooltip title={isInCart ? "added to cart" : "add to cart"}>
@@ -122,7 +105,7 @@ const ProductCard = (props) => {
               </IconButton>
             </Tooltip>
           </Box>
-          {props.product.offer && (
+          {Boolean(offers[props.product.id]) && (
             <Box
               position={"absolute"}
               bottom={0}
@@ -142,7 +125,7 @@ const ProductCard = (props) => {
                 color={"white"}
                 borderRadius={"0px 0px 20px 0px"}
               >
-                -{props.product.offer}%
+                -{offers[props.product.id]}%
               </Typography>
             </Box>
           )}

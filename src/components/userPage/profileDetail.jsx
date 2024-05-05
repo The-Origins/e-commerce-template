@@ -1,16 +1,37 @@
 import { Edit } from "@mui/icons-material";
-import { Box, IconButton, Tooltip, Typography, useMediaQuery, useTheme } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
 
 const UserProfileDetail = (props) => {
+  const [detail, setDetail] = useState(" ");
+  const [isEdit, setIsEdit] = useState(false);
   const theme = useTheme();
-  const isNotPhone = useMediaQuery("(min-width:1000px)")
+  const isNotPhone = useMediaQuery("(min-width:1000px)");
+
+  const handleChange = ({ target }) => {
+    setDetail(target.value);
+  };
+
+  useEffect(() => {
+    setDetail(props.value);
+  }, [props.value]);
+
   return (
     <Box
       position={"relative"}
-      flexBasis={200}
-      height={"100px"}
+      flexBasis={300}
       flexGrow={1}
+      maxWidth={"400px"}
       display={"flex"}
       flexDirection={"column"}
       gap={"5px"}
@@ -26,34 +47,68 @@ const UserProfileDetail = (props) => {
         ":hover .profile-detail-title": { color: "primary.main" },
       }}
     >
-      <Box
-        className="profile-detail-title"
-        sx={{ transition: "0.3s" }}
-        display={"flex"}
-        gap={"10px"}
-        alignItems={"center"}
-      >
-        {props.icon}
-        <Typography>{props.title}</Typography>
-      </Box>
-      <Typography sx={{ transition: "0.3s" }} color={"text.secondary"}>
-        {props.value}
-      </Typography>
-      {!props.notChange && (
-        <Tooltip title="edit" placement="right">
-          <IconButton
-            className="profile-detail-edit"
-            sx={{
-              position: "absolute",
-              bottom: 10,
-              right: 10,
-              opacity: isNotPhone ? 0 : 1,
-              transition: "0.3s",
+      {isEdit ? (
+        <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
+          <TextField
+            value={detail}
+            onChange={handleChange}
+            type={props.type}
+            label={props.title}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">{props.icon}</InputAdornment>
+              ),
             }}
+          />
+          <Box width={"100%"} display={"flex"} justifyContent={"space-between"}>
+            <Button
+              onClick={() => setIsEdit(false)}
+              variant="outlined"
+              size="small"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => setIsEdit(false)}
+              disableElevation
+              variant="contained"
+              size="small"
+            >
+              Save
+            </Button>
+          </Box>
+        </Box>
+      ) : (
+        <Box>
+          <Box
+            className="profile-detail-title"
+            sx={{ transition: "0.3s" }}
+            display={"flex"}
+            gap={"10px"}
+            alignItems={"center"}
           >
-            <Edit />
-          </IconButton>
-        </Tooltip>
+            {props.icon}
+            <Typography>{props.title}</Typography>
+          </Box>
+          <Typography sx={{ transition: "0.3s" }} color={"text.secondary"}>
+            {props.value}
+          </Typography>
+          <Tooltip title="edit" placement="right">
+            <IconButton
+              onClick={() => setIsEdit(true)}
+              className="profile-detail-edit"
+              sx={{
+                position: "absolute",
+                bottom: 10,
+                right: 10,
+                opacity: isNotPhone ? 0 : 1,
+                transition: "0.3s",
+              }}
+            >
+              <Edit />
+            </IconButton>
+          </Tooltip>
+        </Box>
       )}
     </Box>
   );

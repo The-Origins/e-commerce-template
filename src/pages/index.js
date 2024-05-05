@@ -26,27 +26,9 @@ const Home = () => {
   const user = useSelector((state => state.user))
 
   useEffect(() => {
-    let params = new URLSearchParams(window.location.search);
-    const ref = params.get("ref");
-    if (ref === "404") {
-      dispatch(
-        activateModal({
-          message: {
-            title: "404 Error",
-            description: "Couldn't find the page you're looking for",
-          },
-          modalType: "error",
-        })
-      );
-      navigate("/");
-    }
-
-
-    document.title = "Wendoh Cakes | Made with love";
-    return () => (params = undefined);
+    document.title = "E-commerce | my moto";
   }, []);
 
- 
 
   return (
     <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
@@ -58,7 +40,7 @@ const Home = () => {
           width={"100%"}
           height={"80vh"}
         >
-          <SpotlightCarousel />
+          <SpotlightCarousel/>
         </Box>
         <Box
           display={"flex"}
@@ -140,7 +122,7 @@ const Home = () => {
         </Box>
         <Box
           width={"100%"}
-          height={"90vh"}
+          height={"80vh"}
           display={"flex"}
           justifyContent={"center"}
           alignItems={"center"}
@@ -162,7 +144,7 @@ const Home = () => {
         </Box>
         <Box
           width={"100%"}
-          height={"90vh"}
+          height={"80vh"}
           display={"flex"}
           justifyContent={"center"}
           alignItems={"center"}
@@ -172,7 +154,6 @@ const Home = () => {
               if (index < 4) {
                 return (
                   <ProductCard
-                    id={index}
                     product={product}
                     user={user}
                   />
@@ -184,7 +165,7 @@ const Home = () => {
         </Box>
         <Box
           width={"100%"}
-          height={"90vh"}
+          height={"80vh"}
           display={"flex"}
           justifyContent={"center"}
           alignItems={"center"}

@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import {
   BookmarkAdded,
-  Cake,
   Favorite,
   NotificationsSharp,
 } from "@mui/icons-material";
@@ -24,7 +23,6 @@ import OrderDetails from "../components/userPage/orderDetails";
 import UserFavourites from "../components/userPage/favourites";
 import UserProfile from "../components/userPage/profile";
 import Notifications from "../components/userPage/notifications";
-import CustomCakes from "../components/userPage/customCakes";
 
 const UserPage = () => {
   const theme = useTheme();
@@ -45,9 +43,8 @@ const UserPage = () => {
     setStages({
       orders: <UserOrders />,
       order: <OrderDetails />,
-      favourites: <UserFavourites user={user}/>,
-      notifications: <Notifications user={user}/>,
-      "custom-cakes":<CustomCakes />
+      favourites: <UserFavourites user={user} />,
+      notifications: <Notifications user={user} />,
     });
   }, [user]);
 
@@ -67,7 +64,7 @@ const UserPage = () => {
         overflow={"hidden"}
         borderRadius={"25px"}
       >
-        {isNotPhone && user.name && (
+        {isNotPhone && (
           <Box
             width={"400px"}
             height={"100%"}
@@ -78,7 +75,12 @@ const UserPage = () => {
           >
             <Link
               href="/user/#"
-              sx={{ height: "40%", color: "black", textDecoration: "none" }}
+              sx={{
+                height: "40%",
+                color: "black",
+                textDecoration: "none",
+                bgcolor: !window.location.hash ? "#F5F5F5" : undefined,
+              }}
             >
               <MenuItem
                 sx={{
@@ -110,7 +112,12 @@ const UserPage = () => {
                 stage={stage}
                 title={"My notifications"}
                 icon={
-                  <Badge color="primary" variant="dot" overlap="circular" invisible={!user.notifications.new}>
+                  <Badge
+                    color="primary"
+                    variant="dot"
+                    overlap="circular"
+                    invisible={!user.notifications.new}
+                  >
                     <NotificationsSharp />
                   </Badge>
                 }
@@ -127,13 +134,6 @@ const UserPage = () => {
                 title={"My favourites"}
                 icon={<Favorite />}
               />
-              <SideBarElement
-                path={"custom-cakes"}
-                stage={stage}
-                title={"My custom cakes"}
-                icon={<Cake />}
-                isBottom={true}
-              />
               <Divider sx={{ margin: "30px" }} />
               <Button
                 onClick={() => {}}
@@ -147,7 +147,7 @@ const UserPage = () => {
           </Box>
         )}
         <Box width={"100%"} height={"100%"}>
-          {!stage && <UserProfile user={user}/>}
+          {!stage && <UserProfile user={user} />}
           {stages[stage]}
         </Box>
       </Box>

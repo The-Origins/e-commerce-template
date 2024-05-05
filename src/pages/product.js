@@ -21,6 +21,7 @@ import {
   Share,
 } from "@mui/icons-material";
 import data from "../lib/data";
+import ProductWorker from "../scripts/productWorker";
 import RatingDistributionComponent from "../components/productPage/ratingDistribution";
 import ReviewComponent from "../components/productPage/reviewComponent";
 import ProductCardContainer from "../components/product/productCardContainer";
@@ -42,15 +43,13 @@ const ProductPage = () => {
     rating: { score: 0, votes: [], reviews: [] },
     allergenAdvice: [],
   });
-  let paramDetails = Object.fromEntries(params.entries());
-  const [productDetails, setProductDetails] = useState(paramDetails);
   const [isProductDetails, setIsProductDetails] = useState(false);
   const [ratingDistribution, setRatingDistribution] = useState({});
   const maxImageIndex = product.images.length;
 
   useEffect(() => {
     setProduct(data.products.find((element) => element.id === id));
-  }, []); 
+  }, []);
 
   useEffect(() => {
     if (product.name) {
@@ -59,10 +58,8 @@ const ProductPage = () => {
   }, [product]);
 
   useEffect(() => {
-    if (user.name) {
-      setIsLiked(Boolean(user.favourites[id]));
-      setIsInCart(Boolean(user.cart.items[id]));
-    }
+    setIsLiked(Boolean(user.favourites[id]));
+    setIsInCart(Boolean(user.cart.items[id]));
   }, [user]);
 
   useEffect(() => {
@@ -78,24 +75,6 @@ const ProductPage = () => {
     });
     setRatingDistribution(distribution);
   }, [product.rating.votes]);
-
-  useEffect(() => {
-    if (Object.keys(productDetails).length < 1) {
-      if (product.type === "cake") {
-        setProductDetails((prev) => ({ ...prev, weight: 1 }));
-      } else if (product.type === "pastry") {
-        setProductDetails((prev) => ({ ...prev, quantity: 1 }));
-      }
-      if (product.variants) {
-        product.variants.forEach((variant) => {
-          setProductDetails((prev) => ({
-            ...prev,
-            [variant.title]: variant.options[0],
-          }));
-        });
-      }
-    }
-  }, [product]);
 
   const next = () => {
     setImageIndex((prev) => prev + 1);
@@ -118,14 +97,12 @@ const ProductPage = () => {
 
   const like = () => {};
 
-
   return (
     <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
       <ProductDetails
         title={isInCart && "Change your prefrences"}
         product={product}
-        productDetails={productDetails}
-        setProductDetails={setProductDetails}
+        user={user}
         switchIsProductDetails={switchIsProductDetails}
         isProductDetails={isProductDetails}
       />
@@ -177,7 +154,6 @@ const ProductPage = () => {
                       width={"100%"}
                       height={"100%"}
                       display={"inline-block"}
-                      key={index}
                       sx={{
                         backgroundImage: `url(${image})`,
                         backgroundSize: "cover",
@@ -276,13 +252,13 @@ const ProductPage = () => {
                 >
                   <Button
                     disableElevation
-                    fullWidth
-                    sx={{ height: "50px", margin: "10px" }}
+                    color={isInCart ? "success" : "primary"}
+                    sx={{ height: "50px", width: "100%" }}
                     variant="contained"
-                    startIcon={<AddShoppingCart />}
+                    startIcon={isInCart ? <CheckCircle /> : <AddShoppingCart />}
                     onClick={addToCart}
                   >
-                    add to cart
+                    {isInCart ? "added to cart" : "add to cart"}
                   </Button>
                 </Box>
               )}

@@ -16,13 +16,15 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
+import ProductWorker from "../../scripts/productWorker";
 
 const ProductDetails = (props) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const product = props.product;
+  const [productDetails, setProductDetails] = useState({});
   const handleProductDetailsChange = ({ target }) => {
-    props.setProductDetails((prev) => ({
+    setProductDetails((prev) => ({
       ...prev,
       [target.name]: target.value,
     }));
@@ -31,6 +33,16 @@ const ProductDetails = (props) => {
   const confirm = () => {
     props.switchIsProductDetails();
   };
+  
+  useEffect(() => {
+    const productWorker = new ProductWorker(props.product);
+    setProductDetails(
+      productWorker.getProductDetails(
+        props.user.cart.items,
+        props.user.favourites
+      )
+    );
+  }, [props.product, props.user]);
 
   return (
     <Backdrop sx={{ color: "#fff", zIndex: 2 }} open={props.isProductDetails}>
@@ -90,24 +102,14 @@ const ProductDetails = (props) => {
                 variant="outlined"
                 sx={{ minWidth: 100, color: "black" }}
                 name="weight"
-                value={props.productDetails.weight || 1}
+                value={productDetails.weight || 1}
                 onChange={handleProductDetailsChange}
               >
-                <MenuItem value={1} >
-                  1
-                </MenuItem>
-                <MenuItem value={2} >
-                  2
-                </MenuItem>
-                <MenuItem value={3} >
-                  3
-                </MenuItem>
-                <MenuItem value={4} >
-                  4
-                </MenuItem>
-                <MenuItem value={5} >
-                  5
-                </MenuItem>
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+                <MenuItem value={3}>3</MenuItem>
+                <MenuItem value={4}>4</MenuItem>
+                <MenuItem value={5}>5</MenuItem>
               </Select>
             </>
           ) : (
@@ -116,7 +118,7 @@ const ProductDetails = (props) => {
               <TextField
                 type="number"
                 name={"amount"}
-                value={props.productDetails.quantity}
+                value={productDetails.quantity}
                 onChange={handleProductDetailsChange}
               />
             </>
@@ -126,7 +128,6 @@ const ProductDetails = (props) => {
           product.variants.map((variant, index) => {
             return (
               <Box
-                key={`product-${product.id}-variant-${index}`}
                 display={"flex"}
                 flexDirection={"column"}
                 width={"80%"}
@@ -142,21 +143,18 @@ const ProductDetails = (props) => {
                       row
                       aria-labelledby={`product-${product.id}-variant-${index}-options`}
                       name={variant.title}
-                      value={props.productDetails[variant.title]}
+                      value={productDetails[variant.title]}
                       onChange={handleProductDetailsChange}
                     >
                       {variant.options.map((option, index) => (
                         <FormControlLabel
-                          key={`product-${product.id}-variant-${index}-option-${index}`}
                           value={option}
                           control={<Radio />}
                           label={
                             option.charAt(0).toUpperCase() +
                             option.substring(1, option.length)
                           }
-                          checked={
-                            props.productDetails[variant.title] === option
-                          }
+                          checked={productDetails[variant.title] === option}
                         />
                       ))}
                     </RadioGroup>
