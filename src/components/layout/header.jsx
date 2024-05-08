@@ -63,11 +63,6 @@ const Header = () => {
           flexDirection={"column"}
           width={isNotPhone ? "80%" : "90%"}
         >
-          <UserMenu
-            isUserMenu={isUserMenu}
-            switchIsUserMenu={switchIsUserMenu}
-            user={user}
-          />
           <Box
             display={"flex"}
             alignItems={"center"}

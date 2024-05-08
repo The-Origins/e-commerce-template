@@ -17,7 +17,6 @@ import data from "../lib/data";
 import CategoryCard from "../components/product/categoryCard";
 import cupcakes from "../assets/images/cupcakes1.jpg"
 import cupcakes2 from "../assets/images/cupcakes2.jpg";
-import { navigate } from "gatsby";
 
 const Home = () => {
   const dispatch = useDispatch();
