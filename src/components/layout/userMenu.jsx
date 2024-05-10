@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import {
   BookmarkAdded,
-  Cake,
   Favorite,
   NotificationsSharp,
 } from "@mui/icons-material";
@@ -35,7 +34,7 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);  
     };
   }, []); //eslint: react-hooks/exhaustive-deps
 
@@ -50,8 +49,7 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
       zIndex={4}
       className="user-menu"
       position={"absolute"}
-      right={isNotPhone ? 0 : undefined}
-      left={isNotPhone ? undefined : 0}
+      right={0}
       top={"100%"}
       display={"flex"}
       flexDirection={"column"}

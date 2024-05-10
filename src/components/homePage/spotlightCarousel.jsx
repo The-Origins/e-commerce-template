@@ -1,10 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import data from "../../lib/data";
-import { Box, IconButton, MobileStepper, useTheme } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  MobileStepper,
+  Skeleton,
+  useTheme,
+} from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import SpotlightItem from "./spotlightItem";
 
-const SpotlightCarousel = () => {
+const SpotlightCarousel = (props) => {
   const theme = useTheme();
   const [spotlightIndex, setSpotlightIndex] = useState(0);
   const maxIndex = data.spotlights.length;
@@ -50,7 +56,7 @@ const SpotlightCarousel = () => {
       }
     }, 5000);
     return () => clearInterval(spotlightInterval);
-  }, [spotlightIndex, isHovering,]);
+  }, [spotlightIndex, isHovering]);
 
   return (
     <Box
@@ -71,45 +77,54 @@ const SpotlightCarousel = () => {
         overflow: "hidden",
       }}
     >
-      <Box
-        position={"absolute"}
-        width={"100%"}
-        height={"100%"}
-        whiteSpace={"nowrap"}
-        sx={{
-          transition: "0.5s ease-in-out",
-          transform: `translateX(-${
-            spotlightIndex !== 0 ? spotlightIndex + "00%" : "0%"
-          })`,
-        }}
-      >
-        {data.spotlights.map((spotlight) => (
-          <SpotlightItem spotlight={spotlight} />
-        ))}
-      </Box>
-      <Box width={"100%"} display={"flex"} justifyContent={"space-between"}>
-        <IconButton onClick={back} disabled={spotlightIndex < 1}>
-          <ChevronLeft />
-        </IconButton>
-        <IconButton onClick={next} disabled={spotlightIndex >= maxIndex - 1}>
-          <ChevronRight />
-        </IconButton>
-      </Box>
-      <Box
-        position={"absolute"}
-        bottom={0}
-        width={"100%"}
-        display={"flex"}
-        justifyContent={"center"}
-      >
-        <MobileStepper
-          variant="dots"
-          steps={maxIndex}
-          activeStep={spotlightIndex}
-          position="static"
-          sx={{ background: "transparent" }}
-        />
-      </Box>
+      {props.isLoading ? (
+        <Skeleton width={"100%"} height={"100%"} variant="rounded" />
+      ) : (
+        <>
+          <Box
+            position={"absolute"}
+            width={"100%"}
+            height={"100%"}
+            whiteSpace={"nowrap"}
+            sx={{
+              transition: "0.5s ease-in-out",
+              transform: `translateX(-${
+                spotlightIndex !== 0 ? spotlightIndex + "00%" : "0%"
+              })`,
+            }}
+          >
+            {data.spotlights.map((spotlight) => (
+              <SpotlightItem {...spotlight}/>
+            ))}
+          </Box>
+          <Box width={"100%"} display={"flex"} justifyContent={"space-between"}>
+            <IconButton onClick={back} disabled={spotlightIndex < 1}>
+              <ChevronLeft />
+            </IconButton>
+            <IconButton
+              onClick={next}
+              disabled={spotlightIndex >= maxIndex - 1}
+            >
+              <ChevronRight />
+            </IconButton>
+          </Box>
+          <Box
+            position={"absolute"}
+            bottom={0}
+            width={"100%"}
+            display={"flex"}
+            justifyContent={"center"}
+          >
+            <MobileStepper
+              variant="dots"
+              steps={maxIndex}
+              activeStep={spotlightIndex}
+              position="static"
+              sx={{ background: "transparent" }}
+            />
+          </Box>
+        </>
+      )}
     </Box>
   );
 };

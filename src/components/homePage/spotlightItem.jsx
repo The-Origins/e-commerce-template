@@ -1,4 +1,11 @@
-import { Box, Link, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Link,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import React from "react";
 
 const SpotlightItem = (props) => {
@@ -45,29 +52,12 @@ const SpotlightItem = (props) => {
                 fontSize={"clamp(1rem, 7vw, 2.5rem)"}
                 fontWeight={"bold"}
               >
-                {props.spotlight.title}
+                {props.title}
               </Typography>
-              <Typography>{props.spotlight.description}</Typography>
+              <Typography>{props.description}</Typography>
             </Box>
-            <Link
-              href={props.spotlight.action.path}
-              sx={{
-                textDecoration:"none",
-                fontSize: "clamp(0.2rem, 5vw, 0.9rem)",
-                border: `1px solid ${theme.palette.primary.main}`,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: "20px",
-                transition: "0.3s",
-                ":hover": {
-                  color: "white",
-                  bgcolor: "primary.main",
-                  border: "none",
-                },
-              }}
-            >
-              <Typography padding={"10px 30px"}>{props.spotlight.action.title}</Typography>
+            <Link href={props.action.path}>
+              <Button variant="outlined">{props.action.title}</Button>
             </Link>
           </Box>
         </Box>
@@ -75,7 +65,7 @@ const SpotlightItem = (props) => {
           width={isNotPhone ? "50%" : "100%"}
           height={isNotPhone ? "100%" : "50%"}
           sx={{
-            backgroundImage: `url(${props.spotlight.image})`,
+            backgroundImage: `url(${props.image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}

@@ -3,12 +3,9 @@ import { Box } from "@mui/material";
 import {
   AccountCircle,
   Explore,
-  LocalShipping,
   Mail,
-  Paid,
   Payments,
   Phone,
-  Place,
 } from "@mui/icons-material";
 import UserProfileDetail from "./profileDetail";
 import UserProfileList from "./profileList";

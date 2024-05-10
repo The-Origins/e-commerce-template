@@ -5,6 +5,7 @@ import {
   Badge,
   Box,
   Button,
+  CircularProgress,
   Divider,
   Link,
   MenuItem,
@@ -28,6 +29,7 @@ const UserPage = () => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const user = useSelector((state) => state.user);
+  const [isLoading, setIsLoading] = useState(true)
   const [stages, setStages] = useState({});
   let stage = String(window.location.hash).includes("/")
     ? window.location.hash.substring(1, window.location.hash.indexOf("/"))
@@ -40,13 +42,20 @@ const UserPage = () => {
   }, [stage]);
 
   useEffect(() => {
+    if(Object.keys(user.payment).length)
+      {
+        setIsLoading(false)
+      }
+  }, [user])
+
+  useEffect(() => {
     setStages({
-      orders: <UserOrders />,
-      order: <OrderDetails />,
-      favourites: <UserFavourites user={user} />,
-      notifications: <Notifications user={user} />,
+      orders: <UserOrders isLoading={isLoading}/>,
+      order: <OrderDetails isLoading={isLoading}/>,
+      favourites: <UserFavourites user={user} isLoading={isLoading}/>,
+      notifications: <Notifications user={user} isLoading={isLoading}/>,
     });
-  }, [user]);
+  }, [user, isLoading]);
 
   return (
     <Box
@@ -146,9 +155,10 @@ const UserPage = () => {
             </Box>
           </Box>
         )}
-        <Box width={"100%"} height={"100%"}>
-          {!stage && <UserProfile user={user} />}
-          {stages[stage]}
+        <Box width={"100%"} height={"100%"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
+          {isLoading && <CircularProgress />}
+          {!stage && !isLoading && <UserProfile user={user} isLoading={isLoading}/>}
+          {!isLoading && stages[stage]}
         </Box>
       </Box>
     </Box>

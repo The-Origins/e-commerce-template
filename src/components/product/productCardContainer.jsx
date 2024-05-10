@@ -1,71 +1,93 @@
-import { useMediaQuery, useTheme, Box, Typography, Link } from "@mui/material";
+import {
+  useTheme,
+  Box,
+  Typography,
+  Link,
+  Button,
+} from "@mui/material";
 import { ArrowRightAlt } from "@mui/icons-material";
 import React from "react";
+import SkeletonGroup from "./skeletonGroup";
 
 const ProductCardContainer = (props) => {
   const theme = useTheme();
-  const isNotPhone = useMediaQuery("(min-width:1000px)");
   return (
     <Box
       width={"100%"}
+      height={"80vh"}
       display={"flex"}
-      flexDirection={"column"}
-      position={"relative"}
-      margin={"30px 0px"}
+      justifyContent={"center"}
+      alignItems={"center"}
     >
-      <Typography margin={"20px"} color={"text.secondary"}>
-        {props.containerTitle}
-      </Typography>
-      {!props.isRecent && <Box
-        position={"absolute"}
-        bottom={18}
-        height={"50px"}
-        width={"100%"}
-        display={"flex"}
-        justifyContent={"center"}
-        alignItems={"center"}
-      >
-        <Link
-          href={`/results?search=${String(props.containerTitle)
-            .split(" ")
-            .join("+")}`}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "200px",
-            height: "50px",
-            textDecoration: "none",
-          }}
-        >
-          View more
-          <ArrowRightAlt sx={{ ml: "5px" }} />
-        </Link>
-      </Box>}
       <Box
         width={"100%"}
-        borderRadius={"25px"}
-        border={`1px solid ${theme.palette.grey[400]}`}
         display={"flex"}
-        alignItems={"center"}
-        justifyContent={isNotPhone ? "center" : "flex-start"}
-        sx={{
-          overflowX: "scroll",
-          scrollbarWidth: isNotPhone ? 0 : undefined,
-          "&::-webkit-scrollbar": {
-            display: isNotPhone ? "none" : undefined,
-          },
-        }}
+        flexDirection={"column"}
+        position={"relative"}
       >
+        <Typography margin={"20px"} color={"text.secondary"}>
+          {props.containerTitle}
+        </Typography>
+        {!props.isRecent && (
+          <Box
+            position={"absolute"}
+            bottom={18}
+            height={"40px"}
+            width={"100%"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <Link
+              href={`/results?search=${String(props.containerTitle)
+                .split(" ")
+                .join("+")}`}
+              sx={{
+                textDecoration: "none",
+              }}
+            >
+              <Button endIcon={<ArrowRightAlt />}>View more</Button>
+            </Link>
+          </Box>
+        )}
         <Box
-          whiteSpace={"nowrap"}
+          width={"100%"}
           display={"flex"}
-          mt={"30px"}
-          mb={"60px"}
-          ml={isNotPhone ? undefined : "20px"}
-          gap={"20px"}
+          alignItems={"center"}
+          borderRadius={"25px"}
+          padding={"50px 2vw"}
+          border={`1px solid ${theme.palette.grey[400]}`}
+          overflow={"hidden"}
         >
-          {props.children}
+          <Box
+            width={"100%"}
+            mb={"10px"}
+            display={"flex"}
+            justifyContent={"flex-start"}
+            alignItems={"center"}
+            sx={{
+              overflowX: "scroll",
+              "&::-webkit-scrollbar": {
+                bgcolor: "transparent",
+                height: "10px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                borderRadius: "25px",
+                bgcolor: "text.secondary",
+              },
+              "&::-webkit-scrollbar-thumb:hover": {
+                cursor: "pointer",
+              },
+            }}
+          >
+            {props.isLoading ? (
+              <SkeletonGroup type="box" count={4} />
+            ) : (
+              <Box display={"flex"} gap={"20px"}>
+                {props.children}
+              </Box>
+            )}
+          </Box>
         </Box>
       </Box>
     </Box>

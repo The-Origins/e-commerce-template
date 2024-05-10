@@ -23,7 +23,14 @@ const UserProfileList = (props) => {
         alignItems={"center"}
         borderBottom={`1px solid ${theme.palette.grey[400]}`}
       >
-        <Typography sx={{ display: "flex", gap: "5px", alignItems: "center", color:"text.secondary" }}>
+        <Typography
+          sx={{
+            display: "flex",
+            gap: "5px",
+            alignItems: "center",
+            color: "text.secondary",
+          }}
+        >
           {props.icon}
           {props.title}
         </Typography>
@@ -31,12 +38,25 @@ const UserProfileList = (props) => {
           <AddCircle />
         </IconButton>
       </Box>
-      <Box display={"flex"} flexDirection={"column"} gap={"20px"} padding={"20px"}>
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        gap={"20px"}
+        padding={"20px"}
+      >
         {props.data.map((data) => (
           <ProfileListElement
             icon={props.type === "address" ? <Place /> : <Paid />}
-            title={props.type === "address" ? `${data.address}, ${data.street}` : data.type}
-            description={props.type === "address" ? `${data.country}, ${data.city}` : data.details.number}
+            title={
+              props.type === "address"
+                ? `${data.address}, ${data.street}`
+                : data.type
+            }
+            description={
+              props.type === "address"
+                ? `${data.country}, ${data.city}`
+                : data.details.number
+            }
             type={props.type}
           />
         ))}

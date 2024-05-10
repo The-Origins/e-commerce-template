@@ -553,290 +553,21 @@ const data = {
       new: true,
     },
     favourites: {
-      1: {
-        product: {
-          images: [
-            "https://images.pexels.com/photos/2525682/pexels-photo-2525682.png",
-            "https://images.pexels.com/photos/1055272/pexels-photo-1055272.jpeg",
-            "https://images.pexels.com/photos/1055271/pexels-photo-1055271.jpeg",
-          ],
-          name: "My Product 1",
-          flavours: ["Chocolate"],
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
-          unitPrice: {
-            currency: "$",
-            amount: 2000,
-            unit: "kg",
-          },
-          allergenAdvice: ["contains dairy", "contains nuts"],
-          variants: [
-            { title: "icing", options: ["whipped cream", "fondant"] },
-            { title: "color", options: ["white", "blue"] },
-          ],
-          rating: {
-            votes: [4, 3, 3, 4, 5],
-            score: 4.3,
-            reviews: [
-              {
-                userName: "John Doe",
-                date: "10/10/2023",
-                rating: 4,
-                review: {
-                  title: "Very Good!",
-                  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
-                },
-              },
-              {
-                userName: "John Doe",
-                date: "10/10/2023",
-                rating: 4,
-                review: {
-                  title: "Very Good!",
-                  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
-                },
-              },
-              {
-                userName: "John Doe",
-                date: "10/10/2023",
-                rating: 4,
-                review: {
-                  title: "Very Good!",
-                  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
-                },
-              },
-            ],
-          },
-          stock: 200,
-          state: "In stock",
-          categories: ["nuts", "chocolate", "birthday", "vegan", "trending"],
-          id: 1,
-          type: "cake",
-        },
-        details: { icing: "whipped cream", color: "white", weight: 3 },
-      },
-      2: {
-        product: {
-          images: [
-            "https://images.pexels.com/photos/2525682/pexels-photo-2525682.png",
-            "https://images.pexels.com/photos/1055272/pexels-photo-1055272.jpeg",
-            "https://images.pexels.com/photos/1055271/pexels-photo-1055271.jpeg",
-          ],
-          name: "My Product 2",
-          type: "cake",
-          offer: 24,
-          flavours: ["Chocolate"],
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
-          unitPrice: {
-            currency: "$",
-            amount: 4000,
-            unit: "kg",
-          },
-          allergenAdvice: ["contains nuts"],
-          variants: [
-            { title: "icing", options: ["whipped cream", "fondant"] },
-            { title: "color", options: ["white", "blue"] },
-          ],
-          rating: {
-            votes: [4, 3, 3, 4, 5],
-            score: 4,
-            reviews: [
-              {
-                userName: "John Doe",
-                date: "10/10/2023",
-                rating: 4,
-                review: {
-                  title: "Very Good!",
-                  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
-                },
-              },
-              {
-                userName: "John Doe",
-                date: "10/10/2023",
-                rating: 4,
-                review: {
-                  title: "Very Good!",
-                  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
-                },
-              },
-              {
-                userName: "John Doe",
-                date: "10/10/2023",
-                rating: 4,
-                review: {
-                  title: "Very Good!",
-                  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
-                },
-              },
-            ],
-          },
-          stock: 200,
-          state: "In stock",
-          categories: ["no sugar", "chocolate", "birthday", "vegan", "cakes"],
-          id: 2,
-        },
-        details: { icing: "fondant", color: "blue", weight: 5 },
-      },
+      1: { icing: "whipped cream", color: "white", weight: 3 },
+      2: { icing: "fondant", color: "blue", weight: 5 },
     },
     cart: {
       total: 44000,
       items: {
         1: {
-          product: {
-            images: [
-              "https://images.pexels.com/photos/2525682/pexels-photo-2525682.png",
-              "https://images.pexels.com/photos/1055272/pexels-photo-1055272.jpeg",
-              "https://images.pexels.com/photos/1055271/pexels-photo-1055271.jpeg",
-            ],
-            name: "My Product 1",
-            flavours: ["Chocolate"],
-            description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
-            unitPrice: {
-              currency: "$",
-              amount: 2000,
-              unit: "kg",
-            },
-            allergenAdvice: ["contains dairy", "contains nuts"],
-            variants: [
-              { title: "icing", options: ["whipped cream", "fondant"] },
-              { title: "color", options: ["white", "blue"] },
-            ],
-            rating: {
-              votes: [4, 3, 3, 4, 5],
-              score: 4.3,
-              reviews: [
-                {
-                  userName: "John Doe",
-                  date: "10/10/2023",
-                  rating: 4,
-                  review: {
-                    title: "Very Good!",
-                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
-                  },
-                },
-                {
-                  userName: "John Doe",
-                  date: "10/10/2023",
-                  rating: 4,
-                  review: {
-                    title: "Very Good!",
-                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
-                  },
-                },
-                {
-                  userName: "John Doe",
-                  date: "10/10/2023",
-                  rating: 4,
-                  review: {
-                    title: "Very Good!",
-                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
-                  },
-                },
-              ],
-            },
-            stock: 200,
-            state: "In stock",
-            categories: ["nuts", "chocolate", "birthday", "vegan", "trending"],
-            id: 1,
-            type: "cake",
-          },
           details: { icing: "whipped cream", color: "white", weight: 3 },
           total: 0,
         },
         2: {
-          product: {
-            images: [
-              "https://images.pexels.com/photos/2525682/pexels-photo-2525682.png",
-              "https://images.pexels.com/photos/1055272/pexels-photo-1055272.jpeg",
-              "https://images.pexels.com/photos/1055271/pexels-photo-1055271.jpeg",
-            ],
-            name: "My Product 2",
-            type: "cake",
-            offer: 24,
-            flavours: ["Chocolate"],
-            description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
-            unitPrice: {
-              currency: "$",
-              amount: 4000,
-              unit: "kg",
-            },
-            allergenAdvice: ["contains nuts"],
-            variants: [
-              { title: "icing", options: ["whipped cream", "fondant"] },
-              { title: "color", options: ["white", "blue"] },
-            ],
-            rating: {
-              votes: [4, 3, 3, 4, 5],
-              score: 4,
-              reviews: [
-                {
-                  userName: "John Doe",
-                  date: "10/10/2023",
-                  rating: 4,
-                  review: {
-                    title: "Very Good!",
-                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
-                  },
-                },
-                {
-                  userName: "John Doe",
-                  date: "10/10/2023",
-                  rating: 4,
-                  review: {
-                    title: "Very Good!",
-                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
-                  },
-                },
-                {
-                  userName: "John Doe",
-                  date: "10/10/2023",
-                  rating: 4,
-                  review: {
-                    title: "Very Good!",
-                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend",
-                  },
-                },
-              ],
-            },
-            stock: 200,
-            state: "In stock",
-            categories: ["no sugar", "chocolate", "birthday", "vegan", "cakes"],
-            id: 2,
-          },
           details: { icing: "whipped cream", color: "white", weight: 3 },
           total: 0,
         },
         3: {
-          product: {
-            images: [
-              "https://images.pexels.com/photos/2525682/pexels-photo-2525682.png",
-              "https://images.pexels.com/photos/1055272/pexels-photo-1055272.jpeg",
-              "https://images.pexels.com/photos/1055271/pexels-photo-1055271.jpeg",
-            ],
-            name: "My Product 3",
-            type: "cake",
-            offer: 13,
-            flavours: ["Vanilla"],
-            description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
-            unitPrice: {
-              currency: "$",
-              amount: 1300,
-              unit: "kg",
-            },
-            variants: [
-              { title: "icing", options: ["whipped cream", "fondant"] },
-              { title: "color", options: ["white", "blue"] },
-            ],
-            rating: { votes: [4, 3, 3, 4, 5], score: 4.7 },
-            stock: 200,
-            state: "In stock",
-            categories: ["vanila", "birthday", "trending"],
-            id: 3,
-          },
           details: { icing: "whipped cream", color: "white", weight: 3 },
           total: 0,
         },
@@ -859,10 +590,9 @@ const data = {
         amount: 2000,
         unit: "kg",
       },
-      allergenAdvice: ["contains dairy", "contains nuts"],
+      features:[{flavour:"orange",}],
       variants: [
-        { title: "icing", options: ["whipped cream", "fondant"] },
-        { title: "color", options: ["white", "blue"] },
+        { title: "size", options: ["1Liter", "2Liter"] },
       ],
       rating: {
         votes: [4, 3, 3, 4, 5],
