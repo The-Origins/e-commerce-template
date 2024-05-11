@@ -11,6 +11,7 @@ import {
 import {
   Box,
   Button,
+  Skeleton,
   Typography,
   useMediaQuery,
   useTheme,
@@ -19,14 +20,16 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import UserProductCard from "../components/product/userProductCard";
 import CheckoutElement from "../components/checkout/checkoutElement";
+import ProductWorker from "../scripts/productWorker";
 
 const CheckoutPage = () => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
+  const productWorker = new ProductWorker();
   const user = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
   const [checkoutDetails, setCheckoutDetails] = useState({
-    items: {},
+    items: [],
     delivery: {},
     payment: {},
   });
@@ -38,14 +41,21 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     if (Object.keys(user.payment).length) {
+      let items = [];
+      Object.keys(user.cart.items).forEach((item) => {
+        items.push({
+          product: productWorker.findProduct(item),
+          ...user.cart.items[item],
+        });
+      });
       setCheckoutDetails({
         total:
           user.cart.total + user.addresses.saved[user.addresses.recent].fee,
-        items: user.cart.items,
+        items,
         payment: user.payment.saved[user.payment.recent],
         delivery: user.addresses.saved[user.addresses.recent],
       });
-      setIsLoading(false);
+      setIsLoading(false)
     }
   }, [user]);
 
@@ -88,27 +98,47 @@ const CheckoutPage = () => {
                 Summary
               </Typography>
               <Box display={"flex"} flexDirection={"column"} width={"100%"}>
-                <Box display={"flex"} justifyContent={"space-between"}>
-                  <Typography fontSize={"0.8rem"}>Subtotal</Typography>
-                  <Typography fontSize={"0.8rem"}>{user.cart.total}</Typography>
-                </Box>
-                <Box display={"flex"} justifyContent={"space-between"}>
-                  <Typography fontSize={"0.8rem"}>Delivery charges</Typography>
-                  <Typography fontSize={"0.8rem"}>
-                    {checkoutDetails.delivery.fee}
+                {isLoading ? (
+                  <Skeleton variant="rounded" width={"100%"} />
+                ) : (
+                  <Box display={"flex"} justifyContent={"space-between"}>
+                    <Typography fontSize={"0.8rem"}>Subtotal</Typography>
+                    <Typography fontSize={"0.8rem"}>
+                      {user.cart.total}
+                    </Typography>
+                  </Box>
+                )}
+                {isLoading ? (
+                  <Skeleton
+                    variant="rounded"
+                    width={"100%"}
+                    sx={{ mt: "10px" }}
+                  />
+                ) : (
+                  <Box display={"flex"} justifyContent={"space-between"}>
+                    <Typography fontSize={"0.8rem"}>
+                      Delivery charges
+                    </Typography>
+                    <Typography fontSize={"0.8rem"}>
+                      {checkoutDetails.delivery.fee}
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
+              {isLoading ? (
+                <Skeleton variant="rounded" width={"100%"} />
+              ) : (
+                <Box
+                  display={"flex"}
+                  width={"100%"}
+                  justifyContent={"space-between"}
+                >
+                  <Typography fontWeight={"bold"}>Total</Typography>
+                  <Typography fontWeight={"bold"}>
+                    {user.payment.currency} {checkoutDetails.total}
                   </Typography>
                 </Box>
-              </Box>
-              <Box
-                display={"flex"}
-                width={"100%"}
-                justifyContent={"space-between"}
-              >
-                <Typography fontWeight={"bold"}>Total</Typography>
-                <Typography fontWeight={"bold"}>
-                  {user.payment.currency} {checkoutDetails.total}
-                </Typography>
-              </Box>
+              )}
               <Box
                 position={"fixed"}
                 bottom={0}
@@ -122,18 +152,23 @@ const CheckoutPage = () => {
                 justifyContent={"space-between"}
                 borderRadius={"25px 25px 0px 0px"}
               >
-                <Typography
-                  padding={"10px"}
-                  border={`1px solid ${theme.palette.grey[400]}`}
-                  borderRadius={"10px"}
-                  fontSize={"0.9rem"}
-                >
-                  Total: {user.payment.currency} {checkoutDetails.total}
-                </Typography>
+                {isLoading ? (
+                  <Skeleton variant="rounded" width={"200px"} />
+                ) : (
+                  <Typography
+                    padding={"10px"}
+                    border={`1px solid ${theme.palette.grey[400]}`}
+                    borderRadius={"10px"}
+                    fontSize={"0.9rem"}
+                  >
+                    Total: {user.payment.currency} {checkoutDetails.total}
+                  </Typography>
+                )}
                 <Button
                   startIcon={<ExitToApp />}
                   variant="contained"
                   disableElevation
+                  disabled={isLoading}
                 >
                   Confirm
                 </Button>
@@ -159,22 +194,27 @@ const CheckoutPage = () => {
               height={expandItems ? "100%" : "50vh"}
               sx={{ overflow: "hidden", transition: "0.3s" }}
             >
-              <Box
-                display={"flex"}
-                width={"100%"}
-                flexDirection={"column"}
-                gap={"20px"}
-                padding={"20px"}
-                mb={expandItems ? "50px" : undefined}
-              >
-                {Object.keys(checkoutDetails.items).map((key) => (
-                  <UserProductCard
-                    item={checkoutDetails.items[key]}
-                    user={user}
-                    type="checkout"
-                  />
-                ))}
-              </Box>
+              {isLoading ? (
+                <Skeleton
+                  variant="rounded"
+                  width={"100%"}
+                  height={"50vh"}
+                ></Skeleton>
+              ) : (
+                <Box
+                  display={"flex"}
+                  width={"100%"}
+                  flexDirection={"column"}
+                  gap={"20px"}
+                  padding={"20px"}
+                  mb={expandItems ? "50px" : undefined}
+                  sx={{ transition: "0.3s" }}
+                >
+                  {checkoutDetails.items.map((item) => (
+                    <UserProductCard item={item} user={user} type="checkout" />
+                  ))}
+                </Box>
+              )}
               <Box
                 position={"absolute"}
                 bottom={0}
@@ -198,15 +238,23 @@ const CheckoutPage = () => {
                 >
                   {expandItems ? "colapse" : "expand"}
                 </Button>
-                <Box
-                  padding={"5px 10px"}
-                  bgcolor={"primary.main"}
-                  borderRadius={"10px"}
-                >
-                  <Typography color={"white"}>
-                    Subtotal: {user.region.currency} {user.cart.total}
-                  </Typography>
-                </Box>
+                {isLoading ? (
+                  <Skeleton
+                    variant="rounded"
+                    width={"200px"}
+                    height={"20px"}
+                  ></Skeleton>
+                ) : (
+                  <Box
+                    padding={"5px 10px"}
+                    bgcolor={"primary.main"}
+                    borderRadius={"10px"}
+                  >
+                    <Typography color={"white"}>
+                      Subtotal: {user.region.currency} {user.cart.total}
+                    </Typography>
+                  </Box>
+                )}
               </Box>
             </Box>
           </Box>
@@ -259,35 +307,52 @@ const CheckoutPage = () => {
               Summary
             </Typography>
             <Box display={"flex"} flexDirection={"column"}>
-              <Box display={"flex"} gap={"100px"}>
-                <Typography fontSize={"0.8rem"}>Subtotal</Typography>
-                <Typography fontSize={"0.8rem"}>{user.cart.total}</Typography>
-              </Box>
+              {isLoading ? (
+                <Skeleton variant="rounded" width={"200px"} />
+              ) : (
+                <Box display={"flex"} gap={"100px"}>
+                  <Typography fontSize={"0.8rem"}>Subtotal</Typography>
+                  <Typography fontSize={"0.8rem"}>{user.cart.total}</Typography>
+                </Box>
+              )}
+              {isLoading ? (
+                <Skeleton
+                  variant="rounded"
+                  width={"200px"}
+                  sx={{ mt: "20px" }}
+                />
+              ) : (
+                <Box
+                  width={"100%"}
+                  display={"flex"}
+                  justifyContent={"space-between"}
+                >
+                  <Typography fontSize={"0.8rem"}>Delivery charges</Typography>
+                  <Typography fontSize={"0.8rem"}>
+                    {checkoutDetails.delivery.fee}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+            {isLoading ? (
+              <Skeleton variant="rounded" width={"200px"} />
+            ) : (
               <Box
-                width={"100%"}
                 display={"flex"}
+                width={"100%"}
                 justifyContent={"space-between"}
               >
-                <Typography fontSize={"0.8rem"}>Delivery charges</Typography>
-                <Typography fontSize={"0.8rem"}>
-                  {checkoutDetails.delivery.fee}
+                <Typography fontWeight={"bold"}>Total</Typography>
+                <Typography fontWeight={"bold"}>
+                  {user.payment.currency} {checkoutDetails.total}
                 </Typography>
               </Box>
-            </Box>
-            <Box
-              display={"flex"}
-              width={"100%"}
-              justifyContent={"space-between"}
-            >
-              <Typography fontWeight={"bold"}>Total</Typography>
-              <Typography fontWeight={"bold"}>
-                {user.payment.currency} {checkoutDetails.total}
-              </Typography>
-            </Box>
+            )}
             <Button
               startIcon={<ExitToApp />}
               variant="contained"
               disableElevation
+              disabled={isLoading}
             >
               Confirm
             </Button>

@@ -9,12 +9,14 @@ import {
   TextField,
   InputAdornment,
   useMediaQuery,
+  Skeleton,
+  Divider,
 } from "@mui/material";
 import { Close, MenuOutlined, Search, ShoppingCart } from "@mui/icons-material";
 import { useTheme } from "@emotion/react";
 import { useSelector } from "react-redux";
 
-const Header = () => {
+const Header = (props) => {
   const user = useSelector((state) => state.user);
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
@@ -48,6 +50,8 @@ const Header = () => {
         left: 0,
         width: "100%",
         backgroundColor: "white",
+        boxShadow: `0px 0px 10px 0px ${theme.palette.grey[300]}`,
+        padding: "10px",
         zIndex: 1,
       }}
     >
@@ -63,6 +67,11 @@ const Header = () => {
           flexDirection={"column"}
           width={isNotPhone ? "80%" : "90%"}
         >
+          <UserMenu
+            isUserMenu={isUserMenu}
+            switchIsUserMenu={switchIsUserMenu}
+            user={user}
+          />
           <Box
             display={"flex"}
             alignItems={"center"}
@@ -70,25 +79,105 @@ const Header = () => {
             mt={isNotPhone ? undefined : "5px"}
           >
             <Box display={"flex"} alignItems={"center"}>
-              {!isNotPhone && (
-                <IconButton onClick={switchIsUserMenu}>
-                  {isUserMenu ? <Close /> : <MenuOutlined />}
+              {props.isLoading ? (
+                <Skeleton
+                  width={"clamp(100px, 5vw, 300px)"}
+                  height={"30px"}
+                  variant="rounded"
+                />
+              ) : (
+                <Link
+                  href="/"
+                  fontSize={"clamp(0.4rem, 5vw, 3rem)"}
+                  sx={{
+                    textDecoration: "none",
+                    color: "black",
+                    fontFamily: "Pacifico",
+                  }}
+                >
+                  E-commerce
+                </Link>
+              )}
+            </Box>
+            {isNotPhone &&
+              (props.isLoading ? (
+                <Skeleton width={"50%"} height={"30px"} variant="rounded" />
+              ) : (
+                <TextField
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton>
+                          <Search />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  type="search"
+                  placeholder="search for what you desire..."
+                  sx={{ width: "50%", "& > div": { borderRadius: "25px" } }}
+                />
+              ))}
+            <Box
+              display={"flex"}
+              gap={isNotPhone ? "20px" : "10px"}
+              alignItems={"center"}
+            >
+              {props.isLoading ? (
+                <Skeleton width={"30px"} height={"30px"} variant="circular" />
+              ) : (
+                <Link href="/cart">
+                  <IconButton>
+                    <Badge
+                      color="primary"
+                      badgeContent={
+                        user.cart && Object.keys(user.cart.items).length
+                      }
+                    >
+                      <ShoppingCart
+                        sx={{ fontSize: "clamp(1.4rem, 3vw, 1.8rem)" }}
+                      />
+                    </Badge>
+                  </IconButton>
+                </Link>
+              )}
+              {props.isLoading ? (
+                <Skeleton width={"30px"} height={"30px"} variant="circular" />
+              ) : (
+                <IconButton
+                  onClick={() => {
+                    switchIsUserMenu(true);
+                  }}
+                >
+                  <Badge
+                    color="primary"
+                    variant="dot"
+                    overlap="circular"
+                    invisible={!user.notifications.new}
+                    badgeContent=" "
+                  >
+                    <Avatar
+                      alt="profile image"
+                      sx={{
+                        bgcolor: isUserMenu ? "primary.main" : undefined,
+                        width: "clamp(1.8rem, 3vw, 2.3rem)",
+                        height: "clamp(1.8rem, 3vw, 2.3rem)",
+                      }}
+                    />
+                  </Badge>
                 </IconButton>
               )}
-              <Link
-                href="/"
-                fontSize={"clamp(0.2rem, 5vw, 3rem)"}
-                sx={{
-                  textDecoration: "none",
-                  color: "black",
-                  fontFamily: "Pacifico",
-                }}
-              >
-                E-commerce
-              </Link>
             </Box>
-            {isNotPhone && (
+          </Box>
+          {!isNotPhone && (
+            <Box
+              mt={isUp ? "10px" : undefined}
+              sx={{ transition: "0.2s" }}
+              overflow={"hidden"}
+              height={isUp ? "45px" : "0px"}
+            >
               <TextField
+                size="small"
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -100,70 +189,11 @@ const Header = () => {
                 }}
                 type="search"
                 placeholder="search for what you desire..."
-                sx={{ width: "50%", "& > div": { borderRadius: "25px" } }}
-              />
-            )}
-            <Box
-              display={"flex"}
-              gap={isNotPhone ? "20px" : undefined}
-              alignItems={"center"}
-            >
-              <Link href="/cart">
-                <IconButton>
-                  <Badge
-                    color="primary"
-                    badgeContent={
-                      user.cart && Object.keys(user.cart.items).length
-                    }
-                  >
-                    <ShoppingCart />
-                  </Badge>
-                </IconButton>
-              </Link>
-              {isNotPhone && (
-                <IconButton
-                  onClick={() => {
-                    switchIsUserMenu(true);
-                  }}
-                >
-                  <Badge
-                    color="primary"
-                    variant="dot"
-                    overlap="circular"
-                    invisible={!user.notifications.new}
-                  >
-                    <Avatar
-                      alt="profile image"
-                      sx={{ bgcolor: isUserMenu ? "primary.main" : undefined }}
-                    />
-                  </Badge>
-                </IconButton>
-              )}
-            </Box>
-          </Box>
-          {!isNotPhone && (
-            <Box
-              display={"flex"}
-              alignItems={"center"}
-              sx={{ transition: "0.2s" }}
-              overflow={"hidden"}
-              height={isUp ? "45px" : "0px"}
-            >
-              <input
-                className="searchbar"
-                type="search"
-                placeholder="search for what you desire..."
-                style={{
+                sx={{
                   width: "100%",
-                  height: "40px",
-                  borderRadius: "25px",
-                  textAlign: "center",
-                  backgroundColor: theme.palette.grey,
+                  "& > div": { borderRadius: "25px" },
                 }}
               />
-              <IconButton>
-                <Search />
-              </IconButton>
             </Box>
           )}
         </Box>

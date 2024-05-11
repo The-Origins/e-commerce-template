@@ -15,7 +15,7 @@ const UserOrders = () => {
 
   return (
     <Box
-      maxWidth={"100%"}
+      width={"100%"}
       padding={"20px"}
       display={"flex"}
       flexDirection={"column"}

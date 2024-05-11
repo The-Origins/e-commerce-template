@@ -1,6 +1,9 @@
+import data from "../lib/data";
+
 class ProductWorker {
   constructor(product) {
     this.product = product;
+    this.products = data.products
   }
 
   getProductDetails(cartItems, favourites) {
@@ -24,9 +27,15 @@ class ProductWorker {
             [variant.title]: variant.options[0],
           };
         });
-      }
+      } 
     }
     return details;
+  }
+
+  //this is done by the api
+  findProduct (id) 
+  {
+    return this.products.find((product) => product.id === Number(id))
   }
 }
 

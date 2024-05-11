@@ -16,6 +16,7 @@ import {
   CheckCircle,
   ChevronLeft,
   ChevronRight,
+  ExpandMore,
   Favorite,
   PersonOff,
   Share,
@@ -43,12 +44,15 @@ const ProductPage = () => {
     rating: { score: 0, votes: [], reviews: [] },
     allergenAdvice: [],
   });
+  const [products, setProducts] = useState([]);
   const [isProductDetails, setIsProductDetails] = useState(false);
   const [ratingDistribution, setRatingDistribution] = useState({});
   const maxImageIndex = product.images.length;
 
   useEffect(() => {
-    setProduct(data.products.find((element) => element.id === id));
+    const productWorker = new ProductWorker();
+    setProduct(productWorker.findProduct(id));
+    setProducts(data.products.slice(0, 4));
   }, []);
 
   useEffect(() => {
@@ -299,17 +303,18 @@ const ProductPage = () => {
                     width={"100%"}
                     alignItems={"center"}
                     display={"flex"}
-                    gap={"10px"}
+                    justifyContent={"space-between"}
                     height={"70px"}
                     borderRadius={"10px"}
                     bgcolor={theme.palette.grey[200]}
+                    padding={"20px"}
                   >
-                    <Typography ml={"20px"} color={"text.secondary"}>
-                      Allergen advice:
+                    <Typography>
+                      Key features:
                     </Typography>
-                    <Typography fontSize={"clamp(0.8rem, 3vw, 1rem)"}>
-                      {product.allergenAdvice.join(", ")}
-                    </Typography>
+                    <IconButton >
+                      <ExpandMore />
+                    </IconButton>
                   </Box>
                 )}
                 <Box
@@ -462,42 +467,16 @@ const ProductPage = () => {
             </Box>
           </Box>
         </Box>
-        <Box
-          width={"100%"}
-          height={"70vh"}
-          display={"flex"}
-          justifyContent={"center"}
-          alignItems={"center"}
-        >
-          <ProductCardContainer containerTitle="More in Category">
-            {data.products.map((product, index) => {
-              if (index < 4) {
-                return <ProductCard id={index} product={product} user={user} />;
-              }
-              return <></>;
-            })}
-          </ProductCardContainer>
-        </Box>
-        <Box
-          width={"100%"}
-          height={"70vh"}
-          display={"flex"}
-          justifyContent={"center"}
-          alignItems={"center"}
-          mb={"80px"}
-        >
-          <ProductCardContainer
-            containerTitle="Recently viewed"
-            isRecent={true}
-          >
-            {data.products.map((product, index) => {
-              if (index < 4) {
-                return <ProductCard id={index} product={product} user={user} />;
-              }
-              return <></>;
-            })}
-          </ProductCardContainer>
-        </Box>
+        <ProductCardContainer containerTitle="More in Category">
+          {products.map((product) => (
+            <ProductCard product={product} user={user} />
+          ))}
+        </ProductCardContainer>
+        <ProductCardContainer containerTitle="Recently viewed" isRecent={true}>
+          {products.map((product) => (
+            <ProductCard product={product} user={user} />
+          ))}
+        </ProductCardContainer>
       </Box>
     </Box>
   );
