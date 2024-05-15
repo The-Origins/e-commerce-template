@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { Search, ShoppingCart } from "@mui/icons-material";
 import { useTheme } from "@emotion/react";
+import { navigate } from "gatsby";
 
 const Header = (props) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -20,9 +21,18 @@ const Header = (props) => {
   const [yScroll, setYScroll] = useState(0);
   const [isUp, setIsUp] = useState(true);
   const [isUserMenu, setIsUserMenu] = useState(false);
+  const [search, setSearch] = useState("");
 
   const switchIsUserMenu = (state) => {
     setIsUserMenu(state);
+  };
+
+  const handleSearch = () => {
+    navigate(`/results?search=${search}`);
+  };
+
+  const handleChange = ({ target }) => {
+    setSearch(target.value);
   };
 
   useEffect(() => {
@@ -103,10 +113,15 @@ const Header = (props) => {
                 <Skeleton width={"50%"} height={"30px"} variant="rounded" />
               ) : (
                 <TextField
+                  value={search}
+                  onChange={handleChange}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <IconButton>
+                        <IconButton
+                          disabled={!search.length}
+                          onClick={handleSearch}
+                        >
                           <Search />
                         </IconButton>
                       </InputAdornment>
