@@ -33,7 +33,7 @@ const ProductDetails = (props) => {
   const confirm = () => {
     props.switchIsProductDetails();
   };
-  
+
   useEffect(() => {
     const productWorker = new ProductWorker(props.product);
     setProductDetails(
@@ -95,43 +95,18 @@ const ProductDetails = (props) => {
           gap={"20px"}
           mb={"20px"}
         >
-          {product.type === "cake" ? (
-            <>
-              <Typography>Weight (Kg):</Typography>
-              <Select
-                variant="outlined"
-                sx={{ minWidth: 100, color: "black" }}
-                name="weight"
-                value={productDetails.weight || 1}
-                onChange={handleProductDetailsChange}
-              >
-                <MenuItem value={1}>1</MenuItem>
-                <MenuItem value={2}>2</MenuItem>
-                <MenuItem value={3}>3</MenuItem>
-                <MenuItem value={4}>4</MenuItem>
-                <MenuItem value={5}>5</MenuItem>
-              </Select>
-            </>
-          ) : (
-            <>
-              <Typography>Number of peices</Typography>
-              <TextField
-                type="number"
-                name={"amount"}
-                value={productDetails.quantity}
-                onChange={handleProductDetailsChange}
-              />
-            </>
-          )}
+          <Typography>Quatity</Typography>
+          <TextField
+            type="number"
+            name={"amount"}
+            value={productDetails.quantity}
+            onChange={handleProductDetailsChange}
+          />
         </Box>
         {product.variants &&
           product.variants.map((variant, index) => {
             return (
-              <Box
-                display={"flex"}
-                flexDirection={"column"}
-                width={"80%"}
-              >
+              <Box display={"flex"} flexDirection={"column"} width={"80%"}>
                 <Typography>
                   {variant.title.charAt(0).toUpperCase() +
                     variant.title.substring(1, variant.title.length) +
@@ -146,15 +121,17 @@ const ProductDetails = (props) => {
                       value={productDetails[variant.title]}
                       onChange={handleProductDetailsChange}
                     >
-                      {variant.options.map((option, index) => (
+                      {variant.options.map((option) => (
                         <FormControlLabel
-                          value={option}
+                          value={option.title}
                           control={<Radio />}
                           label={
-                            option.charAt(0).toUpperCase() +
-                            option.substring(1, option.length)
+                            option.title.charAt(0).toUpperCase() +
+                            option.title.substring(1)
                           }
-                          checked={productDetails[variant.title] === option}
+                          checked={
+                            productDetails[variant.title] === option.title
+                          }
                         />
                       ))}
                     </RadioGroup>

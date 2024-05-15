@@ -16,8 +16,7 @@ import ProductCard from "../components/product/productCard";
 import ProductCardContainer from "../components/product/productCardContainer";
 import data from "../lib/data";
 import CategoryCard from "../components/product/categoryCard";
-import cupcakes from "../assets/images/cupcakes1.jpg";
-import cupcakes2 from "../assets/images/cupcakes2.jpg";
+import SkeletonGroup from "../components/product/skeletonGroup";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -57,7 +56,8 @@ const Home = () => {
         </Box>
         <Box
           display={"flex"}
-          flexDirection={isNotPhone ? "row" : "column-reverse"}
+          flexDirection={isNotPhone ? "row" : "column"}
+          gap={"20px"}
           justifyContent={"space-evenly"}
           borderRadius={"20px"}
           border={`1px solid ${theme.palette.grey[400]}`}
@@ -65,7 +65,9 @@ const Home = () => {
           padding={"20px"}
           width={"100%"}
         >
-          <Typography fontSize={"1.5rem"} fontWeight={"bold"}>Need to talk to a specialist?</Typography>
+          <Typography fontSize={"1.5rem"} fontWeight={"bold"} ml={"10px"}>
+            Need to talk to a specialist?
+          </Typography>
           {isLoading ? (
             <Skeleton
               width={"300px"}
@@ -79,7 +81,7 @@ const Home = () => {
               disableElevation
               variant="contained"
               startIcon={<PhoneInTalk />}
-              sx={{width:"300px", height:"50px"}}
+              sx={{ width: "300px", height: "50px" }}
             >
               Contact Us Directly
             </Button>
@@ -101,7 +103,7 @@ const Home = () => {
               fontSize: "clamp(1rem, 7vw, 3rem)",
             }}
           >
-            Explore our cake catalogue
+            Explore our catalogue
           </Typography>
           <Typography color={"text.secondary"}>
             Satisfy your cravings
@@ -144,23 +146,29 @@ const Home = () => {
           >
             <CategoryCard
               subTitle="Up to 25% off"
-              title="Chocolate cakes"
-              description="indulge in rich chocolate flavours"
-              image={cupcakes}
+              title="Electronics"
+              description="Save on your favourite items"
+              image={
+                "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              }
               isLoading={isLoading}
             />
             <CategoryCard
               subTitle="Up to 25% off"
-              title="Chocolate cakes"
-              description="indulge in rich chocolate flavours"
-              image={cupcakes}
+              title="Drinks"
+              description="Save on your favourite items"
+              image={
+                "https://images.pexels.com/photos/1194030/pexels-photo-1194030.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              }
               isLoading={isLoading}
             />
             <CategoryCard
               subTitle="Up to 25% off"
-              title="Chocolate cakes"
-              description="indulge in rich chocolate flavours"
-              image={cupcakes}
+              title="T-Shirts"
+              description="Save on your favourite items"
+              image={
+                "https://images.pexels.com/photos/8532616/pexels-photo-8532616.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              }
               isLoading={isLoading}
             />
           </Box>
@@ -209,24 +217,14 @@ const Home = () => {
                     width={"90%"}
                     height={"300px"}
                     sx={{
-                      backgroundImage: `url(${cupcakes2})`,
+                      backgroundImage: `url(https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                     }}
                   />
                 ))}
               {isLoading ? (
-                <Box
-                  width={"100%"}
-                  display={"flex"}
-                  flexDirection={"column"}
-                  gap={"20px"}
-                >
-                  <Skeleton width={"100%"} height={"20px"} variant="rounded" />
-                  <Skeleton width={"100%"} height={"20px"} variant="rounded" />
-                  <Skeleton width={"100%"} height={"20px"} variant="rounded" />
-                  <Skeleton width={"100%"} height={"20px"} variant="rounded" />
-                </Box>
+                <SkeletonGroup count={4} width="100%" height="20px" />
               ) : (
                 <Typography
                   width={"90%"}

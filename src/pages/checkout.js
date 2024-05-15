@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import UserProductCard from "../components/product/userProductCard";
 import CheckoutElement from "../components/checkout/checkoutElement";
 import ProductWorker from "../scripts/productWorker";
+import SkeletonGroup from "../components/product/skeletonGroup";
 
 const CheckoutPage = () => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -55,7 +56,7 @@ const CheckoutPage = () => {
         payment: user.payment.saved[user.payment.recent],
         delivery: user.addresses.saved[user.addresses.recent],
       });
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }, [user]);
 
@@ -97,24 +98,16 @@ const CheckoutPage = () => {
               <Typography fontSize={"1.2rem"} fontFamily={"pacifico"}>
                 Summary
               </Typography>
-              <Box display={"flex"} flexDirection={"column"} width={"100%"}>
-                {isLoading ? (
-                  <Skeleton variant="rounded" width={"100%"} />
-                ) : (
+              {isLoading ? (
+                <SkeletonGroup count={3} width={"200px"} />
+              ) : (
+                <Box display={"flex"} flexDirection={"column"} width={"100%"}>
                   <Box display={"flex"} justifyContent={"space-between"}>
                     <Typography fontSize={"0.8rem"}>Subtotal</Typography>
                     <Typography fontSize={"0.8rem"}>
                       {user.cart.total}
                     </Typography>
                   </Box>
-                )}
-                {isLoading ? (
-                  <Skeleton
-                    variant="rounded"
-                    width={"100%"}
-                    sx={{ mt: "10px" }}
-                  />
-                ) : (
                   <Box display={"flex"} justifyContent={"space-between"}>
                     <Typography fontSize={"0.8rem"}>
                       Delivery charges
@@ -123,10 +116,10 @@ const CheckoutPage = () => {
                       {checkoutDetails.delivery.fee}
                     </Typography>
                   </Box>
-                )}
-              </Box>
+                </Box>
+              )}
               {isLoading ? (
-                <Skeleton variant="rounded" width={"100%"} />
+                <Skeleton width={"200px"} variant="rounded" />
               ) : (
                 <Box
                   display={"flex"}
@@ -306,22 +299,14 @@ const CheckoutPage = () => {
             <Typography fontSize={"1.2rem"} fontFamily={"pacifico"}>
               Summary
             </Typography>
-            <Box display={"flex"} flexDirection={"column"}>
-              {isLoading ? (
-                <Skeleton variant="rounded" width={"200px"} />
-              ) : (
+            {isLoading ? (
+              <SkeletonGroup width={"200px"} count={2} />
+            ) : (
+              <Box display={"flex"} flexDirection={"column"}>
                 <Box display={"flex"} gap={"100px"}>
                   <Typography fontSize={"0.8rem"}>Subtotal</Typography>
                   <Typography fontSize={"0.8rem"}>{user.cart.total}</Typography>
                 </Box>
-              )}
-              {isLoading ? (
-                <Skeleton
-                  variant="rounded"
-                  width={"200px"}
-                  sx={{ mt: "20px" }}
-                />
-              ) : (
                 <Box
                   width={"100%"}
                   display={"flex"}
@@ -332,8 +317,8 @@ const CheckoutPage = () => {
                     {checkoutDetails.delivery.fee}
                   </Typography>
                 </Box>
-              )}
-            </Box>
+              </Box>
+            )}
             {isLoading ? (
               <Skeleton variant="rounded" width={"200px"} />
             ) : (

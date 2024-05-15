@@ -9,7 +9,20 @@ const UserFavourites = (props) => {
     <Box
       width={"100%"}
       height={"100%"}
-      sx={{ overflowY: "scroll" }}
+      sx={{
+        overflowY: "scroll",
+        "&::-webkit-scrollbar": {
+          bgcolor: "transparent",
+          height: "10px",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          borderRadius: "25px",
+          bgcolor: "text.secondary",
+        },
+        "&::-webkit-scrollbar-thumb:hover": {
+          cursor: "pointer",
+        },
+      }}
       padding={"20px"}
       display={"flex"}
       flexDirection={"column"}
@@ -17,15 +30,12 @@ const UserFavourites = (props) => {
     >
       {Object.keys(props.user.favourites).map((favourite) => {
         const item = {
-          details: props.user.favourites[favourite],
+          details: props.user.favourites[favourite].details,
           product: productWorker.findProduct(favourite),
+          total: props.user.favourites[favourite].total,
         };
         return (
-          <UserProductCard
-            user={props.user}
-            item={item}
-            type="favourites"
-          />
+          <UserProductCard user={props.user} item={item} type="favourites" />
         );
       })}
     </Box>

@@ -16,7 +16,22 @@ const UserProfile = (props) => {
       width={"100%"}
       height={"100%"}
       padding={"20px"}
-      sx={{ overflowY: "scroll" }}
+      
+      sx={{
+        overflowY: "scroll",
+        scrollbarWidth:"10px",
+        "&::-webkit-scrollbar": {
+          bgcolor: "transparent",
+          width:"10px",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          borderRadius: "25px",
+          bgcolor: "text.secondary",
+        },
+        "&::-webkit-scrollbar-thumb:hover": {
+          cursor: "pointer",
+        },
+      }}
       display={"flex"}
       flexDirection={"column"}
       gap={"20px"}

@@ -10,16 +10,14 @@ const SkeletonGroup = (props) => {
   return (
     <Box
       display={"flex"}
-      flexDirection={props.type === "box" ? "row" : "column"}
-      justifyContent={"space-evenly"}
-      whiteSpace={"nowrap"}
+      flexDirection={props.flexDirection || "column"}
       gap={"20px"}
     >
       {skeletonArr.map(() => (
         <Skeleton
-          width={props.type === "box" ? "clamp(80px, 42vw, 250px)" : "100%"}
-          height={props.type === "box" ? "clamp(300px, 50vw, 350px)" : "100px"}
-          variant="rounded"
+          width={props.width}
+          height={props.height}
+          variant={props.variant || "rounded"}
         />
       ))}
     </Box>

@@ -1,10 +1,4 @@
-import {
-  useTheme,
-  Box,
-  Typography,
-  Link,
-  Button,
-} from "@mui/material";
+import { useTheme, Box, Typography, Link, Button } from "@mui/material";
 import { ArrowRightAlt } from "@mui/icons-material";
 import React from "react";
 import SkeletonGroup from "./skeletonGroup";
@@ -81,7 +75,12 @@ const ProductCardContainer = (props) => {
             }}
           >
             {props.isLoading ? (
-              <SkeletonGroup type="box" count={4} />
+              <SkeletonGroup
+                count={4}
+                width={"clamp(80px, 42vw, 250px)"}
+                height={"clamp(300px, 50vw, 350px)"}
+                flexDirection={"row"}
+              />
             ) : (
               <Box display={"flex"} gap={"20px"}>
                 {props.children}

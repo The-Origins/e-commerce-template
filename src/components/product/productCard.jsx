@@ -156,7 +156,7 @@ const ProductCard = (props) => {
             >
               <Box display={"flex"} flexDirection={"column"} gap={"1px"}>
                 <Typography fontSize={"0.7rem"} color={"text.secondary"}>
-                  {props.product.flavours}
+                  {props.product.categories.join(", ")}
                 </Typography>
                 <Box display={"flex"} alignItems={"center"} gap={"10px"}>
                   <Typography
@@ -165,13 +165,6 @@ const ProductCard = (props) => {
                   >
                     {props.product.name}
                   </Typography>
-                  {isNotPhone && (
-                    <Box display={"flex"} gap={"5px"}>
-                      {props.product.categories.map((category, index) => (
-                        <CategorizeComponent category={category} id={index} />
-                      ))}
-                    </Box>
-                  )}
                 </Box>
               </Box>
               <Rating
@@ -182,8 +175,6 @@ const ProductCard = (props) => {
               <Typography fontSize={"17px"}>
                 {props.product.unitPrice.currency}{" "}
                 {props.product.unitPrice.amount}
-                {" /"}
-                {props.product.unitPrice.unit}
               </Typography>
             </Box>
           </Box>

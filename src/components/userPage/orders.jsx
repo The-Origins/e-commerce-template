@@ -21,7 +21,20 @@ const UserOrders = () => {
       flexDirection={"column"}
       gap={"20px"}
       height={"100%"}
-      sx={{ overflowY: "scroll" }}
+      sx={{
+        overflowY: "scroll",
+        "&::-webkit-scrollbar": {
+          bgcolor: "transparent",
+          height: "10px",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          borderRadius: "25px",
+          bgcolor: "text.secondary",
+        },
+        "&::-webkit-scrollbar-thumb:hover": {
+          cursor: "pointer",
+        },
+      }}
     >
       {data.orders.map((order) => (
         <Link

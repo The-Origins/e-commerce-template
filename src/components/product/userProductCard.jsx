@@ -104,7 +104,7 @@ const UserProductCard = (props) => {
           </Typography>
           <Typography>
             {props.item.product.unitPrice.currency}{" "}
-            {props.item.details.weight * props.item.product.unitPrice.amount}
+            {props.item.total}
           </Typography>
           {props.type === "favourites" && (
             <Box

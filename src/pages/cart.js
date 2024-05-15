@@ -64,31 +64,23 @@ const CartPage = () => {
               <Typography fontSize={"1.2rem"} fontFamily={"pacifico"}>
                 Summary
               </Typography>
-              <Box display={"flex"} flexDirection={"column"} width={"100%"}>
-                {isLoading ? (
-                  <Skeleton variant="rounded" width={"100%"} />
-                ) : (
+              {isLoading ? (
+                <SkeletonGroup count={2} width={"200px"} />
+              ) : (
+                <Box display={"flex"} flexDirection={"column"} width={"100%"}>
                   <Box display={"flex"} justifyContent={"space-between"}>
                     <Typography fontSize={"0.8rem"}>Subtotal</Typography>
                     <Typography fontSize={"0.8rem"}>
                       {user.payment.currency} {user.cart.total}
                     </Typography>
                   </Box>
-                )}
-                {isLoading ? (
-                  <Skeleton
-                    variant="rounded"
-                    width={"100%"}
-                    sx={{ mt: "10px" }}
-                  />
-                ) : (
                   <Box display={"flex"} justifyContent={"center"}>
                     <Typography fontSize={"0.8rem"}>
                       *Delivery charges not included
                     </Typography>
                   </Box>
-                )}
-              </Box>
+                </Box>
+              )}
               <Box
                 position={"fixed"}
                 bottom={0}
@@ -134,12 +126,13 @@ const CartPage = () => {
             width={"100%"}
           >
             {isLoading ? (
-              <SkeletonGroup count={4} />
+              <SkeletonGroup count={4} width="100%" height={"100px"} />
             ) : (
               Object.keys(user.cart.items).map((cartItem) => {
                 const item = {
                   details: user.cart.items[cartItem].details,
                   product: productWorker.findProduct(cartItem),
+                  total:user.cart.items[cartItem].total
                 };
                 return (
                   <UserProductCard
@@ -172,37 +165,25 @@ const CartPage = () => {
             <Typography fontSize={"1.2rem"} fontFamily={"pacifico"}>
               Summary
             </Typography>
-            <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-              {isLoading ? (
-                <Skeleton variant="rounded" width={"200px"} />
-              ) : (
+            {isLoading ? (
+              <SkeletonGroup count={3} width={"100%"} />
+            ) : (
+              <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
                 <Box display={"flex"} gap={"100px"}>
                   <Typography fontSize={"0.9rem"}>Subtotal</Typography>
                   <Typography fontSize={"0.9rem"}>{user.cart.total}</Typography>
                 </Box>
-              )}
-              {isLoading ? (
-                <Skeleton variant="rounded" width={"200px"} />
-              ) : (
                 <Box display={"flex"} justifyContent={"space-between"}>
                   <Typography fontSize={"0.9rem"}>VAT</Typography>
                   <Typography fontSize={"0.9rem"}>0.0</Typography>
                 </Box>
-              )}
-              {isLoading ? (
-                <Skeleton
-                  variant="rounded"
-                  width={"200px"}
-                  sx={{ mt: "20px" }}
-                />
-              ) : (
                 <Box width={"100%"} display={"flex"} justifyContent={"center"}>
                   <Typography fontSize={"0.8rem"}>
                     *Delivery charges not included
                   </Typography>
                 </Box>
-              )}
-            </Box>
+              </Box>
+            )}
             <Link href="/checkout">
               <Button
                 startIcon={<ShoppingCartCheckout />}
