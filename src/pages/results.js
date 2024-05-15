@@ -15,12 +15,14 @@ import {
   RadioGroup,
   Radio,
   Button,
+  Skeleton,
 } from "@mui/material";
 import data from "../lib/data";
 import ProductCard from "../components/product/productCard";
 import { Close, FilterAlt, RotateLeft } from "@mui/icons-material";
 import { navigate } from "gatsby";
 import ResultsWorker from "../scripts/resultsWorker";
+import SkeletonGroup from "../components/product/skeletonGroup";
 
 const typesPlural = { cake: "Cakes", pastry: "Pastries" };
 const ResultsPage = () => {
@@ -30,9 +32,10 @@ const ResultsPage = () => {
   let page = Number(params.get("p")) || 1;
   const search = params.get("search");
   const user = useSelector((state) => state.user);
+  const [isLoading, setIsLoading] = useState(true);
   const [results, setResults] = useState([[]]);
-  const [categories, setCategories] = useState(["All"]);
-  const [filters, setFilters] = useState({ category: "All", types: {} });
+  const [options, setOptions] = useState({});
+  const [filters, setFilters] = useState({ category: "All", brand: "All" });
   const [priceRange, setPriceRange] = useState([20, 33]);
   const [prices, setPrices] = useState([]);
   const [minPrice, maxPrice] = [Math.min(...prices), Math.max(...prices)];
@@ -49,7 +52,11 @@ const ResultsPage = () => {
       min: Math.min(...resultsWorker.parsePrices()),
       max: Math.max(...resultsWorker.parsePrices()),
     }));
-    setCategories((prev) => [...prev, ...resultsWorker.parseCategories()]);
+    setOptions((prev) => ({
+      ...prev,
+      category: resultsWorker.parseCategories(),
+      brand: resultsWorker.parseBrands(),
+    }));
     setPriceRange([
       Math.min(...resultsWorker.parsePrices()),
       Math.max(...resultsWorker.parsePrices()),
@@ -77,6 +84,7 @@ const ResultsPage = () => {
     let filteredResults = resultsWorker.filter(filters, typesPlural);
     setResults(resultsWorker.paginate(filteredResults));
     navigate(`/results?search=${String(search).split(" ").join("+")}&p=1`);
+    setIsLoading(false);
   }, [filters]);
 
   const handlePriceRangeChangeSlider = (event, newPriceRange) => {
@@ -117,18 +125,12 @@ const ResultsPage = () => {
     setIsPriceChange(false);
   };
 
-  const switchType = ({ target }) => {
-    setFilters((prev) => ({
-      ...prev,
-      types: {
-        ...prev.types,
-        [target.name]: !prev.types[target.name],
-      },
-    }));
+  const handleOptionChange = ({ target }) => {
+    setFilters((prev) => ({ ...prev, [target.name]: target.value }));
   };
 
-  const hanldleCategoryChange = ({ target }) => {
-    setFilters((prev) => ({ ...prev, [target.name]: target.value }));
+  const resetOption = (option) => {
+    setFilters((prev) => ({ ...prev, [option]: "All" }));
   };
 
   const switchIsMobileFilters = (state) => {
@@ -142,8 +144,13 @@ const ResultsPage = () => {
   };
 
   return (
-    <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
-      <Box mt={"100px"} width={"95%"}>
+    <Box
+      mt={"150px"}
+      display={"flex"}
+      justifyContent={"center"}
+      alignItems={"center"}
+    >
+      <Box width={"95%"}>
         <Box minHeight={"100vh"} display={"flex"}>
           <Box
             ref={mobileFiltersRef}
@@ -194,152 +201,179 @@ const ResultsPage = () => {
                   </Box>
                 </>
               )}
-              <Box
-                width={"85%"}
-                boxShadow={`0px 0px 10px 0px ${theme.palette.grey[400]}`}
-                display={"flex"}
-                flexDirection={"column"}
-                alignItems={"center"}
-                borderRadius={"10px"}
-                gap={"20px"}
-                padding={"20px 0px"}
-                position={"relative"}
-              >
-                <Typography
-                  justifySelf={"center"}
-                  mt={"10px"}
-                  fontFamily={"pacifico"}
-                  fontSize={"1.2rem"}
-                >
-                  Price
-                </Typography>
-                {(priceRange[0] !== minPrice || priceRange[1] !== maxPrice) && (
-                  <Box position={"absolute"} right={5} top={25}>
-                    <IconButton onClick={handlePriceRangeReset}>
-                      <RotateLeft />
-                    </IconButton>
-                  </Box>
-                )}
-
-                <Box
-                  display={"flex"}
-                  flexWrap={"wrap"}
-                  gap={"45px"}
-                  justifyContent={"space-between"}
-                  alignItems={"center"}
-                  width={"90%"}
-                >
-                  <TextField
-                    step="10"
-                    type="number"
-                    size="small"
-                    label="min"
-                    name="min"
-                    value={priceRange[0]}
-                    onChange={handlePriceRangeChangeInput}
-                    sx={{ "& > div": { fontSize: "13px" } }}
-                  />
-                  <TextField
-                    step="10"
-                    type="number"
-                    size="small"
-                    label="max"
-                    name="max"
-                    value={priceRange[1]}
-                    onChange={handlePriceRangeChangeInput}
-                    sx={{ "& > div": { fontSize: "13px" } }}
-                  />
-                </Box>
-                <Slider
-                  max={maxPrice}
-                  min={minPrice}
-                  value={priceRange}
-                  onChange={handlePriceRangeChangeSlider}
-                  valueLabelDisplay="auto"
-                  step={100}
-                  sx={{ width: "80%" }}
-                />
-                {isPriceChange && (
-                  <Button
-                    variant="contained"
-                    disableElevation
-                    onClick={handlePriceSave}
+              {isLoading ? (
+                <SkeletonGroup count={3} height="200px" width={"200px"} />
+              ) : (
+                <>
+                  <Box
+                    width={"100%"}
+                    boxShadow={`0px 0px 10px 0px ${theme.palette.grey[400]}`}
+                    display={"flex"}
+                    flexDirection={"column"}
+                    alignItems={"center"}
+                    borderRadius={"10px"}
+                    gap={"20px"}
+                    padding={"20px 0px"}
+                    position={"relative"}
                   >
-                    Save
-                  </Button>
-                )}
-              </Box>
-              <Box
-                width={"85%"}
-                boxShadow={`0px 0px 10px 0px ${theme.palette.grey[400]}`}
-                display={"flex"}
-                flexDirection={"column"}
-                borderRadius={"10px"}
-                alignItems={"center"}
-                gap={"10px"}
-              >
-                <Typography
-                  mt={"10px"}
-                  ml={"10px"}
-                  fontSize={"1.2rem"}
-                  fontFamily={"pacifico"}
-                >
-                  Filter results
-                </Typography>
-                <RadioGroup
-                  row
-                  aria-labelledby={`result-filters-group`}
-                  name={"category"}
-                  value={filters.category}
-                  onChange={hanldleCategoryChange}
-                  sx={{
-                    width: "90%",
-                    flexWrap: isNotPhone ? "nowrap" : "wrap",
-                    flexDirection: isNotPhone ? "column" : "row",
-                    alignSelf: "center",
-                  }}
-                >
-                  {categories.map((category, index) => (
-                    <FormControlLabel
-                      value={category}
-                      control={<Radio />}
-                      label={
-                        category.charAt(0).toUpperCase() +
-                        category.substring(1, category.length)
-                      }
-                      checked={filters.category === category}
+                    <Typography
+                      justifySelf={"center"}
+                      mt={"10px"}
+                      fontFamily={"pacifico"}
+                      fontSize={"1.2rem"}
+                    >
+                      Price
+                    </Typography>
+                    {(priceRange[0] !== minPrice ||
+                      priceRange[1] !== maxPrice) && (
+                      <Box position={"absolute"} right={5} top={25}>
+                        <IconButton onClick={handlePriceRangeReset}>
+                          <RotateLeft />
+                        </IconButton>
+                      </Box>
+                    )}
+
+                    <Box
+                      display={"flex"}
+                      flexWrap={"wrap"}
+                      gap={"45px"}
+                      justifyContent={"space-between"}
+                      alignItems={"center"}
+                      width={"90%"}
+                    >
+                      <TextField
+                        step="10"
+                        type="number"
+                        size="small"
+                        label="min"
+                        name="min"
+                        value={priceRange[0]}
+                        onChange={handlePriceRangeChangeInput}
+                        sx={{ "& > div": { fontSize: "13px" } }}
+                      />
+                      <TextField
+                        step="10"
+                        type="number"
+                        size="small"
+                        label="max"
+                        name="max"
+                        value={priceRange[1]}
+                        onChange={handlePriceRangeChangeInput}
+                        sx={{ "& > div": { fontSize: "13px" } }}
+                      />
+                    </Box>
+                    <Slider
+                      max={maxPrice}
+                      min={minPrice}
+                      value={priceRange}
+                      onChange={handlePriceRangeChangeSlider}
+                      valueLabelDisplay="auto"
+                      step={100}
+                      sx={{ width: "80%" }}
                     />
-                  ))}
-                </RadioGroup>
-              </Box>
-              <Box
-                width={"85%"}
-                boxShadow={`0px 0px 10px 0px ${theme.palette.grey[400]}`}
-                display={"flex"}
-                flexDirection={"column"}
-                borderRadius={"10px"}
-                gap={"10px"}
-              >
-                <FormGroup sx={{ ml: "10px" }}>
-                  {Object.keys(filters.types).map((type, index) => (
-                    <FormControlLabel
-                      checked={filters.types[type]}
-                      control={<Checkbox name={type} onClick={switchType} />}
-                      label={type}
-                    />
-                  ))}
-                  {(filters["Pastries"] === true ||
-                    filters["Pastries"] === false) && (
-                    <FormControlLabel
-                      checked={filters["Pastries"]}
-                      control={
-                        <Checkbox name={"Pastries"} onClick={switchType} />
-                      }
-                      label={"Pastries"}
-                    />
-                  )}
-                </FormGroup>
-              </Box>
+                    {isPriceChange && (
+                      <Button
+                        variant="contained"
+                        disableElevation
+                        onClick={handlePriceSave}
+                      >
+                        Save
+                      </Button>
+                    )}
+                  </Box>
+                  {Object.keys(options).map((option) => {
+                    if (options[option].length > 2) {
+                      return (
+                        <Box
+                          width={"100%"}
+                          boxShadow={`0px 0px 10px 0px ${theme.palette.grey[400]}`}
+                          display={"flex"}
+                          flexDirection={"column"}
+                          alignItems={"center"}
+                          borderRadius={"20px"}
+                        >
+                          <Box
+                            width={"100%"}
+                            display={"flex"}
+                            position={"relative"}
+                            justifyContent={"center"}
+                          >
+                            <Typography
+                              padding={"10px"}
+                              fontSize={"1.2rem"}
+                              fontFamily={"pacifico"}
+                            >
+                              {option.charAt(0).toUpperCase() +
+                                option.substring(1)}
+                            </Typography>
+                            <IconButton
+                              disabled={filters[option] === "All"}
+                              onClick={() => resetOption(option)}
+                              sx={{
+                                opacity: filters[option] === "All" ? 0 : 1,
+                                position: "absolute",
+                                right: 0,
+                                m: "5px",
+                              }}
+                            >
+                              <RotateLeft />
+                            </IconButton>
+                          </Box>
+                          <Box
+                            width={"100%"}
+                            display={"flex"}
+                            flexDirection={"column"}
+                            padding={"20px"}
+                            gap={"10px"}
+                            maxHeight={"300px"}
+                            sx={{
+                              overflowY: "scroll",
+                              "&::-webkit-scrollbar": {
+                                bgcolor: "transparent",
+                              },
+                              "&::-webkit-scrollbar-thumb": {
+                                borderRadius: "25px",
+                                bgcolor: theme.palette.grey[300],
+                                transition: "0.3s",
+                              },
+                              "&::-webkit-scrollbar-thumb:hover": {
+                                cursor: "pointer",
+                                bgcolor: theme.palette.grey[400],
+                              },
+                            }}
+                          >
+                            <RadioGroup
+                              row
+                              aria-labelledby={`result-filters-group`}
+                              name={option}
+                              value={filters[option]}
+                              onChange={handleOptionChange}
+                              sx={{
+                                width: "90%",
+                                flexDirection: "column",
+                                alignSelf: "center",
+                              }}
+                            >
+                              {options[option].map((item) => (
+                                <FormControlLabel
+                                  value={item}
+                                  control={<Radio />}
+                                  label={
+                                    item.charAt(0).toUpperCase() +
+                                    item.substring(1)
+                                  }
+                                  checked={filters[option] === item}
+                                />
+                              ))}
+                            </RadioGroup>
+                          </Box>
+                        </Box>
+                      );
+                    }
+                    return <></>;
+                  })}
+                </>
+              )}
             </Box>
           </Box>
           <Box
@@ -347,48 +381,71 @@ const ResultsPage = () => {
             display={"flex"}
             flexDirection={"column"}
           >
-            {!isNotPhone && (
-              <Box display={"flex"} width={"100%"} justifyContent={"flex-end"}>
-                <IconButton
-                  onClick={() => switchIsMobileFilters(!isMobileFilters)}
+            {isLoading ? (
+              <Skeleton
+                width={"100%"}
+                height={"50px"}
+                sx={{ mb: "20px" }}
+                variant="rounded"
+              />
+            ) : (
+              <Box
+                border={`1px solid ${theme.palette.grey[400]}`}
+                borderRadius={"25px"}
+                width={"100%"}
+                mb={"30px"}
+                display={"flex"}
+                flexDirection={"column"}
+                alignItems={"flex-start"}
+                position={"relative"}
+                gap={"20px"}
+              >
+                <Typography
+                  fontFamily={"pacifico"}
+                  fontSize={"clamp(0.7rem, 4vw, 1.3rem)"}
+                  margin={"10px 30px"}
                 >
-                  <FilterAlt
-                    sx={{
-                      color: isMobileFilters ? "primary.main" : undefined,
-                    }}
-                  />
-                </IconButton>
+                  Search results for "{search}"
+                </Typography>
+                {!isNotPhone && (
+                  <Box
+                    sx={{ position: "absolute", right: 0 }}
+                    bgcolor={"white"}
+                  >
+                    <IconButton
+                      onClick={() => switchIsMobileFilters(!isMobileFilters)}
+                    >
+                      <FilterAlt
+                        sx={{
+                          color: isMobileFilters ? "primary.main" : undefined,
+                        }}
+                      />
+                    </IconButton>
+                  </Box>
+                )}
               </Box>
             )}
-            <Box
-              border={`1px solid ${theme.palette.grey[400]}`}
-              borderRadius={"25px"}
-              width={"100%"}
-              mb={"30px"}
-              display={"flex"}
-              flexDirection={"column"}
-              alignItems={"flex-start"}
-              gap={"20px"}
-            >
-              <Typography
-                fontFamily={"pacifico"}
-                fontSize={"clamp(0.7rem, 4vw, 1.3rem)"}
-                margin={"10px 30px"}
-              >
-                Search results for "{search}"
-              </Typography>
-            </Box>
-            {results[page - 1] && (
-              <Box
-                display={"flex"}
-                flexWrap={"wrap"}
-                padding={"0px 0px 50px 0px"}
-                width={"100%"}
-              >
-                {results[page - 1].map((result) => (
-                  <ProductCard product={result} user={user} />
-                ))}
-              </Box>
+            {isLoading ? (
+              <SkeletonGroup
+                count={8}
+                flexDirection={"row"}
+                flexWrap="wrap"
+                width={"clamp(80px, 42vw, 250px)"}
+                height={"clamp(300px, 50vw, 350px)"}
+              />
+            ) : (
+              results[page - 1] && (
+                <Box
+                  display={"flex"}
+                  flexWrap={"wrap"}
+                  padding={"0px 0px 50px 0px"}
+                  width={"100%"}
+                >
+                  {results[page - 1].map((result) => (
+                    <ProductCard product={result} user={user} />
+                  ))}
+                </Box>
+              )
             )}
             <Box
               width={"100%"}
@@ -403,10 +460,6 @@ const ResultsPage = () => {
                 variant="outlined"
                 shape="rounded"
                 onChange={handlePageChange}
-                sx={{
-                  "& > ul > li > button": { color: "black" },
-                  "& > ul > li > div": { color: "black" },
-                }}
                 color="primary"
               />
             </Box>

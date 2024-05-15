@@ -505,7 +505,7 @@ const ProductPage = () => {
             >
               {isLoading ? (
                 <Skeleton width={"100%"} height={"100%"} variant="rounded" />
-              ) : product.rating.reviews ? (
+              ) : product.rating.reviews.length ? (
                 <Box
                   width={"90%"}
                   height={"90%"}
@@ -513,7 +513,19 @@ const ProductPage = () => {
                   flexDirection={"column"}
                   gap={"20px"}
                   alignItems={"center"}
-                  sx={{ overflowY: "scroll" }}
+                  sx={{
+                    overflowY: "scroll",
+                    "&::-webkit-scrollbar": {
+                      bgcolor: "transparent",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      borderRadius: "25px",
+                      bgcolor: "text.secondary",
+                    },
+                    "&::-webkit-scrollbar-thumb:hover": {
+                      cursor: "pointer",
+                    },
+                  }}
                 >
                   {product.rating.reviews.map((review, index) => (
                     <ReviewComponent id={index} {...review} />

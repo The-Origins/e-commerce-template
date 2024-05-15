@@ -95,7 +95,7 @@ const ProductDetails = (props) => {
           gap={"20px"}
           mb={"20px"}
         >
-          <Typography>Quatity</Typography>
+          <Typography>Quantity:</Typography>
           <TextField
             type="number"
             name={"amount"}

@@ -3,13 +3,6 @@ class ResultsWorker {
     this.results = results;
     this.pageLimit = 4;
     this.typePlurals = { cake: "Cakes", pastry: "Pastries" };
-    this.importantCategories = [
-      "nuts",
-      "vegan",
-      "dairy",
-      "gluten free",
-      "no sugar",
-    ];
   }
 
   parsePrices() {
@@ -32,13 +25,10 @@ class ResultsWorker {
   }
 
   parseCategories() {
-    let categories = [];
+    let categories = ["All"];
     this.results.forEach((result) => {
       result.categories.forEach((category) => {
-        if (
-          this.importantCategories.includes(category) &&
-          !categories.includes(category)
-        ) {
+        if (!categories.includes(category)) {
           categories.push(category);
         }
       });
@@ -46,10 +36,31 @@ class ResultsWorker {
     return categories;
   }
 
+  parseBrands() {
+    let brands = ["All"];
+    this.results.forEach((result) => {
+      if (result.brand && !brands.includes(result.brand)) {
+        brands.push(result.brand);
+      }
+    });
+    return brands;
+  }
+
+  parseFeatures() {
+    let features = {};
+    this.results.forEach((result) => {
+      Object.keys(result.features).forEach((feature) => {
+        features[feature] = [...features[feature], result.features[feature]];
+      });
+    });
+    console.log(features)
+    return features
+  }
+
   filter(filters) {
     return this.results.filter(
       (result) =>
-        filters.types[this.typePlurals[result.type]] &&
+        (filters.brand === "All" || result.brand === filters.brand) &&
         result.unitPrice.amount >= filters.min &&
         result.unitPrice.amount <= filters.max &&
         (filters.category === "All" ||

@@ -13,7 +13,6 @@ const UserFavourites = (props) => {
         overflowY: "scroll",
         "&::-webkit-scrollbar": {
           bgcolor: "transparent",
-          height: "10px",
         },
         "&::-webkit-scrollbar-thumb": {
           borderRadius: "25px",

@@ -11,6 +11,7 @@ const SkeletonGroup = (props) => {
     <Box
       display={"flex"}
       flexDirection={props.flexDirection || "column"}
+      flexWrap={props.flexWrap}
       gap={"20px"}
     >
       {skeletonArr.map(() => (
