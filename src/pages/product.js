@@ -130,7 +130,7 @@ const ProductPage = () => {
               <Box
                 overflow={"hidden"}
                 width={"100%"}
-                height={"80%"}
+                height={"100%"}
                 borderRadius={"20px"}
                 position={"relative"}
                 display={"flex"}
@@ -202,10 +202,10 @@ const ProductPage = () => {
                 </Box>
               </Box>
               <Box
-                height={"20%"}
+                padding={"10px"}
                 width={"100%"}
                 display={"flex"}
-                justifyContent={isNotPhone ? "flex-start" : "space-evenly"}
+                justifyContent={"flex-start"}
                 alignItems={"center"}
               >
                 {isLoading ? (
@@ -216,19 +216,19 @@ const ProductPage = () => {
                     flexDirection={"row"}
                   />
                 ) : (
-                  <Box height={"80%"} display={"flex"} gap={"5px"}>
+                  <Box display={"flex"} gap={"10px"}>
                     {product.images.map((image, index) => (
                       <button
                         onClick={changeImageIndex}
                         value={index}
                         style={{
-                          height: "100px",
-                          width: "100px",
+                          height: "clamp(50px, 5vw, 100px)",
+                          width: "clamp(50px, 5vw, 100px)",
                           transition: "0.3s",
                           border:
                             imageIndex === index
                               ? `2px solid #FF2681`
-                              : "2px solid transparent",
+                              : `2px solid ${theme.palette.grey[400]}`,
                           margin: 0,
                           padding: 0,
                           borderRadius: "10px",
@@ -261,6 +261,7 @@ const ProductPage = () => {
                   width={"100%"}
                   height={"80px"}
                   display={"flex"}
+                  padding={"20px"}
                   gap={"20px"}
                   alignItems={"center"}
                   bgcolor={"white"}
@@ -286,12 +287,12 @@ const ProductPage = () => {
               )}
               <Box
                 width={isNotPhone ? "80%" : "100%"}
-                height={"80%"}
+                minHeight={"100%"}
                 display={"flex"}
                 flexDirection={"column"}
-                justifyContent={"space-between"}
+                justifyContent={"space-evenly"}
                 gap={"20px"}
-                sx={{transition:"0.3s"}}
+                sx={{ transition: "0.3s" }}
               >
                 <Box
                   display={"flex"}
@@ -342,14 +343,20 @@ const ProductPage = () => {
                       borderRadius={
                         expandFeatures ? "10px 10px 0px 0px" : "10px"
                       }
-                      borderBottom={expandFeatures ? `1px solid ${theme.palette.grey[400]}`: undefined}
+                      borderBottom={
+                        expandFeatures
+                          ? `1px solid ${theme.palette.grey[400]}`
+                          : undefined
+                      }
                       bgcolor={theme.palette.grey[200]}
                       padding={"20px"}
                     >
                       <Typography>Key features:</Typography>
-                      <IconButton onClick={switchExpandFeatures}>
-                        {expandFeatures ? <ExpandLess /> : <ExpandMore />}
-                      </IconButton>
+                      <Tooltip title={expandFeatures ? "collapse" : "expand"}>
+                        <IconButton onClick={switchExpandFeatures}>
+                          {expandFeatures ? <ExpandLess /> : <ExpandMore />}
+                        </IconButton>
+                      </Tooltip>
                     </Box>
                     <Box
                       height={expandFeatures ? "100%" : "0px"}
