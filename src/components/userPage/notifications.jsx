@@ -1,8 +1,9 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import NotificationItem from "./notificationItem";
 
 const Notifications = ({ user }) => {
+  const theme = useTheme()
   return (
     <Box
       width={"100%"}
@@ -20,10 +21,11 @@ const Notifications = ({ user }) => {
         },
         "&::-webkit-scrollbar-thumb": {
           borderRadius: "25px",
-          bgcolor: "text.secondary",
+          bgcolor: theme.palette.grey[300],
         },
         "&::-webkit-scrollbar-thumb:hover": {
           cursor: "pointer",
+          bgcolor: theme.palette.grey[400],
         },
       }}
     >

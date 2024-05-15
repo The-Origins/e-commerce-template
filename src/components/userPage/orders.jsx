@@ -29,10 +29,11 @@ const UserOrders = () => {
         },
         "&::-webkit-scrollbar-thumb": {
           borderRadius: "25px",
-          bgcolor: "text.secondary",
+          bgcolor: theme.palette.grey[300],
         },
         "&::-webkit-scrollbar-thumb:hover": {
           cursor: "pointer",
+          bgcolor: theme.palette.grey[400],
         },
       }}
     >

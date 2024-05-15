@@ -3,54 +3,27 @@ import { createSlice } from "@reduxjs/toolkit";
 const storeSLice = createSlice({
   name: "store",
   initialState: {
-    user: {
-      name: {},
-      phone: {},
-      addresses:{},
-      payment:{},
-      recentPayment: {},
-      address: {},
-      recentDeliveryLocation: {},
-      region: {},
-      notifications: { items: [] },
-      favourites: [],
-      cart: { items: [] },
-    },
+    user: {},
     location: { region: {}, coordinates: {} },
-    modal: {
-      on: false,
-      message: { title: "", description: "" },
-      modalType: "info",
-    },
     snackBar: {
       on: false,
       message: { title: "", description: "" },
       modalType: "info",
     },
-    isLoading: false,
     isContact: false,
+    isAuth: false,
   },
   reducers: {
     switchIsContact: (state) => {
       state.isContact = !state.isContact;
     },
-    changeIsLoading: (state) => {
-      state.isLoading = !state.isLoading;
+    switchIsAuth: (state, action) => {
+      state.isAuth = action.payload || !state.isAuth;
     },
     activateModal: (state, action) => {
       state.modal.on = true;
       state.modal.message = action.payload.message;
       state.modal.modalType = action.payload.modalType || state.modal.modalType;
-    },
-    deactivateModal: (state) => {
-      state.modal.on = false;
-      state.modal.message = { title: "", description: "" };
-      state.modal.modalType = "info";
-    },
-    activateSnackBar: (state, action) => {
-      state.snackBar.on = true;
-      state.snackBar.message = action.payload.message;
-      state.snackBar.snackBarType = action.payload.snackBarType || state.snackBar.snackBarType;
     },
     deactivateSnackBar: (state) => {
       state.snackBar.on = false;
@@ -69,12 +42,10 @@ const storeSLice = createSlice({
 export const {
   setUser,
   setlocation,
-  activateModal,
-  deactivateModal,
   activateSnackBar,
   deactivateSnackBar,
   switchIsContact,
-  changeIsLoading,
+  switchIsAuth
 } = storeSLice.actions;
 
 export default storeSLice.reducer;

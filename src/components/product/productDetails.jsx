@@ -47,7 +47,7 @@ const ProductDetails = (props) => {
   return (
     <Backdrop sx={{ color: "#fff", zIndex: 2 }} open={props.isProductDetails}>
       <Box
-        width={isNotPhone ? "50%" : "80%"}
+        width={isNotPhone ? "50%" : "90%"}
         minHeight={"400px"}
         maxHeight={"80%"}
         borderRadius={"25px"}
@@ -148,6 +148,7 @@ const ProductDetails = (props) => {
           alignItems={"center"}
         >
           <Button
+            size={isNotPhone ? "md": "small" }
             onClick={props.switchIsProductDetails}
             disableElevation
             variant="contained"
@@ -155,6 +156,7 @@ const ProductDetails = (props) => {
             Back
           </Button>
           <Button
+            size={isNotPhone ? "md": "small"}
             onClick={confirm}
             disableElevation
             variant="contained"

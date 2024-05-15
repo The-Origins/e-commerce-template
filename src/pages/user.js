@@ -24,12 +24,13 @@ import OrderDetails from "../components/userPage/orderDetails";
 import UserFavourites from "../components/userPage/favourites";
 import UserProfile from "../components/userPage/profile";
 import Notifications from "../components/userPage/notifications";
+import SkeletonGroup from "../components/product/skeletonGroup";
 
 const UserPage = () => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const user = useSelector((state) => state.user);
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
   const [stages, setStages] = useState({});
   let stage = String(window.location.hash).includes("/")
     ? window.location.hash.substring(1, window.location.hash.indexOf("/"))
@@ -42,24 +43,23 @@ const UserPage = () => {
   }, [stage]);
 
   useEffect(() => {
-    if(Object.keys(user.payment).length)
-      {
-        setIsLoading(false)
-      }
-  }, [user])
+    if (Object.keys(user).length) {
+      setIsLoading(false)
+    }
+  }, [user]);
 
   useEffect(() => {
     setStages({
-      orders: <UserOrders isLoading={isLoading}/>,
-      order: <OrderDetails isLoading={isLoading}/>,
-      favourites: <UserFavourites user={user} isLoading={isLoading}/>,
-      notifications: <Notifications user={user} isLoading={isLoading}/>,
+      orders: <UserOrders isLoading={isLoading} />,
+      order: <OrderDetails isLoading={isLoading} />,
+      favourites: <UserFavourites user={user} isLoading={isLoading} />,
+      notifications: <Notifications user={user} isLoading={isLoading} />,
     });
   }, [user, isLoading]);
 
   return (
     <Box
-      mt={"50px"}
+      mt={"60px"}
       height={"100vh"}
       display={"flex"}
       justifyContent={"center"}
@@ -82,82 +82,104 @@ const UserPage = () => {
             flexDirection={"column"}
             gap={"20px"}
           >
-            <Link
-              href="/user/#"
-              sx={{
-                height: "40%",
-                color: "black",
-                textDecoration: "none",
-                bgcolor: !window.location.hash ? "#F5F5F5" : undefined,
-              }}
-            >
-              <MenuItem
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
+            {isLoading ? (
+              <Box
+                width={"100%"}
+                height={"100%"}
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
               >
-                <Box
-                  display={"flex"}
-                  flexDirection={"column"}
-                  alignItems={"center"}
+                <CircularProgress />
+              </Box>
+            ) : (
+              <>
+                <Link
+                  href="/user/#"
+                  sx={{
+                    height: "40%",
+                    color: "black",
+                    textDecoration: "none",
+                    bgcolor: !window.location.hash ? "#F5F5F5" : undefined,
+                  }}
                 >
-                  <Avatar />
-                  <Typography fontWeight={"bold"} fontSize={"1.6rem"}>
-                    {user.name.first} {user.name.last}
-                  </Typography>
-                </Box>
-                <Typography fontSize={"0.8rem"} color={"text.secondary"}>
-                  logged in
-                </Typography>
-              </MenuItem>
-            </Link>
-            <Box display={"flex"} flexDirection={"column"}>
-              <SideBarElement
-                path={"notifications"}
-                stage={stage}
-                title={"My notifications"}
-                icon={
-                  <Badge
-                    color="primary"
-                    variant="dot"
-                    overlap="circular"
-                    invisible={!user.notifications.new}
+                  <MenuItem
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
-                    <NotificationsSharp />
-                  </Badge>
-                }
-              />
-              <SideBarElement
-                path={"orders"}
-                stage={stage}
-                title={"My orders"}
-                icon={<BookmarkAdded />}
-              />
-              <SideBarElement
-                path={"favourites"}
-                stage={stage}
-                title={"My favourites"}
-                icon={<Favorite />}
-              />
-              <Divider sx={{ margin: "30px" }} />
-              <Button
-                onClick={() => {}}
-                sx={{ alignSelf: "center" }}
-                disableElevation
-                variant="contained"
-              >
-                Logout
-              </Button>
-            </Box>
+                    <Box
+                      display={"flex"}
+                      flexDirection={"column"}
+                      alignItems={"center"}
+                    >
+                      <Avatar />
+                      <Typography fontWeight={"bold"} fontSize={"1.6rem"}>
+                        {user.name.first} {user.name.last}
+                      </Typography>
+                    </Box>
+                    <Typography fontSize={"0.8rem"} color={"text.secondary"}>
+                      logged in
+                    </Typography>
+                  </MenuItem>
+                </Link>
+                <Box display={"flex"} flexDirection={"column"}>
+                  <SideBarElement
+                    path={"notifications"}
+                    stage={stage}
+                    title={"My notifications"}
+                    icon={
+                      <Badge
+                        color="primary"
+                        variant="dot"
+                        overlap="circular"
+                        invisible={!user.notifications.new}
+                      >
+                        <NotificationsSharp />
+                      </Badge>
+                    }
+                  />
+                  <SideBarElement
+                    path={"orders"}
+                    stage={stage}
+                    title={"My orders"}
+                    icon={<BookmarkAdded />}
+                  />
+                  <SideBarElement
+                    path={"favourites"}
+                    stage={stage}
+                    title={"My favourites"}
+                    icon={<Favorite />}
+                  />
+                  <Divider sx={{ margin: "30px" }} />
+                  <Button
+                    onClick={() => {}}
+                    sx={{ alignSelf: "center" }}
+                    disableElevation
+                    variant="contained"
+                  >
+                    Logout
+                  </Button>
+                </Box>
+              </>
+            )}
           </Box>
         )}
-        <Box width={"100%"} height={"100%"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
+        <Box
+          width={"100%"}
+          height={"100%"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
           {isLoading && <CircularProgress />}
-          {!stage && !isLoading && <UserProfile user={user} isLoading={isLoading}/>}
+          {!stage && !isLoading && (
+            <UserProfile user={user} isLoading={isLoading} />
+          )}
           {!isLoading && stages[stage]}
         </Box>
       </Box>

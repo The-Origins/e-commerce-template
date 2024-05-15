@@ -32,7 +32,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(user.payment)) {
+    if (Object.keys(user).length) {
       setIsLoading(false);
     }
   }, [user]);

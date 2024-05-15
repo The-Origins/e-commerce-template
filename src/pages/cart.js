@@ -25,14 +25,14 @@ const CartPage = () => {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(user.payment).length) {
+    if (Object.keys(user).length) {
       setIsLoading(false);
     }
   }, [user]);
 
   return (
     <Box
-      mt={"100px"}
+      mt={"150px"}
       minHeight={"100vh"}
       display={"flex"}
       justifyContent={"center"}
@@ -132,7 +132,7 @@ const CartPage = () => {
                 const item = {
                   details: user.cart.items[cartItem].details,
                   product: productWorker.findProduct(cartItem),
-                  total:user.cart.items[cartItem].total
+                  total: user.cart.items[cartItem].total,
                 };
                 return (
                   <UserProductCard

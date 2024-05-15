@@ -60,15 +60,17 @@ const ProductPage = () => {
     document.title = product.name || "product page" + " | E-commerce";
 
     if (Object.keys(product).length) {
-      setIsLoading(false);
       setRatingDistribution(productWorker.getRatingDistribution(product));
       setMaxImageIndex(product.images.length);
     }
   }, [product]);
 
   useEffect(() => {
-    setIsLiked(Boolean(user.favourites[id]));
-    setIsInCart(Boolean(user.cart.items[id]));
+    if (Object.keys(user).length) {
+      setIsLiked(Boolean(user.favourites[id]));
+      setIsInCart(Boolean(user.cart.items[id]));
+      setIsLoading(false);
+    }
   }, [user]);
 
   const next = () => {
@@ -98,13 +100,15 @@ const ProductPage = () => {
 
   return (
     <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
-      <ProductDetails
-        title={isInCart && "Change your prefrences"}
-        product={product}
-        user={user}
-        switchIsProductDetails={switchIsProductDetails}
-        isProductDetails={isProductDetails}
-      />
+      {!isLoading && (
+        <ProductDetails
+          title={isInCart && "Change your prefrences"}
+          product={product}
+          user={user}
+          switchIsProductDetails={switchIsProductDetails}
+          isProductDetails={isProductDetails}
+        />
+      )}
       <Box width={isNotPhone ? "80%" : "90%"}>
         <Box
           mt={"50px"}
@@ -352,11 +356,9 @@ const ProductPage = () => {
                       padding={"20px"}
                     >
                       <Typography>Key features:</Typography>
-                      <Tooltip title={expandFeatures ? "collapse" : "expand"}>
-                        <IconButton onClick={switchExpandFeatures}>
-                          {expandFeatures ? <ExpandLess /> : <ExpandMore />}
-                        </IconButton>
-                      </Tooltip>
+                      <IconButton onClick={switchExpandFeatures}>
+                        {expandFeatures ? <ExpandLess /> : <ExpandMore />}
+                      </IconButton>
                     </Box>
                     <Box
                       height={expandFeatures ? "100%" : "0px"}

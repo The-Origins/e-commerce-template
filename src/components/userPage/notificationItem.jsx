@@ -5,9 +5,7 @@ const NotificationItem = (props) => {
   const theme = useTheme();
   const date = new Date(props.dateCreated);
   const time =
-    `0${date.getHours()}`.replace(-1, "") +
-    ":" +
-    `0${date.getMinutes()}`.replace(-1, "");
+    `0${date.getHours()}`.slice(-2) + ":" + `0${date.getMinutes()}`.slice(-2);
   return (
     <Box
       width={"100%"}

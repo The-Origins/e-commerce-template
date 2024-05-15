@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import {
   AccountCircle,
   Explore,
@@ -11,25 +11,26 @@ import UserProfileDetail from "./profileDetail";
 import UserProfileList from "./profileList";
 
 const UserProfile = (props) => {
+  const theme = useTheme();
   return (
     <Box
       width={"100%"}
       height={"100%"}
       padding={"20px"}
-      
       sx={{
         overflowY: "scroll",
-        scrollbarWidth:"10px",
+        scrollbarWidth: "10px",
         "&::-webkit-scrollbar": {
           bgcolor: "transparent",
-          width:"10px",
+          width: "10px",
         },
         "&::-webkit-scrollbar-thumb": {
           borderRadius: "25px",
-          bgcolor: "text.secondary",
+          bgcolor: theme.palette.grey[300],
         },
         "&::-webkit-scrollbar-thumb:hover": {
           cursor: "pointer",
+          bgcolor: theme.palette.grey[400],
         },
       }}
       display={"flex"}

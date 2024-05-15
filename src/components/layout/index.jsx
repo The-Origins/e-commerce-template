@@ -24,8 +24,8 @@ const Layout = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(user.payment)) {
-      setIsLoading(false)
+    if (Object.keys(user).length) {
+      setIsLoading(false);
     }
   }, [user]);
 
@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
     <ThemeProvider theme={theme}>
       <SnackBarComponent />
       <Contact isContact={isContact} changeIsContact={changeIsContact} />
-      <Header isLoading={isLoading} />
+      <Header isLoading={isLoading} user={user} />
       {children}
       <Footer changeIsContact={changeIsContact} isLoading={isLoading} />
     </ThemeProvider>

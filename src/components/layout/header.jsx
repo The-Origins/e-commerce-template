@@ -10,14 +10,11 @@ import {
   InputAdornment,
   useMediaQuery,
   Skeleton,
-  Divider,
 } from "@mui/material";
-import { Close, MenuOutlined, Search, ShoppingCart } from "@mui/icons-material";
+import { Search, ShoppingCart } from "@mui/icons-material";
 import { useTheme } from "@emotion/react";
-import { useSelector } from "react-redux";
 
 const Header = (props) => {
-  const user = useSelector((state) => state.user);
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
   const [yScroll, setYScroll] = useState(0);
@@ -67,11 +64,13 @@ const Header = (props) => {
           flexDirection={"column"}
           width={isNotPhone ? "80%" : "90%"}
         >
-          <UserMenu
-            isUserMenu={isUserMenu}
-            switchIsUserMenu={switchIsUserMenu}
-            user={user}
-          />
+          {!props.isLoading && (
+            <UserMenu
+              isUserMenu={isUserMenu}
+              switchIsUserMenu={switchIsUserMenu}
+              user={props.user}
+            />
+          )}
           <Box
             display={"flex"}
             alignItems={"center"}
@@ -130,9 +129,7 @@ const Header = (props) => {
                   <IconButton>
                     <Badge
                       color="primary"
-                      badgeContent={
-                        user.cart && Object.keys(user.cart.items).length
-                      }
+                      badgeContent={Object.keys(props.user.cart.items).length}
                     >
                       <ShoppingCart
                         sx={{ fontSize: "clamp(1.4rem, 3vw, 1.8rem)" }}
@@ -153,7 +150,7 @@ const Header = (props) => {
                     color="primary"
                     variant="dot"
                     overlap="circular"
-                    invisible={!user.notifications.new}
+                    invisible={!props.user.notifications.new}
                     badgeContent=" "
                   >
                     <Avatar

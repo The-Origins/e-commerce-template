@@ -41,7 +41,7 @@ const CheckoutPage = () => {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(user.payment).length) {
+    if (Object.keys(user).length) {
       let items = [];
       Object.keys(user.cart.items).forEach((item) => {
         items.push({
@@ -66,7 +66,7 @@ const CheckoutPage = () => {
 
   return (
     <Box
-      mt={"100px"}
+      mt={"120px"}
       minHeight={"100vh"}
       display={"flex"}
       justifyContent={"center"}

@@ -64,17 +64,20 @@ const OrderDetails = () => {
     <Box
       width={"100%"}
       height={"100%"}
-      sx={{ overflowY: "scroll", "&::-webkit-scrollbar": {
-        bgcolor: "transparent",
-      },
-      "&::-webkit-scrollbar-thumb": {
-        borderRadius: "25px",
-        bgcolor: "text.secondary",
-        width:"10px"
-      },
-      "&::-webkit-scrollbar-thumb:hover": {
-        cursor: "pointer",
-      }, }}
+      sx={{
+        overflowY: "scroll",
+        "&::-webkit-scrollbar": {
+          bgcolor: "transparent",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          borderRadius: "25px",
+          bgcolor: theme.palette.grey[300],
+        },
+        "&::-webkit-scrollbar-thumb:hover": {
+          cursor: "pointer",
+          bgcolor: theme.palette.grey[400],
+        },
+      }}
       padding={"20px"}
       display={"flex"}
       flexDirection={"column"}
