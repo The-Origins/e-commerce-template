@@ -10,7 +10,7 @@ import {
   Link,
   Skeleton,
 } from "@mui/material";
-import { Build, PhoneInTalk } from "@mui/icons-material";
+import { PhoneInTalk } from "@mui/icons-material";
 import SpotlightCarousel from "../components/homePage/spotlightCarousel";
 import ProductCard from "../components/product/productCard";
 import ProductCardContainer from "../components/product/productCardContainer";
@@ -23,19 +23,16 @@ const Home = () => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const user = useSelector((state) => state.user);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(data.products.slice(0, 4));
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = "E-commerce | my moto";
-    setProducts(data.products.slice(0, 4));
-  }, []);
-
-  useEffect(() => {
-    if (Object.keys(user).length) {
+    const loadingTimout = setTimeout(() => {
       setIsLoading(false);
-    }
-  }, [user]);
+    }, 2000);
+    return () => clearTimeout(loadingTimout);
+  }, []);
 
   return (
     <Box

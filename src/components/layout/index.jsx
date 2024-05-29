@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { switchIsContact, setUser } from "../../state/store";
 import data from "../../lib/data";
 import SnackBarComponent from "./snackBar";
+import Auth from "./auth";
+import ConfirmationModal from "./confirmationModal";
 
 const Layout = ({ children }) => {
   const dispatch = useDispatch();
@@ -20,19 +22,18 @@ const Layout = ({ children }) => {
   };
 
   useEffect(() => {
-    dispatch(setUser(data.user));
-  }, []);
-
-  useEffect(() => {
-    if (Object.keys(user).length) {
+    const loadingTimout = setTimeout(() => {
       setIsLoading(false);
-    }
-  }, [user]);
+    }, 2000);
+    return () => clearTimeout(loadingTimout)
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
       <SnackBarComponent />
       <Contact isContact={isContact} changeIsContact={changeIsContact} />
+      <ConfirmationModal />
+      <Auth />
       <Header isLoading={isLoading} user={user} />
       {children}
       <Footer changeIsContact={changeIsContact} isLoading={isLoading} />

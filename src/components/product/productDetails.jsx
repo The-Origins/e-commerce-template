@@ -38,8 +38,8 @@ const ProductDetails = (props) => {
     const productWorker = new ProductWorker(props.product);
     setProductDetails(
       productWorker.getProductDetails(
-        props.user.cart.items,
-        props.user.favourites
+        Object.keys(props.user).length ? props.user.cart.items : [],
+        Object.keys(props.user).length ? props.user.favourites : []
       )
     );
   }, [props.product, props.user]);
@@ -148,7 +148,7 @@ const ProductDetails = (props) => {
           alignItems={"center"}
         >
           <Button
-            size={isNotPhone ? "md": "small" }
+            size={isNotPhone ? "md" : "small"}
             onClick={props.switchIsProductDetails}
             disableElevation
             variant="contained"
@@ -156,7 +156,7 @@ const ProductDetails = (props) => {
             Back
           </Button>
           <Button
-            size={isNotPhone ? "md": "small"}
+            size={isNotPhone ? "md" : "small"}
             onClick={confirm}
             disableElevation
             variant="contained"

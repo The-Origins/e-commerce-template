@@ -13,11 +13,13 @@ import {
 import CategorizeComponent from "./categorizeComponent";
 import ProductDetails from "./productDetails";
 import data from "../../lib/data";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { switchIsAuth } from "../../state/store";
 
 const ProductCard = (props) => {
   const [offers, setOffers] = useState({});
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [isProductDetails, setIsProductDetails] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
@@ -30,7 +32,11 @@ const ProductCard = (props) => {
   };
 
   const addToCart = () => {
-    switchIsProductDetails();
+    if (Object.keys(user).length) {
+      switchIsProductDetails();
+    } else {
+      dispatch(switchIsAuth());
+    }
   };
 
   useEffect(() => {
@@ -38,8 +44,13 @@ const ProductCard = (props) => {
   }, []);
 
   useEffect(() => {
-    setIsLiked(Boolean(props.user.favourites[props.product.id]));
-    setIsInCart(Boolean(props.user.cart.items[props.product.id]));
+    if (Object.keys(user).length) {
+      setIsLiked(Boolean(props.user.favourites[props.product.id]));
+      setIsInCart(Boolean(props.user.cart.items[props.product.id]));
+    } else {
+      setIsLiked(false);
+      setIsInCart(false);
+    }
   }, [props.user, props.product]);
 
   return (
@@ -70,20 +81,16 @@ const ProductCard = (props) => {
         flexDirection={"column"}
         width={"100%"}
         height={"100%"}
+        position={"relative"}
       >
-        <Box position={"relative"} width={"100%"} height={"50%"}>
+        <Box
+          position={"absolute"}
+          width={"100%"}
+          height={"100%"}
+          display={"flex"}
+          flexDirection={"column"}
+        >
           <Box
-            sx={{
-              width: "100%",
-              height: "100%",
-              backgroundImage: `url(${props.product.images[0]})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              borderRadius: "20px",
-            }}
-          />
-          <Box
-            position={"absolute"}
             top={0}
             width={"100%"}
             display={"flex"}
@@ -105,80 +112,99 @@ const ProductCard = (props) => {
               </IconButton>
             </Tooltip>
           </Box>
-          {Boolean(offers[props.product.id]) && (
-            <Box
-              position={"absolute"}
-              bottom={0}
-              width={"100%"}
-              display={"flex"}
-              justifyContent={"flex-end"}
-              alignItems={"center"}
-            >
-              <Typography
-                width={"30px"}
-                height={"30px"}
-                bgcolor={"primary.main"}
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                fontSize={"12px"}
-                color={"white"}
-                borderRadius={"0px 0px 20px 0px"}
-              >
-                -{offers[props.product.id]}%
-              </Typography>
-            </Box>
-          )}
+          <Link
+            href={`/product?p=${props.product.id}`}
+            sx={{ width: "100%", height: "100%" }}
+          />
         </Box>
-        <Link
-          href={`/product?p=${props.product.id}`}
+        <Box width={"100%"} height={"50%"}>
+          <Box
+            sx={{
+              width: "100%",
+              height: "100%",
+              backgroundImage: `url(${props.product.images[0]})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              borderRadius: "20px",
+            }}
+          />
+        </Box>
+        <Box
           width={"100%"}
           height={"50%"}
-          sx={{
-            display: "inline-block",
-            textDecoration: "none",
-            color: "black",
-          }}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
         >
           <Box
-            width={"100%"}
-            height={"100%"}
+            height={"90%"}
+            width={"90%"}
             display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
+            flexDirection={"column"}
+            justifyContent={"space-evenly"}
           >
-            <Box
-              height={"90%"}
-              width={"90%"}
-              display={"flex"}
-              flexDirection={"column"}
-              justifyContent={"space-evenly"}
-            >
-              <Box display={"flex"} flexDirection={"column"} gap={"1px"}>
+            <Box display={"flex"} flexDirection={"column"} gap={"1px"}>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                alignItems={"center"}
+              >
                 <Typography fontSize={"0.7rem"} color={"text.secondary"}>
                   {props.product.categories.join(", ")}
                 </Typography>
-                <Box display={"flex"} alignItems={"center"} gap={"10px"}>
+                {Boolean(offers[props.product.id]) && isNotPhone && (
                   <Typography
-                    fontSize={"clamp(1rem, 2vw, 1.3rem)"}
-                    fontWeight={"bold"}
+                    padding={"2px 5px"}
+                    bgcolor={"rgba(255 38 129 / 0.2)"}
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    fontSize={"clamp(0.6rem, 1vw, 0.8rem)"}
+                    color={"primary.main"}
                   >
-                    {props.product.name}
+                    -{offers[props.product.id]}%
                   </Typography>
-                </Box>
+                )}
               </Box>
-              <Rating
-                value={props.product.rating.score}
-                sx={{ fontSize: "clamp(1rem, 2vw, 1.4rem)" }}
-                readOnly
-              />
-              <Typography fontSize={"17px"}>
+              <Box display={"flex"} flexDirection={"column"} gap={"5px"}>
+                <Typography
+                  fontSize={"clamp(1rem, 2vw, 1.3rem)"}
+                  fontWeight={"bold"}
+                >
+                  {props.product.name}
+                </Typography>
+                <Rating
+                  value={props.product.rating.score}
+                  sx={{ fontSize: "clamp(1rem, 2vw, 1.4rem)" }}
+                  readOnly
+                />
+              </Box>
+            </Box>
+            <Box display={"flex"} alignItems={"center"} gap={"10px"}>
+              <Typography fontSize={"1rem"}>
                 {props.product.unitPrice.currency}{" "}
-                {props.product.unitPrice.amount}
+                {offers[props.product.id]
+                  ? props.product.unitPrice.amount -
+                    (props.product.unitPrice.amount *
+                      offers[props.product.id]) /
+                      100
+                  : props.product.unitPrice.amount}
               </Typography>
+              {offers[props.product.id] && (
+                <Typography
+                  sx={{
+                    fontSize: "0.8rem",
+                    color: "text.secondary",
+                    textDecoration: "line-through",
+                  }}
+                >
+                  {props.product.unitPrice.currency}{" "}
+                  {props.product.unitPrice.amount}
+                </Typography>
+              )}
             </Box>
           </Box>
-        </Link>
+        </Box>
       </Box>
     </Box>
   );

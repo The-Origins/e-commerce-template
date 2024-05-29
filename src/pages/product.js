@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   useTheme,
   useMediaQuery,
@@ -31,6 +31,7 @@ import ProductCardContainer from "../components/product/productCardContainer";
 import ProductCard from "../components/product/productCard";
 import ProductDetails from "../components/product/productDetails";
 import SkeletonGroup from "../components/product/skeletonGroup";
+import { switchIsAuth } from "../state/store";
 
 const ProductPage = () => {
   let params = new URLSearchParams(window.location.search);
@@ -38,21 +39,31 @@ const ProductPage = () => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [expandFeatures, setExpandFeatures] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [imageIndex, setImageIndex] = useState(0);
   const [product, setProduct] = useState({});
+  const [offers, setOffers] = useState({});
   const [products, setProducts] = useState([]);
   const [isProductDetails, setIsProductDetails] = useState(false);
   const [ratingDistribution, setRatingDistribution] = useState({});
   const [maxImageIndex, setMaxImageIndex] = useState(0);
 
   useEffect(() => {
+    const loadingTimout = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    setOffers(data.offers);
+
     const productWorker = new ProductWorker();
     setProduct(productWorker.findProduct(id));
     setProducts(data.products.slice(0, 4));
+
+    return () => clearTimeout(loadingTimout);
   }, []);
 
   useEffect(() => {
@@ -67,11 +78,13 @@ const ProductPage = () => {
 
   useEffect(() => {
     if (Object.keys(user).length) {
-      setIsLiked(Boolean(user.favourites[id]));
-      setIsInCart(Boolean(user.cart.items[id]));
-      setIsLoading(false);
+      setIsLiked(Boolean(user.favourites[product.id]));
+      setIsInCart(Boolean(user.cart.items[product.id]));
+    } else {
+      setIsLiked(false);
+      setIsInCart(false);
     }
-  }, [user]);
+  }, [user, product]);
 
   const next = () => {
     setImageIndex((prev) => prev + 1);
@@ -96,7 +109,13 @@ const ProductPage = () => {
     switchIsProductDetails();
   };
 
-  const like = () => {};
+  const handleFavourite = () => {
+    if (!Object.keys(user).length) {
+      return dispatch(switchIsAuth());
+    }
+  };
+
+  const handleShare = () => {};
 
   return (
     <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
@@ -272,7 +291,7 @@ const ProductPage = () => {
                   zIndex={1}
                   boxShadow={`0px 0px 10px 0px ${theme.palette.grey[400]}`}
                 >
-                  <IconButton disabled={isLoading}>
+                  <IconButton onClick={handleShare} disabled={isLoading}>
                     <Share />
                   </IconButton>
                   <Button
@@ -322,6 +341,7 @@ const ProductPage = () => {
                     <IconButton
                       sx={{ color: isLiked && "primary.main" }}
                       disabled={isLoading}
+                      onClick={handleFavourite}
                     >
                       <Favorite />
                     </IconButton>
@@ -332,9 +352,27 @@ const ProductPage = () => {
                 ) : (
                   <>
                     <Typography>{product.description}</Typography>
-                    <Typography fontWeight={"bold"} fontSize={"1.3rem"}>
-                      {product.unitPrice.currency} {product.unitPrice.amount}
-                    </Typography>
+                    <Box display={"flex"} alignItems={"center"} gap={"10px"}>
+                      <Typography fontWeight={"bold"} fontSize={"1.3rem"}>
+                        {product.unitPrice.currency}{" "}
+                        {offers[product.id]
+                          ? product.unitPrice.amount -
+                            (product.unitPrice.amount * offers[product.id]) /
+                              100
+                          : product.unitPrice.amount}
+                      </Typography>
+                      {offers[product.id] && (
+                        <Typography
+                          sx={{
+                            color: "text.secondary",
+                            textDecoration: "line-through",
+                          }}
+                        >
+                          {product.unitPrice.currency}{" "}
+                          {product.unitPrice.amount}
+                        </Typography>
+                      )}
+                    </Box>
                   </>
                 )}
                 {!isLoading && product.features && (
@@ -372,18 +410,11 @@ const ProductPage = () => {
                       borderRadius={"0px 0px 10px 10px"}
                     >
                       {Object.keys(product.features).map((feature) => (
-                        <Box
-                          width={"100%"}
-                          display={"flex"}
-                          justifyContent={"space-between"}
-                        >
-                          <Typography>
-                            {feature.charAt(0).toUpperCase() +
-                              feature.substring(1)}{" "}
-                            :
-                          </Typography>
-                          <Typography>{product.features[feature]}</Typography>
-                        </Box>
+                        <Typography>
+                          {feature.charAt(0).toUpperCase() +
+                            feature.substring(1)}{" "}
+                          : {product.features[feature]}
+                        </Typography>
                       ))}
                     </Box>
                   </Box>
@@ -397,7 +428,7 @@ const ProductPage = () => {
                     gap={"20px"}
                   >
                     <Tooltip title="share">
-                      <IconButton onClick={like} disabled={isLoading}>
+                      <IconButton onClick={handleShare} disabled={isLoading}>
                         <Share />
                       </IconButton>
                     </Tooltip>
@@ -519,13 +550,16 @@ const ProductPage = () => {
                     overflowY: "scroll",
                     "&::-webkit-scrollbar": {
                       bgcolor: "transparent",
+                      width: "10px",
                     },
                     "&::-webkit-scrollbar-thumb": {
                       borderRadius: "25px",
-                      bgcolor: "text.secondary",
+                      bgcolor: theme.palette.grey[300],
+                      transition: "0.3s",
                     },
                     "&::-webkit-scrollbar-thumb:hover": {
                       cursor: "pointer",
+                      bgcolor: theme.palette.grey[400],
                     },
                   }}
                 >

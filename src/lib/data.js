@@ -15,14 +15,14 @@ const data = {
       action: { title: "View Details", path: "/product?p=5" },
     },
     {
-      title: "50% off!",
-      description: "50% off all food!!",
+      title: "50% off all foods!",
+      description: "Grab your favourite delicacies at half price",
       image:
         "https://images.pexels.com/photos/1653877/pexels-photo-1653877.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       action: { title: "Shop now", path: "/results?search=this+category" },
     },
   ],
-  offers: { 1: 21, 2: 10, 3: 12 },
+  offers: { 1: 31, 2: 10, 3: 12 },
   orders: [
     {
       id: 1,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Avatar,
   Badge,
@@ -7,6 +7,7 @@ import {
   Button,
   CircularProgress,
   Divider,
+  IconButton,
   Link,
   MenuItem,
   Typography,
@@ -15,8 +16,12 @@ import {
 } from "@mui/material";
 import {
   BookmarkAdded,
+  ChevronRight,
   Favorite,
+  Home,
   NotificationsSharp,
+  Person,
+  PersonOff,
 } from "@mui/icons-material";
 import SideBarElement from "../components/userPage/sideBarElement";
 import UserOrders from "../components/userPage/orders";
@@ -24,11 +29,12 @@ import OrderDetails from "../components/userPage/orderDetails";
 import UserFavourites from "../components/userPage/favourites";
 import UserProfile from "../components/userPage/profile";
 import Notifications from "../components/userPage/notifications";
-import SkeletonGroup from "../components/product/skeletonGroup";
+import { activateConfirmationModal, setUser, switchIsAuth } from "../state/store";
 
 const UserPage = () => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
   const [stages, setStages] = useState({});
@@ -38,24 +44,40 @@ const UserPage = () => {
 
   useEffect(() => {
     document.title = `My ${
-      stage ? stage.charAt(0).toUpperCase() : "Profile"
-    }${stage.substring(1).replace("-", " ")} | Wendoh Cakes`;
+      stage.charAt(0).toUpperCase() + stage.substring(1)
+    } | E-commerce`;
   }, [stage]);
 
   useEffect(() => {
+    const loadingTimout = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(loadingTimout);
+  }, []);
+
+  useEffect(() => {
     if (Object.keys(user).length) {
-      setIsLoading(false)
+      setStages({
+        profile: <UserProfile user={user} />,
+        orders: <UserOrders />,
+        order: <OrderDetails />,
+        favourites: <UserFavourites user={user} />,
+        notifications: <Notifications user={user} />,
+      });
     }
   }, [user]);
 
-  useEffect(() => {
-    setStages({
-      orders: <UserOrders isLoading={isLoading} />,
-      order: <OrderDetails isLoading={isLoading} />,
-      favourites: <UserFavourites user={user} isLoading={isLoading} />,
-      notifications: <Notifications user={user} isLoading={isLoading} />,
-    });
-  }, [user, isLoading]);
+  const handleLogout = () => {
+    dispatch(
+      activateConfirmationModal({
+        message: "Are you sure you want to logout?",
+        onConfirm: () => {
+          dispatch(setUser({}));
+        },
+        onCancel: () => {},
+      })
+    );
+  };
 
   return (
     <Box
@@ -69,20 +91,50 @@ const UserPage = () => {
         width={isNotPhone ? "80%" : "90%"}
         height={"80%"}
         display={"flex"}
-        border={`1px solid ${theme.palette.grey[400]}`}
         overflow={"hidden"}
-        borderRadius={"25px"}
+        justifyContent={"center"}
       >
-        {isNotPhone && (
+        {(isNotPhone || !stage) && (
           <Box
-            width={"400px"}
+            overflow={"hidden"}
+            width={stage ? "400px" : "100%"}
+            maxWidth={"600px"}
             height={"100%"}
-            borderRight={`1px solid ${theme.palette.grey[400]}`}
+            border={`1px solid ${theme.palette.grey[400]}`}
+            borderRadius={stage ? "25px 0px 0px 25px" : "25px"}
             display={"flex"}
             flexDirection={"column"}
             gap={"20px"}
           >
-            {isLoading ? (
+            {!isLoading && !Object.keys(user).length ? (
+              <Box
+                width={"100%"}
+                height={"100%"}
+                display={"flex"}
+                flexDirection={"column"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                gap={"20px"}
+              >
+                <PersonOff sx={{ fontSize: "2rem", color: "text.secondary" }} />
+                {!stage && (
+                  <>
+                    <Typography fontWeight={"bold"} fontSize={"1.5rem"}>
+                      Login to access user info
+                    </Typography>
+                    <Button
+                      disableElevation
+                      variant="contained"
+                      size="large"
+                      startIcon={<Person />}
+                      onClick={() => dispatch(switchIsAuth())}
+                    >
+                      Log in
+                    </Button>
+                  </>
+                )}
+              </Box>
+            ) : isLoading ? (
               <Box
                 width={"100%"}
                 height={"100%"}
@@ -95,12 +147,12 @@ const UserPage = () => {
             ) : (
               <>
                 <Link
-                  href="/user/#"
+                  href="/user/#profile"
                   sx={{
                     height: "40%",
                     color: "black",
                     textDecoration: "none",
-                    bgcolor: !window.location.hash ? "#F5F5F5" : undefined,
+                    bgcolor: stage === "profile" ? "#F5F5F5" : undefined,
                   }}
                 >
                   <MenuItem
@@ -157,7 +209,7 @@ const UserPage = () => {
                   />
                   <Divider sx={{ margin: "30px" }} />
                   <Button
-                    onClick={() => {}}
+                    onClick={handleLogout}
                     sx={{ alignSelf: "center" }}
                     disableElevation
                     variant="contained"
@@ -169,19 +221,79 @@ const UserPage = () => {
             )}
           </Box>
         )}
-        <Box
-          width={"100%"}
-          height={"100%"}
-          display={"flex"}
-          justifyContent={"center"}
-          alignItems={"center"}
-        >
-          {isLoading && <CircularProgress />}
-          {!stage && !isLoading && (
-            <UserProfile user={user} isLoading={isLoading} />
-          )}
-          {!isLoading && stages[stage]}
-        </Box>
+        {stage && (
+          <Box display={"flex"} flexDirection={"column"} width={"100%"}>
+            {!isNotPhone && (
+              <Box
+                mb={"10px"}
+                padding={"10px"}
+                border={`1px solid ${theme.palette.grey[400]}`}
+                borderRadius={"20px"}
+                display={"flex"}
+                alignItems={"center"}
+                gap={"5px"}
+              >
+                <Link href="/user/#">
+                  <IconButton>
+                    <Home />
+                  </IconButton>
+                </Link>
+                <ChevronRight />
+                <Typography
+                  padding={"5px 10px"}
+                  bgcolor={theme.palette.grey[400]}
+                  color={theme.palette.grey[800]}
+                  borderRadius={"20px"}
+                  fontSize={"0.9rem"}
+                >
+                  {stage}
+                </Typography>
+              </Box>
+            )}
+            <Box
+              width={"100%"}
+              height={"100%"}
+              display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              border={`1px solid ${theme.palette.grey[400]}`}
+              overflow={"hidden"}
+              borderRadius={isNotPhone ? "0px 25px 25px 0px" : "25px"}
+            >
+              {!isLoading && !Object.keys(user).length ? (
+                <Box
+                  width={"100%"}
+                  height={"100%"}
+                  display={"flex"}
+                  flexDirection={"column"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  gap={"20px"}
+                >
+                  <PersonOff
+                    sx={{ fontSize: "3rem", color: "text.secondary" }}
+                  />
+                  <Typography fontWeight={"bold"} fontSize={"1.5rem"}>
+                    Login to access user info
+                  </Typography>
+                  <Button
+                    disableElevation
+                    variant="contained"
+                    size="large"
+                    startIcon={<Person />}
+                    onClick={() => dispatch(switchIsAuth())}
+                  >
+                    Log in
+                  </Button>
+                </Box>
+              ) : isLoading ? (
+                <CircularProgress />
+              ) : (
+                stages[stage]
+              )}
+            </Box>
+          </Box>
+        )}
       </Box>
     </Box>
   );

@@ -16,12 +16,19 @@ import {
   BookmarkAdded,
   Favorite,
   NotificationsSharp,
+  PersonOff,
 } from "@mui/icons-material";
 import data from "../../lib/data";
+import { useDispatch } from "react-redux";
+import {
+  activateConfirmationModal,
+  setUser,
+  switchIsAuth,
+} from "../../state/store";
 
 const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
+  const dispatch = useDispatch();
   const theme = useTheme();
-  const isNotPhone = useMediaQuery("(min-width:1000px)");
   const userMenuRef = useRef(null);
 
   useEffect(() => {
@@ -34,19 +41,31 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);  
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []); //eslint: react-hooks/exhaustive-deps
 
-  const handleClick = () =>
-  {
-    switchIsUserMenu(false)
-  }
+  const handleClick = () => {
+    switchIsUserMenu(false);
+  };
+
+  const handleLogout = () => {
+    dispatch(
+      activateConfirmationModal({
+        message: "Are you sure you want to logout?",
+        onConfirm: () => {
+          handleClick();
+          dispatch(setUser({}));
+        },
+        onCancel: () => {},
+      })
+    );
+  };
 
   return (
     <Box
       ref={userMenuRef}
-      zIndex={4}
+      zIndex={10}
       className="user-menu"
       position={"absolute"}
       right={0}
@@ -63,89 +82,116 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
       overflow={"hidden"}
       sx={{ transition: "0.3s ease-in-out" }}
     >
-      <Link
-        href={"/user/#"}
-        sx={{
-          textDecoration: "none",
-          color: "black",
-        }}
-      >
-        <MenuItem
-          sx={{ display: "flex", flexDirection: "column" }}
-          onClick={handleClick}
-        >
-          <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
-            <Avatar sx={{ fontSize: "15px" }} />
-            <Typography fontWeight={"bold"} fontSize={"1.2rem"}>
-              {data.user.name.first} {data.user.name.last}
-            </Typography>
-          </Box>
-          <Typography fontSize={"0.5rem"} color={"text.secondary"}>
-            logged in
-          </Typography>
-        </MenuItem>
-      </Link>
-      <Link
-        href={"/user/#notifications"}
-        sx={{
-          textDecoration: "none",
-          color: "black",
-          ":hover": { color: "primary.main" },
-        }}
-      >
-        <MenuItem onClick={handleClick}>
-          <ListItemIcon>
-            <Badge
-              color="primary"
-              variant="dot"
-              overlap="circular"
-              invisible={!user.notifications.new}
+      {Object.keys(user).length ? (
+        <>
+          <Link
+            href={"/user/#profile"}
+            sx={{
+              textDecoration: "none",
+              color: "black",
+            }}
+          >
+            <MenuItem
+              sx={{ display: "flex", flexDirection: "column" }}
+              onClick={handleClick}
             >
-              <NotificationsSharp />
-            </Badge>
-          </ListItemIcon>
-          My Notifications
-        </MenuItem>
-      </Link>
-      <Link
-        href={"/user/#orders"}
-        sx={{
-          textDecoration: "none",
-          color: "black",
-          ":hover": { color: "primary.main" },
-        }}
-      >
-        <MenuItem onClick={handleClick}>
-          <ListItemIcon>
-            <BookmarkAdded />
-          </ListItemIcon>
-          My Orders
-        </MenuItem>
-      </Link>
-      <Link
-        href={"/user/#favourites"}
-        sx={{
-          textDecoration: "none",
-          color: "black",
-          ":hover": { color: "primary.main" },
-        }}
-      >
-        <MenuItem onClick={handleClick}>
-          <ListItemIcon>
-            <Favorite />
-          </ListItemIcon>
-          My Favourites
-        </MenuItem>
-      </Link>
-      <Divider />
-      <Button
-        onClick={handleClick}
-        sx={{ alignSelf: "center" }}
-        disableElevation
-        variant="contained"
-      >
-        Logout
-      </Button>
+              <Box
+                display={"flex"}
+                flexDirection={"column"}
+                alignItems={"center"}
+              >
+                <Avatar sx={{ fontSize: "15px" }} />
+                <Typography fontWeight={"bold"} fontSize={"1.2rem"}>
+                  {data.user.name.first} {data.user.name.last}
+                </Typography>
+              </Box>
+              <Typography fontSize={"0.5rem"} color={"text.secondary"}>
+                logged in
+              </Typography>
+            </MenuItem>
+          </Link>
+          <Link
+            href={"/user/#notifications"}
+            sx={{
+              textDecoration: "none",
+              color: "black",
+              ":hover": { color: "primary.main" },
+            }}
+          >
+            <MenuItem onClick={handleClick}>
+              <ListItemIcon>
+                <Badge
+                  color="primary"
+                  variant="dot"
+                  overlap="circular"
+                  invisible={!user.notifications.new}
+                >
+                  <NotificationsSharp />
+                </Badge>
+              </ListItemIcon>
+              My Notifications
+            </MenuItem>
+          </Link>
+          <Link
+            href={"/user/#orders"}
+            sx={{
+              textDecoration: "none",
+              color: "black",
+              ":hover": { color: "primary.main" },
+            }}
+          >
+            <MenuItem onClick={handleClick}>
+              <ListItemIcon>
+                <BookmarkAdded />
+              </ListItemIcon>
+              My Orders
+            </MenuItem>
+          </Link>
+          <Link
+            href={"/user/#favourites"}
+            sx={{
+              textDecoration: "none",
+              color: "black",
+              ":hover": { color: "primary.main" },
+            }}
+          >
+            <MenuItem onClick={handleClick}>
+              <ListItemIcon>
+                <Favorite />
+              </ListItemIcon>
+              My Favourites
+            </MenuItem>
+          </Link>
+          <Divider />
+          <Button
+            onClick={handleLogout}
+            sx={{ alignSelf: "center" }}
+            disableElevation
+            variant="contained"
+          >
+            Logout
+          </Button>
+        </>
+      ) : (
+        <Box
+          width={"100%"}
+          display={"flex"}
+          flexDirection={"column"}
+          alignItems={"center"}
+          gap={"20px"}
+        >
+          <PersonOff sx={{ fontSize: "2rem", color: "text.secondary" }} />
+          <Button
+            disableElevation
+            variant="contained"
+            onClick={() => {
+              dispatch(switchIsAuth());
+            }}
+          >
+            Login/signup
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };

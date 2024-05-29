@@ -18,6 +18,7 @@ import { navigate } from "gatsby";
 const Header = (props) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
+  const isUser = Object.keys(props.user).length;
   const [yScroll, setYScroll] = useState(0);
   const [isUp, setIsUp] = useState(true);
   const [isUserMenu, setIsUserMenu] = useState(false);
@@ -144,7 +145,9 @@ const Header = (props) => {
                   <IconButton>
                     <Badge
                       color="primary"
-                      badgeContent={Object.keys(props.user.cart.items).length}
+                      badgeContent={
+                        isUser ? Object.keys(props.user.cart.items).length : 0
+                      }
                     >
                       <ShoppingCart
                         sx={{ fontSize: "clamp(1.4rem, 3vw, 1.8rem)" }}
@@ -165,7 +168,7 @@ const Header = (props) => {
                     color="primary"
                     variant="dot"
                     overlap="circular"
-                    invisible={!props.user.notifications.new}
+                    invisible={isUser ? !props.user.notifications.new : true}
                     badgeContent=" "
                   >
                     <Avatar
