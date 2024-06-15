@@ -2,13 +2,13 @@ import { Check, CheckCircle, Close, Verified } from "@mui/icons-material";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { switchIsAuth } from "../../../state/store";
+import { setIsAuth,} from "../../../state/store";
 
 const SuccessComponent = ({ details, resetDetails }) => {
   const { message, action, actionTitle } = details;
   const dispatch = useDispatch();
   const handleClose = () => {
-    dispatch(switchIsAuth());
+    dispatch(setIsAuth(false));
   };
 
   const handleAction = () => {

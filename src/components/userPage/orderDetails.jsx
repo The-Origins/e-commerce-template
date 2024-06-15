@@ -135,7 +135,7 @@ const OrderDetails = () => {
           <Box display={"flex"} alignItems={"center"} gap={"5px"}>
             <Typography fontWeight={"bold"}>Total:</Typography>
             <Typography>
-              {data.user.region.currency} {order.total}
+              {data.user.payment.currency} {order.total}
             </Typography>
           </Box>
         </Box>

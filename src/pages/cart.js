@@ -17,7 +17,7 @@ import {
   ShoppingCartCheckout,
 } from "@mui/icons-material";
 import SkeletonGroup from "../components/product/skeletonGroup";
-import { switchIsAuth } from "../state/store";
+import { setIsAuth,} from "../state/store";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const CartPage = () => {
 
   useEffect(() => {
     if (!isLoading && !Object.keys(user).length) {
-      dispatch(switchIsAuth());
+      dispatch(setIsAuth(true));
     }
   }, [isLoading]);
 
@@ -67,7 +67,7 @@ const CartPage = () => {
             size="large"
             startIcon={<Person />}
             onClick={() => {
-              dispatch(switchIsAuth());
+              dispatch(setIsAuth(true));
             }}
           >
             Login

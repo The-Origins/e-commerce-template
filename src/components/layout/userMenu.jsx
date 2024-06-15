@@ -22,8 +22,8 @@ import data from "../../lib/data";
 import { useDispatch } from "react-redux";
 import {
   activateConfirmationModal,
+  setIsAuth,
   setUser,
-  switchIsAuth,
 } from "../../state/store";
 
 const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
@@ -185,7 +185,7 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
             disableElevation
             variant="contained"
             onClick={() => {
-              dispatch(switchIsAuth());
+              dispatch(setIsAuth(true));
             }}
           >
             Login/signup

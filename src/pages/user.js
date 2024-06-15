@@ -29,7 +29,7 @@ import OrderDetails from "../components/userPage/orderDetails";
 import UserFavourites from "../components/userPage/favourites";
 import UserProfile from "../components/userPage/profile";
 import Notifications from "../components/userPage/notifications";
-import { activateConfirmationModal, setUser, switchIsAuth } from "../state/store";
+import { activateConfirmationModal, setIsAuth, setUser } from "../state/store";
 
 const UserPage = () => {
   const theme = useTheme();
@@ -66,6 +66,10 @@ const UserPage = () => {
       });
     }
   }, [user]);
+
+  const handleLogin = () => {
+    dispatch(setIsAuth(true));
+  };
 
   const handleLogout = () => {
     dispatch(
@@ -127,7 +131,7 @@ const UserPage = () => {
                       variant="contained"
                       size="large"
                       startIcon={<Person />}
-                      onClick={() => dispatch(switchIsAuth())}
+                      onClick={handleLogin}
                     >
                       Log in
                     </Button>
@@ -281,7 +285,7 @@ const UserPage = () => {
                     variant="contained"
                     size="large"
                     startIcon={<Person />}
-                    onClick={() => dispatch(switchIsAuth())}
+                    onClick={handleLogin}
                   >
                     Log in
                   </Button>

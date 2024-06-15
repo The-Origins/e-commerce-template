@@ -4,6 +4,7 @@ import {
   AccountCircle,
   Explore,
   Mail,
+  Paid,
   Payments,
   Phone,
 } from "@mui/icons-material";
@@ -55,6 +56,12 @@ const UserProfile = (props) => {
           title={"Phone no"}
           type="tel"
           value={`(${props.user.phone.code}) ${props.user.phone.number}`}
+        />
+        <UserProfileDetail
+          icon={<Paid />}
+          title={"Currency"}
+          type="select"
+          value={props.user.payment.currency}
         />
       </Box>
       <Box display={"flex"} flexWrap={"wrap"} gap={"20px"}>

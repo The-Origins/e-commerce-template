@@ -3,15 +3,13 @@ import {
   Backdrop,
   Box,
   Button,
-  CircularProgress,
   IconButton,
-  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { switchIsAuth } from "../../../state/store";
+import { setIsAuth, } from "../../../state/store";
 import Login from "./login";
 import Register from "./register";
 import ErrorComponent from "./errorComponent";
@@ -29,7 +27,7 @@ const Auth = () => {
   const [successDetails, setSuccessDetails] = useState({
     message: "",
     action: () => {
-      dispatch(switchIsAuth());
+      dispatch(setIsAuth(false));
     },
     actionTitle: "ok",
   });
@@ -37,7 +35,7 @@ const Auth = () => {
   const [errorDetails, setErrorDetails] = useState({
     message: "",
     action: () => {
-      dispatch(switchIsAuth());
+      dispatch(setIsAuth(false));
     },
     actionTitle: "ok",
   });
@@ -49,7 +47,7 @@ const Auth = () => {
     setSuccessDetails({
       message: "",
       action: () => {
-        dispatch(switchIsAuth());
+        dispatch(setIsAuth(false));
       },
       actionTitle: "ok",
     });
@@ -57,14 +55,14 @@ const Auth = () => {
     setErrorDetails({
       message: "",
       action: () => {
-        dispatch(switchIsAuth());
+        dispatch(setIsAuth(false));
       },
       actionTitle: "ok",
     });
   };
 
-  const changeIsAuth = () => {
-    dispatch(switchIsAuth());
+  const changeIsAuth = (state) => {
+    dispatch(setIsAuth(state));
   };
 
   const changeAuth = (state) => {
@@ -103,7 +101,7 @@ const Auth = () => {
     <Backdrop sx={{ color: "#fff", zIndex: 100 }} open={isAuth}>
       <Box
         width={isNotPhone ? "40%" : "90%"}
-        height={"600px"}
+        height={"90%"}
         borderRadius={"25px"}
         boxShadow={`0px 0px 1px 10px ${theme.palette.grey}`}
         bgcolor={"white"}
@@ -173,6 +171,7 @@ const Auth = () => {
               changeIsError,
               changeErrorDetails,
               changeIsSuccess,
+              setSuccessDetails,
               changeSuccessDetails,
               successDetails,
             }}
@@ -187,7 +186,7 @@ const Auth = () => {
               changeIsSuccess,
               changeSuccessDetails,
               successDetails,
-              setAuth,
+              changeAuth,
             }}
           />
         </Box>

@@ -53,7 +53,6 @@ class ResultsWorker {
         features[feature] = [...features[feature], result.features[feature]];
       });
     });
-    console.log(features)
     return features
   }
 

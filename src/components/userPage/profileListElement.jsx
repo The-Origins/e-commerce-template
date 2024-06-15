@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
-import { Delete } from "@mui/icons-material";
+import { Business, Delete, Home } from "@mui/icons-material";
 
 const ProfileListElement = (props) => {
   const theme = useTheme();
@@ -15,7 +15,16 @@ const ProfileListElement = (props) => {
     >
       {props.icon}
       <Box width={"100%"} display={"flex"} flexDirection={"column"} gap={"5px"}>
-        <Typography>{props.title}</Typography>
+        <Typography display={"flex"} gap={"10px"}>
+          {props.title}
+          {props.type === "home" ? (
+            <Home sx={{color:"text.secondary"}}/>
+          ) : props.type === "office" ? (
+            <Business sx={{color:"text.secondary"}}/>
+          ) : (
+            ""
+          )}
+        </Typography>
         <Typography color={"text.secondary"}>{props.description}</Typography>
       </Box>
       <Tooltip title="delete">

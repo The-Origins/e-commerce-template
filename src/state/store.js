@@ -4,7 +4,7 @@ const storeSLice = createSlice({
   name: "store",
   initialState: {
     user: {},
-    location: { region: {}, coordinates: {} },
+    region: {},
     snackBar: {
       on: false,
       message: { title: "", description: "" },
@@ -23,8 +23,8 @@ const storeSLice = createSlice({
     switchIsContact: (state) => {
       state.isContact = !state.isContact;
     },
-    switchIsAuth: (state) => {
-      state.isAuth = !state.isAuth;
+    setIsAuth: (state, action) => {
+      state.isAuth = action.payload;
     },
     changeIsAuth: (state, action) => {
       state.isAuth = action.payload;
@@ -32,14 +32,14 @@ const storeSLice = createSlice({
     activateConfirmationModal: (state, action) => {
       state.confirmationModal.on = true;
       state.confirmationModal.message = action.payload.message;
-      state.confirmationModal.onConfirm = action.payload.onConfirm
-      state.confirmationModal.onCancel = action.payload.onCancel 
+      state.confirmationModal.onConfirm = action.payload.onConfirm;
+      state.confirmationModal.onCancel = action.payload.onCancel;
     },
     deactivateConfirmationModal: (state) => {
       state.confirmationModal.on = false;
       state.confirmationModal.message = "";
-      state.confirmationModal.onConfirm = () => {}
-      state.confirmationModal.onCancel = () => {}
+      state.confirmationModal.onConfirm = () => {};
+      state.confirmationModal.onCancel = () => {};
     },
     activateSnackBar: (state, action) => {
       state.modal.on = true;
@@ -55,21 +55,21 @@ const storeSLice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
-    setlocation: (state, payload) => {
-      state.location = payload;
+    setRegion: (state, action) => {
+      state.region = action.payload;
     },
   },
 });
 
 export const {
   setUser,
-  setlocation,
+  setRegion,
   activateConfirmationModal,
   deactivateConfirmationModal,
   activateSnackBar,
   deactivateSnackBar,
   switchIsContact,
-  switchIsAuth,
+  setIsAuth,
 } = storeSLice.actions;
 
 export default storeSLice.reducer;

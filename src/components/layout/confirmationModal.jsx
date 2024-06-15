@@ -35,23 +35,15 @@ const ConfirmationModal = () => {
           transform: `scale(${confirmationModal.on ? 1 : 0})`,
         }}
       >
-        <Box width={"100%"} display={"flex"} justifyContent={"flex-end"}>
+        <Box width={"100%"} display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
+          <Info sx={{color:"primary.main", fontSize:"1.8rem"}}/>
           <IconButton>
             <Close />
           </IconButton>
         </Box>
-        <Box
-          display={"flex"}
-          flexDirection={"column"}
-          alignItems={"center"}
-          gap={"10px"}
-          mb={"20px"}
-        >
-          <Info color="primary" sx={{ fontSize: "1.6rem" }} />
-          <Typography color={"black"} fontWeight={"bold"}>
-            {confirmationModal.message}
-          </Typography>
-        </Box>
+        <Typography color={"black"} fontWeight={"bold"}>
+          {confirmationModal.message}
+        </Typography>
         <Box width={"100%"} display={"flex"} justifyContent={"space-between"}>
           <Button
             size="small"

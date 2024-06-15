@@ -55,9 +55,9 @@ const UserProfileList = (props) => {
             description={
               props.type === "address"
                 ? `${data.country}, ${data.city}`
-                : data.details.number
+                : data.number
             }
-            type={props.type}
+            type={data.type}
           />
         ))}
       </Box>

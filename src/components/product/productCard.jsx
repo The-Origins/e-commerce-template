@@ -10,11 +10,10 @@ import {
   useMediaQuery,
   Tooltip,
 } from "@mui/material";
-import CategorizeComponent from "./categorizeComponent";
 import ProductDetails from "./productDetails";
 import data from "../../lib/data";
 import { useDispatch, useSelector } from "react-redux";
-import { switchIsAuth } from "../../state/store";
+import { setIsAuth, } from "../../state/store";
 
 const ProductCard = (props) => {
   const [offers, setOffers] = useState({});
@@ -35,7 +34,7 @@ const ProductCard = (props) => {
     if (Object.keys(user).length) {
       switchIsProductDetails();
     } else {
-      dispatch(switchIsAuth());
+      dispatch(setIsAuth(true));
     }
   };
 

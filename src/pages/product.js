@@ -31,7 +31,7 @@ import ProductCardContainer from "../components/product/productCardContainer";
 import ProductCard from "../components/product/productCard";
 import ProductDetails from "../components/product/productDetails";
 import SkeletonGroup from "../components/product/skeletonGroup";
-import { switchIsAuth } from "../state/store";
+import { setIsAuth, } from "../state/store";
 
 const ProductPage = () => {
   let params = new URLSearchParams(window.location.search);
@@ -68,7 +68,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     const productWorker = new ProductWorker();
-    document.title = product.name || "product page" + " | E-commerce";
+    document.title = (product.name || "product page") + " | E-commerce";
 
     if (Object.keys(product).length) {
       setRatingDistribution(productWorker.getRatingDistribution(product));
@@ -111,7 +111,7 @@ const ProductPage = () => {
 
   const handleFavourite = () => {
     if (!Object.keys(user).length) {
-      return dispatch(switchIsAuth());
+      return dispatch(setIsAuth(true));
     }
   };
 

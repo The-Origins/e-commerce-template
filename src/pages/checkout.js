@@ -244,7 +244,7 @@ const CheckoutPage = () => {
                     borderRadius={"10px"}
                   >
                     <Typography color={"white"}>
-                      Subtotal: {user.region.currency} {user.cart.total}
+                      Subtotal: {user.payment.currency} {user.cart.total}
                     </Typography>
                   </Box>
                 )}
@@ -261,7 +261,7 @@ const CheckoutPage = () => {
                   ? undefined
                   : {
                       title: checkoutDetails.payment.type,
-                      description: checkoutDetails.payment.details.number,
+                      description: checkoutDetails.payment.number,
                       icon: <Paid sx={{ fontSize: "2rem" }} />,
                     }
               }

@@ -1,80 +1,95 @@
 import { Email, PhoneAndroid } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Formik } from "formik";
+import * as yup from "yup";
+import React, { useState } from "react";
 
 const VerificationComponent = ({
   type = "email",
-  handleVerified = () => {},
-  handleNotVerified = () => {},
-  changeIsLoading,
-  changeLoadingMessage,
-  changeIsSuccess,
-  changeSuccessDetails,
-  successDetails,
-  changeIsError,
-  changeErrorDetails,
+  handleVerify = (values, submitProps) => {},
 }) => {
-  const [timer, setTimer] = useState(60);
-  const [isTimerDisabled, setIsTimerDisabled] = useState(false);
-
-  const handleVerification = () => {
-    changeIsLoading(true);
-    changeLoadingMessage("Verifying");
-    setTimeout(() => {
-      changeIsLoading(false);
-      handleVerified();
-    }, 5000);
-  };
+  const [timer, setTimer] = useState(0);
 
   const handleResend = () => {
+    setTimer(61);
     const resendTimer = setInterval(() => {
-      setTimer((prev) => prev - 1);
+      setTimer((prev) => {
+        if (prev <= 1) {
+          return clearInterval(resendTimer);
+        }
+        return prev - 1;
+      });
     }, 1000);
   };
 
+  const validator = yup.object().shape({
+    code: yup.number().required("required"),
+  });
+
   return (
-    <Box
-      display={"flex"}
-      flexDirection={"column"}
-      gap={"20px"}
-      height={"100%"}
-      justifyContent={"space-evenly"}
+    <Formik
+      initialValues={{ code: "" }}
+      validationSchema={validator}
+      onSubmit={handleVerify}
     >
-      <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
-        <Typography
-          fontWeight={"bold"}
-          fontSize={"1.3rem"}
-          sx={{
+      {(form) => (
+        <form
+          onSubmit={form.handleSubmit}
+          style={{
             display: "flex",
-            alignItems: type === "phone" ? "flex-end" : "center",
-            gap: "5px",
+            flexDirection: "column",
+            gap: "20px",
+            height: "100%",
+            justifyContent: "space-evenly",
+            width: "min(400px, 90%)",
           }}
         >
-          {type === "phone" ? <PhoneAndroid /> : <Email />}
-          Verify your {type}
-        </Typography>
-        <Typography>We sent a code to your {type}</Typography>
-        <TextField label="code" />
-      </Box>
-      <Box
-        width={"100%"}
-        display={"flex"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-      >
-        <Button variant="text" disableElevation onClick={handleResend}>
-          resend
-        </Button>
-        <Button
-          type="submit"
-          variant="contained"
-          disableElevation
-          onClick={handleVerification}
-        >
-          verify
-        </Button>
-      </Box>
-    </Box>
+          <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
+            <Typography
+              fontWeight={"bold"}
+              fontSize={"1.3rem"}
+              sx={{
+                display: "flex",
+                alignItems: type === "phone" ? "flex-end" : "center",
+                gap: "5px",
+              }}
+            >
+              {type === "phone" ? <PhoneAndroid /> : <Email />}
+              Verify your {type}
+            </Typography>
+            <Typography>We sent a code to your {type}</Typography>
+            <TextField
+              label="code"
+              type="number"
+              name="code"
+              value={form.values.code}
+              onChange={form.handleChange}
+              onBlur={form.handleBlur}
+              error={Boolean(form.touched.code) && Boolean(form.errors.code)}
+              helperText={(form.touched.code && form.errors.code) || " "}
+            />
+          </Box>
+          <Box
+            width={"100%"}
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Button
+              variant="outlined"
+              disableElevation
+              onClick={handleResend}
+              disabled={timer > 1}
+            >
+              {timer > 1 ? `(${timer}) ` : ""}resend
+            </Button>
+            <Button type="submit" variant="contained" disableElevation>
+              verify
+            </Button>
+          </Box>
+        </form>
+      )}
+    </Formik>
   );
 };
 

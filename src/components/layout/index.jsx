@@ -5,9 +5,13 @@ import Contact from "./contact";
 import "../../index.css";
 import Header from "./header";
 import Footer from "./footer";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { switchIsContact, setUser } from "../../state/store";
-import data from "../../lib/data";
+import {
+  activateSnackBar,
+  setRegion,
+  switchIsContact,
+} from "../../state/store";
 import SnackBarComponent from "./snackBar";
 import Auth from "./auth";
 import ConfirmationModal from "./confirmationModal";
@@ -16,16 +20,30 @@ const Layout = ({ children }) => {
   const dispatch = useDispatch();
   const isContact = useSelector((state) => state.isContact);
   const user = useSelector((state) => state.user);
+  const region = useSelector((state) => state.region)
   const [isLoading, setIsLoading] = useState(true);
   const changeIsContact = () => {
     dispatch(switchIsContact());
   };
 
   useEffect(() => {
+    axios
+      .get("https://ipapi.co/json/")
+      .then((res) => {
+        dispatch(setRegion(res.data));
+      })
+      .catch((err) => {
+        dispatch(
+          activateSnackBar({ message: "Error fetching region", snackBarType: "error" })
+        );
+      });
+  }, []);
+
+  useEffect(() => {
     const loadingTimout = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
-    return () => clearTimeout(loadingTimout)
+    return () => clearTimeout(loadingTimout);
   }, []);
 
   return (
