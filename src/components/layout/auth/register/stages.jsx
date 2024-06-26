@@ -1,56 +1,67 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { East, Payment, Payments, PhoneAndroid } from "@mui/icons-material";
 import { Box, Typography, Button } from "@mui/material";
 import VerificationComponent from "../verificationComponent";
 import { country_codes } from "../../../../lib/data";
 import GeneralInfo from "./general";
-import Password from "./password";
 import Address from "./address";
 import AddressDetails from "./addressDetails";
 import CardPayment from "./cardPayment";
 import MobilePayment from "./mobilePayment";
+import { useSelector } from "react-redux";
+import PasswordComponent from "../passwordComponent";
+import AuthWorker from "../../../../scripts/authWorker";
+import { countries } from "country-data";
+import Currency from "./currency";
 
 const RegisterStages = ({
-  form,
   stage,
   setStage,
-  address,
-  setAddress,
-  setPayment,
-  changeIsLoading,
-  changeLoadingMessage,
-  changeIsSuccess,
-  changeSuccessDetails,
-  changeAuth,
+  registerForm,
+  setRegisterForm,
   handleRegister,
+  setIsLoading,
+  setLoadingMessage,
+  setIsError,
+  setErrorDetails,
+  setIsSuccess,
+  setSuccessDetails,
+  setAuth,
 }) => {
-  const verifyMobileDetails = (values, submitProps) => {
-    changeIsLoading(true);
-    changeLoadingMessage("verifying");
-    setTimeout(() => {
-      handleRegister();
-      changeIsLoading(false);
-      changeIsSuccess(true);
-      changeSuccessDetails({
-        message: "account created successfully",
-        action: () => {
-          changeIsSuccess(false);
-          setStage(0);
-          changeAuth("login");
-        },
-        actionTitle: "Back to login",
-      });
-    }, 2000);
-    submitProps.resetForm();
+  const authWorker = new AuthWorker();
+  const region = useSelector((state) => state.region);
+  const callingCodes = authWorker.getCallingCodes();
+
+  const addPassword = (password) => {
+    setRegisterForm((prev) => ({ ...prev, password }));
+    setStage(3);
+  };
+
+  const onVerifySuccess = () => {
+    setStage(8);
+  };
+
+  const onVerifyFaliure = () => {
+    setIsError(true);
+    setErrorDetails({
+      message: "There was an error verifing your phone number",
+      action: () => {
+        setStage(0);
+        setAuth("login");
+      },
+      actionTitle: "Back to login",
+    });
   };
 
   const stages = [
     <Box
+      height={"100%"}
+      position={"relative"}
       display={"flex"}
       flexDirection={"column"}
       alignItems={"center"}
+      justifyContent={"center"}
       gap={"30px"}
-      mb={"50px"}
     >
       <Box
         display={"flex"}
@@ -77,19 +88,24 @@ const RegisterStages = ({
       >
         Start
       </Button>
+      <Button
+        onClick={() => setAuth("login")}
+        sx={{
+          mt: "50px",
+          textTransform: "none",
+          ":hover": { textDecoration: "underline" },
+        }}
+      >
+        Already have an account?
+      </Button>
     </Box>,
-    <GeneralInfo
-      form={form}
-      setStage={setStage}
-      country_codes={country_codes}
+    <GeneralInfo {...{ setStage, setRegisterForm, region, callingCodes }} />,
+    <PasswordComponent
+      handleBack={() => setStage(1)}
+      handleNext={addPassword}
     />,
-    <Password form={form} setStage={setStage} />,
-    <Address setStage={setStage} setAddress={setAddress} />,
-    <AddressDetails
-      setStage={setStage}
-      address={address}
-      setAddress={setAddress}
-    />,
+    <Address {...{ region, setStage, setRegisterForm }} />,
+    <AddressDetails {...{ setStage, registerForm, setRegisterForm }} />,
     <Box
       display={"flex"}
       flexDirection={"column"}
@@ -139,24 +155,40 @@ const RegisterStages = ({
     </Box>,
     <CardPayment
       {...{
-        setPayment,
         setStage,
-        changeIsLoading,
-        changeLoadingMessage,
-        changeIsSuccess,
-        changeSuccessDetails,
-        handleRegister,
-        changeAuth,
+        setRegisterForm,
       }}
     />,
     <MobilePayment
       {...{
-        setPayment,
         setStage,
-        country_codes,
+        registerForm,
+        setRegisterForm,
+        callingCodes,
       }}
     />,
-    <VerificationComponent type={"phone"} handleVerify={verifyMobileDetails} />,
+    <Currency
+      {...{
+        region,
+        setStage,
+        setRegisterForm,
+        setIsLoading,
+        setLoadingMessage,
+        setIsSuccess,
+        setSuccessDetails,
+        setAuth,
+        handleRegister,
+      }}
+    />,
+    <VerificationComponent
+      type={"phone"}
+      {...{
+        setIsLoading,
+        setLoadingMessage,
+        onVerifySuccess,
+        onVerifyFaliure,
+      }}
+    />,
   ];
   return stages[stage];
 };

@@ -13,7 +13,6 @@ import {
   AddShoppingCart,
   Delete,
   Edit,
-  PropaneTank,
 } from "@mui/icons-material";
 import ProductDetails from "./productDetails";
 
@@ -103,8 +102,7 @@ const UserProductCard = (props) => {
               .join(", ")}
           </Typography>
           <Typography>
-            {props.item.product.unitPrice.currency}{" "}
-            {props.item.total}
+            {props.item.product.unitPrice.currency} {props.item.total}
           </Typography>
           {props.type === "favourites" && (
             <Box
@@ -117,7 +115,7 @@ const UserProductCard = (props) => {
               <Button
                 size="small"
                 sx={{ ":hover": { color: "primary.main" } }}
-                startIcon={<Delete />}
+                startIcon={isNotPhone ? <Delete /> : undefined}
               >
                 Remove
               </Button>
@@ -127,7 +125,7 @@ const UserProductCard = (props) => {
                 size="small"
                 sx={{ alignSelf: "flex-start" }}
                 onClick={switchIsProductDetails}
-                startIcon={<AddShoppingCart />}
+                startIcon={isNotPhone ? <AddShoppingCart /> : undefined}
               >
                 Add to cart
               </Button>

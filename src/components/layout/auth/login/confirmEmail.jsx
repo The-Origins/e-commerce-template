@@ -1,86 +1,91 @@
-import React from "react";
+import React, { useState } from "react";
 import { Email } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { Formik } from "formik";
-import * as yup from "yup";
+import AuthWorker from "../../../../scripts/authWorker";
 
 const ConfirmEmail = ({ setStage }) => {
-  const validator = yup.object().shape({
-    email: yup.string().email("invalid email").required("required"),
-  });
+  const authWorker = new AuthWorker();
+  const [email, setEmail] = useState("");
+  const [errors, setErrors] = useState({ email: "required" });
+  const [touched, setTouched] = useState({});
+  const validator = {
+    email: [
+      { key: (value) => value.length, message: "required" },
+      {
+        key: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+        message: "Email must be valid",
+      },
+    ],
+  };
 
-  const handleFormSubmit = (values, submitProps) => {
+  const handleChange = ({ target }) => {
+    setErrors(authWorker.getErrors(errors, validator, target));
+    setEmail(target.value);
+  };
+
+  const handleBlur = ({ target }) => {
+    setTouched((prev) => ({ ...prev, [target.name]: true }));
+  };
+
+  const handleConfirm = () => {
     setStage(4);
-    submitProps.resetForm();
   };
 
   return (
-    <Formik
-      initialValues={{ email: "" }}
-      validationSchema={validator}
-      onSubmit={handleFormSubmit}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+        width: "100%",
+        height: "100%",
+        justifyContent: "space-evenly",
+      }}
     >
-      {(form) => (
-        <form
-          onSubmit={form.handleSubmit}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "20px",
-            width: "100%",
-            height: "100%",
-            justifyContent: "space-evenly",
-          }}
+      <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
+        <Typography
+          fontWeight={"bold"}
+          fontSize={"1.3rem"}
+          sx={{ display: "flex", alignItems: "center", gap: "5px" }}
         >
-          <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
-            <Typography
-              fontWeight={"bold"}
-              fontSize={"1.3rem"}
-              sx={{ display: "flex", alignItems: "center", gap: "5px" }}
-            >
-              <Email />
-              Confirm your email
-            </Typography>
-            <TextField
-              fullWidth
-              label="email"
-              type="email"
-              name="email"
-              value={form.values.email}
-              onChange={form.handleChange}
-              onBlur={form.handleBlur}
-              error={Boolean(form.touched.email) && Boolean(form.errors.email)}
-              helperText={(form.touched.email && form.errors.email) || " "}
-            />
-          </Box>
-          <Box
-            width={"100%"}
-            display={"flex"}
-            justifyContent={"space-between"}
-            alignItems={"center"}
-          >
-            <Button
-              variant="outlined"
-              disableElevation
-              onClick={() => setStage(1)}
-            >
-              Back
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              disableElevation
-              disabled={
-                !Boolean(Object.keys(form.touched).length) ||
-                Boolean(Object.keys(form.errors).length)
-              }
-            >
-              confirm
-            </Button>
-          </Box>
-        </form>
-      )}
-    </Formik>
+          <Email />
+          Confirm your email
+        </Typography>
+        <TextField
+          fullWidth
+          label="email"
+          type="email"
+          name="email"
+          value={email}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={Boolean(touched.email) && Boolean(errors.email)}
+          helperText={(touched.email && errors.email) || " "}
+        />
+      </Box>
+      <Box
+        width={"100%"}
+        display={"flex"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+      >
+        <Button variant="outlined" disableElevation onClick={() => setStage(1)}>
+          Back
+        </Button>
+        <Button
+          onClick={handleConfirm}
+          variant="contained"
+          disableElevation
+          disabled={
+            (!Boolean(Object.keys(touched).length) &&
+              Boolean(Object.keys(errors).length)) ||
+            Boolean(Object.keys(errors).length)
+          }
+        >
+          confirm
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

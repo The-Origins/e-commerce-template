@@ -884,8 +884,14 @@ const data = {
     name: { first: "john", last: "doe" },
     email: "useremail@email.com",
     phone: { code: "+245", number: "140000000" },
-    payment: {
-      currency: "$",
+    payments: {
+      currency: {
+        code: "KES",
+        decimals: 2,
+        name: "Kenyan shilling",
+        number: "404",
+        symbol: "KSh",
+      },
       recent: 1,
       saved: [
         {
@@ -927,7 +933,7 @@ const data = {
           street: "Ngong",
           address: "Milele mall",
           locationInfo: "My business, 10th floor",
-          type: "other",
+          type: "office",
           fee: 600,
         },
       ],
@@ -1667,6 +1673,12 @@ const data = {
     },
   ],
 };
+
+export const currencies = [
+  { abbreviation: "USD", name: "United States Dollar", character: "$" },
+  { abbreviation: "Euro", name: "Euro", character: "" },
+  { abbreviation: "KSH", name: "Kenyan shilling", character: "" },
+];
 
 export const country_codes = [
   {

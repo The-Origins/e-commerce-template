@@ -53,7 +53,7 @@ const CheckoutPage = () => {
         total:
           user.cart.total + user.addresses.saved[user.addresses.recent].fee,
         items,
-        payment: user.payment.saved[user.payment.recent],
+        payment: user.payments.saved[user.payments.recent],
         delivery: user.addresses.saved[user.addresses.recent],
       });
       setIsLoading(false);
@@ -128,7 +128,7 @@ const CheckoutPage = () => {
                 >
                   <Typography fontWeight={"bold"}>Total</Typography>
                   <Typography fontWeight={"bold"}>
-                    {user.payment.currency} {checkoutDetails.total}
+                    {user.payments.currency} {checkoutDetails.total}
                   </Typography>
                 </Box>
               )}
@@ -154,7 +154,7 @@ const CheckoutPage = () => {
                     borderRadius={"10px"}
                     fontSize={"0.9rem"}
                   >
-                    Total: {user.payment.currency} {checkoutDetails.total}
+                    Total: {user.payments.currency} {checkoutDetails.total}
                   </Typography>
                 )}
                 <Button
@@ -244,7 +244,7 @@ const CheckoutPage = () => {
                     borderRadius={"10px"}
                   >
                     <Typography color={"white"}>
-                      Subtotal: {user.payment.currency} {user.cart.total}
+                      Subtotal: {user.payments.currency} {user.cart.total}
                     </Typography>
                   </Box>
                 )}
@@ -329,7 +329,7 @@ const CheckoutPage = () => {
               >
                 <Typography fontWeight={"bold"}>Total</Typography>
                 <Typography fontWeight={"bold"}>
-                  {user.payment.currency} {checkoutDetails.total}
+                  {user.payments.currency} {checkoutDetails.total}
                 </Typography>
               </Box>
             )}

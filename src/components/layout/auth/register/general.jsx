@@ -9,13 +9,94 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+import AuthWorker from "../../../../scripts/authWorker";
+import { isValidPhoneNumber } from "libphonenumber-js";
 
-const GeneralInfo = ({ form, setStage, country_codes, }) => {
-  const { password, confirmPassword, ...generalErrors } = form.errors;
+const GeneralInfo = ({ setStage, setRegisterForm, region, callingCodes }) => {
+  const authWorker = new AuthWorker();
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
+  const [form, setForm] = useState({
+    phoneCode: region.country_code || "US",
+    phoneNumber: callingCodes[region.country_code].callingCode,
+  });
+  const [touched, setTouched] = useState({});
+  const [errors, setErrors] = useState({
+    firstName: "required",
+    lastName: "required",
+    email: "required",
+    phoneNumber: "required",
+  });
 
+  const validator = {
+    firstName: [{ key: (value) => value.length, message: "required" }],
+    lastName: [{ key: (value) => value.length, message: "required" }],
+    email: [
+      { key: (value) => value.length, message: "required" },
+      {
+        key: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+        message: "Email must be valid",
+      },
+    ],
+    phoneNumber: [
+      {
+        key: (value, form) => value.length > form.phoneCode.length,
+        message: "required",
+      },
+      {
+        key: (value, form) => isValidPhoneNumber(value, form.phoneCode),
+        message: "invalid phone number",
+      },
+    ],
+  };
+
+  const handleChange = ({ target }) => {
+    setForm((prev) => {
+      if (target.name === "phoneCode") {
+        return {
+          ...prev,
+          phoneCode: target.value,
+          phoneNumber: callingCodes[target.value].callingCode,
+        };
+      } else if (target.name === "phoneNumber") {
+        return {
+          ...prev,
+          phoneNumber: authWorker.formatPhoneNumber(
+            prev.phoneNumber,
+            target.value,
+            prev.phoneCode
+          ),
+        };
+      }
+      return { ...prev, [target.name]: target.value };
+    });
+    setForm((prev) => {
+      setErrors(
+        authWorker.getErrors(
+          errors,
+          validator,
+          { name: target.name, value: prev[target.name] },
+          prev
+        )
+      );
+      return prev;
+    });
+  };
+
+  const handleBlur = ({ target }) => {
+    setTouched((prev) => ({ ...prev, [target.name]: true }));
+  };
+
+  const handleNext = () => {
+    setRegisterForm((prev) => ({
+      ...prev,
+      name: { first: form.firstName, last: form.lastName },
+      email: form.email,
+      phone: { code: form.phoneCode, number: form.phoneNumber },
+    }));
+    setStage(2);
+  };
   return (
     <Box
       display={"flex"}
@@ -53,16 +134,11 @@ const GeneralInfo = ({ form, setStage, country_codes, }) => {
               variant="outlined"
               type="name"
               name="firstName"
-              value={form.values.firstName}
-              onChange={form.handleChange}
-              onBlur={form.handleBlur}
-              error={
-                Boolean(form.touched.firstName) &&
-                Boolean(form.errors.firstName)
-              }
-              helperText={
-                (form.touched.firstName && form.errors.firstName) || " "
-              }
+              value={form.firstName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={Boolean(touched.firstName) && Boolean(errors.firstName)}
+              helperText={(touched.firstName && errors.firstName) || " "}
               label={"First name"}
               sx={{ flexBasis: 200, flexGrow: 1 }}
             />
@@ -71,15 +147,11 @@ const GeneralInfo = ({ form, setStage, country_codes, }) => {
               type="name"
               label={"Last name"}
               name="lastName"
-              value={form.values.lastName}
-              onChange={form.handleChange}
-              onBlur={form.handleBlur}
-              error={
-                Boolean(form.touched.lastName) && Boolean(form.errors.lastName)
-              }
-              helperText={
-                (form.touched.lastName && form.errors.lastName) || " "
-              }
+              value={form.lastName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={Boolean(touched.lastName) && Boolean(errors.lastName)}
+              helperText={(touched.lastName && errors.lastName) || " "}
               sx={{ flexBasis: 200, flexGrow: 1 }}
             />
           </Box>
@@ -113,26 +185,24 @@ const GeneralInfo = ({ form, setStage, country_codes, }) => {
               type="email"
               label={"Email"}
               name="email"
-              value={form.values.email}
-              onChange={form.handleChange}
-              onBlur={form.handleBlur}
-              error={Boolean(form.touched.email) && Boolean(form.errors.email)}
-              helperText={(form.touched.email && form.errors.email) || " "}
+              value={form.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={Boolean(touched.email) && Boolean(errors.email)}
+              helperText={(touched.email && errors.email) || " "}
               sx={{ flexBasis: 200, flexGrow: 1 }}
             />
             <TextField
               type="tel"
               placeholder="phone number"
               name="phoneNumber"
-              value={form.values.phoneNumber}
-              onChange={form.handleChange}
+              value={form.phoneNumber}
+              onChange={handleChange}
+              onBlur={handleBlur}
               error={
-                Boolean(form.touched.phoneNumber) &&
-                Boolean(form.errors.phoneNumber)
+                Boolean(touched.phoneNumber) && Boolean(errors.phoneNumber)
               }
-              helperText={
-                (form.touched.phoneNumber && form.errors.phoneNumber) || " "
-              }
+              helperText={(touched.phoneNumber && errors.phoneNumber) || " "}
               sx={{
                 flexBasis: 200,
                 flexGrow: 1,
@@ -140,24 +210,28 @@ const GeneralInfo = ({ form, setStage, country_codes, }) => {
                 "& > div > div": { marginRight: "5px" },
               }}
               InputProps={{
+                maxLength: 10,
                 startAdornment: (
                   <Select
                     autoWidth
                     name="phoneCode"
-                    value={form.values.phoneCode}
-                    onChange={form.handleChange}
+                    value={form.phoneCode}
+                    onChange={handleChange}
                     renderValue={(value) => value}
                   >
-                    {country_codes.map((code) => (
-                      <MenuItem value={code.code}>
+                    {Object.keys(callingCodes).map((code) => (
+                      <MenuItem value={code}>
                         <Box
                           width={"100%"}
                           display={"flex"}
+                          gap={"10px"}
                           justifyContent={"space-between"}
                           alignItems={"center"}
                         >
-                          <Typography>{code.name}</Typography>
-                          <Typography>{code.code}</Typography>
+                          <Typography>
+                            {callingCodes[code].countryName}
+                          </Typography>
+                          <Typography color={"primary.main"}>{code}</Typography>
                         </Box>
                       </MenuItem>
                     ))}
@@ -171,17 +245,20 @@ const GeneralInfo = ({ form, setStage, country_codes, }) => {
       <Box
         width={"100%"}
         display={"flex"}
-        justifyContent={"flex-end"}
+        justifyContent={"space-between"}
         alignItems={"center"}
       >
+        <Button variant="outlined" onClick={() => setStage(0)}>
+          cancel
+        </Button>
         <Button
-          type="submit"
           variant="contained"
           disableElevation
-          onClick={() => setStage(2)}
+          onClick={handleNext}
           disabled={
-            Boolean(Object.keys(generalErrors).length) ||
-            !Boolean(Object.keys(form.touched).length)
+            (!Boolean(Object.keys(touched).length) &&
+              Boolean(Object.keys(errors).length)) ||
+            Boolean(Object.keys(errors).length)
           }
         >
           next

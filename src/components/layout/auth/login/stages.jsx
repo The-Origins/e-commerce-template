@@ -1,31 +1,38 @@
 import { Email, Facebook, Google } from "@mui/icons-material";
 import { Box, Button } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import VerificationComponent from "../verificationComponent";
 import ConfirmEmail from "./confirmEmail";
-import LoginInfo from "./loginInfo";
-import ChangePassword from "./changePassword";
+import PasswordComponent from "../passwordComponent";
+import LoginForm from "./loginForm";
 
 const LoginStages = ({
   stage,
   setStage,
-  changeIsLoading,
-  changeLoadingMessage,
-  changeIsSuccess,
+  setIsLoading,
+  setLoadingMessage,
+  setIsError,
+  setErrorDetails,
+  setIsSuccess,
   setSuccessDetails,
-  changeIsError,
-  changeErrorDetails,
-  handleLogin,
-  setLoginForm,
+  setAuth,
 }) => {
-  const handleEmailVerify = (values, submitProps) => {
-    changeIsLoading(true);
-    changeLoadingMessage("verifying");
-    setTimeout(() => {
-      changeIsLoading(false);
-      setStage(3);
+  const changePassword = (password) => {
+    console.log(password);
+    setIsLoading(true);
+    setLoadingMessage("Changing password");
+    const loadingTimeout = setTimeout(() => {
+      clearTimeout(loadingTimeout);
+      setIsLoading(false);
+      setIsSuccess(true);
+      setSuccessDetails({
+        message: "password changed successfully",
+        action: () => {
+          setStage(1);
+        },
+        actionTitle: "Back to login",
+      });
     }, 2000);
-    submitProps.resetForm();
   };
 
   const stages = [
@@ -57,21 +64,40 @@ const LoginStages = ({
       >
         Email
       </Button>
+      <Button
+        sx={{
+          mt: "50px",
+          textTransform: "none",
+          ":hover": { textDecoration: "underline" },
+        }}
+        onClick={() => setAuth("register")}
+      >
+        Don't have an account?
+      </Button>
     </Box>,
-    <LoginInfo
+    <LoginForm
       {...{
         setStage,
-        setLoginForm,
-        handleLogin,
-        changeIsLoading,
-        changeLoadingMessage,
-        changeIsSuccess,
+        setIsLoading,
+        setLoadingMessage,
+        setIsSuccess,
         setSuccessDetails,
+        setIsError,
+        setErrorDetails,
       }}
     />,
     <ConfirmEmail setStage={setStage} />,
-    <ChangePassword setStage={setStage} />,
-    <VerificationComponent handleVerify={handleEmailVerify} />,
+    <PasswordComponent
+      handleBack={() => setStage(1)}
+      handleNext={changePassword}
+    />,
+    <VerificationComponent
+      onVerifySuccess={() => setStage(3)}
+      {...{
+        setIsLoading,
+        setLoadingMessage,
+      }}
+    />,
   ];
   return stages[stage];
 };

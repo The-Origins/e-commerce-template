@@ -2,14 +2,13 @@ import { Close } from "@mui/icons-material";
 import {
   Backdrop,
   Box,
-  Button,
   IconButton,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsAuth, } from "../../../state/store";
+import { setIsAuth } from "../../../state/store";
 import Login from "./login";
 import Register from "./register";
 import ErrorComponent from "./errorComponent";
@@ -31,7 +30,6 @@ const Auth = () => {
     },
     actionTitle: "ok",
   });
-  const [errorMessage, setErrorMessage] = useState("");
   const [errorDetails, setErrorDetails] = useState({
     message: "",
     action: () => {
@@ -43,7 +41,7 @@ const Auth = () => {
   const [auth, setAuth] = useState("login");
 
   const resetDetails = () => {
-    setIsSuccess(false)
+    setIsSuccess(false);
     setSuccessDetails({
       message: "",
       action: () => {
@@ -51,7 +49,7 @@ const Auth = () => {
       },
       actionTitle: "ok",
     });
-    setIsError(false)
+    setIsError(false);
     setErrorDetails({
       message: "",
       action: () => {
@@ -59,42 +57,6 @@ const Auth = () => {
       },
       actionTitle: "ok",
     });
-  };
-
-  const changeIsAuth = (state) => {
-    dispatch(setIsAuth(state));
-  };
-
-  const changeAuth = (state) => {
-    setAuth(state);
-  };
-
-  const changeIsLoading = (state) => {
-    setIsLoading(state);
-  };
-
-  const changeLoadingMessage = (title) => {
-    setLoadingMessage(title);
-  };
-
-  const changeIsError = (state) => {
-    setIsError(state);
-  };
-
-  const changeErrorDetails = (details) => {
-    setErrorDetails(details);
-  };
-
-  const changeIsSuccess = (state) => {
-    setIsSuccess(state);
-  };
-
-  const changeSuccessDetails = (details) => {
-    setSuccessDetails(details);
-  };
-
-  const changeErrorMessage = (message) => {
-    setErrorMessage(message);
   };
 
   return (
@@ -118,7 +80,7 @@ const Auth = () => {
       >
         {isLoading && <LoadingComponent message={loadingMessage} />}
         {isError && (
-          <ErrorComponent message={errorMessage} resetDetails={resetDetails} />
+          <ErrorComponent details={errorDetails} resetDetails={resetDetails} />
         )}
         {isSuccess && (
           <SuccessComponent
@@ -130,28 +92,10 @@ const Auth = () => {
           width={"100%"}
           display={"flex"}
           position={"relative"}
-          justifyContent={"center"}
-          alignItems={"center"}
+          justifyContent={"flex-end"}
           padding={"20px"}
         >
-          <Button
-            variant="outlined"
-            disabled={auth === "login"}
-            onClick={() => changeAuth("login")}
-          >
-            login
-          </Button>
-          <Button
-            variant="outlined"
-            disabled={auth === "register"}
-            onClick={() => changeAuth("register")}
-          >
-            register
-          </Button>
-          <IconButton
-            onClick={changeIsAuth}
-            sx={{ position: "absolute", mr: "20px", right: 0 }}
-          >
+          <IconButton onClick={() => dispatch(setIsAuth(false))}>
             <Close />
           </IconButton>
         </Box>
@@ -166,27 +110,24 @@ const Auth = () => {
         >
           <Login
             {...{
-              changeIsLoading,
-              changeLoadingMessage,
-              changeIsError,
-              changeErrorDetails,
-              changeIsSuccess,
+              setIsLoading,
+              setLoadingMessage,
+              setIsError,
+              setErrorDetails,
+              setIsSuccess,
               setSuccessDetails,
-              changeSuccessDetails,
-              successDetails,
+              setAuth,
             }}
           />
           <Register
             {...{
-              changeIsLoading,
-              changeLoadingMessage,
-              changeIsError,
-              changeErrorDetails,
-              errorDetails,
-              changeIsSuccess,
-              changeSuccessDetails,
-              successDetails,
-              changeAuth,
+              setIsLoading,
+              setLoadingMessage,
+              setIsError,
+              setErrorDetails,
+              setIsSuccess,
+              setSuccessDetails,
+              setAuth,
             }}
           />
         </Box>

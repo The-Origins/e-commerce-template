@@ -1,23 +1,23 @@
 import React from "react";
-import { Box, useTheme } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import NotificationItem from "./notificationItem";
 
 const Notifications = ({ user }) => {
-  const theme = useTheme()
+  const theme = useTheme();
+  const isNotPhone = useMediaQuery("(min-width:1000px)");
   return (
     <Box
       width={"100%"}
       height={"100%"}
-      padding={"20px"}
+      padding={isNotPhone ? "20px" : "20px 7px"}
       display={"flex"}
       flexDirection={"column"}
       gap={"20px"}
       sx={{
         overflowY: "scroll",
-        scrollbarWidth:"0px",
         "&::-webkit-scrollbar": {
           bgcolor: "transparent",
-          width: "10px",
+          width: isNotPhone ? "10px" : 0,
         },
         "&::-webkit-scrollbar-thumb": {
           borderRadius: "25px",

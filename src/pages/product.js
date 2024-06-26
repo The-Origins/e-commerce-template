@@ -53,7 +53,7 @@ const ProductPage = () => {
   const [maxImageIndex, setMaxImageIndex] = useState(0);
 
   useEffect(() => {
-    const loadingTimout = setTimeout(() => {
+    const loadingTimeout = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
 
@@ -63,7 +63,7 @@ const ProductPage = () => {
     setProduct(productWorker.findProduct(id));
     setProducts(data.products.slice(0, 4));
 
-    return () => clearTimeout(loadingTimout);
+    return () => clearTimeout(loadingTimeout);
   }, []);
 
   useEffect(() => {

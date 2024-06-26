@@ -8,33 +8,99 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import AuthWorker from "../../../../scripts/authWorker";
+import { isValidPhoneNumber } from "libphonenumber-js";
 
-const MobilePayment = ({ form, setPayment, setStage, country_codes }) => {
-  const [details, setDetails] = useState({
-    code: form.phoneCode,
-    number: form.phoneNumber,
+const MobilePayment = ({
+  setStage,
+  registerForm,
+  setRegisterForm,
+  callingCodes,
+}) => {
+  const authWorker = new AuthWorker();
+  const [form, setForm] = useState({
+    code: registerForm.phone.code || "US",
+    number: registerForm.phone.number,
   });
-  const [errors, setErrors] = useState({ number: "required" });
   const [touched, setTouched] = useState({});
+  const [errors, setErrors] = useState(
+    form.number > callingCodes[form.code].callingCode
+      ? {}
+      : { number: "required" }
+  );
+
+  const validator = {
+    number: [
+      {
+        key: (value, form) => value.length > form.code.length,
+        message: "required",
+      },
+      {
+        key: (value, form) => isValidPhoneNumber(value, form.code),
+        message: "invalid phone number",
+      },
+    ],
+  };
+
   const handleChange = ({ target }) => {
-    setErrors((prev) => ({
-      ...prev,
-      [target.name]: !target.value.length ? "required" : undefined,
-    }));
-    setDetails((prev) => ({ ...prev, [target.name]: target.value }));
+    setForm((prev) => {
+      if (target.name === "code") {
+        return {
+          ...prev,
+          code: target.value,
+          number: callingCodes[target.value].callingCode,
+        };
+      } else if (target.name === "number") {
+        return {
+          ...prev,
+          number: authWorker.formatPhoneNumber(
+            prev.number,
+            target.value,
+            prev.code
+          ),
+        };
+      }
+      return { ...prev, [target.name]: target.value };
+    });
+    setForm((prev) => {
+      setErrors(
+        authWorker.getErrors(
+          errors,
+          validator,
+          { name: target.name, value: prev[target.name] },
+          form
+        )
+      );
+      return prev;
+    });
+  };
+
+  const handleBlur = ({ target }) => {
+    setTouched((prev) => ({ ...prev, [target.name]: true }));
   };
 
   const handleBack = () => {
+    setForm({
+      code: registerForm.phone.code || "+1",
+      number: registerForm.phone.number,
+    });
     setStage(5);
   };
 
-  const handleBlur = () => {
-    setTouched({ number: true });
-  };
-
   const handleConfirm = () => {
-    setPayment({ type: "mobile", details });
-    setStage(8);
+    setRegisterForm((prev) => ({
+      ...prev,
+      payments: {
+        saved: [
+          {
+            type: "card",
+            number: authWorker.redact(form.number),
+            details: { ...form },
+          },
+        ],
+      },
+    }));
+    setStage(9);
   };
 
   return (
@@ -53,15 +119,17 @@ const MobilePayment = ({ form, setPayment, setStage, country_codes }) => {
           sx={{ display: "flex" }}
         >
           <PhoneAndroid />
-          Add your mobile number
+          Confirm your mobile number
         </Typography>
         <TextField
           type="tel"
           placeholder="phone number"
           name="number"
-          value={details.number}
+          value={form.number}
           onChange={handleChange}
           onBlur={handleBlur}
+          error={Boolean(touched.number) && Boolean(errors.number)}
+          helperText={(touched.number && errors.number) || " "}
           sx={{
             flexBasis: 200,
             flexGrow: 1,
@@ -73,22 +141,21 @@ const MobilePayment = ({ form, setPayment, setStage, country_codes }) => {
               <Select
                 autoWidth
                 name="code"
-                value={details.code}
+                value={form.code}
                 onChange={handleChange}
                 renderValue={(value) => value}
               >
-                {country_codes.map((code) => (
-                  <MenuItem value={code.code}>
+                {Object.keys(callingCodes).map((code) => (
+                  <MenuItem value={code}>
                     <Box
                       width={"100%"}
                       display={"flex"}
+                      gap={"10px"}
                       justifyContent={"space-between"}
                       alignItems={"center"}
                     >
-                      <Typography>{code.name}</Typography>
-                      <Typography color={"primary.main"}>
-                        {code.code}
-                      </Typography>
+                      <Typography>{callingCodes[code].countryName}</Typography>
+                      <Typography color={"primary.main"}>{code}</Typography>
                     </Box>
                   </MenuItem>
                 ))}
@@ -110,10 +177,7 @@ const MobilePayment = ({ form, setPayment, setStage, country_codes }) => {
           type="submit"
           variant="contained"
           disableElevation
-          disabled={
-            !Boolean(Object.keys(touched).length) ||
-            Boolean(Object.keys(errors).length)
-          }
+          disabled={Boolean(errors.number)}
           onClick={handleConfirm}
         >
           confirm

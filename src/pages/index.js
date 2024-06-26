@@ -28,10 +28,10 @@ const Home = () => {
 
   useEffect(() => {
     document.title = "E-commerce | my moto";
-    const loadingTimout = setTimeout(() => {
+    const loadingTimeout = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
-    return () => clearTimeout(loadingTimout);
+    return () => clearTimeout(loadingTimeout);
   }, []);
 
   return (

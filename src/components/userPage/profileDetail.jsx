@@ -4,6 +4,8 @@ import {
   Button,
   IconButton,
   InputAdornment,
+  MenuItem,
+  Select,
   TextField,
   Tooltip,
   Typography,
@@ -11,9 +13,20 @@ import {
   useTheme,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { country_codes } from "../../lib/data";
+import UserWorker from "../../scripts/userWorker";
 
 const UserProfileDetail = (props) => {
-  const [detail, setDetail] = useState(" ");
+  const userWorker = new UserWorker();
+  const currencies =
+    props.type === "select" && props.title === "Currency"
+      ? userWorker.getCurrencies()
+      : [];
+  const [detail, setDetail] = useState(
+    props.type === "tel"
+      ? { number: props.value.number, code: props.value.code }
+      : " "
+  );
   const [isEdit, setIsEdit] = useState(false);
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -49,17 +62,83 @@ const UserProfileDetail = (props) => {
     >
       {isEdit ? (
         <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-          <TextField
-            value={detail}
-            onChange={handleChange}
-            type={props.type}
-            label={props.title}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">{props.icon}</InputAdornment>
-              ),
-            }}
-          />
+          {props.type === "select" && props.title === "Currency" ? (
+            <Select
+              autoWidth
+              name="code"
+              value={detail}
+              onChange={handleChange}
+              renderValue={(value) => value}
+            >
+              {currencies.map((currency) => (
+                <MenuItem value={currency.code}>
+                  <Box
+                    width={"100%"}
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                    gap={"20px"}
+                    alignItems={"center"}
+                  >
+                    <Typography>{currency.name}</Typography>
+                    <Typography color={"primary.main"}>
+                      {currency.symbol}
+                    </Typography>
+                  </Box>
+                </MenuItem>
+              ))}
+            </Select>
+          ) : props.type === "tel" ? (
+            <TextField
+              type="tel"
+              placeholder="phone number"
+              name="number"
+              value={detail.number}
+              onChange={handleChange}
+              sx={{
+                "& > div": { padding: 0 },
+                "& > div > div": { marginRight: "5px" },
+              }}
+              InputProps={{
+                startAdornment: (
+                  <Select
+                    autoWidth
+                    name="code"
+                    value={detail.code}
+                    onChange={handleChange}
+                    renderValue={(value) => value}
+                  >
+                    {country_codes.map((code) => (
+                      <MenuItem value={code.code}>
+                        <Box
+                          width={"100%"}
+                          display={"flex"}
+                          justifyContent={"space-between"}
+                          alignItems={"center"}
+                        >
+                          <Typography>{code.name}</Typography>
+                          <Typography color={"primary.main"}>
+                            {code.code}
+                          </Typography>
+                        </Box>
+                      </MenuItem>
+                    ))}
+                  </Select>
+                ),
+              }}
+            />
+          ) : (
+            <TextField
+              value={detail}
+              onChange={handleChange}
+              type={props.type}
+              label={props.title}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">{props.icon}</InputAdornment>
+                ),
+              }}
+            />
+          )}
           <Box width={"100%"} display={"flex"} justifyContent={"space-between"}>
             <Button
               onClick={() => setIsEdit(false)}
@@ -91,7 +170,9 @@ const UserProfileDetail = (props) => {
             <Typography>{props.title}</Typography>
           </Box>
           <Typography sx={{ transition: "0.3s" }} color={"text.secondary"}>
-            {props.value}
+            {props.type === "tel"
+              ? props.value.code + props.value.number
+              : props.value}
           </Typography>
           <Tooltip title="edit" placement="right">
             <IconButton

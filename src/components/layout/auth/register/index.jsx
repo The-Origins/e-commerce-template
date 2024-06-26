@@ -1,65 +1,25 @@
 import React, { useState } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
-import { Formik } from "formik";
-import * as yup from "yup";
 import RegisterStages from "./stages";
-import { useSelector } from "react-redux";
 
 const Register = ({
-  changeIsLoading,
-  changeLoadingMessage,
-  changeIsSuccess,
-  changeSuccessDetails,
-  successDetails,
-  changeIsError,
-  changeErrorDetails,
-  changeAuth,
+  setIsLoading,
+  setLoadingMessage,
+  setIsError,
+  setErrorDetails,
+  setIsSuccess,
+  setSuccessDetails,
+  setAuth,
 }) => {
   const theme = useTheme();
-  const region = useSelector((state) => state.region);
   const [stage, setStage] = useState(0);
-  const [address, setAddress] = useState({ type: "other" });
-  const [payment, setPayment] = useState({});
+  const [registerForm, setRegisterForm] = useState({});
 
-  const initialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    phoneCode: region.country_calling_code || "+1",
-    password: "",
-    confirmPassword: "",
-  };
-
-  const validator = yup.object().shape({
-    firstName: yup.string().required("required"),
-    lastName: yup.string().required("required"),
-    email: yup.string().email("invalid email").required("required"),
-    phoneNumber: yup
-      .number()
-      .typeError("Invalid phone number")
-      .required("required"),
-    password: yup
-      .string()
-      .min(8, "minimum of 8 characters")
-      .required("required"),
-    confirmPassword: yup
-      .string()
-      .min(8, "minimum of 8 characters")
-      .oneOf([yup.ref("password"), null], "passwords don't match")
-      .required("required"),
-  });
-
-  const handleFormSubmit = (values, submitProps) => {
-    console.log({
-      name: { first: values.firstName, last: values.lastName },
-      phone: { number: values.phoneNumber, code: values.phoneCode },
-      email: values.email,
-      password: values.password,
-      address,
-      payment,
+  const handleRegister = () => {
+    setRegisterForm((prev) => {
+      console.log(prev);
+      return {};
     });
-    submitProps.resetForm();
   };
 
   return (
@@ -100,48 +60,35 @@ const Register = ({
         >
           {stage === 0 ? " " : "Register"}
         </Typography>
-        <Box width={"100%"} height={"100%"}>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validator}
-            onSubmit={handleFormSubmit}
-          >
-            {(form) => (
-              <form
-                onSubmit={form.handleSubmit}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "20px",
-                  padding: "20px",
-                }}
-              >
-                <RegisterStages
-                  form={form}
-                  {...{
-                    form,
-                    stage,
-                    setStage,
-                    setPayment,
-                    address,
-                    setAddress,
-                    changeIsLoading,
-                    changeLoadingMessage,
-                    changeIsSuccess,
-                    changeSuccessDetails,
-                    successDetails,
-                    changeIsError,
-                    changeErrorDetails,
-                    changeAuth,
-                    handleRegister,
-                  }}
-                />
-              </form>
-            )}
-          </Formik>
+        <Box
+          width={"100%"}
+          height={"100%"}
+          sx={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "20px",
+            padding: "20px",
+          }}
+        >
+          <RegisterStages
+            {...{
+              stage,
+              setStage,
+              registerForm,
+              setRegisterForm,
+              handleRegister,
+              setIsLoading,
+              setLoadingMessage,
+              setIsError,
+              setErrorDetails,
+              setIsSuccess,
+              setSuccessDetails,
+              setAuth,
+            }}
+          />
         </Box>
       </Box>
     </Box>

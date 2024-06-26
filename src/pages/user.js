@@ -49,10 +49,10 @@ const UserPage = () => {
   }, [stage]);
 
   useEffect(() => {
-    const loadingTimout = setTimeout(() => {
+    const loadingTimeout = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
-    return () => clearTimeout(loadingTimout);
+    return () => clearTimeout(loadingTimeout);
   }, []);
 
   useEffect(() => {
@@ -95,12 +95,12 @@ const UserPage = () => {
         width={isNotPhone ? "80%" : "90%"}
         height={"80%"}
         display={"flex"}
-        overflow={"hidden"}
+        overflow={isNotPhone ? "hidden" : undefined}
         justifyContent={"center"}
       >
         {(isNotPhone || !stage) && (
           <Box
-            overflow={"hidden"}
+            overflow={isNotPhone ? "hidden" : undefined}
             width={stage ? "400px" : "100%"}
             maxWidth={"600px"}
             height={"100%"}
@@ -254,48 +254,78 @@ const UserPage = () => {
                 </Typography>
               </Box>
             )}
-            <Box
-              width={"100%"}
-              height={"100%"}
-              display={"flex"}
-              justifyContent={"center"}
-              alignItems={"center"}
-              border={`1px solid ${theme.palette.grey[400]}`}
-              overflow={"hidden"}
-              borderRadius={isNotPhone ? "0px 25px 25px 0px" : "25px"}
-            >
-              {!isLoading && !Object.keys(user).length ? (
-                <Box
-                  width={"100%"}
-                  height={"100%"}
-                  display={"flex"}
-                  flexDirection={"column"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  gap={"20px"}
-                >
-                  <PersonOff
-                    sx={{ fontSize: "3rem", color: "text.secondary" }}
-                  />
-                  <Typography fontWeight={"bold"} fontSize={"1.5rem"}>
-                    Login to access user info
-                  </Typography>
-                  <Button
-                    disableElevation
-                    variant="contained"
-                    size="large"
-                    startIcon={<Person />}
-                    onClick={handleLogin}
+            {isNotPhone ? (
+              <Box
+                width={"100%"}
+                height={"100%"}
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                border={`1px solid ${theme.palette.grey[400]}`}
+                overflow={isNotPhone ? "hidden" : undefined}
+                borderRadius={isNotPhone ? "0px 25px 25px 0px" : "25px"}
+              >
+                {!isLoading && !Object.keys(user).length ? (
+                  <Box
+                    width={"100%"}
+                    height={"100%"}
+                    display={"flex"}
+                    flexDirection={"column"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    gap={"20px"}
                   >
-                    Log in
-                  </Button>
-                </Box>
-              ) : isLoading ? (
-                <CircularProgress />
-              ) : (
-                stages[stage]
-              )}
-            </Box>
+                    <PersonOff
+                      sx={{ fontSize: "3rem", color: "text.secondary" }}
+                    />
+                    <Typography fontWeight={"bold"} fontSize={"1.5rem"}>
+                      Login to access user info
+                    </Typography>
+                    <Button
+                      disableElevation
+                      variant="contained"
+                      size="large"
+                      startIcon={<Person />}
+                      onClick={handleLogin}
+                    >
+                      Log in{" "}
+                    </Button>
+                  </Box>
+                ) : isLoading ? (
+                  <CircularProgress />
+                ) : (
+                  stages[stage]
+                )}
+              </Box>
+            ) : !isLoading && !Object.keys(user).length ? (
+              <Box
+                width={"100%"}
+                height={"100%"}
+                display={"flex"}
+                flexDirection={"column"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                gap={"20px"}
+              >
+                <PersonOff sx={{ fontSize: "3rem", color: "text.secondary" }} />
+                <Typography fontWeight={"bold"} fontSize={"1.5rem"}>
+                  Login to access user info
+                </Typography>
+                <Button
+                  disableElevation
+                  variant="contained"
+                  size="large"
+                  startIcon={<Person />}
+                  onClick={handleLogin}
+                >
+                  Log in{" "}
+                </Button>
+              </Box>
+            ) : isLoading ? (
+              <CircularProgress />
+            ) : (
+              stages[stage]
+            )}
           </Box>
         )}
       </Box>

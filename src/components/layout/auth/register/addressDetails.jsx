@@ -9,14 +9,28 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 
-const AddressDetails = ({ address, setAddress, setStage }) => {
+const AddressDetails = ({ setStage, registerForm, setRegisterForm }) => {
   const theme = useTheme();
+  const address = registerForm.addresses.saved[0];
+  const [form, setForm] = useState({
+    type: registerForm.addresses.saved[0].type || "other",
+    locationInfo: registerForm.addresses.saved[0].locationInfo,
+  });
+
   const handleChange = ({ target }) => {
-    setAddress((prev) => ({ ...prev, [target.name]: target.value }));
+    setForm((prev) => ({ ...prev, [target.name]: target.value }));
   };
-  
+
+  const handleNext = () => {
+    setRegisterForm((prev) => ({
+      ...prev,
+      addresses: {saved:[{...prev.addresses.saved[0], ...form}]},
+    }));
+    setStage(5);
+  };
+
   return (
     <Box
       display={"flex"}
@@ -49,11 +63,7 @@ const AddressDetails = ({ address, setAddress, setStage }) => {
           <>
             <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
               <Typography fontWeight={"bold"}>Address type:</Typography>
-              <RadioGroup
-                name="type"
-                value={address.type}
-                onChange={handleChange}
-              >
+              <RadioGroup name="type" value={form.type} onChange={handleChange}>
                 <FormControlLabel
                   value={"home"}
                   control={<Radio />}
@@ -88,20 +98,19 @@ const AddressDetails = ({ address, setAddress, setStage }) => {
             </Box>
             <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
               <Typography fontWeight={"bold"}>
-                {address.type !== "other"
-                  ? address.type.charAt(0).toUpperCase() +
-                    address.type.substring(1)
+                {form.type !== "other"
+                  ? form.type.charAt(0).toUpperCase() + form.type.substring(1)
                   : "Location"}{" "}
                 info:
               </Typography>
               <TextField
                 name="locationInfo"
-                value={address.locationInfo}
+                value={form.locationInfo}
                 onChange={handleChange}
                 placeholder={
-                  address.type === "home"
+                  form.type === "home"
                     ? "House no, Floor no"
-                    : address.type === "office"
+                    : form.type === "office"
                     ? "Business name, Floor no"
                     : "Location details"
                 }
@@ -145,7 +154,7 @@ const AddressDetails = ({ address, setAddress, setStage }) => {
           type="submit"
           variant="contained"
           disableElevation
-          onClick={() => setStage(5)}
+          onClick={handleNext}
         >
           next
         </Button>

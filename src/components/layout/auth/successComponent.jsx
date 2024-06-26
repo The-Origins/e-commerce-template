@@ -15,6 +15,7 @@ const SuccessComponent = ({ details, resetDetails }) => {
     action();
     resetDetails();
   };
+  
   return (
     <Box
       position={"absolute"}

@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { AddCircle, CheckCircle, Favorite } from "@mui/icons-material";
+import {
+  AddCircle,
+  CheckCircle,
+  CheckCircleTwoTone,
+  Favorite,
+} from "@mui/icons-material";
 import {
   useTheme,
   Box,
@@ -13,7 +18,7 @@ import {
 import ProductDetails from "./productDetails";
 import data from "../../lib/data";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsAuth, } from "../../state/store";
+import { setIsAuth } from "../../state/store";
 
 const ProductCard = (props) => {
   const [offers, setOffers] = useState({});

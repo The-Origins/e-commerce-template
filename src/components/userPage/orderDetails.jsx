@@ -68,6 +68,7 @@ const OrderDetails = () => {
         overflowY: "scroll",
         "&::-webkit-scrollbar": {
           bgcolor: "transparent",
+          width: isNotPhone ? "10px" : 0,
         },
         "&::-webkit-scrollbar-thumb": {
           borderRadius: "25px",
@@ -78,7 +79,7 @@ const OrderDetails = () => {
           bgcolor: theme.palette.grey[400],
         },
       }}
-      padding={"20px"}
+      padding={isNotPhone ? "20px" : "20px 0px"}
       display={"flex"}
       flexDirection={"column"}
     >
@@ -135,7 +136,7 @@ const OrderDetails = () => {
           <Box display={"flex"} alignItems={"center"} gap={"5px"}>
             <Typography fontWeight={"bold"}>Total:</Typography>
             <Typography>
-              {data.user.payment.currency} {order.total}
+              {data.user.payments.currency} {order.total}
             </Typography>
           </Box>
         </Box>

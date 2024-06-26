@@ -29,10 +29,10 @@ const CartPage = () => {
   useEffect(() => {
     document.title = "Cart | E-commerce";
 
-    const loadingTimout = setTimeout(() => {
+    const loadingTimeout = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
-    return () => clearTimeout(loadingTimout);
+    return () => clearTimeout(loadingTimeout);
   }, []);
 
   useEffect(() => {
@@ -108,7 +108,7 @@ const CartPage = () => {
                     <Box display={"flex"} justifyContent={"space-between"}>
                       <Typography fontSize={"0.8rem"}>Subtotal</Typography>
                       <Typography fontSize={"0.8rem"}>
-                        {user.payment.currency} {user.cart.total}
+                        {user.payments.currency} {user.cart.total}
                       </Typography>
                     </Box>
                     <Box display={"flex"} justifyContent={"center"}>
@@ -140,7 +140,7 @@ const CartPage = () => {
                       borderRadius={"10px"}
                       fontSize={"0.9rem"}
                     >
-                      SubTotal: {user.payment.currency} {user.cart.total}
+                      SubTotal: {user.payments.currency} {user.cart.total}
                     </Typography>
                   )}
                   <Link href="/checkout">

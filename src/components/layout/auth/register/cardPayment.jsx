@@ -3,45 +3,67 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import AuthWorker from "../../../../scripts/authWorker";
 
-const CardPayment = ({
-  setPayment,
-  setStage,
-  changeIsLoading,
-  changeLoadingMessage,
-  changeIsSuccess,
-  changeSuccessDetails,
-  changeAuth,
-}) => {
+const CardPayment = ({ setStage, setRegisterForm }) => {
   const authWorker = new AuthWorker();
-  const [details, setDetails] = useState({});
+  const [form, setForm] = useState({});
+  const [touched, setTouched] = useState({});
   const [errors, setErrors] = useState({
-    number: "required",
     name: "required",
+    number: "required",
     expiry: "required",
     cvv: "required",
   });
-  const [touched, setTouched] = useState({});
+
+  const validator = {
+    name: [{ key: (value) => value.length, message: "required" }],
+    number: [
+      { key: (value) => value.length, message: "required" },
+      {
+        key: (value) =>
+          /^\d{13,19}$/.test(authWorker.removeStringFormat(value, "-")),
+        message: "invalid card number",
+      },
+      {
+        key: (value) =>
+          authWorker.luhnCheck(authWorker.removeStringFormat(value, "-")), //validate card number
+        message: "invalid card number",
+      },
+    ],
+    expiry: [
+      { key: (value) => value.length, message: "required" },
+      {
+        key: (value) => /^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(value),
+        message: "Expiration date must be in MM/YY format",
+      },
+      {
+        key: (value) => !authWorker.isCvvExpired(value), //check if cvv is expired
+        message: "invalid expiry",
+      },
+    ],
+    cvv: [
+      { key: (value) => String(value).length, message: "required" },
+      {
+        key: (value) => /^\d{3,4}$/.test(value), //check if cvv has 3-4 values
+        message: "invalid cvv",
+      },
+    ],
+  };
+
   const handleChange = ({ target }) => {
-    setErrors((prev) => ({
+    setErrors(authWorker.getErrors(errors, validator, target));
+    setForm((prev) => ({
       ...prev,
-      [target.name]: !target.value.length ? "required" : undefined,
+      [target.name]:
+        target.name === "number"
+          ? target.value.length
+            ? authWorker.formatString(target.value, "-", 4)
+            : target.value
+          : target.name === "expiry"
+          ? target.value.length
+            ? authWorker.formatString(target.value, "/")
+            : target.value
+          : target.value,
     }));
-    if (target.name === "number") {
-      setDetails((prev) => ({
-        ...prev,
-        [target.name]: authWorker.formatString(target.value),
-      }));
-    }
-    if (target.name === "expiry") {
-      if (target.value <= 3) {
-        setDetails((prev) => ({
-          ...prev,
-          [target.name]: formatString(target.value),
-        }));
-      }
-    } else {
-      setDetails((prev) => ({ ...prev, [target.value]: target.value }));
-    }
   };
 
   const handleBlur = ({ target }) => {
@@ -49,27 +71,26 @@ const CardPayment = ({
   };
 
   const handleBack = () => {
-    setDetails({});
+    setForm({});
     setStage(5);
   };
 
   const verify = () => {
-    changeIsLoading(true);
-    changeLoadingMessage("verifying");
-    setTimeout(() => {
-      setPayment({ type: "card", details });
-      changeIsLoading(false);
-      changeIsSuccess(true);
-      changeSuccessDetails({
-        message: "account created successfully",
-        action: () => {
-          changeIsSuccess(false);
-          setStage(0);
-          changeAuth("login");
-        },
-        actionTitle: "Back to login",
-      });
-    }, 2000);
+    const { number, ...rest } = form;
+    const unformattedNumber = authWorker.removeStringFormat(number, "-");
+    setRegisterForm((prev) => ({
+      ...prev,
+      payments: {
+        saved: [
+          {
+            type: "card",
+            number: authWorker.redact(unformattedNumber),
+            details: { number: unformattedNumber, ...rest },
+          },
+        ],
+      },
+    }));
+    setStage(8);
   };
 
   return (
@@ -94,41 +115,44 @@ const CardPayment = ({
             type="text"
             label="Full name"
             name="name"
+            value={form.name}
+            onChange={handleChange}
             onBlur={handleBlur}
             helperText={(touched.name && errors.name) || " "}
             error={touched.name && errors.name}
-            value={details.name}
-            onChange={handleChange}
+            inputProps={{ maxLength: 32 }}
             fullWidth
           />
           <TextField
-            type="number"
             label="Card number"
             name={"number"}
+            value={form.number}
+            onChange={handleChange}
             onBlur={handleBlur}
             helperText={(touched.number && errors.number) || " "}
             error={touched.number && errors.number}
-            value={details.number}
-            onChange={handleChange}
+            inputProps={{ maxLength: 22 }}
             fullWidth
           />
           <Box display={"flex"} gap={"20px"} flexWrap={"wrap"}>
             <TextField
               name="expiry"
-              onBlur={handleBlur}
-              value={details.expiry}
+              value={form.expiry}
               onChange={handleChange}
+              onBlur={handleBlur}
               helperText={(touched.expiry && errors.expiry) || " "}
               error={touched.expiry && errors.expiry}
               label={"Expiry"}
+              inputProps={{ maxLength: 5 }}
             />
             <TextField
               name="cvv"
-              onBlur={handleBlur}
-              value={details.cvv}
+              value={form.cvv}
               onChange={handleChange}
+              onBlur={handleBlur}
               helperText={(touched.cvv && errors.cvv) || " "}
               error={touched.cvv && errors.cvv}
+              inputProps={{ maxLength: 4 }}
               label={"CVV"}
             />
           </Box>
@@ -148,7 +172,8 @@ const CardPayment = ({
           variant="contained"
           disableElevation
           disabled={
-            !Boolean(Object.keys(touched).length) ||
+            (!Boolean(Object.keys(touched).length) &&
+              Boolean(Object.keys(errors).length)) ||
             Boolean(Object.keys(errors).length)
           }
           onClick={verify}

@@ -1,50 +1,17 @@
-import {
-  Email,
-  Facebook,
-  Google,
-  Lock,
-  Visibility,
-  VisibilityOff,
-} from "@mui/icons-material";
-import {
-  Box,
-  useTheme,
-  Button,
-  IconButton,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
 import React, { useState } from "react";
-import VerificationComponent from "../verificationComponent";
-import { setUser } from "../../../../state/store";
-import { useDispatch } from "react-redux";
-import data from "../../../../lib/data";
+import { Box, Typography } from "@mui/material";
 import LoginStages from "./stages";
-import * as yup from "yup";
-import { Formik } from "formik";
 
 const Login = ({
-  changeIsLoading,
-  changeLoadingMessage,
-  changeIsSuccess,
+  setIsLoading,
+  setLoadingMessage,
+  setIsError,
+  setErrorDetails,
+  setIsSuccess,
   setSuccessDetails,
-  changeSuccessDetails,
-  successDetails,
-  changeIsError,
-  changeErrorDetails,
+  setAuth,
 }) => {
-  const theme = useTheme();
-  const dispatch = useDispatch();
   const [stage, setStage] = useState(0);
-  const [loginForm, setLoginForm] = useState({});
-
-  
-
-  const handleLogin = () => {
-    dispatch(setUser(data.user));
-    console.log(loginForm);
-  };
 
   return (
     <Box
@@ -89,16 +56,13 @@ const Login = ({
               {...{
                 stage,
                 setStage,
-                changeIsLoading,
-                changeLoadingMessage,
-                changeIsSuccess,
+                setIsLoading,
+                setLoadingMessage,
+                setIsError,
+                setErrorDetails,
+                setIsSuccess,
                 setSuccessDetails,
-                changeSuccessDetails,
-                successDetails,
-                changeIsError,
-                changeErrorDetails,
-                handleLogin,
-                setLoginForm
+                setAuth,
               }}
             />
           </Box>

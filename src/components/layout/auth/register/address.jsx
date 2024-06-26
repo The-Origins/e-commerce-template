@@ -1,11 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  AddLocation,
-  ChevronRight,
-  Place,
-  Search,
-  Tag,
-} from "@mui/icons-material";
+import React, { useState } from "react";
+import { AddLocation, ChevronRight, Place, Search } from "@mui/icons-material";
 import {
   Button,
   Box,
@@ -14,15 +8,25 @@ import {
   TextField,
   useTheme,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import AuthWorker from "../../../../scripts/authWorker";
 
-const Address = ({ setStage, setAddress }) => {
+const Address = ({ region, setStage, setRegisterForm }) => {
   const theme = useTheme();
-  const region = useSelector((state) => state.region);
+  const authWorker = new AuthWorker();
   const [search, setSearch] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState([]);
+  const [touched, setTouched] = useState({});
+  const [errors, setErrors] = useState({ address: "required" });
+  const validator = {
+    address: [{ key: (value) => value.length, message: "required" }],
+  };
+
+  const handleBlur = ({ target }) => {
+    setTouched((prev) => ({ ...prev, [target.name]: true }));
+  };
 
   const handleSearchChange = ({ target }) => {
+    setErrors(authWorker.getErrors(errors, validator, target));
     setSearch(target.value);
     if (!search && !searchSuggestions.length) {
       setSearchSuggestions([
@@ -61,7 +65,10 @@ const Address = ({ setStage, setAddress }) => {
   };
 
   const handleAddressSelect = (address) => {
-    setAddress((prev) => ({ ...prev, ...address }));
+    setRegisterForm((prev) => ({
+      ...prev,
+      addresses: { saved: [{ ...address }] },
+    }));
     setStage(4);
   };
 
@@ -87,8 +94,12 @@ const Address = ({ setStage, setAddress }) => {
           <TextField
             type="search"
             placeholder={`${region.city}, ${region.country_name}`}
+            name="address"
             value={search}
             onChange={handleSearchChange}
+            onBlur={handleBlur}
+            error={Boolean(touched.address) && Boolean(errors.address)}
+            helperText={(touched.address && errors.address) || ""}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -139,8 +150,11 @@ const Address = ({ setStage, setAddress }) => {
                     backgroundColor: "transparent",
                     padding: 0,
                     border: "none",
+                    color: "transparent",
                   }}
-                ></button>
+                >
+                  .
+                </button>
                 <Place sx={{ color: "text.secondary", fontSize: "2rem" }} />
                 <Box display={"flex"} flexDirection={"column"} width={"100%"}>
                   <Typography fontWeight={"bold"}>

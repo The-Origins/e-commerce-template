@@ -1,14 +1,32 @@
 import { Email, PhoneAndroid } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { Formik } from "formik";
-import * as yup from "yup";
 import React, { useState } from "react";
+import AuthWorker from "../../../scripts/authWorker";
 
 const VerificationComponent = ({
   type = "email",
-  handleVerify = (values, submitProps) => {},
+  onVerifySuccess = () => {},
+  onVerifyFaliure = () => {},
+  setIsLoading,
+  setLoadingMessage,
 }) => {
+  const authWorker = new AuthWorker();
   const [timer, setTimer] = useState(0);
+  const [code, setCode] = useState("");
+  const [errors, setErrors] = useState({ code: "required" });
+  const [touched, setTouched] = useState({});
+  const validator = {
+    code: [{ key: (value) => value.length, message: "required" }],
+  };
+
+  const handleChange = ({ target }) => {
+    setErrors(authWorker.getErrors(errors, validator, target));
+    setCode(target.value);
+  };
+
+  const handleBlur = ({ target }) => {
+    setTouched({ [target.name]: true });
+  };
 
   const handleResend = () => {
     setTimer(61);
@@ -22,74 +40,76 @@ const VerificationComponent = ({
     }, 1000);
   };
 
-  const validator = yup.object().shape({
-    code: yup.number().required("required"),
-  });
+  const handleVerify = () => {
+    setIsLoading(true);
+    setLoadingMessage("verifying");
+    const loadingTimeout = setTimeout(() => {
+      clearTimeout(loadingTimeout);
+      setIsLoading(false);
+      onVerifySuccess();
+    }, 2000);
+  };
 
   return (
-    <Formik
-      initialValues={{ code: "" }}
-      validationSchema={validator}
-      onSubmit={handleVerify}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+        height: "100%",
+        justifyContent: "space-evenly",
+        width: "min(400px, 90%)",
+      }}
     >
-      {(form) => (
-        <form
-          onSubmit={form.handleSubmit}
-          style={{
+      <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
+        <Typography
+          fontWeight={"bold"}
+          fontSize={"1.3rem"}
+          sx={{
             display: "flex",
-            flexDirection: "column",
-            gap: "20px",
-            height: "100%",
-            justifyContent: "space-evenly",
-            width: "min(400px, 90%)",
+            alignItems: type === "phone" ? "flex-end" : "center",
+            gap: "5px",
           }}
         >
-          <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
-            <Typography
-              fontWeight={"bold"}
-              fontSize={"1.3rem"}
-              sx={{
-                display: "flex",
-                alignItems: type === "phone" ? "flex-end" : "center",
-                gap: "5px",
-              }}
-            >
-              {type === "phone" ? <PhoneAndroid /> : <Email />}
-              Verify your {type}
-            </Typography>
-            <Typography>We sent a code to your {type}</Typography>
-            <TextField
-              label="code"
-              type="number"
-              name="code"
-              value={form.values.code}
-              onChange={form.handleChange}
-              onBlur={form.handleBlur}
-              error={Boolean(form.touched.code) && Boolean(form.errors.code)}
-              helperText={(form.touched.code && form.errors.code) || " "}
-            />
-          </Box>
-          <Box
-            width={"100%"}
-            display={"flex"}
-            justifyContent={"space-between"}
-            alignItems={"center"}
-          >
-            <Button
-              variant="outlined"
-              disableElevation
-              onClick={handleResend}
-              disabled={timer > 1}
-            >
-              {timer > 1 ? `(${timer}) ` : ""}resend
-            </Button>
-            <Button type="submit" variant="contained" disableElevation>
-              verify
-            </Button>
-          </Box>
-        </form>
-      )}
-    </Formik>
+          {type === "phone" ? <PhoneAndroid /> : <Email />}
+          Verify your {type}
+        </Typography>
+        <Typography>We sent a code to your {type}</Typography>
+        <TextField
+          label="code"
+          name={"code"}
+          value={code}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          inputProps={{ maxLength: 4 }}
+          error={Boolean(touched.code) && Boolean(errors.code)}
+          helperText={(touched.code && errors.code) || " "}
+        />
+      </Box>
+      <Box
+        width={"100%"}
+        display={"flex"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+      >
+        <Button
+          variant="outlined"
+          disableElevation
+          onClick={handleResend}
+          disabled={timer > 1}
+        >
+          {timer > 1 ? `(${timer}) ` : ""}resend
+        </Button>
+        <Button
+          onClick={handleVerify}
+          variant="contained"
+          disableElevation
+          disabled={errors.code || (!touched.code && errors.code)}
+        >
+          verify
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

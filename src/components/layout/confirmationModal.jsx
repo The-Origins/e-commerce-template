@@ -18,7 +18,7 @@ const ConfirmationModal = () => {
     >
       <Box
         width={"min(400px, 90%)"}
-        height={"250px"}
+        minHeight={"200px"}
         borderRadius={"25px"}
         boxShadow={`0px 0px 1px 10px ${theme.palette.grey}`}
         bgcolor={"white"}

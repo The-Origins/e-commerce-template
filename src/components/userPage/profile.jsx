@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, useTheme } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import {
   AccountCircle,
   Explore,
@@ -11,19 +11,20 @@ import {
 import UserProfileDetail from "./profileDetail";
 import UserProfileList from "./profileList";
 
+
 const UserProfile = (props) => {
   const theme = useTheme();
+  const isNotPhone = useMediaQuery("(min-width:1000px)");
   return (
     <Box
       width={"100%"}
       height={"100%"}
-      padding={"20px"}
+      padding={isNotPhone ? "20px" : "20px 0px"}
       sx={{
         overflowY: "scroll",
-        scrollbarWidth: "10px",
         "&::-webkit-scrollbar": {
           bgcolor: "transparent",
-          width: "10px",
+          width: isNotPhone ? "10px" : 0,
         },
         "&::-webkit-scrollbar-thumb": {
           borderRadius: "25px",
@@ -55,20 +56,23 @@ const UserProfile = (props) => {
           icon={<Phone />}
           title={"Phone no"}
           type="tel"
-          value={`(${props.user.phone.code}) ${props.user.phone.number}`}
+          value={{
+            code: props.user.phone.code,
+            number: props.user.phone.number,
+          }}
         />
         <UserProfileDetail
           icon={<Paid />}
           title={"Currency"}
           type="select"
-          value={props.user.payment.currency}
+          value={props.user.payments.currency.code}
         />
       </Box>
       <Box display={"flex"} flexWrap={"wrap"} gap={"20px"}>
         <UserProfileList
           icon={<Payments />}
           title={"Saved Payments"}
-          data={props.user.payment.saved}
+          data={props.user.payments.saved}
           type="payment"
         />
         <UserProfileList

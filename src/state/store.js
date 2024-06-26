@@ -4,6 +4,7 @@ const storeSLice = createSlice({
   name: "store",
   initialState: {
     user: {},
+    currency: {},
     region: {},
     snackBar: {
       on: false,
@@ -23,10 +24,10 @@ const storeSLice = createSlice({
     switchIsContact: (state) => {
       state.isContact = !state.isContact;
     },
-    setIsAuth: (state, action) => {
-      state.isAuth = action.payload;
+    setIsContact: (state, action) => {
+      state.isContact = action.payload;
     },
-    changeIsAuth: (state, action) => {
+    setIsAuth: (state, action) => {
       state.isAuth = action.payload;
     },
     activateConfirmationModal: (state, action) => {
@@ -58,12 +59,16 @@ const storeSLice = createSlice({
     setRegion: (state, action) => {
       state.region = action.payload;
     },
+    setCurrency: (state, action) => {
+      state.currency = action.payload;
+    },
   },
 });
 
 export const {
   setUser,
   setRegion,
+  setCurrency,
   activateConfirmationModal,
   deactivateConfirmationModal,
   activateSnackBar,

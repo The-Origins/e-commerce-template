@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Link, Typography, useTheme } from "@mui/material";
+import { Box, Link, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { CalendarMonth } from "@mui/icons-material";
 import UserProductCard from "../product/userProductCard";
 import data from "../../lib/data";
@@ -12,11 +12,11 @@ const statusColors = {
 
 const UserOrders = () => {
   const theme = useTheme();
-
+  const isNotPhone = useMediaQuery("(min-width:1000px)");
   return (
     <Box
       width={"100%"}
-      padding={"20px"}
+      padding={isNotPhone ? "20px" : "20px 0px"}
       display={"flex"}
       flexDirection={"column"}
       gap={"20px"}
@@ -25,7 +25,7 @@ const UserOrders = () => {
         overflowY: "scroll",
         "&::-webkit-scrollbar": {
           bgcolor: "transparent",
-          width: "10px",
+          width: isNotPhone ? "10px" : 0,
         },
         "&::-webkit-scrollbar-thumb": {
           borderRadius: "25px",
