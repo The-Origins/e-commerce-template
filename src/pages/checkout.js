@@ -16,7 +16,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import UserProductCard from "../components/product/userProductCard";
 import CheckoutElement from "../components/checkout/checkoutElement";
@@ -28,6 +28,7 @@ const CheckoutPage = () => {
   const theme = useTheme();
   const productWorker = new ProductWorker();
   const user = useSelector((state) => state.user);
+  const itemsRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [checkoutDetails, setCheckoutDetails] = useState({
     items: [],
@@ -61,7 +62,12 @@ const CheckoutPage = () => {
   }, [user]);
 
   const switchExpandItems = () => {
-    setExpandItems((prev) => !prev);
+    setExpandItems((prev) => {
+      itemsRef.current.style.height = !prev
+        ? `${itemsRef.current.scrollHeight + 70}px`
+        : "50vh";
+      return !prev;
+    });
   };
 
   return (
@@ -95,7 +101,7 @@ const CheckoutPage = () => {
               gap={"20px"}
               padding={"20px 40px"}
             >
-              <Typography fontSize={"1.2rem"} fontFamily={"pacifico"}>
+              <Typography fontSize={"1.2rem"} fontFamily={theme.fonts.secondary}>
                 Summary
               </Typography>
               {isLoading ? (
@@ -128,7 +134,7 @@ const CheckoutPage = () => {
                 >
                   <Typography fontWeight={"bold"}>Total</Typography>
                   <Typography fontWeight={"bold"}>
-                    {user.payments.currency} {checkoutDetails.total}
+                    {user.payments.currency.symbol} {checkoutDetails.total}
                   </Typography>
                 </Box>
               )}
@@ -154,7 +160,8 @@ const CheckoutPage = () => {
                     borderRadius={"10px"}
                     fontSize={"0.9rem"}
                   >
-                    Total: {user.payments.currency} {checkoutDetails.total}
+                    Total: {user.payments.currency.symbol}{" "}
+                    {checkoutDetails.total}
                   </Typography>
                 )}
                 <Button
@@ -180,12 +187,13 @@ const CheckoutPage = () => {
               <ShoppingCart /> Items
             </Typography>
             <Box
+              ref={itemsRef}
               display={"flex"}
               border={`1px solid ${theme.palette.grey[400]}`}
               borderRadius={"25px"}
               position={"relative"}
-              height={expandItems ? "100%" : "50vh"}
-              sx={{ overflow: "hidden", transition: "0.3s" }}
+              height={"50vh"}
+              sx={{ overflow: "hidden", transition: "height 0.3s ease-out" }}
             >
               {isLoading ? (
                 <Skeleton
@@ -200,7 +208,6 @@ const CheckoutPage = () => {
                   flexDirection={"column"}
                   gap={"20px"}
                   padding={"20px"}
-                  mb={expandItems ? "50px" : undefined}
                   sx={{ transition: "0.3s" }}
                 >
                   {checkoutDetails.items.map((item) => (
@@ -228,6 +235,7 @@ const CheckoutPage = () => {
                     expandItems ? <KeyboardArrowUp /> : <KeyboardArrowDown />
                   }
                   onClick={switchExpandItems}
+                  sx={{textTransform:"none"}}
                 >
                   {expandItems ? "colapse" : "expand"}
                 </Button>
@@ -244,7 +252,8 @@ const CheckoutPage = () => {
                     borderRadius={"10px"}
                   >
                     <Typography color={"white"}>
-                      Subtotal: {user.payments.currency} {user.cart.total}
+                      Subtotal: {user.payments.currency.symbol}{" "}
+                      {user.cart.total}
                     </Typography>
                   </Box>
                 )}
@@ -282,7 +291,6 @@ const CheckoutPage = () => {
               }
             />
           </Box>
-          <Box></Box>
         </Box>
         {isNotPhone && (
           <Box
@@ -296,7 +304,7 @@ const CheckoutPage = () => {
             gap={"20px"}
             padding={"20px 40px"}
           >
-            <Typography fontSize={"1.2rem"} fontFamily={"pacifico"}>
+            <Typography fontSize={"1.2rem"} fontFamily={theme.fonts.secondary}>
               Summary
             </Typography>
             {isLoading ? (
@@ -329,7 +337,7 @@ const CheckoutPage = () => {
               >
                 <Typography fontWeight={"bold"}>Total</Typography>
                 <Typography fontWeight={"bold"}>
-                  {user.payments.currency} {checkoutDetails.total}
+                  {user.payments.currency.symbol} {checkoutDetails.total}
                 </Typography>
               </Box>
             )}

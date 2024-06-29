@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
-import { Close, Done } from "@mui/icons-material";
 import {
-  Backdrop,
   Box,
-  Button,
   FormControl,
   FormControlLabel,
-  IconButton,
-  MenuItem,
   Radio,
   RadioGroup,
-  Select,
   TextField,
   Typography,
   useMediaQuery,
 } from "@mui/material";
 import ProductWorker from "../../scripts/productWorker";
+import EditModal from "../layout/editModal";
 
-const ProductDetails = (props) => {
-  const theme = useTheme();
-  const isNotPhone = useMediaQuery("(min-width:1000px)");
-  const product = props.product;
+const ProductDetails = ({
+  product,
+  user,
+  title,
+  isProductDetails,
+  switchIsProductDetails,
+}) => {
   const [productDetails, setProductDetails] = useState({});
   const handleProductDetailsChange = ({ target }) => {
     setProductDetails((prev) => ({
@@ -30,64 +28,49 @@ const ProductDetails = (props) => {
     }));
   };
 
-  const confirm = () => {
-    props.switchIsProductDetails();
+  const handleConfirm = () => {
+    switchIsProductDetails();
   };
 
   useEffect(() => {
-    const productWorker = new ProductWorker(props.product);
+    const productWorker = new ProductWorker();
     setProductDetails(
       productWorker.getProductDetails(
-        Object.keys(props.user).length ? props.user.cart.items : [],
-        Object.keys(props.user).length ? props.user.favourites : []
+        Object.keys(user).length ? user.cart.items : [],
+        Object.keys(user).length ? user.favourites : [],
+        product
       )
     );
-  }, [props.product, props.user]);
+  }, [product, user]);
 
   return (
-    <Backdrop sx={{ color: "#fff", zIndex: 2 }} open={props.isProductDetails}>
+    <EditModal
+      isEdit={isProductDetails}
+      width={"min(700px, 90%)"}
+      handleCancel={() => switchIsProductDetails()}
+      handleConfirm={handleConfirm}
+    >
       <Box
-        width={isNotPhone ? "50%" : "90%"}
-        minHeight={"400px"}
-        maxHeight={"80%"}
-        borderRadius={"25px"}
-        boxShadow={`0px 0px 1px 10px ${theme.palette.grey}`}
-        bgcolor={"white"}
+        width={"100%"}
         display={"flex"}
         flexDirection={"column"}
-        justifyContent={"space-evenly"}
         alignItems={"center"}
-        position={"relative"}
-        gap={isNotPhone ? undefined : "15px"}
-        color="black"
-        sx={{
-          transitionDelay: "0.1s",
-          transition: `0.3s ease-in-out`,
-          transform: `scale(${props.isProductDetails ? 1 : 0})`,
-        }}
+        gap={"20px"}
       >
         <Box
-          position={"absolute"}
-          top={0}
-          width={"100%"}
           display={"flex"}
-          justifyContent={"flex-end"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
         >
-          <IconButton
-            onClick={props.switchIsProductDetails}
-            sx={{ m: "15px", color: "black" }}
+          <Typography
+            textAlign={"center"}
+            fontSize={"clamp(1rem, 6vw, 2rem)"}
+            fontWeight={"bold"}
           >
-            <Close />
-          </IconButton>
+            {title || "Confirm a few details first"}
+          </Typography>
+          <Typography>{productDetails.total}</Typography>
         </Box>
-        <Typography
-          m={isNotPhone ? "20px 0px" : "50px 0px 20px 0px"}
-          textAlign={"center"}
-          fontSize={"clamp(1rem, 6vw, 2rem)"}
-          fontWeight={"bold"}
-        >
-          {props.title || "Confirm a few details first"}
-        </Typography>
         <Box
           width={"80%"}
           display={"flex"}
@@ -98,40 +81,35 @@ const ProductDetails = (props) => {
           <Typography>Quantity:</Typography>
           <TextField
             type="number"
-            name={"amount"}
+            name={"quantity"}
             value={productDetails.quantity}
             onChange={handleProductDetailsChange}
           />
         </Box>
-        {product.variants &&
-          product.variants.map((variant, index) => {
+        {Object.keys(product.variants).length &&
+          Object.keys(product.variants).map((variant, index) => {
             return (
               <Box display={"flex"} flexDirection={"column"} width={"80%"}>
                 <Typography>
-                  {variant.title.charAt(0).toUpperCase() +
-                    variant.title.substring(1, variant.title.length) +
-                    ":"}
+                  {`${variant.charAt(0).toUpperCase() + variant.substring(1)}:`}
                 </Typography>
                 <Box display={"flex"} alignItems={"center"} gap={"20px"}>
                   <FormControl>
                     <RadioGroup
                       row
                       aria-labelledby={`product-${product.id}-variant-${index}-options`}
-                      name={variant.title}
-                      value={productDetails[variant.title]}
+                      name={variant}
+                      value={productDetails[variant]}
                       onChange={handleProductDetailsChange}
                     >
-                      {variant.options.map((option) => (
+                      {Object.keys(product.variants[variant]).map((option) => (
                         <FormControlLabel
-                          value={option.title}
+                          value={option}
                           control={<Radio />}
                           label={
-                            option.title.charAt(0).toUpperCase() +
-                            option.title.substring(1)
+                            option.charAt(0).toUpperCase() + option.substring(1)
                           }
-                          checked={
-                            productDetails[variant.title] === option.title
-                          }
+                          checked={productDetails[variant] === option}
                         />
                       ))}
                     </RadioGroup>
@@ -140,33 +118,8 @@ const ProductDetails = (props) => {
               </Box>
             );
           })}
-        <Box
-          margin={"30px 0px"}
-          width={"80%"}
-          display={"flex"}
-          justifyContent={"space-between"}
-          alignItems={"center"}
-        >
-          <Button
-            size={isNotPhone ? "md" : "small"}
-            onClick={props.switchIsProductDetails}
-            disableElevation
-            variant="contained"
-          >
-            Back
-          </Button>
-          <Button
-            size={isNotPhone ? "md" : "small"}
-            onClick={confirm}
-            disableElevation
-            variant="contained"
-            endIcon={<Done />}
-          >
-            Confirm
-          </Button>
-        </Box>
       </Box>
-    </Backdrop>
+    </EditModal>
   );
 };
 

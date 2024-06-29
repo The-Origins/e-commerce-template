@@ -1,10 +1,11 @@
 import { Check, CheckCircle, Close, Verified } from "@mui/icons-material";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { setIsAuth,} from "../../../state/store";
 
 const SuccessComponent = ({ details, resetDetails }) => {
+  const theme = useTheme()
   const { message, action, actionTitle } = details;
   const dispatch = useDispatch();
   const handleClose = () => {
@@ -15,7 +16,7 @@ const SuccessComponent = ({ details, resetDetails }) => {
     action();
     resetDetails();
   };
-  
+
   return (
     <Box
       position={"absolute"}
@@ -47,7 +48,7 @@ const SuccessComponent = ({ details, resetDetails }) => {
         alignItems={"center"}
         gap={"5px"}
       >
-        <Typography fontFamily={"pacifico"} fontSize={"2rem"}>
+        <Typography fontFamily={theme.fonts.secondary} fontSize={"2rem"}>
           Success
         </Typography>
         <Typography>{message}</Typography>

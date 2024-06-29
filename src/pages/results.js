@@ -6,9 +6,7 @@ import {
   useTheme,
   useMediaQuery,
   Slider,
-  FormGroup,
   FormControlLabel,
-  Checkbox,
   TextField,
   IconButton,
   Pagination,
@@ -186,7 +184,9 @@ const ResultsPage = () => {
             >
               {!isNotPhone && (
                 <>
-                  <Typography fontFamily={"pacifico"}>Filters</Typography>
+                  <Typography fontFamily={theme.fonts.secondary}>
+                    Filters
+                  </Typography>
                   <Box
                     top={-10}
                     right={-30}
@@ -219,7 +219,7 @@ const ResultsPage = () => {
                     <Typography
                       justifySelf={"center"}
                       mt={"10px"}
-                      fontFamily={"pacifico"}
+                      fontFamily={theme.fonts.secondary}
                       fontSize={"1.2rem"}
                     >
                       Price
@@ -301,7 +301,7 @@ const ResultsPage = () => {
                             <Typography
                               padding={"10px"}
                               fontSize={"1.2rem"}
-                              fontFamily={"pacifico"}
+                              fontFamily={theme.fonts.secondary}
                             >
                               {option.charAt(0).toUpperCase() +
                                 option.substring(1)}
@@ -402,7 +402,7 @@ const ResultsPage = () => {
                 gap={"20px"}
               >
                 <Typography
-                  fontFamily={"pacifico"}
+                  fontWeight={"bold"}
                   fontSize={"clamp(0.7rem, 4vw, 1.3rem)"}
                   margin={"10px 30px"}
                 >

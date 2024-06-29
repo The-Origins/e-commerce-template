@@ -9,18 +9,24 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
   activateSnackBar,
+  setCurrency,
   setRegion,
   switchIsContact,
 } from "../../state/store";
 import SnackBarComponent from "./snackBar";
 import Auth from "./auth";
+import { currencies } from "country-data";
+import AuthWorker from "../../scripts/authWorker";
 import ConfirmationModal from "./confirmationModal";
 
+
 const Layout = ({ children }) => {
+  const authWorker = new AuthWorker();
   const dispatch = useDispatch();
   const isContact = useSelector((state) => state.isContact);
   const user = useSelector((state) => state.user);
-  const region = useSelector((state) => state.region)
+  const region = useSelector((state) => state.region);
+  const currency = useSelector((state) => state.currency);
   const [isLoading, setIsLoading] = useState(true);
   const changeIsContact = () => {
     dispatch(switchIsContact());
@@ -34,10 +40,17 @@ const Layout = ({ children }) => {
       })
       .catch((err) => {
         dispatch(
-          activateSnackBar({ message: "Error fetching region", snackBarType: "error" })
+          activateSnackBar({
+            message: "Error fetching region",
+            snackBarType: "error",
+          })
         );
       });
   }, []);
+
+  useEffect(() => {
+    dispatch(setCurrency(currencies[region.currency]))
+  }, [region]);
 
   useEffect(() => {
     const loadingTimout = setTimeout(() => {

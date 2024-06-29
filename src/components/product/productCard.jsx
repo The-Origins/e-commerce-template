@@ -19,8 +19,10 @@ import ProductDetails from "./productDetails";
 import data from "../../lib/data";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsAuth } from "../../state/store";
+import ProductWorker from "../../scripts/productWorker";
 
 const ProductCard = (props) => {
+  const productWorker = new ProductWorker();
   const [offers, setOffers] = useState({});
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -172,7 +174,7 @@ const ProductCard = (props) => {
               </Box>
               <Box display={"flex"} flexDirection={"column"} gap={"5px"}>
                 <Typography
-                  fontSize={"clamp(1rem, 2vw, 1.3rem)"}
+                  fontSize={"clamp(1rem, 2vw, 1.2rem)"}
                   fontWeight={"bold"}
                 >
                   {props.product.name}
@@ -186,12 +188,14 @@ const ProductCard = (props) => {
             </Box>
             <Box display={"flex"} alignItems={"center"} gap={"10px"}>
               <Typography fontSize={"1rem"}>
-                {props.product.unitPrice.currency}{" "}
+                {productWorker.getCurrencySymbol(
+                  props.product.unitPrice.currency
+                )}{" "}
                 {offers[props.product.id]
-                  ? props.product.unitPrice.amount -
-                    (props.product.unitPrice.amount *
-                      offers[props.product.id]) /
-                      100
+                  ? productWorker.getDiscount(
+                      offers[props.product.id],
+                      props.product.unitPrice.amount
+                    )
                   : props.product.unitPrice.amount}
               </Typography>
               {offers[props.product.id] && (
@@ -202,7 +206,9 @@ const ProductCard = (props) => {
                     textDecoration: "line-through",
                   }}
                 >
-                  {props.product.unitPrice.currency}{" "}
+                  {productWorker.getCurrencySymbol(
+                    props.product.unitPrice.currency
+                  )}{" "}
                   {props.product.unitPrice.amount}
                 </Typography>
               )}

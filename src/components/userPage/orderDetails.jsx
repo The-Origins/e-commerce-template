@@ -17,24 +17,7 @@ import {
   Place,
 } from "@mui/icons-material";
 import UserProductCard from "../product/userProductCard";
-
-const orderStatusColors = {
-  processing: "#0382FF",
-  fulfilling: "#FF9000",
-  fulfilled: "#15FF02",
-};
-
-const paymentStatusColors = {
-  paid: "#15FF02",
-  failed: "#FF0000",
-  pending: "#FF9000",
-};
-
-const deliveryStatusColors = {
-  pending: "#FF9000",
-  delivered: "#15FF02",
-  failed: "#FF0000",
-};
+import { useSelector } from "react-redux";
 
 const actionOptions = {
   processing: "cancel order",
@@ -42,6 +25,7 @@ const actionOptions = {
 };
 
 const OrderDetails = () => {
+  const user = useSelector((state) => state.user);
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const [order, setOrder] = useState({
@@ -114,9 +98,9 @@ const OrderDetails = () => {
             width={"10px"}
             height={"10px"}
             borderRadius={"50%"}
-            bgcolor={orderStatusColors[order.status]}
+            bgcolor={theme.palette.orderStatusColors[order.status]}
           />
-          <Typography color={orderStatusColors[order.status]}>
+          <Typography color={theme.palette.orderStatusColors[order.status]}>
             {order.status.charAt(0).toUpperCase() + order.status.substring(1)}
           </Typography>
         </Box>
@@ -136,7 +120,7 @@ const OrderDetails = () => {
           <Box display={"flex"} alignItems={"center"} gap={"5px"}>
             <Typography fontWeight={"bold"}>Total:</Typography>
             <Typography>
-              {data.user.payments.currency} {order.total}
+              {user.payments.currency.symbol} {order.total}
             </Typography>
           </Box>
         </Box>
@@ -205,9 +189,15 @@ const OrderDetails = () => {
                   width={"10px"}
                   height={"10px"}
                   borderRadius={"50%"}
-                  bgcolor={paymentStatusColors[order.payment.status]}
+                  bgcolor={
+                    theme.palette.paymentStatusColors[order.payment.status]
+                  }
                 />
-                <Typography color={paymentStatusColors[order.payment.status]}>
+                <Typography
+                  color={
+                    theme.palette.paymentStatusColors[order.payment.status]
+                  }
+                >
                   {order.payment.status}
                 </Typography>
               </Box>
@@ -256,9 +246,15 @@ const OrderDetails = () => {
                   width={"10px"}
                   height={"10px"}
                   borderRadius={"50%"}
-                  bgcolor={deliveryStatusColors[order.delivery.status]}
+                  bgcolor={
+                    theme.palette.deliveryStatusColors[order.delivery.status]
+                  }
                 />
-                <Typography color={deliveryStatusColors[order.delivery.status]}>
+                <Typography
+                  color={
+                    theme.palette.deliveryStatusColors[order.delivery.status]
+                  }
+                >
                   {order.delivery.status}
                 </Typography>
               </Box>

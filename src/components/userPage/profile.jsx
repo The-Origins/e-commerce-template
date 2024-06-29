@@ -10,7 +10,7 @@ import {
 } from "@mui/icons-material";
 import UserProfileDetail from "./profileDetail";
 import UserProfileList from "./profileList";
-
+import { isValidPhoneNumber } from "libphonenumber-js";
 
 const UserProfile = (props) => {
   const theme = useTheme();
@@ -45,12 +45,23 @@ const UserProfile = (props) => {
           title={"Name"}
           type={"name"}
           value={`${props.user.name.first} ${props.user.name.last}`}
+          editable={false}
         />
         <UserProfileDetail
           icon={<Mail />}
           title={"Email"}
           type={"email"}
           value={props.user.email}
+          validator={{
+            email: [
+              { key: (value) => value.length, message: "required" },
+              {
+                key: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+                message: "Email must be valid",
+              },
+            ],
+          }}
+          editable={true}
         />
         <UserProfileDetail
           icon={<Phone />}
@@ -60,12 +71,26 @@ const UserProfile = (props) => {
             code: props.user.phone.code,
             number: props.user.phone.number,
           }}
+          validator={{
+            number: [
+              {
+                key: (value, form) => value.length > form.code.length,
+                message: "required",
+              },
+              {
+                key: (value, form) => isValidPhoneNumber(value, form.code),
+                message: "invalid phone number",
+              },
+            ],
+          }}
+          editable={true}
         />
         <UserProfileDetail
           icon={<Paid />}
           title={"Currency"}
           type="select"
           value={props.user.payments.currency.code}
+          editable={true}
         />
       </Box>
       <Box display={"flex"} flexWrap={"wrap"} gap={"20px"}>

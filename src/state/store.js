@@ -55,6 +55,7 @@ const storeSLice = createSlice({
     },
     setUser: (state, action) => {
       state.user = action.payload;
+      state.currency = action.payload.currency || state.currency
     },
     setRegion: (state, action) => {
       state.region = action.payload;

@@ -96,7 +96,7 @@ const Home = () => {
           <Typography
             variant="h2"
             sx={{
-              fontFamily: "Pacifico",
+              fontFamily: theme.fonts.secondary,
               fontSize: "clamp(1rem, 7vw, 3rem)",
             }}
           >
@@ -191,7 +191,7 @@ const Home = () => {
           >
             <Typography
               fontWeight={"bold"}
-              fontFamily={"pacifico"}
+              fontFamily={theme.fonts.secondary}
               fontSize={"2rem"}
             >
               About Us

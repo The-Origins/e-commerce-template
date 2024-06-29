@@ -19,7 +19,7 @@ import {
   PersonOff,
 } from "@mui/icons-material";
 import data from "../../lib/data";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   activateConfirmationModal,
   setIsAuth,
@@ -69,7 +69,7 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
       className="user-menu"
       position={"absolute"}
       right={0}
-      top={"100%"}
+      top={"114%"}
       display={"flex"}
       flexDirection={"column"}
       justifyContent={"center"}
@@ -102,7 +102,7 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
               >
                 <Avatar sx={{ fontSize: "15px" }} />
                 <Typography fontWeight={"bold"} fontSize={"1.2rem"}>
-                  {data.user.name.first} {data.user.name.last}
+                  {user.name.first} {user.name.last}
                 </Typography>
               </Box>
               <Typography fontSize={"0.5rem"} color={"text.secondary"}>

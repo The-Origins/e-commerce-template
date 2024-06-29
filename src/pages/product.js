@@ -11,6 +11,7 @@ import {
   Rating,
   Tooltip,
   Skeleton,
+  Link,
 } from "@mui/material";
 import {
   AddShoppingCart,
@@ -31,16 +32,17 @@ import ProductCardContainer from "../components/product/productCardContainer";
 import ProductCard from "../components/product/productCard";
 import ProductDetails from "../components/product/productDetails";
 import SkeletonGroup from "../components/product/skeletonGroup";
-import { setIsAuth, } from "../state/store";
+import { setIsAuth } from "../state/store";
 
 const ProductPage = () => {
+  const theme = useTheme();
+  const isNotPhone = useMediaQuery("(min-width:1000px)");
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
+  const productWorker = new ProductWorker();
   let params = new URLSearchParams(window.location.search);
   const id = Number(params.get("p"));
-  const isNotPhone = useMediaQuery("(min-width:1000px)");
-  const theme = useTheme();
-  const user = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-  const [expandFeatures, setExpandFeatures] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -99,10 +101,6 @@ const ProductPage = () => {
 
   const switchIsProductDetails = () => {
     setIsProductDetails((prev) => !prev);
-  };
-
-  const switchExpandFeatures = () => {
-    setExpandFeatures((prev) => !prev);
   };
 
   const addToCart = () => {
@@ -354,11 +352,14 @@ const ProductPage = () => {
                     <Typography>{product.description}</Typography>
                     <Box display={"flex"} alignItems={"center"} gap={"10px"}>
                       <Typography fontWeight={"bold"} fontSize={"1.3rem"}>
-                        {product.unitPrice.currency}{" "}
+                        {productWorker.getCurrencySymbol(
+                          product.unitPrice.currency
+                        )}{" "}
                         {offers[product.id]
-                          ? product.unitPrice.amount -
-                            (product.unitPrice.amount * offers[product.id]) /
-                              100
+                          ? productWorker.getDiscount(
+                              offers[product.id],
+                              product.unitPrice.amount
+                            )
                           : product.unitPrice.amount}
                       </Typography>
                       {offers[product.id] && (
@@ -368,56 +369,14 @@ const ProductPage = () => {
                             textDecoration: "line-through",
                           }}
                         >
-                          {product.unitPrice.currency}{" "}
+                          {productWorker.getCurrencySymbol(
+                            product.unitPrice.currency
+                          )}{" "}
                           {product.unitPrice.amount}
                         </Typography>
                       )}
                     </Box>
                   </>
-                )}
-                {!isLoading && product.features && (
-                  <Box width={"100%"} display={"flex"} flexDirection={"column"}>
-                    <Box
-                      alignItems={"center"}
-                      display={"flex"}
-                      justifyContent={"space-between"}
-                      height={"70px"}
-                      borderRadius={
-                        expandFeatures ? "10px 10px 0px 0px" : "10px"
-                      }
-                      borderBottom={
-                        expandFeatures
-                          ? `1px solid ${theme.palette.grey[400]}`
-                          : undefined
-                      }
-                      bgcolor={theme.palette.grey[200]}
-                      padding={"20px"}
-                    >
-                      <Typography>Key features:</Typography>
-                      <IconButton onClick={switchExpandFeatures}>
-                        {expandFeatures ? <ExpandLess /> : <ExpandMore />}
-                      </IconButton>
-                    </Box>
-                    <Box
-                      height={expandFeatures ? "100%" : "0px"}
-                      bgcolor={theme.palette.grey[200]}
-                      display={"flex"}
-                      flexDirection={"column"}
-                      padding={expandFeatures ? "20px" : "0px"}
-                      gap={"10px"}
-                      overflow={"hidden"}
-                      sx={{ transition: "0.3s" }}
-                      borderRadius={"0px 0px 10px 10px"}
-                    >
-                      {Object.keys(product.features).map((feature) => (
-                        <Typography>
-                          {feature.charAt(0).toUpperCase() +
-                            feature.substring(1)}{" "}
-                          : {product.features[feature]}
-                        </Typography>
-                      ))}
-                    </Box>
-                  </Box>
                 )}
                 {isNotPhone && (
                   <Box
@@ -451,6 +410,106 @@ const ProductPage = () => {
             </Box>
           </Box>
         </Box>
+        {!isLoading && Object.keys(product.features).length && (
+          <Box
+            width={"100%"}
+            display={"flex"}
+            flexDirection={"column"}
+            gap={"20px"}
+            padding={"50px 0px"}
+            alignItems={"center"}
+          >
+            <Typography
+              variant="h2"
+              sx={{
+                fontFamily: theme.fonts.secondary,
+                fontSize: "clamp(1rem, 7vw, 3rem)",
+                marginBottom: "50px",
+              }}
+            >
+              Features
+            </Typography>
+            <Box
+              minHeight={"40vh"}
+              width={"100%"}
+              display={"flex"}
+              border={`1px solid ${theme.palette.grey[400]}`}
+              borderRadius={"25px"}
+            >
+              <Box
+                display={"flex"}
+                flexDirection={"column"}
+                gap={"20px"}
+                padding={"20px 50px"}
+                borderRight={`1px solid ${theme.palette.grey[400]}`}
+              >
+                <Box
+                  width={"300px"}
+                  height={"300px"}
+                  borderRadius={"20px"}
+                  sx={{
+                    backgroundImage: `url(${product.images[0]})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                />
+                <Box display={"flex"} gap={"10px"}>
+                  <Typography fontWeight={"bold"}>{product.name}</Typography>
+                  <Typography>
+                    {productWorker.getCurrencySymbol(
+                      product.unitPrice.currency
+                    )}{" "}
+                    {offers[product.id]
+                      ? productWorker.getDiscount(
+                          offers[product.id],
+                          product.unitPrice.amount
+                        )
+                      : product.unitPrice.amount}
+                  </Typography>
+                </Box>
+              </Box>
+              <Box
+                width={"100%"}
+                padding={"20px"}
+                display={"flex"}
+                flexDirection={"column"}
+                gap={"20px"}
+              >
+                {Object.keys(product.features).map((feature) => (
+                  <Tooltip
+                    title={`search: ${product.type}, ${feature}:${product.features[feature]}`}
+                  >
+                    <Link
+                      href={`/results?search=${product.type}+${feature}:${product.features[feature]}`}
+                      sx={{
+                        textDecoration: "none",
+                        color: theme.palette.text.primary,
+                        width: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                        padding: "10px 20px",
+                        borderRadius: "10px",
+                        boxShadow: `0px 0px 10px 0px ${theme.palette.grey[300]}`,
+                        transition: "0.3s",
+                        ":hover": {
+                          cursor: "pointer",
+                          color: "primary.main",
+                          boxShadow: `0px 0px 10px 0px ${theme.palette.grey[400]}`,
+                        },
+                      }}
+                    >
+                      <Typography fontWeight={"bold"} fontSize={"1.1rem"}>
+                        {feature}:
+                      </Typography>
+                      <Typography>{product.features[feature]}</Typography>
+                    </Link>
+                  </Tooltip>
+                ))}
+              </Box>
+            </Box>
+          </Box>
+        )}
         <Box
           height={"90vh"}
           width={"100%"}
@@ -462,7 +521,7 @@ const ProductPage = () => {
           <Typography
             variant="h2"
             sx={{
-              fontFamily: "Pacifico",
+              fontFamily: theme.fonts.secondary,
               fontSize: "clamp(1rem, 7vw, 3rem)",
               marginBottom: "50px",
             }}

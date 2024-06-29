@@ -1,6 +1,6 @@
 import React from "react";
 import { East, Payment, Payments, PhoneAndroid } from "@mui/icons-material";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, useTheme } from "@mui/material";
 import VerificationComponent from "../verificationComponent";
 import { country_codes } from "../../../../lib/data";
 import GeneralInfo from "./general";
@@ -28,6 +28,7 @@ const RegisterStages = ({
   setSuccessDetails,
   setAuth,
 }) => {
+  const theme = useTheme()
   const authWorker = new AuthWorker();
   const region = useSelector((state) => state.region);
   const callingCodes = authWorker.getCallingCodes();
@@ -71,7 +72,7 @@ const RegisterStages = ({
       >
         <Typography
           mt={"10px"}
-          fontFamily={"pacifico"}
+          fontFamily={theme.fonts.secondary}
           fontSize={"clamp(1rem, 5vw, 2rem)"}
         >
           Register

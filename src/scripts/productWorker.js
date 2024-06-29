@@ -1,25 +1,45 @@
 import data from "../lib/data";
+import { currencies } from "country-data";
 
 class ProductWorker {
-  constructor(product) {
-    this.product = product;
+  constructor() {
     this.products = data.products;
   }
 
-  getProductDetails(cartItems, favourites) {
+  getTotal(unitPrice, ...variants) {
+    let total = unitPrice.amount;
+    variants.forEach((variant) => {
+      total += variant.priceIncrement;
+    });
+    return total;
+  }
+
+  getCurrencySymbol(currencyCode = "") {
+    return currencies[currencyCode].symbol;
+  }
+
+  getDiscount(offer, price) {
+    return price - (price * (offer / 100))
+  }
+
+  getProductDetails(cartItems, favourites, product) {
     let details = {};
-    if (cartItems[this.product.id]) {
-      details = cartItems[this.product.id].details;
-    } else if (favourites[this.product.id]) {
-      details = favourites[this.product.id].details;
+    if (cartItems[product.id]) {
+      details = cartItems[product.id].details;
+    } else if (favourites[product.id]) {
+      details = favourites[product.id].details;
     } else {
       details.quantity = 1;
-      if (this.product.variants) {
-        this.product.variants.forEach((variant) => {
-          details = { ...details, [variant.title]: variant.options[0].title };
+      if (Object.keys(product.variants).length) {
+        Object.keys(product.variants).forEach((variant) => {
+          details = {
+            ...details,
+            [variant]: Object.keys(product.variants[variant])[0],
+          };
         });
       }
     }
+
     return details;
   }
 
@@ -27,9 +47,9 @@ class ProductWorker {
     const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
 
     product.rating.votes.forEach((vote) => {
-      distribution[vote]++
+      distribution[vote]++;
     });
-    return distribution
+    return distribution;
   }
 
   //this is done by the api

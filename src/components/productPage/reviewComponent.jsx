@@ -26,7 +26,7 @@ const ReviewComponent = (props) => {
             </Box>
             <Rating readOnly value={props.rating} />
           </Box>
-          <Typography color={"text.secondary"}>{props.date}</Typography>
+          <Typography color={"text.secondary"}>{props.dateCreated}</Typography>
         </Box>
         <Box width={"100%"}>
           <Typography margin={"20px"} fontWeight={"bold"}>{props.review.title}</Typography>

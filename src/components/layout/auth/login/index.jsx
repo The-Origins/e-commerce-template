@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import LoginStages from "./stages";
 
 const Login = ({
@@ -11,6 +11,7 @@ const Login = ({
   setSuccessDetails,
   setAuth,
 }) => {
+  const theme = useTheme()
   const [stage, setStage] = useState(0);
 
   return (
@@ -31,7 +32,7 @@ const Login = ({
       >
         <Typography
           mt={"10px"}
-          fontFamily={"pacifico"}
+          fontFamily={theme.fonts.secondary}
           fontSize={"clamp(1rem, 5vw, 2rem)"}
         >
           Login

@@ -5,11 +5,12 @@ import {
   Box,
   Typography,
   Backdrop,
+  useTheme,
 } from "@mui/material";
 import { PhoneInTalk, Mail, Close } from "@mui/icons-material";
-import theme from "../../theme";
 
 const Contact = (props) => {
+  const theme = useTheme()
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const [showPhone, setShowPhone] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
@@ -52,7 +53,7 @@ const Contact = (props) => {
         <Typography
           textAlign={"center"}
           fontSize={"2rem"}
-          fontFamily={"pacifico"}
+          fontFamily={theme.fonts.secondary}
           color={"black"}
         >
           Contact us

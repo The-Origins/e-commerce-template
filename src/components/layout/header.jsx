@@ -10,9 +10,9 @@ import {
   InputAdornment,
   useMediaQuery,
   Skeleton,
+  useTheme,
 } from "@mui/material";
 import { Search, ShoppingCart } from "@mui/icons-material";
-import { useTheme } from "@emotion/react";
 import { navigate } from "gatsby";
 
 const Header = (props) => {
@@ -102,7 +102,7 @@ const Header = (props) => {
                   sx={{
                     textDecoration: "none",
                     color: "black",
-                    fontFamily: "Pacifico",
+                    fontFamily: theme.fonts.secondary,
                   }}
                 >
                   E-commerce

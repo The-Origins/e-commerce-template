@@ -55,7 +55,7 @@ const Register = ({
       >
         <Typography
           mt={"10px"}
-          fontFamily={"pacifico"}
+          fontFamily={theme.fonts.secondary}
           fontSize={"clamp(1rem, 5vw, 2rem)"}
         >
           {stage === 0 ? " " : "Register"}

@@ -9,14 +9,12 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import {
-  AddShoppingCart,
-  Delete,
-  Edit,
-} from "@mui/icons-material";
+import { AddShoppingCart, Delete, Edit } from "@mui/icons-material";
 import ProductDetails from "./productDetails";
+import ProductWorker from "../../scripts/productWorker";
 
 const UserProductCard = (props) => {
+  const productWorker = new ProductWorker();
   const [isProductDetails, setIsProductDetails] = useState(false);
 
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -102,7 +100,10 @@ const UserProductCard = (props) => {
               .join(", ")}
           </Typography>
           <Typography>
-            {props.item.product.unitPrice.currency} {props.item.total}
+            {productWorker.getCurrencySymbol(
+              props.item.product.unitPrice.currency
+            )}{" "}
+            {props.item.total}
           </Typography>
           {props.type === "favourites" && (
             <Box

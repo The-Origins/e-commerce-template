@@ -93,8 +93,8 @@ const MobilePayment = ({
       payments: {
         saved: [
           {
-            type: "card",
-            number: authWorker.redact(form.number),
+            type: "mobile",
+            number: authWorker.redact(form.number, 4, 2),
             details: { ...form },
           },
         ],

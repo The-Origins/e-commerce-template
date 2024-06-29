@@ -17,7 +17,10 @@ import {
   ShoppingCartCheckout,
 } from "@mui/icons-material";
 import SkeletonGroup from "../components/product/skeletonGroup";
-import { setIsAuth,} from "../state/store";
+import { setIsAuth } from "../state/store";
+import data from "../lib/data";
+import ProductCardContainer from "../components/product/productCardContainer";
+import ProductCard from "../components/product/productCard";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -98,7 +101,10 @@ const CartPage = () => {
                 gap={"20px"}
                 padding={"20px 40px"}
               >
-                <Typography fontSize={"1.2rem"} fontFamily={"pacifico"}>
+                <Typography
+                  fontSize={"1.2rem"}
+                  fontFamily={theme.fonts.secondary}
+                >
                   Summary
                 </Typography>
                 {isLoading ? (
@@ -108,7 +114,7 @@ const CartPage = () => {
                     <Box display={"flex"} justifyContent={"space-between"}>
                       <Typography fontSize={"0.8rem"}>Subtotal</Typography>
                       <Typography fontSize={"0.8rem"}>
-                        {user.payments.currency} {user.cart.total}
+                        {user.payments.currency.symbol} {user.cart.total}
                       </Typography>
                     </Box>
                     <Box display={"flex"} justifyContent={"center"}>
@@ -140,7 +146,8 @@ const CartPage = () => {
                       borderRadius={"10px"}
                       fontSize={"0.9rem"}
                     >
-                      SubTotal: {user.payments.currency} {user.cart.total}
+                      SubTotal: {user.payments.currency.symbol}{" "}
+                      {user.cart.total}
                     </Typography>
                   )}
                   <Link href="/checkout">
@@ -199,7 +206,10 @@ const CartPage = () => {
               gap={"20px"}
               padding={"20px 40px"}
             >
-              <Typography fontSize={"1.2rem"} fontFamily={"pacifico"}>
+              <Typography
+                fontSize={"1.2rem"}
+                fontFamily={theme.fonts.secondary}
+              >
                 Summary
               </Typography>
               {isLoading ? (

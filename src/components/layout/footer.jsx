@@ -1,9 +1,7 @@
-import { useTheme } from "@emotion/react";
 import {
   Copyright,
   EmailOutlined,
   Facebook,
-  Info,
   Instagram,
   LinkedIn,
   PhoneInTalk,
@@ -20,6 +18,7 @@ import {
   TextField,
   Typography,
   useMediaQuery,
+  useTheme,
   Skeleton,
 } from "@mui/material";
 import React from "react";
@@ -150,7 +149,7 @@ const Footer = (props) => {
                   sx={{
                     textDecoration: "none",
                     color: "black",
-                    fontFamily: "Pacifico",
+                    fontFamily: theme.fonts.secondary,
                   }}
                 >
                   E-commerce

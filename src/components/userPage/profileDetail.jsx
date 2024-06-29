@@ -13,31 +13,67 @@ import {
   useTheme,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { country_codes } from "../../lib/data";
-import UserWorker from "../../scripts/userWorker";
+import AuthWorker from "../../scripts/authWorker";
 
-const UserProfileDetail = (props) => {
-  const userWorker = new UserWorker();
-  const currencies =
-    props.type === "select" && props.title === "Currency"
-      ? userWorker.getCurrencies()
-      : [];
-  const [detail, setDetail] = useState(
-    props.type === "tel"
-      ? { number: props.value.number, code: props.value.code }
-      : " "
-  );
-  const [isEdit, setIsEdit] = useState(false);
+const UserProfileDetail = ({
+  title,
+  icon,
+  value,
+  type,
+  validator,
+  editable,
+}) => {
+  const authWorker = new AuthWorker();
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+  const [detail, setDetail] = useState(value);
+  const currencies = title === "Currency" ? authWorker.getCurrencies() : {};
+  const callingCodes = type === "tel" ? authWorker.getCallingCodes() : {};
+
+  const [isEdit, setIsEdit] = useState(false);
+
+  const handleBlur = ({ target }) => {
+    setTouched((prev) => ({ ...prev, [target.name]: target.value }));
+  };
 
   const handleChange = ({ target }) => {
-    setDetail(target.value);
+    setDetail((prev) => {
+      if (target.name === "code") {
+        return {
+          ...prev,
+          code: target.value,
+          number: callingCodes[target.value].callingCode,
+        };
+      } else if (target.name === "number") {
+        return {
+          ...prev,
+          number: authWorker.formatPhoneNumber(
+            prev.number,
+            target.value,
+            prev.code
+          ),
+        };
+      }
+      return { ...prev, [target.name]: target.value };
+    });
+    setDetail((prev) => {
+      setErrors(
+        authWorker.getErrors(
+          errors,
+          validator,
+          { name: target.name, value: prev[target.name] },
+          prev
+        )
+      );
+      return prev;
+    });
   };
 
   useEffect(() => {
-    setDetail(props.value);
-  }, [props.value]);
+    setDetail(value);
+  }, [value]);
 
   return (
     <Box
@@ -57,12 +93,14 @@ const UserProfileDetail = (props) => {
           boxShadow: `0px 0px 10px 0px ${theme.palette.grey[400]}`,
         },
         ":hover .profile-detail-edit": { opacity: 1 },
-        ":hover .profile-detail-title": { color: "primary.main" },
+        ":hover .profile-detail-title": {
+          color: editable ? "primary.main" : "black",
+        },
       }}
     >
-      {isEdit ? (
+      {isEdit && editable ? (
         <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-          {props.type === "select" && props.title === "Currency" ? (
+          {type === "select" && title === "Currency" ? (
             <Select
               autoWidth
               name="code"
@@ -70,8 +108,8 @@ const UserProfileDetail = (props) => {
               onChange={handleChange}
               renderValue={(value) => value}
             >
-              {currencies.map((currency) => (
-                <MenuItem value={currency.code}>
+              {Object.keys(currencies).map((currency) => (
+                <MenuItem value={currencies[currency].code}>
                   <Box
                     width={"100%"}
                     display={"flex"}
@@ -79,21 +117,24 @@ const UserProfileDetail = (props) => {
                     gap={"20px"}
                     alignItems={"center"}
                   >
-                    <Typography>{currency.name}</Typography>
+                    <Typography>{currencies[currency].name}</Typography>
                     <Typography color={"primary.main"}>
-                      {currency.symbol}
+                      {currencies[currency].symbol}
                     </Typography>
                   </Box>
                 </MenuItem>
               ))}
             </Select>
-          ) : props.type === "tel" ? (
+          ) : type === "tel" ? (
             <TextField
               type="tel"
               placeholder="phone number"
               name="number"
               value={detail.number}
               onChange={handleChange}
+              onBlur={handleBlur}
+              error={Boolean(touched.number) && Boolean(errors.number)}
+              helperText={(touched.number && errors.number) || " "}
               sx={{
                 "& > div": { padding: 0 },
                 "& > div > div": { marginRight: "5px" },
@@ -107,18 +148,19 @@ const UserProfileDetail = (props) => {
                     onChange={handleChange}
                     renderValue={(value) => value}
                   >
-                    {country_codes.map((code) => (
-                      <MenuItem value={code.code}>
+                    {Object.keys(callingCodes).map((code) => (
+                      <MenuItem value={code}>
                         <Box
                           width={"100%"}
                           display={"flex"}
+                          gap={"10px"}
                           justifyContent={"space-between"}
                           alignItems={"center"}
                         >
-                          <Typography>{code.name}</Typography>
-                          <Typography color={"primary.main"}>
-                            {code.code}
+                          <Typography>
+                            {callingCodes[code].countryName}
                           </Typography>
+                          <Typography color={"primary.main"}>{code}</Typography>
                         </Box>
                       </MenuItem>
                     ))}
@@ -128,13 +170,23 @@ const UserProfileDetail = (props) => {
             />
           ) : (
             <TextField
+              name={title.toLowerCase()}
+              type={type}
+              label={title}
               value={detail}
               onChange={handleChange}
-              type={props.type}
-              label={props.title}
+              onBlur={handleBlur}
+              error={
+                Boolean(touched[title.toLowerCase()]) &&
+                Boolean(errors[title.toLowerCase()])
+              }
+              helperText={
+                (touched[title.toLowerCase()] && errors[title.toLowerCase()]) ||
+                " "
+              }
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">{props.icon}</InputAdornment>
+                  <InputAdornment position="start">{icon}</InputAdornment>
                 ),
               }}
             />
@@ -166,29 +218,29 @@ const UserProfileDetail = (props) => {
             gap={"10px"}
             alignItems={"center"}
           >
-            {props.icon}
-            <Typography>{props.title}</Typography>
+            {icon}
+            <Typography>{title}</Typography>
           </Box>
           <Typography sx={{ transition: "0.3s" }} color={"text.secondary"}>
-            {props.type === "tel"
-              ? props.value.code + props.value.number
-              : props.value}
+            {type === "tel" ? value.number : value}
           </Typography>
-          <Tooltip title="edit" placement="right">
-            <IconButton
-              onClick={() => setIsEdit(true)}
-              className="profile-detail-edit"
-              sx={{
-                position: "absolute",
-                bottom: 10,
-                right: 10,
-                opacity: isNotPhone ? 0 : 1,
-                transition: "0.3s",
-              }}
-            >
-              <Edit />
-            </IconButton>
-          </Tooltip>
+          {editable && (
+            <Tooltip title="edit" placement="right">
+              <IconButton
+                onClick={() => setIsEdit(true)}
+                className="profile-detail-edit"
+                sx={{
+                  position: "absolute",
+                  bottom: 10,
+                  right: 10,
+                  opacity: isNotPhone ? 0 : 1,
+                  transition: "0.3s",
+                }}
+              >
+                <Edit />
+              </IconButton>
+            </Tooltip>
+          )}
         </Box>
       )}
     </Box>
