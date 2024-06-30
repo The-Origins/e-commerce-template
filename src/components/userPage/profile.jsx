@@ -42,16 +42,15 @@ const UserProfile = (props) => {
       <Box display={"flex"} flexWrap={"wrap"} gap={"20px"}>
         <UserProfileDetail
           icon={<AccountCircle />}
-          title={"Name"}
-          type={"name"}
-          value={`${props.user.name.first} ${props.user.name.last}`}
+          title={"name"}
+          description={`${props.user.name.first} ${props.user.name.last}`}
           editable={false}
         />
         <UserProfileDetail
           icon={<Mail />}
-          title={"Email"}
-          type={"email"}
-          value={props.user.email}
+          title={"email"}
+          details={{ email: props.user.email }}
+          description={props.user.email}
           validator={{
             email: [
               { key: (value) => value.length, message: "required" },
@@ -65,12 +64,12 @@ const UserProfile = (props) => {
         />
         <UserProfileDetail
           icon={<Phone />}
-          title={"Phone no"}
-          type="tel"
-          value={{
+          title={"phone number"}
+          details={{
             code: props.user.phone.code,
             number: props.user.phone.number,
           }}
+          description={props.user.phone.number}
           validator={{
             number: [
               {
@@ -87,9 +86,9 @@ const UserProfile = (props) => {
         />
         <UserProfileDetail
           icon={<Paid />}
-          title={"Currency"}
-          type="select"
-          value={props.user.payments.currency.code}
+          title={"currency"}
+          description={props.user.payments.currency.name}
+          details={{ currency: props.user.payments.currency.code }}
           editable={true}
         />
       </Box>

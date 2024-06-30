@@ -1,19 +1,13 @@
-import { CheckCircle, Close, NewReleases,} from "@mui/icons-material";
+import { CheckCircle, Close, NewReleases } from "@mui/icons-material";
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { setIsAuth } from "../../../state/store";
 
 const ErrorComponent = ({ details, resetDetails }) => {
-  const theme = useTheme()
-  const { message, action, actionTitle } = details;
-  const dispatch = useDispatch();
-  const handleClose = () => {
-    dispatch(setIsAuth(false));
-  };
+  const theme = useTheme();
+  const { message, action, actionTitle} = details;
 
   const handleAction = () => {
-    action();
+    action()
     resetDetails();
   };
 
@@ -38,7 +32,7 @@ const ErrorComponent = ({ details, resetDetails }) => {
         display={"flex"}
         justifyContent={"flex-end"}
       >
-        <IconButton sx={{ m: "10px" }} onClick={handleClose}>
+        <IconButton sx={{ m: "10px" }} onClick={handleAction}>
           <Close />
         </IconButton>
       </Box>
@@ -68,7 +62,7 @@ const ErrorComponent = ({ details, resetDetails }) => {
           onClick={handleAction}
           startIcon={<CheckCircle />}
         >
-          {actionTitle}
+          {actionTitle || "ok"}
         </Button>
       </Box>
     </Box>

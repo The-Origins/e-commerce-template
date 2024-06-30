@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import AuthWorker from "../../../../scripts/authWorker";
+import CurrencySelect from "../../forms/currencySelect";
 
 const Currency = ({
   region,
@@ -23,11 +24,11 @@ const Currency = ({
   handleRegister,
 }) => {
   const authWorker = new AuthWorker();
-  const [currency, setCurrency] = useState(region.currency);
+  const [form, setForm] = useState({ currency: region.currency });
   const currencies = authWorker.getCurrencies();
 
   const handleChange = ({ target }) => {
-    setCurrency(target.value);
+    setForm(target.value);
   };
 
   const handleConfirm = () => {
@@ -35,7 +36,7 @@ const Currency = ({
     setLoadingMessage("registering");
     setRegisterForm((prev) => ({
       ...prev,
-      payments: { ...prev.payments, currency: currencies[currency] },
+      payments: { ...prev.payments, currency: currencies[form.currency] },
     }));
     const loadingTimeout = setTimeout(() => {
       clearTimeout(loadingTimeout);
@@ -73,31 +74,7 @@ const Currency = ({
           <Paid />
           Select your currency
         </Typography>
-        <Select
-          name="currency"
-          value={currency}
-          onChange={handleChange}
-          renderValue={(value) => value}
-        >
-          {Object.keys(currencies).map((currency) => (
-            <MenuItem value={currencies[currency].code}>
-              <Box
-                width={"100%"}
-                display={"flex"}
-                justifyContent={"space-between"}
-                gap={"20px"}
-                alignItems={"center"}
-              >
-                <Typography>
-                  {currencies[currency].name} {currencies[currency].symbol}
-                </Typography>
-                <Typography color={"primary.main"}>
-                  {currencies[currency].code}
-                </Typography>
-              </Box>
-            </MenuItem>
-          ))}
-        </Select>
+        <CurrencySelect {...{ form, handleChange }} />
       </Box>
       <Box
         width={"100%"}

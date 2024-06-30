@@ -1,26 +1,21 @@
 import { PhoneAndroid } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import React, { useState } from "react";
 import AuthWorker from "../../../../scripts/authWorker";
 import { isValidPhoneNumber } from "libphonenumber-js";
+import TelTextField from "../telTextField";
+import { useSelector } from "react-redux";
 
-const MobilePayment = ({
-  setStage,
-  registerForm,
-  setRegisterForm,
-  callingCodes,
-}) => {
+const MobilePayment = ({ mobileValues, setStage, setPayment }) => {
   const authWorker = new AuthWorker();
+  const region = useSelector((state) => state.region);
+  const callingCodes = authWorker.getCallingCodes();
   const [form, setForm] = useState({
-    code: registerForm.phone.code || "US",
-    number: registerForm.phone.number,
+    code: mobileValues?.code || region.country_code || "US",
+    number:
+      mobileValues?.number ||
+      callingCodes[region.country_code].callingCode ||
+      "",
   });
   const [touched, setTouched] = useState({});
   const [errors, setErrors] = useState(
@@ -79,28 +74,13 @@ const MobilePayment = ({
     setTouched((prev) => ({ ...prev, [target.name]: true }));
   };
 
-  const handleBack = () => {
-    setForm({
-      code: registerForm.phone.code || "+1",
-      number: registerForm.phone.number,
-    });
-    setStage(5);
-  };
-
   const handleConfirm = () => {
-    setRegisterForm((prev) => ({
-      ...prev,
-      payments: {
-        saved: [
-          {
-            type: "mobile",
-            number: authWorker.redact(form.number, 4, 2),
-            details: { ...form },
-          },
-        ],
-      },
-    }));
-    setStage(9);
+    setPayment({
+      type: "mobile",
+      number: authWorker.redact(form.number, 4),
+      details: { ...form },
+    });
+    setStage(3);
   };
 
   return (
@@ -121,47 +101,9 @@ const MobilePayment = ({
           <PhoneAndroid />
           Confirm your mobile number
         </Typography>
-        <TextField
-          type="tel"
-          placeholder="phone number"
-          name="number"
-          value={form.number}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={Boolean(touched.number) && Boolean(errors.number)}
-          helperText={(touched.number && errors.number) || " "}
-          sx={{
-            flexBasis: 200,
-            flexGrow: 1,
-            "& > div": { padding: 0 },
-            "& > div > div": { marginRight: "5px" },
-          }}
-          InputProps={{
-            startAdornment: (
-              <Select
-                autoWidth
-                name="code"
-                value={form.code}
-                onChange={handleChange}
-                renderValue={(value) => value}
-              >
-                {Object.keys(callingCodes).map((code) => (
-                  <MenuItem value={code}>
-                    <Box
-                      width={"100%"}
-                      display={"flex"}
-                      gap={"10px"}
-                      justifyContent={"space-between"}
-                      alignItems={"center"}
-                    >
-                      <Typography>{callingCodes[code].countryName}</Typography>
-                      <Typography color={"primary.main"}>{code}</Typography>
-                    </Box>
-                  </MenuItem>
-                ))}
-              </Select>
-            ),
-          }}
+        <TelTextField
+          style={{ flexBasis: 200, flexGrow: 1 }}
+          {...{ form, errors, touched, handleChange, handleBlur }}
         />
       </Box>
       <Box
@@ -170,7 +112,7 @@ const MobilePayment = ({
         justifyContent={"space-between"}
         alignItems={"center"}
       >
-        <Button variant="outlined" disableElevation onClick={handleBack}>
+        <Button variant="outlined" disableElevation onClick={() => setStage(0)}>
           Back
         </Button>
         <Button

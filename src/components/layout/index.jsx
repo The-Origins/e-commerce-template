@@ -16,17 +16,14 @@ import {
 import SnackBarComponent from "./snackBar";
 import Auth from "./auth";
 import { currencies } from "country-data";
-import AuthWorker from "../../scripts/authWorker";
 import ConfirmationModal from "./confirmationModal";
 
 
 const Layout = ({ children }) => {
-  const authWorker = new AuthWorker();
   const dispatch = useDispatch();
   const isContact = useSelector((state) => state.isContact);
   const user = useSelector((state) => state.user);
   const region = useSelector((state) => state.region);
-  const currency = useSelector((state) => state.currency);
   const [isLoading, setIsLoading] = useState(true);
   const changeIsContact = () => {
     dispatch(switchIsContact());

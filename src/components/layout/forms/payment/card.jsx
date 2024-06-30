@@ -3,7 +3,14 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import AuthWorker from "../../../../scripts/authWorker";
 
-const CardPayment = ({ setStage, setRegisterForm }) => {
+const CardPayment = ({
+  setStage,
+  setPayment,
+  setIsLoading,
+  setLoadingMessage,
+  handleComplete,
+  handleFail,
+}) => {
   const authWorker = new AuthWorker();
   const [form, setForm] = useState({});
   const [touched, setTouched] = useState({});
@@ -70,27 +77,15 @@ const CardPayment = ({ setStage, setRegisterForm }) => {
     setTouched((prev) => ({ ...prev, [target.name]: true }));
   };
 
-  const handleBack = () => {
-    setForm({});
-    setStage(5);
-  };
-
-  const verify = () => {
+  const verifyCardDetails = () => {
     const { number, ...rest } = form;
     const unformattedNumber = authWorker.removeStringFormat(number, "-");
-    setRegisterForm((prev) => ({
-      ...prev,
-      payments: {
-        saved: [
-          {
-            type: "card",
-            number: authWorker.redact(unformattedNumber),
-            details: { number: unformattedNumber, ...rest },
-          },
-        ],
-      },
-    }));
-    setStage(8);
+    setPayment({
+      type: "card",
+      number: authWorker.redact(unformattedNumber),
+      details: { number: unformattedNumber, ...rest },
+    });
+    handleComplete();
   };
 
   return (
@@ -164,7 +159,7 @@ const CardPayment = ({ setStage, setRegisterForm }) => {
         justifyContent={"space-between"}
         alignItems={"center"}
       >
-        <Button variant="outlined" disableElevation onClick={handleBack}>
+        <Button variant="outlined" disableElevation onClick={() => setStage(0)}>
           Back
         </Button>
         <Button
@@ -176,7 +171,7 @@ const CardPayment = ({ setStage, setRegisterForm }) => {
               Boolean(Object.keys(errors).length)) ||
             Boolean(Object.keys(errors).length)
           }
-          onClick={verify}
+          onClick={verifyCardDetails}
         >
           confirm
         </Button>

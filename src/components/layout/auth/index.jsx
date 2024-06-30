@@ -11,9 +11,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setIsAuth } from "../../../state/store";
 import Login from "./login";
 import Register from "./register";
-import ErrorComponent from "./errorComponent";
-import SuccessComponent from "./successComponent";
-import LoadingComponent from "./loadingComponent";
+import ErrorComponent from "../errorComponent";
+import SuccessComponent from "../successComponent";
+import LoadingComponent from "../loadingComponent";
 
 const Auth = () => {
   const theme = useTheme();
@@ -23,20 +23,8 @@ const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [successDetails, setSuccessDetails] = useState({
-    message: "",
-    action: () => {
-      dispatch(setIsAuth(false));
-    },
-    actionTitle: "ok",
-  });
-  const [errorDetails, setErrorDetails] = useState({
-    message: "",
-    action: () => {
-      dispatch(setIsAuth(false));
-    },
-    actionTitle: "ok",
-  });
+  const [successDetails, setSuccessDetails] = useState({});
+  const [errorDetails, setErrorDetails] = useState({});
   const [loadingMessage, setLoadingMessage] = useState("");
   const [auth, setAuth] = useState("login");
 
@@ -44,17 +32,13 @@ const Auth = () => {
     setIsSuccess(false);
     setSuccessDetails({
       message: "",
-      action: () => {
-        dispatch(setIsAuth(false));
-      },
+      action: () => {},
       actionTitle: "ok",
     });
     setIsError(false);
     setErrorDetails({
       message: "",
-      action: () => {
-        dispatch(setIsAuth(false));
-      },
+      action: () => {},
       actionTitle: "ok",
     });
   };

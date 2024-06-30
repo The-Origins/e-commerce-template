@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Business, Home, LocalShipping, Place } from "@mui/icons-material";
 import {
   Box,
@@ -9,26 +10,25 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import React, { useState } from "react";
 
-const AddressDetails = ({ setStage, registerForm, setRegisterForm }) => {
+
+const AddressDetails = ({ setStage, address, setAddress, handleComplete }) => {
   const theme = useTheme();
-  const address = registerForm.addresses.saved[0];
   const [form, setForm] = useState({
-    type: registerForm.addresses.saved[0].type || "other",
-    locationInfo: registerForm.addresses.saved[0].locationInfo,
+    type: address.type || "other",
+    locationInfo: address.locationInfo,
   });
 
   const handleChange = ({ target }) => {
     setForm((prev) => ({ ...prev, [target.name]: target.value }));
   };
 
-  const handleNext = () => {
-    setRegisterForm((prev) => ({
+  const handleConfirm = () => {
+    setAddress((prev) => ({
       ...prev,
-      addresses: {saved:[{...prev.addresses.saved[0], ...form}]},
+      ...form,
     }));
-    setStage(5);
+    handleComplete()
   };
 
   return (
@@ -147,16 +147,16 @@ const AddressDetails = ({ setStage, registerForm, setRegisterForm }) => {
         justifyContent={"space-between"}
         alignItems={"center"}
       >
-        <Button variant="outlined" disableElevation onClick={() => setStage(3)}>
+        <Button variant="outlined" disableElevation onClick={() => setStage(0)}>
           Back
         </Button>
         <Button
           type="submit"
           variant="contained"
           disableElevation
-          onClick={handleNext}
+          onClick={handleConfirm}
         >
-          next
+          confirm
         </Button>
       </Box>
     </Box>

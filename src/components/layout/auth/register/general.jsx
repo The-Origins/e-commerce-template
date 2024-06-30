@@ -12,11 +12,13 @@ import {
 import React, { useState } from "react";
 import AuthWorker from "../../../../scripts/authWorker";
 import { isValidPhoneNumber } from "libphonenumber-js";
+import TelTextField from "../../forms/telTextField";
 
-const GeneralInfo = ({ setStage, setRegisterForm, region, callingCodes }) => {
-  const authWorker = new AuthWorker();
+const GeneralInfo = ({ setStage, setRegisterForm, region }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
+  const authWorker = new AuthWorker();
+  const callingCodes = authWorker.getCallingCodes();
   const [form, setForm] = useState({
     phoneCode: region.country_code || "US",
     phoneNumber: callingCodes[region.country_code].callingCode,
@@ -192,52 +194,11 @@ const GeneralInfo = ({ setStage, setRegisterForm, region, callingCodes }) => {
               helperText={(touched.email && errors.email) || " "}
               sx={{ flexBasis: 200, flexGrow: 1 }}
             />
-            <TextField
-              type="tel"
-              placeholder="phone number"
-              name="phoneNumber"
-              value={form.phoneNumber}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={
-                Boolean(touched.phoneNumber) && Boolean(errors.phoneNumber)
-              }
-              helperText={(touched.phoneNumber && errors.phoneNumber) || " "}
-              sx={{
-                flexBasis: 200,
-                flexGrow: 1,
-                "& > div": { padding: 0 },
-                "& > div > div": { marginRight: "5px" },
-              }}
-              InputProps={{
-                maxLength: 10,
-                startAdornment: (
-                  <Select
-                    autoWidth
-                    name="phoneCode"
-                    value={form.phoneCode}
-                    onChange={handleChange}
-                    renderValue={(value) => value}
-                  >
-                    {Object.keys(callingCodes).map((code) => (
-                      <MenuItem value={code}>
-                        <Box
-                          width={"100%"}
-                          display={"flex"}
-                          gap={"10px"}
-                          justifyContent={"space-between"}
-                          alignItems={"center"}
-                        >
-                          <Typography>
-                            {callingCodes[code].countryName}
-                          </Typography>
-                          <Typography color={"primary.main"}>{code}</Typography>
-                        </Box>
-                      </MenuItem>
-                    ))}
-                  </Select>
-                ),
-              }}
+            <TelTextField
+              number="phoneNumber"
+              code="phoneCode"
+              style={{ flexBasis: 200, flexGrow: 1 }}
+              {...{ form, errors, touched, handleChange, handleBlur }}
             />
           </Box>
         </Box>

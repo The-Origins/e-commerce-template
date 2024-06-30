@@ -9,9 +9,11 @@ import {
   useTheme,
 } from "@mui/material";
 import AuthWorker from "../../../../scripts/authWorker";
+import { useSelector } from "react-redux";
 
-const Address = ({ region, setStage, setRegisterForm }) => {
+const SelectAddress = ({ setStage, setAddress, onCancel }) => {
   const theme = useTheme();
+  const region = useSelector((state) => state.region)
   const authWorker = new AuthWorker();
   const [search, setSearch] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState([]);
@@ -65,11 +67,8 @@ const Address = ({ region, setStage, setRegisterForm }) => {
   };
 
   const handleAddressSelect = (address) => {
-    setRegisterForm((prev) => ({
-      ...prev,
-      addresses: { saved: [{ ...address }] },
-    }));
-    setStage(4);
+    setAddress(address);
+    setStage(1);
   };
 
   return (
@@ -176,12 +175,12 @@ const Address = ({ region, setStage, setRegisterForm }) => {
         justifyContent={"space-between"}
         alignItems={"center"}
       >
-        <Button variant="outlined" disableElevation onClick={() => setStage(2)}>
-          Back
+        <Button variant="outlined" disableElevation onClick={onCancel}>
+          Cancel
         </Button>
       </Box>
     </Box>
   );
 };
 
-export default Address;
+export default SelectAddress;

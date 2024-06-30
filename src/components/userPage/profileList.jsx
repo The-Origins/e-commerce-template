@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { AddCircle, Paid, Place } from "@mui/icons-material";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
 import ProfileListElement from "./profileListElement";
+import EditModal from "../layout/editModal";
+import AddProfileListItem from "./addProfileListItem";
 
 const UserProfileList = (props) => {
+  const [isAdd, setIsAdd] = useState(false);
   const theme = useTheme();
   return (
     <Box
@@ -16,6 +19,13 @@ const UserProfileList = (props) => {
       flexDirection={"column"}
       overflow={"hidden"}
     >
+      <EditModal
+        isEdit={isAdd}
+        handleClose={() => setIsAdd(false)}
+        width={"min(600px, 90%)"}
+      >
+        <AddProfileListItem type={props.type} setIsAdd={setIsAdd} />
+      </EditModal>
       <Box
         padding={"10px"}
         display={"flex"}
@@ -34,9 +44,11 @@ const UserProfileList = (props) => {
           {props.icon}
           {props.title}
         </Typography>
-        <IconButton>
-          <AddCircle />
-        </IconButton>
+        <Tooltip title="add">
+          <IconButton onClick={() => setIsAdd(true)}>
+            <AddCircle />
+          </IconButton>
+        </Tooltip>
       </Box>
       <Box
         display={"flex"}

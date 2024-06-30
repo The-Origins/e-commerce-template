@@ -1,18 +1,11 @@
 import React from "react";
-import { East, Payment, Payments, PhoneAndroid } from "@mui/icons-material";
-import { Box, Typography, Button, useTheme } from "@mui/material";
-import VerificationComponent from "../verificationComponent";
-import { country_codes } from "../../../../lib/data";
 import GeneralInfo from "./general";
-import Address from "./address";
-import AddressDetails from "./addressDetails";
-import CardPayment from "./cardPayment";
-import MobilePayment from "./mobilePayment";
 import { useSelector } from "react-redux";
-import PasswordComponent from "../passwordComponent";
-import AuthWorker from "../../../../scripts/authWorker";
-import { countries } from "country-data";
+import PasswordForm from "../../forms/passwordForm";
 import Currency from "./currency";
+import Address from "../../forms/address";
+import Payment from "../../forms/payment";
+import RegisterIntro from "./intro";
 
 const RegisterStages = ({
   stage,
@@ -28,24 +21,30 @@ const RegisterStages = ({
   setSuccessDetails,
   setAuth,
 }) => {
-  const theme = useTheme()
-  const authWorker = new AuthWorker();
   const region = useSelector((state) => state.region);
-  const callingCodes = authWorker.getCallingCodes();
 
   const addPassword = (password) => {
     setRegisterForm((prev) => ({ ...prev, password }));
     setStage(3);
   };
 
-  const onVerifySuccess = () => {
-    setStage(8);
+  const addAddress = (address) => {
+    setRegisterForm((prev) => ({ ...prev, addresses: { saved: [address] } }));
+    setStage(4)
   };
 
-  const onVerifyFaliure = () => {
+  const addPayment = (payment) => {
+    setRegisterForm((prev) => ({
+      ...prev,
+      payments: { ...prev.payments, saved: [payment] },
+    }));
+    setStage(5);
+  };
+
+  const handleErrors = (message) => {
     setIsError(true);
     setErrorDetails({
-      message: "There was an error verifing your phone number",
+      message: message,
       action: () => {
         setStage(0);
         setAuth("login");
@@ -55,118 +54,20 @@ const RegisterStages = ({
   };
 
   const stages = [
-    <Box
-      height={"100%"}
-      position={"relative"}
-      display={"flex"}
-      flexDirection={"column"}
-      alignItems={"center"}
-      justifyContent={"center"}
-      gap={"30px"}
-    >
-      <Box
-        display={"flex"}
-        flexDirection={"column"}
-        alignItems={"center"}
-        gap={"10px"}
-      >
-        <Typography
-          mt={"10px"}
-          fontFamily={theme.fonts.secondary}
-          fontSize={"clamp(1rem, 5vw, 2rem)"}
-        >
-          Register
-        </Typography>
-        <Typography fontSize={"1.1rem"}>
-          And get access to all of our services
-        </Typography>
-      </Box>
-      <Button
-        size="large"
-        variant="contained"
-        endIcon={<East />}
-        onClick={() => setStage(1)}
-      >
-        Start
-      </Button>
-      <Button
-        onClick={() => setAuth("login")}
-        sx={{
-          mt: "50px",
-          textTransform: "none",
-          ":hover": { textDecoration: "underline" },
-        }}
-      >
-        Already have an account?
-      </Button>
-    </Box>,
-    <GeneralInfo {...{ setStage, setRegisterForm, region, callingCodes }} />,
-    <PasswordComponent
-      handleBack={() => setStage(1)}
-      handleNext={addPassword}
+    <RegisterIntro {...{ setStage, setAuth }} />,
+    <GeneralInfo {...{ setStage, setRegisterForm, region }} />,
+    <PasswordForm handleBack={() => setStage(1)} handleNext={addPassword} />,
+    <Address
+      onCancel={() => setStage(2)}
+      onFail={handleErrors}
+      onComplete={addAddress}
     />,
-    <Address {...{ region, setStage, setRegisterForm }} />,
-    <AddressDetails {...{ setStage, registerForm, setRegisterForm }} />,
-    <Box
-      display={"flex"}
-      flexDirection={"column"}
-      gap={"20px"}
-      height={"100%"}
-      justifyContent={"space-evenly"}
-    >
-      <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
-        <Typography
-          fontWeight={"bold"}
-          fontSize={"1.3rem"}
-          sx={{ display: "flex", alignItems: "center", gap: "10px" }}
-        >
-          <Payments />
-          Add a payment method
-        </Typography>
-        <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-          <Typography color={"text.secondary"}>select payment type</Typography>
-          <Button
-            sx={{ width: "300px", height: "50px" }}
-            variant="outlined"
-            startIcon={<Payment />}
-            onClick={() => setStage(6)}
-          >
-            card
-          </Button>
-          <Button
-            sx={{ width: "300px", height: "50px" }}
-            variant="outlined"
-            startIcon={<PhoneAndroid />}
-            onClick={() => setStage(7)}
-          >
-            mobile
-          </Button>
-        </Box>
-      </Box>
-      <Box
-        width={"100%"}
-        display={"flex"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-      >
-        <Button variant="outlined" disableElevation onClick={() => setStage(4)}>
-          Back
-        </Button>
-      </Box>
-    </Box>,
-    <CardPayment
-      {...{
-        setStage,
-        setRegisterForm,
-      }}
-    />,
-    <MobilePayment
-      {...{
-        setStage,
-        registerForm,
-        setRegisterForm,
-        callingCodes,
-      }}
+    <Payment
+      mobileValues={registerForm.phone}
+      onCancel={() => setStage(3)}
+      onFail={handleErrors}
+      onComplete={addPayment}
+      {...{ setIsLoading, setLoadingMessage }}
     />,
     <Currency
       {...{
@@ -179,15 +80,6 @@ const RegisterStages = ({
         setSuccessDetails,
         setAuth,
         handleRegister,
-      }}
-    />,
-    <VerificationComponent
-      type={"phone"}
-      {...{
-        setIsLoading,
-        setLoadingMessage,
-        onVerifySuccess,
-        onVerifyFaliure,
       }}
     />,
   ];

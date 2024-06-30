@@ -20,6 +20,7 @@ import data from "../../lib/data";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsAuth } from "../../state/store";
 import ProductWorker from "../../scripts/productWorker";
+import EditModal from "../layout/editModal";
 
 const ProductCard = (props) => {
   const productWorker = new ProductWorker();
@@ -75,13 +76,18 @@ const ProductCard = (props) => {
         },
       }}
     >
-      <ProductDetails
-        title={isInCart || isLiked ? "Change your prefrences" : undefined}
-        product={props.product}
-        user={user}
-        switchIsProductDetails={switchIsProductDetails}
-        isProductDetails={isProductDetails}
-      />
+      <EditModal
+        isEdit={isProductDetails}
+        width={"min(700px, 90%)"}
+        handleClose={() => setIsProductDetails(false)}
+      >
+        <ProductDetails
+          title={isInCart || isLiked ? "Change your prefrences" : undefined}
+          product={props.product}
+          user={user}
+          setIsProductDetails={setIsProductDetails}
+        />
+      </EditModal>
       <Box
         display={"flex"}
         flexDirection={"column"}

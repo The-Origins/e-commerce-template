@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import AuthWorker from "../../../scripts/authWorker";
 
-const PasswordComponent = ({ handleBack, handleNext }) => {
+const PasswordForm = ({ handleBack, handleNext }) => {
   const theme = useTheme();
   const authWorker = new AuthWorker();
   const [isPassVisible, setIsPassVisible] = useState(false);
@@ -153,4 +153,4 @@ const PasswordComponent = ({ handleBack, handleNext }) => {
   );
 };
 
-export default PasswordComponent;
+export default PasswordForm;

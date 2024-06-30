@@ -47,6 +47,10 @@ class AuthWorker {
       formattedPhoneNumber = callingCode;
     }
 
+    if (!phoneNumber.startsWith(callingCode)) {
+      formattedPhoneNumber = callingCode + phoneNumber;
+    }
+
     const asYouType = new AsYouType(countryCode);
     formattedPhoneNumber = asYouType.input(formattedPhoneNumber);
 

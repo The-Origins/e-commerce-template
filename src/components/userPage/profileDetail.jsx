@@ -4,8 +4,6 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  MenuItem,
-  Select,
   TextField,
   Tooltip,
   Typography,
@@ -14,12 +12,14 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AuthWorker from "../../scripts/authWorker";
+import TelTextField from "../layout/forms/telTextField";
+import CurrencySelect from "../layout/forms/currencySelect";
 
 const UserProfileDetail = ({
   title,
+  description,
+  details,
   icon,
-  value,
-  type,
   validator,
   editable,
 }) => {
@@ -28,9 +28,9 @@ const UserProfileDetail = ({
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
-  const [detail, setDetail] = useState(value);
-  const currencies = title === "Currency" ? authWorker.getCurrencies() : {};
-  const callingCodes = type === "tel" ? authWorker.getCallingCodes() : {};
+  const [form, setForm] = useState(details);
+  const callingCodes =
+    title === "phone number" ? authWorker.getCallingCodes() : {};
 
   const [isEdit, setIsEdit] = useState(false);
 
@@ -39,7 +39,7 @@ const UserProfileDetail = ({
   };
 
   const handleChange = ({ target }) => {
-    setDetail((prev) => {
+    setForm((prev) => {
       if (target.name === "code") {
         return {
           ...prev,
@@ -58,7 +58,7 @@ const UserProfileDetail = ({
       }
       return { ...prev, [target.name]: target.value };
     });
-    setDetail((prev) => {
+    setForm((prev) => {
       setErrors(
         authWorker.getErrors(
           errors,
@@ -72,8 +72,8 @@ const UserProfileDetail = ({
   };
 
   useEffect(() => {
-    setDetail(value);
-  }, [value]);
+    setForm(details);
+  }, [details]);
 
   return (
     <Box
@@ -92,98 +92,30 @@ const UserProfileDetail = ({
         ":hover": {
           boxShadow: `0px 0px 10px 0px ${theme.palette.grey[400]}`,
         },
-        ":hover .profile-detail-edit": { opacity: 1 },
-        ":hover .profile-detail-title": {
+        ":hover .profile-form-edit": { opacity: 1 },
+        ":hover .profile-form-title": {
           color: editable ? "primary.main" : "black",
         },
       }}
     >
       {isEdit && editable ? (
         <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-          {type === "select" && title === "Currency" ? (
-            <Select
-              autoWidth
-              name="code"
-              value={detail}
-              onChange={handleChange}
-              renderValue={(value) => value}
-            >
-              {Object.keys(currencies).map((currency) => (
-                <MenuItem value={currencies[currency].code}>
-                  <Box
-                    width={"100%"}
-                    display={"flex"}
-                    justifyContent={"space-between"}
-                    gap={"20px"}
-                    alignItems={"center"}
-                  >
-                    <Typography>{currencies[currency].name}</Typography>
-                    <Typography color={"primary.main"}>
-                      {currencies[currency].symbol}
-                    </Typography>
-                  </Box>
-                </MenuItem>
-              ))}
-            </Select>
-          ) : type === "tel" ? (
-            <TextField
-              type="tel"
-              placeholder="phone number"
-              name="number"
-              value={detail.number}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={Boolean(touched.number) && Boolean(errors.number)}
-              helperText={(touched.number && errors.number) || " "}
-              sx={{
-                "& > div": { padding: 0 },
-                "& > div > div": { marginRight: "5px" },
-              }}
-              InputProps={{
-                startAdornment: (
-                  <Select
-                    autoWidth
-                    name="code"
-                    value={detail.code}
-                    onChange={handleChange}
-                    renderValue={(value) => value}
-                  >
-                    {Object.keys(callingCodes).map((code) => (
-                      <MenuItem value={code}>
-                        <Box
-                          width={"100%"}
-                          display={"flex"}
-                          gap={"10px"}
-                          justifyContent={"space-between"}
-                          alignItems={"center"}
-                        >
-                          <Typography>
-                            {callingCodes[code].countryName}
-                          </Typography>
-                          <Typography color={"primary.main"}>{code}</Typography>
-                        </Box>
-                      </MenuItem>
-                    ))}
-                  </Select>
-                ),
-              }}
+          {title === "currency" ? (
+            <CurrencySelect {...{ form, handleChange }} />
+          ) : title === "phone number" ? (
+            <TelTextField
+              {...{ form, errors, touched, handleBlur, handleChange }}
             />
           ) : (
             <TextField
-              name={title.toLowerCase()}
-              type={type}
-              label={title}
-              value={detail}
+              name={title}
+              type={title}
+              label={title.charAt(0).toUpperCase() + title.substring(1)}
+              value={form[title]}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={
-                Boolean(touched[title.toLowerCase()]) &&
-                Boolean(errors[title.toLowerCase()])
-              }
-              helperText={
-                (touched[title.toLowerCase()] && errors[title.toLowerCase()]) ||
-                " "
-              }
+              error={Boolean(touched[title]) && Boolean(errors[title])}
+              helperText={(touched[title] && errors[title]) || " "}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">{icon}</InputAdornment>
@@ -212,23 +144,25 @@ const UserProfileDetail = ({
       ) : (
         <Box>
           <Box
-            className="profile-detail-title"
+            className="profile-form-title"
             sx={{ transition: "0.3s" }}
             display={"flex"}
             gap={"10px"}
             alignItems={"center"}
           >
             {icon}
-            <Typography>{title}</Typography>
+            <Typography>
+              {title.charAt(0).toUpperCase() + title.substring(1)}
+            </Typography>
           </Box>
           <Typography sx={{ transition: "0.3s" }} color={"text.secondary"}>
-            {type === "tel" ? value.number : value}
+            {description}
           </Typography>
           {editable && (
             <Tooltip title="edit" placement="right">
               <IconButton
                 onClick={() => setIsEdit(true)}
-                className="profile-detail-edit"
+                className="profile-form-edit"
                 sx={{
                   position: "absolute",
                   bottom: 10,
