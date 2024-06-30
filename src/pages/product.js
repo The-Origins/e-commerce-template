@@ -33,6 +33,7 @@ import ProductCard from "../components/product/productCard";
 import ProductDetails from "../components/product/productDetails";
 import SkeletonGroup from "../components/product/skeletonGroup";
 import { setIsAuth } from "../state/store";
+import EditModal from "../components/layout/editModal";
 
 const ProductPage = () => {
   const theme = useTheme();
@@ -118,13 +119,19 @@ const ProductPage = () => {
   return (
     <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
       {!isLoading && (
-        <ProductDetails
-          title={isInCart && "Change your prefrences"}
-          product={product}
-          user={user}
-          switchIsProductDetails={switchIsProductDetails}
-          isProductDetails={isProductDetails}
-        />
+        <EditModal
+          isEdit={isProductDetails}
+          width={"min(700px, 90%)"}
+          handleClose={() => setIsProductDetails(false)}
+        >
+          <ProductDetails
+            title={isInCart && "Change your prefrences"}
+            product={product}
+            user={user}
+            switchIsProductDetails={switchIsProductDetails}
+            isProductDetails={isProductDetails}
+          />
+        </EditModal>
       )}
       <Box width={isNotPhone ? "80%" : "90%"}>
         <Box

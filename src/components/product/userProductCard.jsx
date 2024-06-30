@@ -12,6 +12,7 @@ import {
 import { AddShoppingCart, Delete, Edit } from "@mui/icons-material";
 import ProductDetails from "./productDetails";
 import ProductWorker from "../../scripts/productWorker";
+import EditModal from "../layout/editModal";
 
 const UserProductCard = (props) => {
   const productWorker = new ProductWorker();
@@ -46,6 +47,11 @@ const UserProductCard = (props) => {
       padding={"20px"}
     >
       {(props.type === "cart" || props.type === "favourites") && (
+        <EditModal
+        isEdit={isProductDetails}
+        width={"min(700px, 90%)"}
+        handleClose={() => setIsProductDetails(false)}
+      >
         <ProductDetails
           title={"Edit your prefrences"}
           product={props.item.product}
@@ -53,6 +59,7 @@ const UserProductCard = (props) => {
           switchIsProductDetails={switchIsProductDetails}
           isProductDetails={isProductDetails}
         />
+      </EditModal>
       )}
       <Box
         height={"90px"}
