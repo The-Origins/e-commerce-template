@@ -17,13 +17,16 @@ import {
   useTheme,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserProductCard from "../components/product/userProductCard";
 import CheckoutElement from "../components/checkout/checkoutElement";
 import ProductWorker from "../scripts/productWorker";
 import SkeletonGroup from "../components/product/skeletonGroup";
+import { navigate } from "gatsby";
+import { setIsAuth } from "../state/store";
 
 const CheckoutPage = () => {
+  const dispatch = useDispatch();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
   const productWorker = new ProductWorker();
@@ -58,6 +61,9 @@ const CheckoutPage = () => {
         delivery: user.addresses.saved[user.addresses.recent],
       });
       setIsLoading(false);
+    } else {
+      navigate("/");
+      dispatch(setIsAuth(true));
     }
   }, [user]);
 
@@ -101,7 +107,10 @@ const CheckoutPage = () => {
               gap={"20px"}
               padding={"20px 40px"}
             >
-              <Typography fontSize={"1.2rem"} fontFamily={theme.fonts.secondary}>
+              <Typography
+                fontSize={"1.2rem"}
+                fontFamily={theme.fonts.secondary}
+              >
                 Summary
               </Typography>
               {isLoading ? (
@@ -235,7 +244,7 @@ const CheckoutPage = () => {
                     expandItems ? <KeyboardArrowUp /> : <KeyboardArrowDown />
                   }
                   onClick={switchExpandItems}
-                  sx={{textTransform:"none"}}
+                  sx={{ textTransform: "none" }}
                 >
                   {expandItems ? "colapse" : "expand"}
                 </Button>

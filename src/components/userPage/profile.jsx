@@ -1,8 +1,9 @@
-import React from "react";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import {
   AccountCircle,
   Explore,
+  Lock,
   Mail,
   Paid,
   Payments,
@@ -11,10 +12,14 @@ import {
 import UserProfileDetail from "./profileDetail";
 import UserProfileList from "./profileList";
 import { isValidPhoneNumber } from "libphonenumber-js";
+import EditModal from "../layout/editModal";
+import ChangePasswordProfile from "./changePasswordProfile";
 
 const UserProfile = (props) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
+  const [isChangePassword, setIsChangePassword] = useState(false);
+
   return (
     <Box
       width={"100%"}
@@ -39,6 +44,13 @@ const UserProfile = (props) => {
       flexDirection={"column"}
       gap={"20px"}
     >
+      <EditModal
+        isEdit={isChangePassword}
+        handleClose={() => setIsChangePassword(false)}
+        width={"min(500px, 90%)"}
+      >
+        <ChangePasswordProfile {...{ setIsChangePassword }} />
+      </EditModal>
       <Box display={"flex"} flexWrap={"wrap"} gap={"20px"}>
         <UserProfileDetail
           icon={<AccountCircle />}
@@ -105,6 +117,15 @@ const UserProfile = (props) => {
           data={props.user.addresses.saved}
           type="address"
         />
+      </Box>
+      <Box display={"flex"} justifyContent={"center"} padding={"30px"}>
+        <Button
+          sx={{ textDecoration: "underline", alignItems: "flex-start" }}
+          startIcon={<Lock />}
+          onClick={() => setIsChangePassword(true)}
+        >
+          change password
+        </Button>
       </Box>
     </Box>
   );

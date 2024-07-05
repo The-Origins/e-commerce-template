@@ -3,7 +3,12 @@ import { Email } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import AuthWorker from "../../../../scripts/authWorker";
 
-const ConfirmEmail = ({ setStage }) => {
+const ConfirmEmail = ({
+  setStage,
+  setIsLoading,
+  setLoadingMessage,
+  handleCancel,
+}) => {
   const authWorker = new AuthWorker();
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({ email: "required" });
@@ -28,7 +33,13 @@ const ConfirmEmail = ({ setStage }) => {
   };
 
   const handleConfirm = () => {
-    setStage(4);
+    setIsLoading(true);
+    setLoadingMessage("sending verification code");
+    const waitingTimeout = setTimeout(() => {
+      setStage(1);
+      setIsLoading(false);
+      clearTimeout(waitingTimeout);
+    }, 2000);
   };
 
   return (
@@ -69,8 +80,8 @@ const ConfirmEmail = ({ setStage }) => {
         justifyContent={"space-between"}
         alignItems={"center"}
       >
-        <Button variant="outlined" disableElevation onClick={() => setStage(1)}>
-          Back
+        <Button variant="outlined" disableElevation onClick={handleCancel}>
+          cancel
         </Button>
         <Button
           onClick={handleConfirm}

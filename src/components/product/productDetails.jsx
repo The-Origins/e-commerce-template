@@ -2,22 +2,49 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
+  Checkbox,
   FormControl,
   FormControlLabel,
+  FormGroup,
   Radio,
   RadioGroup,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import ProductWorker from "../../scripts/productWorker";
 
 const ProductDetails = ({ product, user, title, setIsProductDetails }) => {
+  const theme = useTheme();
+  const productWorker = new ProductWorker();
   const [productDetails, setProductDetails] = useState({});
   const handleProductDetailsChange = ({ target }) => {
-    setProductDetails((prev) => ({
-      ...prev,
-      [target.name]: target.value,
-    }));
+    setProductDetails((prev) => {
+      if (
+        product.variants[target.name] &&
+        product.variants[target.name].multiSelect
+      ) {
+        let selected = prev[target.name] || [];
+        console.log(selected);
+        if (target.checked) {
+          selected = [...selected, target.value];
+        } else {
+          selected = selected.filter((option) => option !== target.value) || [];
+        }
+        return { ...prev, [target.name]: selected };
+      }
+      return {
+        ...prev,
+        [target.name]: target.value,
+      };
+    });
+    setProductDetails((prev) => {
+      const { total, quantity, ...variants } = prev;
+      return {
+        ...prev,
+        total: productWorker.getTotal(product, quantity, variants),
+      };
+    });
   };
 
   const handleConfirm = () => {
@@ -26,13 +53,15 @@ const ProductDetails = ({ product, user, title, setIsProductDetails }) => {
 
   useEffect(() => {
     const productWorker = new ProductWorker();
-    setProductDetails(
-      productWorker.getProductDetails(
-        Object.keys(user).length ? user.cart.items : [],
-        Object.keys(user).length ? user.favourites : [],
-        product
-      )
-    );
+    if (Object.keys(user).length) {
+      setProductDetails(
+        productWorker.getProductDetails(
+          user.cart.items,
+          user.favourites,
+          product
+        )
+      );
+    }
   }, [product, user]);
 
   return (
@@ -44,8 +73,9 @@ const ProductDetails = ({ product, user, title, setIsProductDetails }) => {
       gap={"20px"}
     >
       <Box
+        width={"100%"}
         display={"flex"}
-        justifyContent={"space-between"}
+        justifyContent={"space-evenly"}
         alignItems={"center"}
       >
         <Typography
@@ -55,7 +85,15 @@ const ProductDetails = ({ product, user, title, setIsProductDetails }) => {
         >
           {title || "Confirm a few details first"}
         </Typography>
-        <Typography>{productDetails.total}</Typography>
+        <Typography
+          padding={"7px 12px"}
+          color={"primary.main"}
+          border={`1px solid ${theme.palette.primary.main}`}
+          borderRadius={"10px"}
+        >
+          Total: {productWorker.getCurrencySymbol(product.unitPrice.currency)}{" "}
+          {productDetails.total}
+        </Typography>
       </Box>
       <Box
         width={"80%"}
@@ -70,6 +108,7 @@ const ProductDetails = ({ product, user, title, setIsProductDetails }) => {
           name={"quantity"}
           value={productDetails.quantity}
           onChange={handleProductDetailsChange}
+          inputProps={{ min: 1 }}
         />
       </Box>
       {Object.keys(product.variants).length &&
@@ -80,24 +119,67 @@ const ProductDetails = ({ product, user, title, setIsProductDetails }) => {
             </Typography>
             <Box display={"flex"} alignItems={"center"} gap={"20px"}>
               <FormControl>
-                <RadioGroup
-                  row
-                  aria-labelledby={`product-${product.id}-variant-${index}-options`}
-                  name={variant}
-                  value={productDetails[variant]}
-                  onChange={handleProductDetailsChange}
-                >
-                  {Object.keys(product.variants[variant]).map((option) => (
-                    <FormControlLabel
-                      value={option}
-                      control={<Radio />}
-                      label={
-                        option.charAt(0).toUpperCase() + option.substring(1)
+                {product.variants[variant].multiSelect &&
+                productDetails[variant] ? (
+                  <FormGroup name={variant}>
+                    {Object.keys(product.variants[variant]).map((option) => {
+                      if (option === "multiSelect") {
+                        return;
                       }
-                      checked={productDetails[variant] === option}
-                    />
-                  ))}
-                </RadioGroup>
+                      return (
+                        <FormControlLabel
+                          name={variant}
+                          value={option}
+                          checked={productDetails[variant].includes(option)}
+                          onChange={handleProductDetailsChange}
+                          control={<Checkbox />}
+                          label={
+                            <Box display={"flex"} gap={"5px"}>
+                              <Typography>
+                                {option.charAt(0).toUpperCase() +
+                                  option.substring(1)}
+                              </Typography>
+                              {product.variants[variant][option].amount > 0 && (
+                                <Typography color={"primary.main"}>
+                                  +{product.variants[variant][option].amount}
+                                </Typography>
+                              )}
+                            </Box>
+                          }
+                        />
+                      );
+                    })}
+                  </FormGroup>
+                ) : (
+                  <RadioGroup
+                    row
+                    aria-labelledby={`product-${product.id}-variant-${index}-options`}
+                    name={variant}
+                    value={productDetails[variant]}
+                    onChange={handleProductDetailsChange}
+                  >
+                    {Object.keys(product.variants[variant]).map((option) => (
+                      <FormControlLabel
+                        value={option}
+                        control={<Radio />}
+                        label={
+                          <Box display={"flex"} gap={"5px"}>
+                            <Typography>
+                              {option.charAt(0).toUpperCase() +
+                                option.substring(1)}
+                            </Typography>
+                            {product.variants[variant][option].amount > 0 && (
+                              <Typography color={"primary.main"}>
+                                +{product.variants[variant][option].amount}
+                              </Typography>
+                            )}
+                          </Box>
+                        }
+                        checked={productDetails[variant] === option}
+                      />
+                    ))}
+                  </RadioGroup>
+                )}
               </FormControl>
             </Box>
           </Box>

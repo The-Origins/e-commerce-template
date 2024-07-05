@@ -1,9 +1,23 @@
 import React from "react";
 import { Box, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
 import { Business, Delete, Home, LocalShipping } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { activateConfirmationModal } from "../../state/store";
 
 const ProfileListElement = (props) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    dispatch(
+      activateConfirmationModal({
+        message: `Are you sure you want to delete this ${props.type}`,
+        onConfirm: () => {},
+        onCancel: () => {},
+      })
+    );
+  };
+
   return (
     <Box
       display={"flex"}
@@ -39,7 +53,7 @@ const ProfileListElement = (props) => {
         <Typography color={"text.secondary"}>{props.description}</Typography>
       </Box>
       <Tooltip title="delete">
-        <IconButton>
+        <IconButton onClick={handleDelete}>
           <Delete />
         </IconButton>
       </Tooltip>

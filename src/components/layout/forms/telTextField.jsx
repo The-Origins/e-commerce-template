@@ -16,7 +16,7 @@ const TelTextField = ({
   code = code || "code";
   const authWorker = new AuthWorker();
   const callingCodes = authWorker.getCallingCodes();
-  
+
   return (
     <TextField
       type="tel"
@@ -36,7 +36,7 @@ const TelTextField = ({
         startAdornment: (
           <Select
             autoWidth
-            name="code"
+            name={code}
             value={form[code]}
             onChange={handleChange}
             renderValue={(value) => value}

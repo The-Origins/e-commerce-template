@@ -12,15 +12,18 @@ const Address = ({ onFail, onComplete, onCancel }) => {
   };
 
   const handleComplete = () => {
+    setStage(0);
     setAddress((prev) => {
       onComplete(prev);
-      return prev
+      return prev;
     });
   };
 
   const stages = [
     <SelectAddress {...{ setStage, setAddress, onCancel }} />,
-    <AddressDetails {...{ setStage, address, setAddress, handleComplete, handleFail }} />,
+    <AddressDetails
+      {...{ setStage, address, setAddress, handleComplete, handleFail }}
+    />,
   ];
   return (
     <Box

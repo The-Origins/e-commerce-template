@@ -10,11 +10,15 @@ const ConfirmationModal = () => {
   const dispatch = useDispatch();
   const confirmationModal = useSelector((state) => state.confirmationModal);
 
+  const handleClose = () => {
+    dispatch(deactivateConfirmationModal());
+  };
+
   return (
     <Backdrop
       sx={{ color: "#fff", zIndex: 50 }}
       open={confirmationModal.on}
-      onClick={() => dispatch(deactivateConfirmationModal())}
+      onClick={handleClose}
     >
       <Box
         width={"min(400px, 90%)"}
@@ -35,8 +39,13 @@ const ConfirmationModal = () => {
           transform: `scale(${confirmationModal.on ? 1 : 0})`,
         }}
       >
-        <Box width={"100%"} display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
-          <Info sx={{color:"primary.main", fontSize:"1.8rem"}}/>
+        <Box
+          width={"100%"}
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"space-between"}
+        >
+          <Info sx={{ color: "primary.main", fontSize: "1.8rem" }} />
           <IconButton>
             <Close />
           </IconButton>

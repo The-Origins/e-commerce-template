@@ -102,7 +102,7 @@ const UserProductCard = (props) => {
                 (detail) =>
                   `${detail.charAt(0).toUpperCase() + detail.substring(1)}: ${
                     props.item.details[detail]
-                  }${detail === "weight" ? "Kg" : ""}`
+                  }`
               )
               .join(", ")}
           </Typography>

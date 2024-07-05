@@ -81,32 +81,31 @@ const EditModal = ({ isEdit, width, height, handleClose, children }) => {
         }}
         overflow={"hidden"}
       >
-        {isLoading ? (
-          <LoadingComponent message={loadingMessage} />
-        ) : isError ? (
+        {isLoading && <LoadingComponent message={loadingMessage} />}
+        {isError && (
           <ErrorComponent details={errorDetails} resetDetails={resetDetails} />
-        ) : isSuccess ? (
+        )}
+        {isSuccess && (
           <SuccessComponent
             details={successDetails}
             resetDetails={resetDetails}
           />
-        ) : (
-          <>
-            <Box
-              width={"100%"}
-              display={"flex"}
-              justifyContent={"flex-end"}
-              padding={"20px"}
-            >
-              <IconButton onClick={handleClose}>
-                <Close />
-              </IconButton>
-            </Box>
-            <Box height={"100%"} width={"100%"} padding={"0px 20px 20px 20px"}>
-              {mappedChildren}
-            </Box>
-          </>
         )}
+        <>
+          <Box
+            width={"100%"}
+            display={"flex"}
+            justifyContent={"flex-end"}
+            padding={"20px"}
+          >
+            <IconButton onClick={handleClose}>
+              <Close />
+            </IconButton>
+          </Box>
+          <Box height={"100%"} width={"100%"} padding={"0px 20px 20px 20px"}>
+            {mappedChildren}
+          </Box>
+        </>
       </Box>
     </Backdrop>
   );

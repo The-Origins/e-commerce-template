@@ -85,7 +85,14 @@ const CardPayment = ({
       number: authWorker.redact(unformattedNumber),
       details: { number: unformattedNumber, ...rest },
     });
-    handleComplete();
+
+    setIsLoading(true);
+    setLoadingMessage("verifying");
+    const loadingTimeout = setTimeout(() => {
+      setIsLoading(false);
+      handleComplete();
+      clearTimeout(loadingTimeout);
+    }, 2000);
   };
 
   return (

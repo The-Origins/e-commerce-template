@@ -28,7 +28,7 @@ const Currency = ({
   const currencies = authWorker.getCurrencies();
 
   const handleChange = ({ target }) => {
-    setForm(target.value);
+    setForm({currency:target.value});
   };
 
   const handleConfirm = () => {

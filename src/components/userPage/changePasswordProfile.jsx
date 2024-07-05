@@ -1,18 +1,14 @@
 import React from "react";
-import LoginForm from "./loginForm";
-import LoginIntro from "./intro";
-import ChangePassword from "../../forms/changePassword";
+import ChangePassword from "../layout/forms/changePassword";
 
-const LoginStages = ({
-  stage,
-  setStage,
+const ChangePasswordProfile = ({
+  setIsChangePassword,
   setIsLoading,
   setLoadingMessage,
   setIsError,
   setErrorDetails,
   setIsSuccess,
   setSuccessDetails,
-  setAuth,
 }) => {
   const changePassword = (password) => {
     console.log(password);
@@ -25,9 +21,8 @@ const LoginStages = ({
       setSuccessDetails({
         message: "password changed successfully",
         action: () => {
-          setStage(1);
+          setIsChangePassword(false);
         },
-        actionTitle: "Back to login",
       });
     }, 2000);
   };
@@ -37,33 +32,19 @@ const LoginStages = ({
     setErrorDetails({
       message: message,
       action: () => {
-        setStage(1);
+        setIsChangePassword(false);
       },
       actionTitle: "Back to login",
     });
   };
-
-  const stages = [
-    <LoginIntro {...{ setStage, setAuth }} />,
-    <LoginForm
-      {...{
-        setStage,
-        setIsLoading,
-        setLoadingMessage,
-        setIsSuccess,
-        setSuccessDetails,
-        setIsError,
-        setErrorDetails,
-      }}
-    />,
+  return (
     <ChangePassword
-      onCancel={() => setStage(1)}
+      onCancel={() => setIsChangePassword(false)}
       onFail={handleFail}
       onComplete={changePassword}
       {...{ setIsLoading, setLoadingMessage }}
-    />,
-  ];
-  return stages[stage];
+    />
+  );
 };
 
-export default LoginStages;
+export default ChangePasswordProfile;

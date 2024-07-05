@@ -21,6 +21,7 @@ const Payment = ({
   };
 
   const handleComplete = () => {
+    setStage(0);
     setPayment((prev) => {
       onComplete(prev);
       return prev;

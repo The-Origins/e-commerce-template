@@ -29,6 +29,7 @@ const Layout = ({ children }) => {
     dispatch(switchIsContact());
   };
 
+  // only as an example. Do this on the api.
   useEffect(() => {
     axios
       .get("https://ipapi.co/json/")

@@ -46,6 +46,14 @@ const ProductCard = (props) => {
     }
   };
 
+  const favourite = () => {
+    if (Object.keys(user).length) {
+      // favourite logic
+    } else {
+      dispatch(setIsAuth(true));
+    }
+  };
+
   useEffect(() => {
     setOffers(data.offers);
   }, []);
@@ -110,7 +118,7 @@ const ProductCard = (props) => {
             alignItems={"center"}
           >
             <Tooltip title={isLiked ? "Favourited" : "Add to favourites"}>
-              <IconButton>
+              <IconButton onClick={favourite}>
                 <Favorite sx={{ color: isLiked ? "primary.main" : "white" }} />
               </IconButton>
             </Tooltip>

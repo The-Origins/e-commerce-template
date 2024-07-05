@@ -8,7 +8,7 @@ import {
 import React, { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../../../state/store";
+import { setIsAuth, setUser } from "../../../../state/store";
 import data from "../../../../lib/data";
 import AuthWorker from "../../../../scripts/authWorker";
 
@@ -64,7 +64,10 @@ const LoginForm = ({
       dispatch(setUser(data.user));
       setIsLoading(false);
       setIsSuccess(true);
-      setSuccessDetails((prev) => ({ ...prev, message: "You're logged in" }));
+      setSuccessDetails({
+        message: "You're logged in",
+        action: () => dispatch(setIsAuth(false)),
+      });
     }, 1000);
   };
 

@@ -64,6 +64,14 @@ const PasswordForm = ({ handleBack, handleNext }) => {
     setIsPassVisible((prev) => !prev);
   };
 
+  const onNext = () =>
+    {
+      setForm((prev) => { 
+        handleNext(prev.password)
+        return {}
+      })
+
+    }
   return (
     <Box
       display={"flex"}
@@ -144,7 +152,7 @@ const PasswordForm = ({ handleBack, handleNext }) => {
               Boolean(Object.keys(errors).length)) ||
             Boolean(Object.keys(errors).length)
           }
-          onClick={() => handleNext(form.password)}
+          onClick={onNext}
         >
           next
         </Button>

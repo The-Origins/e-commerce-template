@@ -90,7 +90,7 @@ const data = {
                 title: "storage",
                 options: [
                   {
-                    title: "1gb-SSD",
+                    title: "1TB-SSD",
                     priceIncrement: { amount: 0, currency: "USD" },
                   },
                   {
@@ -393,7 +393,7 @@ const data = {
                 title: "storage",
                 options: [
                   {
-                    title: "1gb-SSD",
+                    title: "1TB-SSD",
                     priceIncrement: { amount: 0, currency: "USD" },
                   },
                   {
@@ -696,7 +696,7 @@ const data = {
                 title: "storage",
                 options: [
                   {
-                    title: "1gb-SSD",
+                    title: "1TB-SSD",
                     priceIncrement: { amount: 0, currency: "USD" },
                   },
                   {
@@ -1051,9 +1051,9 @@ const data = {
             quantity: 4,
             size: "large",
             crust: "normal",
-            extras: ["extra cheese"],
+            extras: ["extra cheese", "extra pepperoni"],
           },
-          total: 120,
+          total: 240,
         },
       },
     },
@@ -1225,7 +1225,7 @@ const data = {
           "16gb": { amount: 1000, currency: "USD" },
         },
         storage: {
-          "1gb-SSD": { amount: 0, currency: "USD" },
+          "1Tb-SSD": { amount: 0, currency: "USD" },
           "2TB-SSD": { amount: 1000, currency: "USD" },
         },
       },
@@ -1497,7 +1497,7 @@ const data = {
           normal: { amount: 0, currency: "USD" },
         },
         extras: {
-          selectMuiltiple: true,
+          multiSelect: true,
           "extra cheese": { amount: 10, currency: "USD" },
           "extra pepperoni": { amount: 10, currency: "USD" },
         },
