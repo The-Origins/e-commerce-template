@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
-import LoginStages from "./stages";
+import Carousel from "../../carousel";
+import ChangePassword from "../../forms/changePassword";
+import LoginForm from "./loginForm";
+import LoginIntro from "./intro";
 
 const Login = ({
   setIsLoading,
@@ -11,8 +14,37 @@ const Login = ({
   setSuccessDetails,
   setAuth,
 }) => {
-  const theme = useTheme()
+  const theme = useTheme();
   const [stage, setStage] = useState(0);
+
+  const changePassword = (password) => {
+    console.log(password);
+    setIsLoading(true);
+    setLoadingMessage("Changing password");
+    const loadingTimeout = setTimeout(() => {
+      clearTimeout(loadingTimeout);
+      setIsLoading(false);
+      setIsSuccess(true);
+      setSuccessDetails({
+        message: "password changed successfully",
+        action: () => {
+          setStage(1);
+        },
+        actionTitle: "Back to login",
+      });
+    }, 2000);
+  };
+
+  const handleFail = (message) => {
+    setIsError(true);
+    setErrorDetails({
+      message: message,
+      action: () => {
+        setStage(1);
+      },
+      actionTitle: "Back to login",
+    });
+  };
 
   return (
     <Box
@@ -44,29 +76,39 @@ const Login = ({
           width={"100%"}
           height={"100%"}
         >
-          <Box
-            sx={{
-              width: "min(400px, 90%)",
+          <Carousel
+            width={"min(400px, 90%)"}
+            height={"100%"}
+            index={stage}
+            setIndex={setStage}
+            maxIndex={3}
+            style={{
+              width: "100%",
               height: "100%",
               display: "flex",
-              alignItems: "center",
               justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <LoginStages
+            <LoginIntro {...{ setStage, setAuth }} />
+            <LoginForm
               {...{
-                stage,
                 setStage,
                 setIsLoading,
                 setLoadingMessage,
-                setIsError,
-                setErrorDetails,
                 setIsSuccess,
                 setSuccessDetails,
-                setAuth,
+                setIsError,
+                setErrorDetails,
               }}
             />
-          </Box>
+            <ChangePassword
+              onCancel={() => setStage(1)}
+              onFail={handleFail}
+              onComplete={changePassword}
+              {...{ setIsLoading, setLoadingMessage }}
+            />
+          </Carousel>
         </Box>
       </Box>
     </Box>

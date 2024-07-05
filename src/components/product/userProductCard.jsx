@@ -32,6 +32,8 @@ const UserProductCard = (props) => {
       alignItems={"center"}
       boxShadow={`0px 0px 10px 0px ${theme.palette.grey[300]}`}
       borderRadius={"20px"}
+      padding={"20px"}
+      gap={"20px"}
       sx={{
         transition: "0.3s",
         ":hover": {
@@ -44,27 +46,25 @@ const UserProductCard = (props) => {
           opacity: 1,
         },
       }}
-      padding={"20px"}
     >
       {(props.type === "cart" || props.type === "favourites") && (
         <EditModal
-        isEdit={isProductDetails}
-        width={"min(700px, 90%)"}
-        handleClose={() => setIsProductDetails(false)}
-      >
-        <ProductDetails
-          title={"Edit your prefrences"}
-          product={props.item.product}
-          user={props.user}
-          switchIsProductDetails={switchIsProductDetails}
-          isProductDetails={isProductDetails}
-        />
-      </EditModal>
+          isEdit={isProductDetails}
+          width={"min(700px, 90%)"}
+          handleClose={() => setIsProductDetails(false)}
+        >
+          <ProductDetails
+            title={"Edit your prefrences"}
+            product={props.item.product}
+            user={props.user}
+            switchIsProductDetails={switchIsProductDetails}
+            isProductDetails={isProductDetails}
+          />
+        </EditModal>
       )}
       <Box
         height={"90px"}
-        width={"100px"}
-        margin={"0px 20px"}
+        width={"clamp(100px, 2vw, 200px)"}
         sx={{
           backgroundImage: `url(${props.item.product.images[0]})`,
           backgroundSize: "cover",

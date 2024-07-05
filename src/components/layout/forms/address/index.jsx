@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Box } from "@mui/material";
 import SelectAddress from "./select";
 import AddressDetails from "./details";
+import Carousel from "../../carousel";
 
 const Address = ({ onFail, onComplete, onCancel }) => {
   const [stage, setStage] = useState(0);
@@ -19,21 +19,25 @@ const Address = ({ onFail, onComplete, onCancel }) => {
     });
   };
 
-  const stages = [
-    <SelectAddress {...{ setStage, setAddress, onCancel }} />,
-    <AddressDetails
-      {...{ setStage, address, setAddress, handleComplete, handleFail }}
-    />,
-  ];
   return (
-    <Box
+    <Carousel
       width={"100%"}
       height={"100%"}
-      display={"flex"}
-      justifyContent={"center"}
+      index={stage}
+      setIndex={setStage}
+      maxIndex={2}
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+      }}
     >
-      {stages[stage]}
-    </Box>
+      <SelectAddress {...{ setStage, setAddress, onCancel }} />
+      <AddressDetails
+        {...{ setStage, address, setAddress, handleComplete, handleFail }}
+      />
+    </Carousel>
   );
 };
 

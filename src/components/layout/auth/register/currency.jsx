@@ -46,8 +46,8 @@ const Currency = ({
       setSuccessDetails({
         message: "account created successfully",
         action: () => {
-          setStage(0);
           setAuth("login");
+          setStage(0);
         },
         actionTitle: "Back to login",
       });

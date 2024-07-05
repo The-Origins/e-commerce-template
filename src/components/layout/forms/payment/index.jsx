@@ -3,7 +3,7 @@ import SelectPayment from "./select";
 import CardPayment from "./card";
 import MobilePayment from "./mobile";
 import VerificationComponent from "../../verificationComponent";
-import { Box } from "@mui/material";
+import Carousel from "../../carousel";
 
 const Payment = ({
   mobileValues,
@@ -28,36 +28,40 @@ const Payment = ({
     });
   };
 
-  const stages = [
-    <SelectPayment {...{ setStage, onCancel }} />,
-    <CardPayment
-      {...{
-        setStage,
-        setPayment,
-        setIsLoading,
-        setLoadingMessage,
-        handleComplete,
-        handleFail,
-      }}
-    />,
-    <MobilePayment {...{ mobileValues, setStage, setPayment }} />,
-    <VerificationComponent
-      type="mobile"
-      setIsLoading={setIsLoading}
-      setLoadingMessage={setLoadingMessage}
-      onVerifyFaliure={handleFail}
-      onVerifySuccess={handleComplete}
-    />,
-  ];
   return (
-    <Box
+    <Carousel
       width={"100%"}
       height={"100%"}
-      display={"flex"}
-      justifyContent={"center"}
+      index={stage}
+      setIndex={setStage}
+      maxIndex={3}
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+      }}
     >
-      {stages[stage]}
-    </Box>
+      <SelectPayment {...{ setStage, onCancel }} />
+      <CardPayment
+        {...{
+          setStage,
+          setPayment,
+          setIsLoading,
+          setLoadingMessage,
+          handleComplete,
+          handleFail,
+        }}
+      />
+      <MobilePayment {...{ mobileValues, setStage, setPayment }} />
+      <VerificationComponent
+        type="mobile"
+        setIsLoading={setIsLoading}
+        setLoadingMessage={setLoadingMessage}
+        onVerifyFaliure={handleFail}
+        onVerifySuccess={handleComplete}
+      />
+    </Carousel>
   );
 };
 

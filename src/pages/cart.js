@@ -216,15 +216,15 @@ const CartPage = () => {
                 <SkeletonGroup count={3} width={"100%"} />
               ) : (
                 <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
-                  <Box display={"flex"} gap={"100px"}>
+                  <Box display={"flex"} justifyContent={"space-between"}>
                     <Typography fontSize={"0.9rem"}>Subtotal</Typography>
                     <Typography fontSize={"0.9rem"}>
-                      {user.cart.total}
+                      {user.payments.currency.symbol}{" "}{user.cart.total}
                     </Typography>
                   </Box>
                   <Box display={"flex"} justifyContent={"space-between"}>
                     <Typography fontSize={"0.9rem"}>VAT</Typography>
-                    <Typography fontSize={"0.9rem"}>0.0</Typography>
+                    <Typography fontSize={"0.9rem"}>{user.payments.currency.symbol} 0.0</Typography>
                   </Box>
                   <Box
                     width={"100%"}

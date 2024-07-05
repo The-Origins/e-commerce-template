@@ -11,23 +11,22 @@ import {
   Skeleton,
 } from "@mui/material";
 import { PhoneInTalk } from "@mui/icons-material";
-import SpotlightCarousel from "../components/homePage/spotlightCarousel";
 import ProductCard from "../components/product/productCard";
 import ProductCardContainer from "../components/product/productCardContainer";
 import data from "../lib/data";
 import CategoryCard from "../components/product/categoryCard";
 import SkeletonGroup from "../components/product/skeletonGroup";
+import Spotlights from "../components/homePage/spotlights";
 
 const Home = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const user = useSelector((state) => state.user);
-  const [products, setProducts] = useState(data.products.slice(0, 4));
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    document.title = "E-commerce | my moto";
+    document.title = "E-commerce | slogan";
     const loadingTimeout = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
@@ -49,7 +48,7 @@ const Home = () => {
           width={"100%"}
           height={"80vh"}
         >
-          <SpotlightCarousel isLoading={isLoading} />
+          <Spotlights isLoading={isLoading}/>
         </Box>
         <Box
           display={"flex"}
@@ -107,12 +106,12 @@ const Home = () => {
           </Typography>
         </Box>
         <ProductCardContainer containerTitle="Trending" isLoading={isLoading}>
-          {products.map((product) => (
+          {data.products.slice(0, 4).map((product) => (
             <ProductCard product={product} user={user} />
           ))}
         </ProductCardContainer>
         <ProductCardContainer containerTitle="Vegan" isLoading={isLoading}>
-          {products.map((product) => (
+          {data.products.slice(0, 4).map((product) => (
             <ProductCard product={product} user={user} />
           ))}
         </ProductCardContainer>
@@ -120,7 +119,7 @@ const Home = () => {
           containerTitle="This category"
           isLoading={isLoading}
         >
-          {products.map((product) => (
+          {data.products.slice(0, 4).map((product) => (
             <ProductCard product={product} user={user} />
           ))}
         </ProductCardContainer>

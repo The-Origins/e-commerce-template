@@ -48,6 +48,7 @@ const UserProfile = (props) => {
         isEdit={isChangePassword}
         handleClose={() => setIsChangePassword(false)}
         width={"min(500px, 90%)"}
+        height={"600px"}
       >
         <ChangePasswordProfile {...{ setIsChangePassword }} />
       </EditModal>

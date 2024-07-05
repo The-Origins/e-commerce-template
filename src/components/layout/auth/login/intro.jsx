@@ -5,9 +5,12 @@ import { Box, Button } from "@mui/material";
 const LoginIntro = ({ setStage, setAuth }) => {
   return (
     <Box
+      width={"100%"}
+      height={"100%"}
       display={"flex"}
       flexDirection={"column"}
       alignItems={"center"}
+      justifyContent={"center"}
       gap={"10px"}
     >
       <Button

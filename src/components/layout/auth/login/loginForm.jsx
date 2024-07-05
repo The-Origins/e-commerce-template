@@ -72,7 +72,7 @@ const LoginForm = ({
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+    <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
       <Box display={"flex"} flexDirection={"column"} gap={"5px"}>
         <TextField
           variant="outlined"

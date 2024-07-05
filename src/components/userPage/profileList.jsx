@@ -23,6 +23,7 @@ const UserProfileList = (props) => {
         isEdit={isAdd}
         handleClose={() => setIsAdd(false)}
         width={"min(600px, 90%)"}
+        height={"600px"}
       >
         <AddProfileListItem type={props.type} setIsAdd={setIsAdd} />
       </EditModal>

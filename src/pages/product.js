@@ -34,6 +34,7 @@ import ProductDetails from "../components/product/productDetails";
 import SkeletonGroup from "../components/product/skeletonGroup";
 import { setIsAuth } from "../state/store";
 import EditModal from "../components/layout/editModal";
+import Carousel from "../components/layout/carousel";
 
 const ProductPage = () => {
   const theme = useTheme();
@@ -155,80 +156,28 @@ const ProductPage = () => {
               display={"flex"}
               flexDirection={"column"}
             >
-              <Box
-                overflow={"hidden"}
+              <Carousel
                 width={"100%"}
                 height={"100%"}
-                borderRadius={"20px"}
-                position={"relative"}
-                display={"flex"}
-                alignItems={"center"}
+                index={imageIndex}
+                setIndex={setImageIndex}
+                maxIndex={product.images?.length - 1}
+                isLoading={isLoading}
+                controls={true}
+                swipeable={true}
               >
-                {isLoading ? (
-                  <Skeleton
-                    sx={{ position: "absolute" }}
-                    width={"100%"}
-                    height={"100%"}
-                    variant="rounded"
-                  />
-                ) : (
+                {product.images?.map((image) => (
                   <Box
-                    position={"absolute"}
                     width={"100%"}
                     height={"100%"}
-                    whiteSpace={"nowrap"}
                     sx={{
-                      transition: "0.5s ease-in-out",
-                      transform: `translateX(-${
-                        imageIndex !== 0 ? imageIndex + "00%" : "0%"
-                      })`,
+                      backgroundImage: `url(${image})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
                     }}
-                  >
-                    {product.images.map((image) => (
-                      <Box
-                        width={"100%"}
-                        height={"100%"}
-                        display={"inline-block"}
-                        sx={{
-                          backgroundImage: `url(${image})`,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                        }}
-                      />
-                    ))}
-                  </Box>
-                )}
-                <Box
-                  width={"100%"}
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                >
-                  <IconButton onClick={back} disabled={imageIndex < 1}>
-                    <ChevronLeft />
-                  </IconButton>
-                  <IconButton
-                    onClick={next}
-                    disabled={imageIndex >= maxImageIndex - 1}
-                  >
-                    <ChevronRight />
-                  </IconButton>
-                </Box>
-                <Box
-                  position={"absolute"}
-                  bottom={0}
-                  width={"100%"}
-                  display={"flex"}
-                  justifyContent={"center"}
-                >
-                  <MobileStepper
-                    variant="dots"
-                    steps={maxImageIndex}
-                    activeStep={imageIndex}
-                    position="static"
-                    sx={{ background: "transparent" }}
                   />
-                </Box>
-              </Box>
+                ))}
+              </Carousel>
               <Box
                 padding={"10px"}
                 width={"100%"}
@@ -423,7 +372,7 @@ const ProductPage = () => {
             display={"flex"}
             flexDirection={"column"}
             gap={"20px"}
-            padding={"50px 0px"}
+            padding={isNotPhone ? "50px 0px" : "0px 0px 50px 0px"}
             alignItems={"center"}
           >
             <Typography
@@ -443,38 +392,40 @@ const ProductPage = () => {
               border={`1px solid ${theme.palette.grey[400]}`}
               borderRadius={"25px"}
             >
-              <Box
-                display={"flex"}
-                flexDirection={"column"}
-                gap={"20px"}
-                padding={"20px 50px"}
-                borderRight={`1px solid ${theme.palette.grey[400]}`}
-              >
+              {isNotPhone && (
                 <Box
-                  width={"300px"}
-                  height={"300px"}
-                  borderRadius={"20px"}
-                  sx={{
-                    backgroundImage: `url(${product.images[0]})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                />
-                <Box display={"flex"} gap={"10px"}>
-                  <Typography fontWeight={"bold"}>{product.name}</Typography>
-                  <Typography>
-                    {productWorker.getCurrencySymbol(
-                      product.unitPrice.currency
-                    )}{" "}
-                    {offers[product.id]
-                      ? productWorker.getDiscount(
-                          offers[product.id],
-                          product.unitPrice.amount
-                        )
-                      : product.unitPrice.amount}
-                  </Typography>
+                  display={"flex"}
+                  flexDirection={"column"}
+                  gap={"20px"}
+                  padding={"20px 50px"}
+                  borderRight={`1px solid ${theme.palette.grey[400]}`}
+                >
+                  <Box
+                    width={"300px"}
+                    height={"300px"}
+                    borderRadius={"20px"}
+                    sx={{
+                      backgroundImage: `url(${product.images[0]})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                  />
+                  <Box display={"flex"} gap={"10px"}>
+                    <Typography fontWeight={"bold"}>{product.name}</Typography>
+                    <Typography>
+                      {productWorker.getCurrencySymbol(
+                        product.unitPrice.currency
+                      )}{" "}
+                      {offers[product.id]
+                        ? productWorker.getDiscount(
+                            offers[product.id],
+                            product.unitPrice.amount
+                          )
+                        : product.unitPrice.amount}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
+              )}
               <Box
                 width={"100%"}
                 padding={"20px"}

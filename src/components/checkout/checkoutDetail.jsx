@@ -1,19 +1,42 @@
 import { Box, Button, Skeleton, Typography, useTheme } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+import EditModal from "../layout/editModal";
+import ChangeCheckoutDetail from "./changeCheckoutDetail";
 
-const CheckoutElement = (props) => {
+const CheckoutDetail = (props) => {
   const theme = useTheme();
+  const [isChange, setIsChange] = useState(false);
   return (
     <Box display={"flex"} flexDirection={"column"} flexBasis={300} flexGrow={1}>
+      <EditModal
+        width={"min(600px, 90%)"}
+        height={"600px"}
+        isEdit={isChange}
+        handleClose={() => setIsChange(false)}
+      >
+        <ChangeCheckoutDetail
+          type={props.type}
+          setIsChange={setIsChange}
+          data={
+            props.type === "payment"
+              ? props.user.payments.saved
+              : props.type === "delivery"
+              ? props.user.addresses.saved
+              : []
+          }
+        />
+      </EditModal>
       <Typography
         sx={{
+          ml: "10px",
           display: "flex",
           gap: "10px",
           color: "text.secondary",
           alignItems: "flex-end",
         }}
       >
-        {props.icon} {props.title}
+        {props.icon}{" "}
+        {props.type.charAt(0).toUpperCase() + props.type.substring(1)}
       </Typography>
       <Box
         border={`1px solid ${theme.palette.grey[400]}`}
@@ -59,6 +82,7 @@ const CheckoutElement = (props) => {
               disabled={props.isLoading}
               variant="contained"
               disableElevation
+              onClick={() => setIsChange(true)}
             >
               change
             </Button>
@@ -69,4 +93,4 @@ const CheckoutElement = (props) => {
   );
 };
 
-export default CheckoutElement;
+export default CheckoutDetail;

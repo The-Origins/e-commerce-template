@@ -19,7 +19,7 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import UserProductCard from "../components/product/userProductCard";
-import CheckoutElement from "../components/checkout/checkoutElement";
+import CheckoutElement from "../components/checkout/checkoutDetail";
 import ProductWorker from "../scripts/productWorker";
 import SkeletonGroup from "../components/product/skeletonGroup";
 import { navigate } from "gatsby";
@@ -120,7 +120,7 @@ const CheckoutPage = () => {
                   <Box display={"flex"} justifyContent={"space-between"}>
                     <Typography fontSize={"0.8rem"}>Subtotal</Typography>
                     <Typography fontSize={"0.8rem"}>
-                      {user.cart.total}
+                      {user.payments.currency.symbol} {user.cart.total}
                     </Typography>
                   </Box>
                   <Box display={"flex"} justifyContent={"space-between"}>
@@ -128,6 +128,7 @@ const CheckoutPage = () => {
                       Delivery charges
                     </Typography>
                     <Typography fontSize={"0.8rem"}>
+                      {user.payments.currency.symbol}{" "}
                       {checkoutDetails.delivery.fee}
                     </Typography>
                   </Box>
@@ -187,6 +188,7 @@ const CheckoutPage = () => {
           <Box display={"flex"} flexDirection={"column"}>
             <Typography
               sx={{
+                ml: "10px",
                 display: "flex",
                 gap: "10px",
                 color: "text.secondary",
@@ -272,7 +274,8 @@ const CheckoutPage = () => {
           <Box display={"flex"} gap={"20px"} flexWrap={"wrap"}>
             <CheckoutElement
               icon={<Payments />}
-              title={"Payment"}
+              type={"payment"}
+              user={user}
               isLoading={isLoading}
               content={
                 isLoading
@@ -286,7 +289,8 @@ const CheckoutPage = () => {
             />
             <CheckoutElement
               icon={<LocalShipping />}
-              title={"Delivery"}
+              type={"delivery"}
+              user={user}
               isLoading={isLoading}
               content={
                 isLoading
@@ -312,6 +316,7 @@ const CheckoutPage = () => {
             justifyContent={"space-evenly"}
             gap={"20px"}
             padding={"20px 40px"}
+            width={"300px"}
           >
             <Typography fontSize={"1.2rem"} fontFamily={theme.fonts.secondary}>
               Summary
@@ -319,10 +324,12 @@ const CheckoutPage = () => {
             {isLoading ? (
               <SkeletonGroup width={"200px"} count={2} />
             ) : (
-              <Box display={"flex"} flexDirection={"column"}>
-                <Box display={"flex"} gap={"100px"}>
+              <Box display={"flex"} flexDirection={"column"} width={"100%"}>
+                <Box display={"flex"} justifyContent={"space-between"}>
                   <Typography fontSize={"0.8rem"}>Subtotal</Typography>
-                  <Typography fontSize={"0.8rem"}>{user.cart.total}</Typography>
+                  <Typography fontSize={"0.8rem"}>
+                    {user.payments.currency.symbol} {user.cart.total}
+                  </Typography>
                 </Box>
                 <Box
                   width={"100%"}
@@ -331,6 +338,7 @@ const CheckoutPage = () => {
                 >
                   <Typography fontSize={"0.8rem"}>Delivery charges</Typography>
                   <Typography fontSize={"0.8rem"}>
+                    {user.payments.currency.symbol}{" "}
                     {checkoutDetails.delivery.fee}
                   </Typography>
                 </Box>

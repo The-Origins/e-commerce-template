@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
-import RegisterStages from "./stages";
+import Carousel from "../../carousel";
+import RegisterIntro from "./intro";
+import GeneralInfo from "./general";
+import PasswordForm from "../../forms/passwordForm";
+import Address from "../../forms/address";
+import Payment from "../../forms/payment";
+import Currency from "./currency";
+import { useSelector } from "react-redux";
 
 const Register = ({
   setIsLoading,
@@ -14,6 +21,38 @@ const Register = ({
   const theme = useTheme();
   const [stage, setStage] = useState(0);
   const [registerForm, setRegisterForm] = useState({});
+
+  const region = useSelector((state) => state.region);
+
+  const addPassword = (password) => {
+    setRegisterForm((prev) => ({ ...prev, password }));
+    setStage(3);
+  };
+
+  const addAddress = (address) => {
+    setRegisterForm((prev) => ({ ...prev, addresses: { saved: [address] } }));
+    setStage(4);
+  };
+
+  const addPayment = (payment) => {
+    setRegisterForm((prev) => ({
+      ...prev,
+      payments: { ...prev.payments, saved: [payment] },
+    }));
+    setStage(5);
+  };
+
+  const handleErrors = (message) => {
+    setIsError(true);
+    setErrorDetails({
+      message: message,
+      action: () => {
+        setStage(0);
+        setAuth("login");
+      },
+      actionTitle: "Back to login",
+    });
+  };
 
   const handleRegister = () => {
     setRegisterForm((prev) => {
@@ -60,10 +99,13 @@ const Register = ({
         >
           {stage === 0 ? " " : "Register"}
         </Typography>
-        <Box
+        <Carousel
           width={"100%"}
           height={"100%"}
-          sx={{
+          index={stage}
+          setIndex={setStage}
+          maxIndex={6}
+          style={{
             width: "100%",
             height: "100%",
             display: "flex",
@@ -73,23 +115,38 @@ const Register = ({
             padding: "20px",
           }}
         >
-          <RegisterStages
+          <RegisterIntro {...{ setStage, setAuth }} />
+          <GeneralInfo {...{ setStage, setRegisterForm, region }} />
+          <PasswordForm
+            handleBack={() => setStage(1)}
+            handleNext={addPassword}
+          />
+          <Address
+            onCancel={() => setStage(2)}
+            onFail={handleErrors}
+            onComplete={addAddress}
+          />
+          <Payment
+            mobileValues={registerForm.phone}
+            onCancel={() => setStage(3)}
+            onFail={handleErrors}
+            onComplete={addPayment}
+            {...{ setIsLoading, setLoadingMessage }}
+          />
+          <Currency
             {...{
-              stage,
+              region,
               setStage,
-              registerForm,
               setRegisterForm,
-              handleRegister,
               setIsLoading,
               setLoadingMessage,
-              setIsError,
-              setErrorDetails,
               setIsSuccess,
               setSuccessDetails,
               setAuth,
+              handleRegister,
             }}
           />
-        </Box>
+        </Carousel>
       </Box>
     </Box>
   );

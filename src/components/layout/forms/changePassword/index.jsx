@@ -3,6 +3,7 @@ import ConfirmEmail from "./confirmEmail";
 import { Box } from "@mui/material";
 import VerificationComponent from "../../verificationComponent";
 import PasswordForm from "../passwordForm";
+import Carousel from "../../carousel";
 
 const ChangePassword = ({
   setIsLoading,
@@ -26,33 +27,36 @@ const ChangePassword = ({
     onComplete(password);
   };
 
-  const stages = [
-    <ConfirmEmail
-      {...{
-        setStage,
-        setIsLoading,
-        setLoadingMessage,
-        handleCancel,
-      }}
-    />,
-    <VerificationComponent
-      setIsLoading={setIsLoading}
-      setLoadingMessage={setLoadingMessage}
-      onVerifyFaliure={handleFail}
-      onVerifySuccess={() => setStage(2)}
-    />,
-    <PasswordForm handleBack={handleCancel} handleNext={handleComplete} />,
-  ];
-
   return (
-    <Box
+    <Carousel
       width={"100%"}
       height={"100%"}
-      display={"flex"}
-      justifyContent={"center"}
+      index={stage}
+      setIndex={setStage}
+      maxIndex={3}
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+      }}
     >
-      {stages[stage]}
-    </Box>
+      <ConfirmEmail
+        {...{
+          setStage,
+          setIsLoading,
+          setLoadingMessage,
+          handleCancel,
+        }}
+      />
+      <VerificationComponent
+        setIsLoading={setIsLoading}
+        setLoadingMessage={setLoadingMessage}
+        onVerifyFaliure={handleFail}
+        onVerifySuccess={() => setStage(2)}
+      />
+      <PasswordForm handleBack={handleCancel} handleNext={handleComplete} />
+    </Carousel>
   );
 };
 

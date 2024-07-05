@@ -102,7 +102,26 @@ const EditModal = ({ isEdit, width, height, handleClose, children }) => {
               <Close />
             </IconButton>
           </Box>
-          <Box height={"100%"} width={"100%"} padding={"0px 20px 20px 20px"}>
+          <Box
+            height={"100%"}
+            width={"100%"}
+            padding={"0px 20px 20px 20px"}
+            sx={{
+              overflowY: "scroll",
+              "&::-webkit-scrollbar": {
+                bgcolor: "transparent",
+                width: "10px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                borderRadius: "25px",
+                bgcolor: theme.palette.grey[300],
+              },
+              "&::-webkit-scrollbar-thumb:hover": {
+                cursor: "pointer",
+                bgcolor: theme.palette.grey[400],
+              },
+            }}
+          >
             {mappedChildren}
           </Box>
         </>
