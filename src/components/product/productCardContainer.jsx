@@ -1,9 +1,17 @@
 import { useTheme, Box, Typography, Link, Button } from "@mui/material";
 import { ArrowRightAlt } from "@mui/icons-material";
 import React from "react";
-import SkeletonGroup from "./skeletonGroup";
+import SkeletonGroup from "../layout/skeletonGroup";
+import ProductCard from "./productCard";
 
-const ProductCardContainer = (props) => {
+const ProductCardContainer = ({
+  user,
+  title,
+  category,
+  isLoading,
+  products,
+  disableLink,
+}) => {
   const theme = useTheme();
   return (
     <Box
@@ -20,9 +28,9 @@ const ProductCardContainer = (props) => {
         position={"relative"}
       >
         <Typography margin={"20px"} color={"text.secondary"}>
-          {props.containerTitle}
+          {title}
         </Typography>
-        {!props.isRecent && (
+        {!disableLink && (
           <Box
             position={"absolute"}
             bottom={18}
@@ -33,9 +41,7 @@ const ProductCardContainer = (props) => {
             alignItems={"center"}
           >
             <Link
-              href={`/results?search=${String(props.containerTitle)
-                .split(" ")
-                .join("+")}`}
+              href={`/category?search=${category}`}
               sx={{
                 textDecoration: "none",
               }}
@@ -75,7 +81,7 @@ const ProductCardContainer = (props) => {
               },
             }}
           >
-            {props.isLoading ? (
+            {isLoading ? (
               <SkeletonGroup
                 count={4}
                 width={"clamp(80px, 42vw, 250px)"}
@@ -84,7 +90,9 @@ const ProductCardContainer = (props) => {
               />
             ) : (
               <Box display={"flex"} gap={"20px"}>
-                {props.children}
+                {products.map((product) => (
+                  <ProductCard {...{ product, user }} />
+                ))}
               </Box>
             )}
           </Box>

@@ -16,7 +16,7 @@ import {
   RemoveShoppingCart,
   ShoppingCartCheckout,
 } from "@mui/icons-material";
-import SkeletonGroup from "../components/product/skeletonGroup";
+import SkeletonGroup from "../components/layout/skeletonGroup";
 import { setIsAuth } from "../state/store";
 import data from "../lib/data";
 import ProductCardContainer from "../components/product/productCardContainer";
@@ -219,12 +219,14 @@ const CartPage = () => {
                   <Box display={"flex"} justifyContent={"space-between"}>
                     <Typography fontSize={"0.9rem"}>Subtotal</Typography>
                     <Typography fontSize={"0.9rem"}>
-                      {user.payments.currency.symbol}{" "}{user.cart.total}
+                      {user.payments.currency.symbol} {user.cart.total}
                     </Typography>
                   </Box>
                   <Box display={"flex"} justifyContent={"space-between"}>
                     <Typography fontSize={"0.9rem"}>VAT</Typography>
-                    <Typography fontSize={"0.9rem"}>{user.payments.currency.symbol} 0.0</Typography>
+                    <Typography fontSize={"0.9rem"}>
+                      {user.payments.currency.symbol} 0.0
+                    </Typography>
                   </Box>
                   <Box
                     width={"100%"}

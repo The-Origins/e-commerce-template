@@ -5,7 +5,6 @@ import {
   useMediaQuery,
   Box,
   IconButton,
-  MobileStepper,
   Typography,
   Button,
   Rating,
@@ -16,10 +15,6 @@ import {
 import {
   AddShoppingCart,
   CheckCircle,
-  ChevronLeft,
-  ChevronRight,
-  ExpandLess,
-  ExpandMore,
   Favorite,
   PersonOff,
   Share,
@@ -31,7 +26,7 @@ import ReviewComponent from "../components/productPage/reviewComponent";
 import ProductCardContainer from "../components/product/productCardContainer";
 import ProductCard from "../components/product/productCard";
 import ProductDetails from "../components/product/productDetails";
-import SkeletonGroup from "../components/product/skeletonGroup";
+import SkeletonGroup from "../components/layout/skeletonGroup";
 import { setIsAuth } from "../state/store";
 import EditModal from "../components/layout/editModal";
 import Carousel from "../components/layout/carousel";
@@ -54,7 +49,6 @@ const ProductPage = () => {
   const [products, setProducts] = useState([]);
   const [isProductDetails, setIsProductDetails] = useState(false);
   const [ratingDistribution, setRatingDistribution] = useState({});
-  const [maxImageIndex, setMaxImageIndex] = useState(0);
 
   useEffect(() => {
     const loadingTimeout = setTimeout(() => {
@@ -76,7 +70,6 @@ const ProductPage = () => {
 
     if (Object.keys(product).length) {
       setRatingDistribution(productWorker.getRatingDistribution(product));
-      setMaxImageIndex(product.images.length);
     }
   }, [product]);
 
@@ -89,13 +82,6 @@ const ProductPage = () => {
       setIsInCart(false);
     }
   }, [user, product]);
-
-  const next = () => {
-    setImageIndex((prev) => prev + 1);
-  };
-  const back = () => {
-    setImageIndex((prev) => prev - 1);
-  };
 
   const changeImageIndex = ({ target }) => {
     setImageIndex(Number(target.value));
@@ -598,22 +584,19 @@ const ProductPage = () => {
           </Box>
         </Box>
         <ProductCardContainer
-          containerTitle="More in Category"
+          user={user}
+          title={`More in ${product.categories?.[0]}`}
+          category={product.categories?.[0]}
           isLoading={isLoading}
-        >
-          {products.map((product) => (
-            <ProductCard product={product} user={user} />
-          ))}
-        </ProductCardContainer>
+          products={data.products.slice(0, 4)}
+        />
         <ProductCardContainer
-          containerTitle="Recently viewed"
+          user={user}
+          title={`Recently seen`}
           isLoading={isLoading}
-          isRecent={true}
-        >
-          {products.map((product) => (
-            <ProductCard product={product} user={user} />
-          ))}
-        </ProductCardContainer>
+          products={data.products.slice(0, 4)}
+          disableLink={true}
+        />
       </Box>
     </Box>
   );

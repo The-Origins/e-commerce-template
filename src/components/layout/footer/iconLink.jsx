@@ -1,10 +1,10 @@
 import React from "react";
 import { Link, IconButton } from "@mui/material";
 
-const FooterIconLink = (props) => {
+const FooterIconLink = ({path, icon}) => {
   return (
     <Link
-      href={props.path}
+      href={path}
       sx={{ textDecoration: "none", color: "black" }}
     >
       <IconButton
@@ -14,7 +14,7 @@ const FooterIconLink = (props) => {
           ":hover": { color: "primary.main" },
         }}
       >
-        {props.icon}
+        {icon}
       </IconButton>
     </Link>
   );

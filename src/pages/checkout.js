@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import UserProductCard from "../components/product/userProductCard";
 import CheckoutElement from "../components/checkout/checkoutDetail";
 import ProductWorker from "../scripts/productWorker";
-import SkeletonGroup from "../components/product/skeletonGroup";
+import SkeletonGroup from "../components/layout/skeletonGroup";
 import { navigate } from "gatsby";
 import { setIsAuth } from "../state/store";
 
@@ -232,7 +232,6 @@ const CheckoutPage = () => {
                 width={"100%"}
                 height={"50px"}
                 bgcolor={"white"}
-                zIndex={1}
                 boxShadow={`0px 0px 10px 0px ${theme.palette.grey[300]}`}
                 display={"flex"}
                 justifyContent={"space-between"}

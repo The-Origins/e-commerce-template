@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Copyright,
   EmailOutlined,
@@ -21,14 +22,18 @@ import {
   useTheme,
   Skeleton,
 } from "@mui/material";
-import React from "react";
-import FooterIconLink from "./footerIconLink";
-import FooterLegalLink from "./footerLegalLink";
-import FooterLink from "./footerLink";
 
-const Footer = (props) => {
+import FooterIconLink from "./iconLink";
+import FooterLegalLink from "./legalLink";
+import FooterLink from "./footerLink";
+import { useDispatch } from "react-redux";
+import { setIsContact } from "../../../state/store";
+
+const Footer = ({ isLoading }) => {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
+
   return (
     <footer style={{ width: "100%", display: "flex", flexDirection: "column" }}>
       <Box
@@ -54,17 +59,17 @@ const Footer = (props) => {
             alignItems={"center"}
             gap={"20px"}
           >
-            {props.isLoading ? (
+            {isLoading ? (
               <Skeleton width={"200px"} height={"30px"} variant="rounded" />
             ) : (
               <Typography>Need any assistance?</Typography>
             )}
-            {props.isLoading ? (
+            {isLoading ? (
               <Skeleton width={"300px"} height={"40px"} variant="rounded" />
             ) : (
               <Button
                 endIcon={<PhoneInTalk />}
-                onClick={() => props.changeIsContact(true)}
+                onClick={() => dispatch(setIsContact(true))}
                 variant="contained"
                 disableElevation
                 color="primary"
@@ -74,7 +79,7 @@ const Footer = (props) => {
               </Button>
             )}
           </Box>
-          {props.isLoading ? (
+          {isLoading ? (
             <Box display={"flex"} justifyContent={"space-between"} gap={"20px"}>
               <Skeleton width={"30px"} height={"30px"} variant="circular" />
               <Skeleton width={"30px"} height={"30px"} variant="circular" />
@@ -127,7 +132,7 @@ const Footer = (props) => {
             justifyContent={"space-between"}
             gap={"50px"}
           >
-            {props.isLoading ? (
+            {isLoading ? (
               <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
                 <Skeleton width={"250px"} variant="rounded" />
                 <Skeleton width={"250px"} variant="rounded" />
@@ -178,7 +183,7 @@ const Footer = (props) => {
                 )}
               </Box>
             )}
-            {props.isLoading ? (
+            {isLoading ? (
               <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
                 <Skeleton width={"250px"} variant="rounded" />
                 <Skeleton width={"250px"} variant="rounded" />
@@ -210,7 +215,7 @@ const Footer = (props) => {
                 </FooterLink>
               </Box>
             )}
-            {props.isLoading ? (
+            {isLoading ? (
               <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
                 <Skeleton width={"250px"} variant="rounded" />
                 <Skeleton width={"250px"} variant="rounded" />

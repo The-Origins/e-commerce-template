@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "@mui/material";
 
-const FooterLink = (props) => {
+const FooterLink = ({ path, children }) => {
   return (
     <Link
-      href={props.path}
+      href={path}
       fontSize={"1rem"}
       sx={{
         display: "flex",
@@ -17,7 +17,7 @@ const FooterLink = (props) => {
         },
       }}
     >
-      {props.children}
+      {children}
     </Link>
   );
 };

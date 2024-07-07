@@ -11,24 +11,19 @@ import {
   activateSnackBar,
   setCurrency,
   setRegion,
-  switchIsContact,
 } from "../../state/store";
 import SnackBarComponent from "./snackBar";
 import Auth from "./auth";
 import { currencies } from "country-data";
 import ConfirmationModal from "./confirmationModal";
 
-
 const Layout = ({ children }) => {
   const dispatch = useDispatch();
-  const isContact = useSelector((state) => state.isContact);
+  const isContact = useSelector((state) => state.isContact)
   const user = useSelector((state) => state.user);
   const region = useSelector((state) => state.region);
   const [isLoading, setIsLoading] = useState(true);
-  const changeIsContact = () => {
-    dispatch(switchIsContact());
-  };
-
+  
   // only as an example. Do this on the api.
   useEffect(() => {
     axios
@@ -47,7 +42,7 @@ const Layout = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    dispatch(setCurrency(currencies[region.currency]))
+    dispatch(setCurrency(currencies[region.currency]));
   }, [region]);
 
   useEffect(() => {
@@ -60,12 +55,12 @@ const Layout = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <SnackBarComponent />
-      <Contact isContact={isContact} changeIsContact={changeIsContact} />
+      <Contact {...{ isContact}} />
       <ConfirmationModal />
       <Auth />
-      <Header isLoading={isLoading} user={user} />
+      <Header {...{isLoading, user}} />
       {children}
-      <Footer changeIsContact={changeIsContact} isLoading={isLoading} />
+      <Footer {...{ isLoading }} />
     </ThemeProvider>
   );
 };

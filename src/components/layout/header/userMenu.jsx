@@ -18,13 +18,13 @@ import {
   NotificationsSharp,
   PersonOff,
 } from "@mui/icons-material";
-import data from "../../lib/data";
+import data from "../../../lib/data";
 import { useDispatch, useSelector } from "react-redux";
 import {
   activateConfirmationModal,
   setIsAuth,
   setUser,
-} from "../../state/store";
+} from "../../../state/store";
 
 const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
   const dispatch = useDispatch();

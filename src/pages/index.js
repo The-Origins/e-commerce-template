@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { switchIsContact } from "../state/store";
+import { setIsContact } from "../state/store";
 import {
   Box,
   useTheme,
@@ -11,11 +11,10 @@ import {
   Skeleton,
 } from "@mui/material";
 import { PhoneInTalk } from "@mui/icons-material";
-import ProductCard from "../components/product/productCard";
 import ProductCardContainer from "../components/product/productCardContainer";
 import data from "../lib/data";
-import CategoryCard from "../components/product/categoryCard";
-import SkeletonGroup from "../components/product/skeletonGroup";
+import CategoryCard from "../components/homePage/categoryCard";
+import SkeletonGroup from "../components/layout/skeletonGroup";
 import Spotlights from "../components/homePage/spotlights";
 
 const Home = () => {
@@ -48,7 +47,7 @@ const Home = () => {
           width={"100%"}
           height={"80vh"}
         >
-          <Spotlights isLoading={isLoading}/>
+          <Spotlights isLoading={isLoading} />
         </Box>
         <Box
           display={"flex"}
@@ -73,7 +72,7 @@ const Home = () => {
           ) : (
             <Button
               size="big"
-              onClick={() => dispatch(switchIsContact())}
+              onClick={() => dispatch(setIsContact(true))}
               disableElevation
               variant="contained"
               startIcon={<PhoneInTalk />}
@@ -105,24 +104,27 @@ const Home = () => {
             Satisfy your cravings
           </Typography>
         </Box>
-        <ProductCardContainer containerTitle="Trending" isLoading={isLoading}>
-          {data.products.slice(0, 4).map((product) => (
-            <ProductCard product={product} user={user} />
-          ))}
-        </ProductCardContainer>
-        <ProductCardContainer containerTitle="Vegan" isLoading={isLoading}>
-          {data.products.slice(0, 4).map((product) => (
-            <ProductCard product={product} user={user} />
-          ))}
-        </ProductCardContainer>
         <ProductCardContainer
-          containerTitle="This category"
+          user={user}
+          title="Trending"
+          category={"trending"}
           isLoading={isLoading}
-        >
-          {data.products.slice(0, 4).map((product) => (
-            <ProductCard product={product} user={user} />
-          ))}
-        </ProductCardContainer>
+          products={data.products.slice(0, 4)}
+        />
+        <ProductCardContainer
+          user={user}
+          title="Electronics"
+          category={"electronics"}
+          isLoading={isLoading}
+          products={data.products.slice(2, 6)}
+        />
+        <ProductCardContainer
+          user={user}
+          title="Beverages"
+          category="beverages"
+          isLoading={isLoading}
+          products={data.products.slice(5)}
+        />
         <Box
           minHeight={"50vh"}
           width={"100%"}
@@ -151,7 +153,7 @@ const Home = () => {
             />
             <CategoryCard
               subTitle="Up to 25% off"
-              title="Drinks"
+              title="Beverages"
               description="Save on your favourite items"
               image={
                 "https://images.pexels.com/photos/1194030/pexels-photo-1194030.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -160,7 +162,7 @@ const Home = () => {
             />
             <CategoryCard
               subTitle="Up to 25% off"
-              title="T-Shirts"
+              title="Clothing"
               description="Save on your favourite items"
               image={
                 "https://images.pexels.com/photos/8532616/pexels-photo-8532616.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"

@@ -6,13 +6,14 @@ const storeSLice = createSlice({
     user: {},
     currency: {},
     region: {},
+    isContact: false,
+    isAuth: false,
+    recentSearches: [],
     snackBar: {
       on: false,
       message: { title: "", description: "" },
       modalType: "info",
     },
-    isContact: false,
-    isAuth: false,
     confirmationModal: {
       on: false,
       message: "",
@@ -21,14 +22,30 @@ const storeSLice = createSlice({
     },
   },
   reducers: {
-    switchIsContact: (state) => {
-      state.isContact = !state.isContact;
-    },
     setIsContact: (state, action) => {
       state.isContact = action.payload;
     },
     setIsAuth: (state, action) => {
       state.isAuth = action.payload;
+    },
+    addRecentSearch: (state, action) => {
+      if (state.recentSearches.length > 10) {
+        state.recentSearches.pop();
+      }
+      if (state.recentSearches.includes(action.payload)) {
+        state.recentSearches = state.recentSearches.filter(
+          (element) => element !== action.payload
+        );
+      }
+      state.recentSearches.unshift(action.payload);
+    },
+    removeRecentSearch: (state, action) => {
+      state.recentSearches = state.recentSearches.filter(
+        (element) => element !== action.payload
+      );
+    },
+    resetRecent: (state) => {
+      state.recentSearches = [];
     },
     activateConfirmationModal: (state, action) => {
       state.confirmationModal.on = true;
@@ -55,7 +72,7 @@ const storeSLice = createSlice({
     },
     setUser: (state, action) => {
       state.user = action.payload;
-      state.currency = action.payload.currency || state.currency
+      state.currency = action.payload.currency || state.currency;
     },
     setRegion: (state, action) => {
       state.region = action.payload;
@@ -70,12 +87,15 @@ export const {
   setUser,
   setRegion,
   setCurrency,
+  setIsContact,
+  setIsAuth,
+  addRecentSearch,
+  removeRecentSearch,
   activateConfirmationModal,
   deactivateConfirmationModal,
   activateSnackBar,
   deactivateSnackBar,
-  switchIsContact,
-  setIsAuth,
+  resetRecent,
 } = storeSLice.actions;
 
 export default storeSLice.reducer;

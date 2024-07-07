@@ -8,17 +8,17 @@ import {
   useTheme,
 } from "@mui/material";
 import { PhoneInTalk, Mail, Close } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { setIsContact } from "../../state/store";
 
-const Contact = (props) => {
-  const theme = useTheme()
+const Contact = ({isContact}) => {
+  const theme = useTheme();
+  const dispatch = useDispatch();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const [showPhone, setShowPhone] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
   return (
-    <Backdrop
-      sx={{ color: "#fff", zIndex: 2 }}
-      open={props.isContact}
-    >
+    <Backdrop sx={{ color: "#fff", zIndex: 2 }} open={isContact}>
       <Box
         width={isNotPhone ? "50%" : "80%"}
         height={"400px"}
@@ -33,7 +33,7 @@ const Contact = (props) => {
         sx={{
           transitionDelay: "0.1s",
           transition: `0.3s ease-in-out`,
-          transform: `scale(${props.isContact ? 1 : 0})`,
+          transform: `scale(${isContact ? 1 : 0})`,
         }}
       >
         <Box
@@ -44,7 +44,7 @@ const Contact = (props) => {
           justifyContent={"flex-end"}
         >
           <IconButton
-            onClick={() => props.changeIsContact(false)}
+            onClick={() => dispatch(setIsContact(false))}
             sx={{ m: "15px", color: "black" }}
           >
             <Close />

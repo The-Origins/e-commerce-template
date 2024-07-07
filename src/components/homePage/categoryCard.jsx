@@ -8,10 +8,13 @@ import {
   Skeleton,
 } from "@mui/material";
 import React from "react";
+import SkeletonGroup from "../layout/skeletonGroup";
 
-const CategoryCard = (props) => {
+const CategoryCard = ({isLoading, subTitle, title, image, description}) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
+  const search = new URLSearchParams(title.toLowerCase()).toString().replace("=", "")
+
   return (
     <Box
       maxWidth={"400px"}
@@ -37,16 +40,8 @@ const CategoryCard = (props) => {
           flexDirection={"column"}
           gap={"20px"}
         >
-          {props.isLoading ? (
-            <Box
-              display={"flex"}
-              flexDirection={"column"}
-              gap={isNotPhone ? "20px" : "5px"}
-            >
-              <Skeleton variant="rounded" />
-              <Skeleton variant="rounded" />
-              <Skeleton variant="rounded" />
-            </Box>
+          {isLoading ? (
+            <SkeletonGroup count={3}  width={"100%"} />
           ) : (
             <Box
               display={"flex"}
@@ -57,21 +52,18 @@ const CategoryCard = (props) => {
                 color={"text.secondary"}
                 fontSize={"clamp(0.4rem, 3vw, 0.8rem)"}
               >
-                {props.subTitle}
+                {subTitle}
               </Typography>
               <Typography fontWeight={"bold"} fontSize={"24px"}>
-                {props.title}
+                {title}
               </Typography>
               <Typography fontSize={"0.9rem"} fontWeight={"lighter"}>
-                {props.description}
+                {description}
               </Typography>
             </Box>
           )}
           <Link
-            href={`/results?search=${props.title
-              .split(" ")
-              .join("+")
-              .toLowerCase()}`}
+            href={`/category?search=${search}`}
             sx={{
               borderRadius: "25px",
               color: "black",
@@ -109,7 +101,7 @@ const CategoryCard = (props) => {
             </Box>
           </Link>
         </Box>
-        {props.isLoading ? (
+        {isLoading ? (
           <Skeleton
             width={isNotPhone ? "150px" : "100px"}
             height={isNotPhone ? "150px" : "100px"}
@@ -120,7 +112,7 @@ const CategoryCard = (props) => {
             width={isNotPhone ? "150px" : "100px"}
             height={isNotPhone ? "150px" : "100px"}
             sx={{
-              backgroundImage: `url(${props.image})`,
+              backgroundImage: `url(${image})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}

@@ -2,58 +2,33 @@ class ResultsWorker {
   constructor(results) {
     this.results = results;
     this.pageLimit = 4;
-    this.typePlurals = { cake: "Cakes", pastry: "Pastries" };
+    this.prices = [];
+    this.minPrice = 0;
+    this.maxPrice = 0;
+    this.categories = ["All"];
+    this.brands = ["All"];
+    this.parseInfo();
   }
 
-  parsePrices() {
-    let prices = [];
+  parseInfo() {
     this.results.forEach((result) => {
-      prices = [...prices, result.unitPrice.amount];
-    });
-    return prices;
-  }
+      //get prices
+      this.prices.push(result.unitPrice.amount);
+      this.minPrice = Math.min(...this.prices);
+      this.maxPrice = Math.max(...this.prices);
 
-  parseTypes() {
-    let types = {};
-    this.results.forEach((result) => {
-      types = {
-        ...types,
-        [this.typePlurals[result.type]]: true,
-      };
-    });
-    return types;
-  }
-
-  parseCategories() {
-    let categories = ["All"];
-    this.results.forEach((result) => {
+      //get available categories
       result.categories.forEach((category) => {
-        if (!categories.includes(category)) {
-          categories.push(category);
+        if (!this.categories.includes(category)) {
+          this.categories.push(category);
         }
       });
-    });
-    return categories;
-  }
 
-  parseBrands() {
-    let brands = ["All"];
-    this.results.forEach((result) => {
-      if (result.brand && !brands.includes(result.brand)) {
-        brands.push(result.brand);
+      //get available brands
+      if (result.brand && !this.brands.includes(result.brand)) {
+        this.brands.push(result.brand);
       }
     });
-    return brands;
-  }
-
-  parseFeatures() {
-    let features = {};
-    this.results.forEach((result) => {
-      Object.keys(result.features).forEach((feature) => {
-        features[feature] = [...features[feature], result.features[feature]];
-      });
-    });
-    return features
   }
 
   filter(filters) {
