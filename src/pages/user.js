@@ -5,7 +5,6 @@ import {
   Badge,
   Box,
   Button,
-  CircularProgress,
   Divider,
   IconButton,
   Link,
@@ -23,13 +22,16 @@ import {
   Person,
   PersonOff,
 } from "@mui/icons-material";
-import SideBarElement from "../components/userPage/sideBarElement";
-import UserOrders from "../components/userPage/orders";
-import OrderDetails from "../components/userPage/orderDetails";
-import UserFavourites from "../components/userPage/favourites";
-import UserProfile from "../components/userPage/profile";
-import Notifications from "../components/userPage/notifications";
-import { activateConfirmationModal, setIsAuth, setUser } from "../state/store";
+import SideBarElement from "../components/user/sideBarElement";
+import UserOrders from "../components/user/orders";
+import OrderDetails from "../components/user/orderDetails";
+import UserFavourites from "../components/user/favourites";
+import UserProfile from "../components/user/profile";
+import Notifications from "../components/user/notifications";
+import { activateConfirmationModal, setUser } from "../state/store";
+import { convertHex } from "../theme";
+import { navigate } from "gatsby";
+import StatusComponent from "../components/layout/statusComponent";
 
 const UserPage = () => {
   const theme = useTheme();
@@ -37,6 +39,7 @@ const UserPage = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
+  const [status, setStatus] = useState({ on: false, type: "LOADING" });
   const [stages, setStages] = useState({});
   let stage = String(window.location.hash).includes("/")
     ? window.location.hash.substring(1, window.location.hash.indexOf("/"))
@@ -49,6 +52,9 @@ const UserPage = () => {
   }, [stage]);
 
   useEffect(() => {
+    if (!Object.keys(user).length) {
+      navigate(`/auth/login?ref=${window.location.pathname}`);
+    }
     const loadingTimeout = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
@@ -58,17 +64,17 @@ const UserPage = () => {
   useEffect(() => {
     if (Object.keys(user).length) {
       setStages({
-        profile: <UserProfile user={user} />,
-        orders: <UserOrders />,
-        order: <OrderDetails />,
-        favourites: <UserFavourites user={user} />,
-        notifications: <Notifications user={user} />,
+        profile: <UserProfile {...{ user, setStatus }} />,
+        orders: <UserOrders {...{ setStatus }} />,
+        order: <OrderDetails {...{ user, setStatus }} />,
+        favourites: <UserFavourites {...{ user, setStatus }} />,
+        notifications: <Notifications {...{ user }} />,
       });
     }
   }, [user]);
 
   const handleLogin = () => {
-    dispatch(setIsAuth(true));
+    navigate(`/auth/login?ref=${window.location.pathname}`);
   };
 
   const handleLogout = () => {
@@ -84,16 +90,11 @@ const UserPage = () => {
   };
 
   return (
-    <Box
-      mt={"60px"}
-      height={"100vh"}
-      display={"flex"}
-      justifyContent={"center"}
-      alignItems={"center"}
-    >
+    <Box display={"flex"} justifyContent={"center"}>
       <Box
+        height={"80vh"}
+        mb={"10vh"}
         width={isNotPhone ? "80%" : "90%"}
-        height={"80%"}
         display={"flex"}
         overflow={isNotPhone ? "hidden" : undefined}
         justifyContent={"center"}
@@ -139,15 +140,7 @@ const UserPage = () => {
                 )}
               </Box>
             ) : isLoading ? (
-              <Box
-                width={"100%"}
-                height={"100%"}
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems={"center"}
-              >
-                <CircularProgress />
-              </Box>
+              <StatusComponent {...{ status, setStatus }} />
             ) : (
               <>
                 <Link
@@ -193,7 +186,7 @@ const UserPage = () => {
                         color="primary"
                         variant="dot"
                         overlap="circular"
-                        invisible={!user.notifications.new}
+                        invisible={!isLoading && !user.notifications.new}
                       >
                         <NotificationsSharp />
                       </Badge>
@@ -237,7 +230,7 @@ const UserPage = () => {
                 alignItems={"center"}
                 gap={"5px"}
               >
-                <Link href="/user/#">
+                <Link href="/user">
                   <IconButton>
                     <Home />
                   </IconButton>
@@ -245,8 +238,10 @@ const UserPage = () => {
                 <ChevronRight />
                 <Typography
                   padding={"5px 10px"}
-                  bgcolor={theme.palette.grey[400]}
-                  color={theme.palette.grey[800]}
+                  bgcolor={`rgba(${convertHex(theme.palette.primary.main).join(
+                    " "
+                  )} / 0.2)`}
+                  color={"primary.main"}
                   borderRadius={"20px"}
                   fontSize={"0.9rem"}
                 >
@@ -292,7 +287,7 @@ const UserPage = () => {
                     </Button>
                   </Box>
                 ) : isLoading ? (
-                  <CircularProgress />
+                  <StatusComponent {...{ status, setStatus }} />
                 ) : (
                   stages[stage]
                 )}
@@ -322,7 +317,7 @@ const UserPage = () => {
                 </Button>
               </Box>
             ) : isLoading ? (
-              <CircularProgress />
+              <StatusComponent {...{ status, setStatus }} />
             ) : (
               stages[stage]
             )}

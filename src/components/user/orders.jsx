@@ -1,0 +1,112 @@
+import React from "react";
+import { Box, Link, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { CalendarMonth } from "@mui/icons-material";
+import UserProductCard from "../product/userProductCard";
+import orders from "../../../lib/data/orders.json";
+
+const UserOrders = ({ user, currency }) => {
+  const theme = useTheme();
+  const isNotPhone = useMediaQuery("(min-width:1000px)");
+
+  return (
+    <Box
+      width={"100%"}
+      padding={isNotPhone ? "20px" : "20px 0px"}
+      display={"flex"}
+      flexDirection={"column"}
+      gap={"20px"}
+      height={"100%"}
+      sx={{
+        overflowY: "scroll",
+        "&::-webkit-scrollbar": {
+          bgcolor: "transparent",
+          width: isNotPhone ? "10px" : 0,
+        },
+        "&::-webkit-scrollbar-thumb": {
+          borderRadius: "25px",
+          bgcolor: theme.palette.grey[300],
+        },
+        "&::-webkit-scrollbar-thumb:hover": {
+          cursor: "pointer",
+          bgcolor: theme.palette.grey[400],
+        },
+      }}
+    >
+      {orders.map((order) => (
+        <Link
+          href={`/user/#order/${order.id}`}
+          width={"100%"}
+          sx={{ textDecoration: "none", color: "black" }}
+        >
+          <Box
+            mb={"10px"}
+            border={`1px solid ${theme.palette.grey[400]}`}
+            display={"flex"}
+            flexDirection={"column"}
+            borderRadius={"25px"}
+            padding={"20px"}
+            sx={{
+              transition: "0.3s",
+              ":hover": {
+                boxShadow: `0px 0px 10px 0px ${theme.palette.grey[300]}`,
+                cursor: "pointer",
+              },
+            }}
+          >
+            <Box
+              width={"100%"}
+              display={"flex"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              padding={"20px 0px"}
+            >
+              <Box display={"flex"} alignItems={"center"} gap={"5px"}>
+                <Box
+                  width={"10px"}
+                  height={"10px"}
+                  borderRadius={"50%"}
+                  bgcolor={theme.palette.orderStatusColors[order.status]}
+                />
+                <Typography
+                  color={theme.palette.orderStatusColors[order.status]}
+                >
+                  {order.status.charAt(0).toUpperCase() +
+                    order.status.substring(1)}
+                </Typography>
+              </Box>
+              <Box display={"flex"} gap={"1px"}>
+                <CalendarMonth fontSize={"clamp(0.8rem, 3vw, 1rem)"} />
+                <Typography
+                  color={"text.secondary"}
+                  fontSize={"clamp(0.8rem, 3vw, 1rem)"}
+                >
+                  {order.dateCreated}
+                </Typography>
+              </Box>
+            </Box>
+            <Box
+              width={"100%"}
+              padding={"20px 0px"}
+              display={"flex"}
+              flexDirection={"column"}
+              gap={"10px"}
+            >
+              {Object.keys(order.items).map((item) => {
+                return (
+                  <UserProductCard
+                    {...{ user, currency }}
+                    id={item}
+                    details={order.items[item]}
+                    type={"orders"}
+                  />
+                );
+              })}
+            </Box>
+          </Box>
+        </Link>
+      ))}
+    </Box>
+  );
+};
+
+export default UserOrders;

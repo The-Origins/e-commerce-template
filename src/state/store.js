@@ -7,11 +7,11 @@ const storeSLice = createSlice({
     currency: {},
     region: {},
     isContact: false,
-    isAuth: false,
     recentSearches: [],
     snackBar: {
       on: false,
-      message: { title: "", description: "" },
+      title: "",
+      message: "",
       modalType: "info",
     },
     confirmationModal: {
@@ -24,9 +24,6 @@ const storeSLice = createSlice({
   reducers: {
     setIsContact: (state, action) => {
       state.isContact = action.payload;
-    },
-    setIsAuth: (state, action) => {
-      state.isAuth = action.payload;
     },
     addRecentSearch: (state, action) => {
       if (state.recentSearches.length > 10) {
@@ -60,19 +57,21 @@ const storeSLice = createSlice({
       state.confirmationModal.onCancel = () => {};
     },
     activateSnackBar: (state, action) => {
-      state.modal.on = true;
-      state.modal.message = action.payload.message;
-      state.modal.snackBarType =
-        action.payload.snackBarType || state.modal.snackBarType;
+      state.snackBar.on = true;
+      state.snackBar.title = action.payload.title;
+      state.snackBar.message = action.payload.message;
+      state.snackBar.snackBarType =
+        action.payload.snackBarType || state.snackBar.snackBarType;
     },
     deactivateSnackBar: (state) => {
       state.snackBar.on = false;
-      state.snackBar.message = { title: "", description: "" };
+      state.snackBar.title = "";
+      state.snackBar.message = "";
       state.snackBar.snackBarType = "info";
     },
     setUser: (state, action) => {
       state.user = action.payload;
-      state.currency = action.payload.currency || state.currency;
+      state.currency = action.payload?.payments?.currency || state.currency;
     },
     setRegion: (state, action) => {
       state.region = action.payload;
@@ -88,7 +87,6 @@ export const {
   setRegion,
   setCurrency,
   setIsContact,
-  setIsAuth,
   addRecentSearch,
   removeRecentSearch,
   activateConfirmationModal,

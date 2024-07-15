@@ -1,0 +1,23 @@
+[
+  {
+    "title": "New arrivals!",
+    "description": "New arrivals in electronics",
+    "image": "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "action": {
+      "title": "check them out",
+      "path": "/category?search=electronics&category=new+arrivals"
+    }
+  },
+  {
+    "title": "New Product!",
+    "description": "Check out this new product",
+    "image": "https://images.pexels.com/photos/2112648/pexels-photo-2112648.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "action": { "title": "View Details", "path": "/product?p=5" }
+  },
+  {
+    "title": "50% off all foods!",
+    "description": "Grab your favourite delicacies at half price",
+    "image": "https://images.pexels.com/photos/1653877/pexels-photo-1653877.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "action": { "title": "Shop now", "path": "/results?search=food" }
+  }
+]

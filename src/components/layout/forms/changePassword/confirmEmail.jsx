@@ -3,12 +3,7 @@ import { Email } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import AuthWorker from "../../../../scripts/authWorker";
 
-const ConfirmEmail = ({
-  setStage,
-  setIsLoading,
-  setLoadingMessage,
-  handleCancel,
-}) => {
+const ConfirmEmail = ({ setStage, setStatus, handleCancel }) => {
   const authWorker = new AuthWorker();
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({ email: "required" });
@@ -32,19 +27,24 @@ const ConfirmEmail = ({
     setTouched((prev) => ({ ...prev, [target.name]: true }));
   };
 
-  const handleConfirm = () => {
-    setIsLoading(true);
-    setLoadingMessage("sending verification code");
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setStatus({
+      on: true,
+      type: "LOADING",
+      message: "verifying",
+    });
     const waitingTimeout = setTimeout(() => {
       setStage(1);
-      setIsLoading(false);
+      setStatus({ on: false });
       clearTimeout(waitingTimeout);
     }, 2000);
   };
 
   return (
-    <Box
-      sx={{
+    <form
+      onSubmit={handleSubmit}
+      style={{
         display: "flex",
         flexDirection: "column",
         gap: "20px",
@@ -84,7 +84,7 @@ const ConfirmEmail = ({
           cancel
         </Button>
         <Button
-          onClick={handleConfirm}
+          type="submit"
           variant="contained"
           disableElevation
           disabled={
@@ -96,7 +96,7 @@ const ConfirmEmail = ({
           confirm
         </Button>
       </Box>
-    </Box>
+    </form>
   );
 };
 

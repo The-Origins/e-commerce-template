@@ -10,10 +10,8 @@ const Page404 = () => {
   const dispatch = useDispatch();
   dispatch(
     activateSnackBar({
-      message: {
-        title: "404 Error",
-        description: "Couldn't find the page you're looking for",
-      },
+      title: "404 Error",
+      message: "Couldn't find the page you're looking for",
       snackBarType: "error",
     })
   );

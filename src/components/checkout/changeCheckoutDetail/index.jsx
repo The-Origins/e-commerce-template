@@ -6,16 +6,13 @@ import Address from "../../layout/forms/address";
 
 const ChangeCheckoutDetail = ({
   type,
+  currency,
   data,
-  selected,
   setIsChange,
-  setIsLoading,
-  setLoadingMessage,
-  setIsError,
-  setErrorDetails,
+  setStatus,
 }) => {
   const [stage, setStage] = useState(0);
-  const [detail, setDetail] = useState(selected);
+  const [detail, setDetail] = useState({});
 
   const changeDetail = (detail) => {
     setDetail(detail);
@@ -23,30 +20,35 @@ const ChangeCheckoutDetail = ({
     setStage(0);
   };
 
-  const onFail = (message) => {
-    setIsError(true);
-    setErrorDetails({
-      message,
-      action: () => setIsChange(false),
+  const handleFail = (message) => {
+    setStatus({
+      on: true,
+      type: "ERROR",
+      message: message,
+      action: () => {
+        setStage(1);
+      },
+      actionTitle: "Back to login",
     });
   };
 
   const stages = [
     <SelectCheckoutChange
-      {...{ type, data, selected, setIsChange, setStage, setDetail }}
+      {...{ type, data, currency, setIsChange, setStage, setDetail }}
     />,
     type === "payment" ? (
       <Payment
         onComplete={changeDetail}
         onCancel={() => setStage(0)}
-        onFail={onFail}
-        {...{ setIsLoading, setLoadingMessage }}
+        onFail={handleFail}
+        setStatus={setStatus}
       />
     ) : type === "delivery" ? (
       <Address
         onComplete={changeDetail}
         onCancel={() => setStage(0)}
-        onFail={onFail}
+        onFail={handleFail}
+        setStatus={setStatus}
       />
     ) : (
       <></>

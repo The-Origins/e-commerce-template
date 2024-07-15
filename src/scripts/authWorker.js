@@ -1,21 +1,8 @@
 import { AsYouType, isValidPhoneNumber } from "libphonenumber-js";
-import { countries, currencies } from "country-data";
+import callingCodes from "../../lib/callingCodes.json";
 
 class AuthWorker {
-  constructor() {
-    this.ignoredCurrencies = [
-      "MXV",
-      "USN",
-      "USS",
-      "UYI",
-      "XBA",
-      "XBB",
-      "XBC",
-      "XBD",
-      "XXX",
-    ];
-  }
-
+  
   redact(str, startCharacters = 2, endCharacters = 2) {
     str = String(str);
     if (str.length <= startCharacters + endCharacters) {
@@ -40,7 +27,7 @@ class AuthWorker {
 
   formatPhoneNumber(prev, phoneNumber, countryCode) {
     const isValid = isValidPhoneNumber(prev, countryCode);
-    const callingCode = this.getCallingCodes()[countryCode].callingCode;
+    const callingCode = callingCodes[countryCode].callingCode;
     let formattedPhoneNumber = phoneNumber;
 
     if (formattedPhoneNumber.length <= callingCode.length) {
@@ -60,31 +47,33 @@ class AuthWorker {
     return formattedPhoneNumber;
   }
 
-  getCallingCodes() {
-    let callingCodes = {};
-    Object.keys(countries).forEach((country) => {
-      if (
-        countries[country].countryCallingCodes &&
-        countries[country].countryCallingCodes.length
-      ) {
-        callingCodes[countries[country].alpha2] = {
-          callingCode: countries[country].countryCallingCodes[0],
-          countryName: countries[country].name,
-        };
-      }
-    });
-    return callingCodes;
-  }
+  // callingCodes.json has this data stored locally
+  // getCallingCodes() {
+  //   let callingCodes = {};
+  //   Object.keys(countries).forEach((country) => {
+  //     if (
+  //       countries[country].countryCallingCodes &&
+  //       countries[country].countryCallingCodes.length
+  //     ) {
+  //       callingCodes[countries[country].alpha2] = {
+  //         callingCode: countries[country].countryCallingCodes[0],
+  //         countryName: countries[country].name,
+  //       };
+  //     }
+  //   });
+  //   return callingCodes;
+  // }
 
-  getCurrencies() {
-    const filteredCurrencies = {};
-    Object.keys(currencies).forEach((currency) => {
-      if (!this.ignoredCurrencies.includes(currency)) {
-        filteredCurrencies[currency] = currencies[currency];
-      }
-    });
-    return filteredCurrencies;
-  }
+  // currencies.json has this stored locally
+  // getCurrencies() {
+  //   const filteredCurrencies = {};
+  //   Object.keys(currencies).forEach((currency) => {
+  //     if (!this.ignoredCurrencies.includes(currency)) {
+  //       filteredCurrencies[currency] = currencies[currency];
+  //     }
+  //   });
+  //   return filteredCurrencies;
+  // }
 
   luhnCheck(value) {
     let sum = 0;

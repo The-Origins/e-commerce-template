@@ -1,9 +1,10 @@
-import data from "../lib/data";
+import data from "../../lib/data/products.json";
 import { currencies } from "country-data";
 
 class ProductWorker {
   constructor() {
-    this.products = data.products;
+    this.products = data;
+    this.searchExeptions = ["SKU", "weight"];
   }
 
   getTotal(product, quantity, variants) {
@@ -12,51 +13,35 @@ class ProductWorker {
     Object.keys(variants).forEach((variant) => {
       if (Array.isArray(variants[variant])) {
         variants[variant].forEach((element) => {
-          total += product.variants[variant][element].amount;
+          total += product.variants[variant][element];
         });
       } else {
-        total += product.variants[variant][variants[variant]].amount;
+        total += product.variants[variant][variants[variant]];
       }
     });
-    return Number(total).toLocaleString("US");
-  }
-
-  getCurrencySymbol(currencyCode = "") {
-    return currencies[currencyCode].symbol;
+    return total;
   }
 
   getDiscount(offer, price) {
     return price - price * (offer / 100);
   }
 
-  getProductDetails(cartItems, favourites, product) {
-    let details = {};
-    if (cartItems[product.id]) {
-      details = { ...cartItems[product.id].details };
-      details.total = Number(cartItems[product.id].total).toLocaleString("US");
-    } else if (favourites[product.id]) {
-      details = { ...favourites[product.id].details };
-      details.total = Number(favourites[product.id].total).toLocaleString("US");
-    } else {
-      details.quantity = 1;
-      details.total = Number(product.unitPrice.amount).toLocaleString("US");
+  getProductDetails(cartItems, favourites, product, offers) {
+    let details = cartItems[product.id] || favourites[product.id];
+
+    if (!details) {
+      details = {
+        quantity: 1,
+        total: offers[product.id] || product.unitPrice.amount,
+      };
       if (Object.keys(product.variants).length) {
         Object.keys(product.variants).forEach((variant) => {
-          if (variant.multiSelect) {
-            const { multiSelect, ...options } = variant;
-            // Object.keys(options).forEach((option, index) => {
-            //   details[variant] = { ...details[variant], [option]: index === 0 };
-            // });
-            details = {
-              ...details,
-              [variant]: [Object.keys(options)[0]],
-            };
-          } else {
-            details = {
-              ...details,
-              [variant]: Object.keys(product.variants[variant])[0],
-            };
-          }
+          details = {
+            ...details,
+            [variant]: product.variants[variant].multiSelect
+              ? []
+              : Object.keys(product.variants[variant])[0],
+          };
         });
       }
     }

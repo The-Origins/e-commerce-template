@@ -7,7 +7,6 @@ import {
   Divider,
   ListItemIcon,
   Typography,
-  useMediaQuery,
   Avatar,
   Link,
   Badge,
@@ -18,11 +17,9 @@ import {
   NotificationsSharp,
   PersonOff,
 } from "@mui/icons-material";
-import data from "../../../lib/data";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   activateConfirmationModal,
-  setIsAuth,
   setUser,
 } from "../../../state/store";
 
@@ -181,15 +178,11 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
           gap={"20px"}
         >
           <PersonOff sx={{ fontSize: "2rem", color: "text.secondary" }} />
-          <Button
-            disableElevation
-            variant="contained"
-            onClick={() => {
-              dispatch(setIsAuth(true));
-            }}
-          >
-            Login/signup
-          </Button>
+          <Link href="/auth/login">
+            <Button disableElevation variant="contained">
+              Login/signup
+            </Button>
+          </Link>
         </Box>
       )}
     </Box>

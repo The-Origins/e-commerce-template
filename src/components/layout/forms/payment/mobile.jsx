@@ -5,11 +5,11 @@ import AuthWorker from "../../../../scripts/authWorker";
 import { isValidPhoneNumber } from "libphonenumber-js";
 import TelTextField from "../telTextField";
 import { useSelector } from "react-redux";
+import callingCodes from "../../../../../lib/callingCodes.json";
 
 const MobilePayment = ({ mobileValues, setStage, setPayment }) => {
   const authWorker = new AuthWorker();
   const region = useSelector((state) => state.region);
-  const callingCodes = authWorker.getCallingCodes();
   const [form, setForm] = useState({
     code: mobileValues?.code || region.country_code || "US",
     number:
@@ -74,7 +74,8 @@ const MobilePayment = ({ mobileValues, setStage, setPayment }) => {
     setTouched((prev) => ({ ...prev, [target.name]: true }));
   };
 
-  const handleConfirm = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     setPayment({
       type: "mobile",
       number: authWorker.redact(form.number, 4),
@@ -84,13 +85,16 @@ const MobilePayment = ({ mobileValues, setStage, setPayment }) => {
   };
 
   return (
-    <Box
-      display={"flex"}
-      flexDirection={"column"}
-      gap={"20px"}
-      width={"min(400px, 90%)"}
-      height={"100%"}
-      justifyContent={"space-evenly"}
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        width: "min(400px, 90%)",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-evenly",
+        gap: "20px",
+      }}
     >
       <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
         <Typography
@@ -120,12 +124,11 @@ const MobilePayment = ({ mobileValues, setStage, setPayment }) => {
           variant="contained"
           disableElevation
           disabled={Boolean(errors.number)}
-          onClick={handleConfirm}
         >
           confirm
         </Button>
       </Box>
-    </Box>
+    </form>
   );
 };
 

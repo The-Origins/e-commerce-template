@@ -1,7 +1,5 @@
 import {
   ExitToApp,
-  KeyboardArrowDown,
-  KeyboardArrowUp,
   LocalShipping,
   Paid,
   Payments,
@@ -16,29 +14,27 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import UserProductCard from "../components/product/userProductCard";
-import CheckoutElement from "../components/checkout/checkoutDetail";
-import ProductWorker from "../scripts/productWorker";
+import CheckoutDetail from "../components/checkout/checkoutDetail";
 import SkeletonGroup from "../components/layout/skeletonGroup";
 import { navigate } from "gatsby";
-import { setIsAuth } from "../state/store";
+import EditModal from "../components/layout/editModal";
+import ConfirmCheckout from "../components/checkout/confirm";
 
 const CheckoutPage = () => {
-  const dispatch = useDispatch();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
-  const productWorker = new ProductWorker();
+  const currency = useSelector((state) => state.currency);
   const user = useSelector((state) => state.user);
-  const itemsRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isConfirm, setIsConfirm] = useState(false);
   const [checkoutDetails, setCheckoutDetails] = useState({
     items: [],
     delivery: {},
     payment: {},
   });
-  const [expandItems, setExpandItems] = useState(false);
 
   useEffect(() => {
     document.title = "Checkout | E-commerce";
@@ -46,34 +42,25 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     if (Object.keys(user).length) {
-      let items = [];
-      Object.keys(user.cart.items).forEach((item) => {
-        items.push({
-          product: productWorker.findProduct(item),
-          ...user.cart.items[item],
-        });
-      });
       setCheckoutDetails({
         total:
-          user.cart.total + user.addresses.saved[user.addresses.recent].fee,
-        items,
-        payment: user.payments.saved[user.payments.recent],
-        delivery: user.addresses.saved[user.addresses.recent],
+          user.cart.total +
+          user.addresses.saved[user.addresses.recent].fee.amount,
+        items: user.cart.items,
+        payment: {
+          details: user.payments.saved[user.payments.recent],
+          currency: currency.code,
+        },
+        delivery: { details: user.addresses.saved[user.addresses.recent] },
       });
       setIsLoading(false);
     } else {
-      navigate("/");
-      dispatch(setIsAuth(true));
+      navigate("/auth/login");
     }
   }, [user]);
 
-  const switchExpandItems = () => {
-    setExpandItems((prev) => {
-      itemsRef.current.style.height = !prev
-        ? `${itemsRef.current.scrollHeight + 70}px`
-        : "50vh";
-      return !prev;
-    });
+  const handleConfirm = () => {
+    setIsConfirm(true);
   };
 
   return (
@@ -83,11 +70,20 @@ const CheckoutPage = () => {
       display={"flex"}
       justifyContent={"center"}
     >
+      <EditModal
+        width={"min(600px, 90%)"}
+        height={"650px"}
+        isEdit={isConfirm}
+        handleClose={() => setIsConfirm(false)}
+      >
+        <ConfirmCheckout {...{ currency, setIsConfirm, checkoutDetails }} />
+      </EditModal>
       <Box
         width={isNotPhone ? "80%" : "90%"}
         display={"flex"}
         gap={"30px"}
         alignItems={"flex-start"}
+        mb={"50px"}
       >
         <Box
           width={"100%"}
@@ -120,7 +116,7 @@ const CheckoutPage = () => {
                   <Box display={"flex"} justifyContent={"space-between"}>
                     <Typography fontSize={"0.8rem"}>Subtotal</Typography>
                     <Typography fontSize={"0.8rem"}>
-                      {user.payments.currency.symbol} {user.cart.total}
+                      {currency.symbol} {user.cart.total}
                     </Typography>
                   </Box>
                   <Box display={"flex"} justifyContent={"space-between"}>
@@ -128,8 +124,8 @@ const CheckoutPage = () => {
                       Delivery charges
                     </Typography>
                     <Typography fontSize={"0.8rem"}>
-                      {user.payments.currency.symbol}{" "}
-                      {checkoutDetails.delivery.fee}
+                      {currency.symbol}{" "}
+                      {checkoutDetails.delivery.details.fee.amount}
                     </Typography>
                   </Box>
                 </Box>
@@ -144,7 +140,7 @@ const CheckoutPage = () => {
                 >
                   <Typography fontWeight={"bold"}>Total</Typography>
                   <Typography fontWeight={"bold"}>
-                    {user.payments.currency.symbol} {checkoutDetails.total}
+                    {currency.symbol} {checkoutDetails.total}
                   </Typography>
                 </Box>
               )}
@@ -170,8 +166,7 @@ const CheckoutPage = () => {
                     borderRadius={"10px"}
                     fontSize={"0.9rem"}
                   >
-                    Total: {user.payments.currency.symbol}{" "}
-                    {checkoutDetails.total}
+                    Total: {currency.symbol} {checkoutDetails.total}
                   </Typography>
                 )}
                 <Button
@@ -179,6 +174,7 @@ const CheckoutPage = () => {
                   variant="contained"
                   disableElevation
                   disabled={isLoading}
+                  onClick={handleConfirm}
                 >
                   Confirm
                 </Button>
@@ -198,13 +194,24 @@ const CheckoutPage = () => {
               <ShoppingCart /> Items
             </Typography>
             <Box
-              ref={itemsRef}
-              display={"flex"}
               border={`1px solid ${theme.palette.grey[400]}`}
               borderRadius={"25px"}
-              position={"relative"}
               height={"50vh"}
-              sx={{ overflow: "hidden", transition: "height 0.3s ease-out" }}
+              sx={{
+                overflowY: "scroll",
+                "&::-webkit-scrollbar": {
+                  bgcolor: "transparent",
+                  width: "10px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  borderRadius: "25px",
+                  bgcolor: theme.palette.grey[300],
+                },
+                "&::-webkit-scrollbar-thumb:hover": {
+                  cursor: "pointer",
+                  bgcolor: theme.palette.grey[400],
+                },
+              }}
             >
               {isLoading ? (
                 <Skeleton
@@ -214,90 +221,51 @@ const CheckoutPage = () => {
                 ></Skeleton>
               ) : (
                 <Box
-                  display={"flex"}
                   width={"100%"}
+                  display={"flex"}
                   flexDirection={"column"}
                   gap={"20px"}
                   padding={"20px"}
-                  sx={{ transition: "0.3s" }}
                 >
-                  {checkoutDetails.items.map((item) => (
-                    <UserProductCard item={item} user={user} type="checkout" />
+                  {Object.keys(checkoutDetails.items).map((item) => (
+                    <UserProductCard
+                      id={item}
+                      details={checkoutDetails.items[item]}
+                      user={user}
+                      currency={currency}
+                      type="checkout"
+                    />
                   ))}
                 </Box>
               )}
-              <Box
-                position={"absolute"}
-                bottom={0}
-                width={"100%"}
-                height={"50px"}
-                bgcolor={"white"}
-                boxShadow={`0px 0px 10px 0px ${theme.palette.grey[300]}`}
-                display={"flex"}
-                justifyContent={"space-between"}
-                alignItems={"center"}
-                padding={"20px"}
-              >
-                <Button
-                  size="small"
-                  variant="text"
-                  startIcon={
-                    expandItems ? <KeyboardArrowUp /> : <KeyboardArrowDown />
-                  }
-                  onClick={switchExpandItems}
-                  sx={{ textTransform: "none" }}
-                >
-                  {expandItems ? "colapse" : "expand"}
-                </Button>
-                {isLoading ? (
-                  <Skeleton
-                    variant="rounded"
-                    width={"200px"}
-                    height={"20px"}
-                  ></Skeleton>
-                ) : (
-                  <Box
-                    padding={"5px 10px"}
-                    bgcolor={"primary.main"}
-                    borderRadius={"10px"}
-                  >
-                    <Typography color={"white"}>
-                      Subtotal: {user.payments.currency.symbol}{" "}
-                      {user.cart.total}
-                    </Typography>
-                  </Box>
-                )}
-              </Box>
             </Box>
           </Box>
           <Box display={"flex"} gap={"20px"} flexWrap={"wrap"}>
-            <CheckoutElement
+            <CheckoutDetail
               icon={<Payments />}
               type={"payment"}
-              user={user}
-              isLoading={isLoading}
+              {...{ user, currency, isLoading }}
               content={
                 isLoading
                   ? undefined
                   : {
-                      title: checkoutDetails.payment.type,
-                      description: checkoutDetails.payment.number,
+                      title: checkoutDetails.payment.details.type,
+                      description: checkoutDetails.payment.details.number,
                       icon: <Paid sx={{ fontSize: "2rem" }} />,
                     }
               }
             />
-            <CheckoutElement
+            <CheckoutDetail
               icon={<LocalShipping />}
               type={"delivery"}
-              user={user}
-              isLoading={isLoading}
+              {...{ user, currency, isLoading }}
               content={
                 isLoading
                   ? undefined
                   : {
-                      title: `${checkoutDetails.delivery.address}, ${checkoutDetails.delivery.street}`,
-                      description: `${checkoutDetails.delivery.city}, ${checkoutDetails.delivery.country}`,
-                      fee: checkoutDetails.delivery.fee,
+                      title: `${checkoutDetails.delivery.details.address}, ${checkoutDetails.delivery.details.street}`,
+                      description: `${checkoutDetails.delivery.details.city}, ${checkoutDetails.delivery.details.country}`,
+                      fee: checkoutDetails.delivery.details.fee,
                       icon: <Place sx={{ fontSize: "2rem" }} />,
                     }
               }
@@ -327,7 +295,7 @@ const CheckoutPage = () => {
                 <Box display={"flex"} justifyContent={"space-between"}>
                   <Typography fontSize={"0.8rem"}>Subtotal</Typography>
                   <Typography fontSize={"0.8rem"}>
-                    {user.payments.currency.symbol} {user.cart.total}
+                    {currency.symbol} {user.cart.total}
                   </Typography>
                 </Box>
                 <Box
@@ -337,8 +305,8 @@ const CheckoutPage = () => {
                 >
                   <Typography fontSize={"0.8rem"}>Delivery charges</Typography>
                   <Typography fontSize={"0.8rem"}>
-                    {user.payments.currency.symbol}{" "}
-                    {checkoutDetails.delivery.fee}
+                    {currency.symbol}{" "}
+                    {checkoutDetails.delivery.details.fee.amount}
                   </Typography>
                 </Box>
               </Box>
@@ -353,7 +321,7 @@ const CheckoutPage = () => {
               >
                 <Typography fontWeight={"bold"}>Total</Typography>
                 <Typography fontWeight={"bold"}>
-                  {user.payments.currency.symbol} {checkoutDetails.total}
+                  {currency.symbol} {checkoutDetails.total}
                 </Typography>
               </Box>
             )}
@@ -362,6 +330,7 @@ const CheckoutPage = () => {
               variant="contained"
               disableElevation
               disabled={isLoading}
+              onClick={handleConfirm}
             >
               Confirm
             </Button>

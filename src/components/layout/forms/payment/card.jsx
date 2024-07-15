@@ -5,9 +5,8 @@ import AuthWorker from "../../../../scripts/authWorker";
 
 const CardPayment = ({
   setStage,
+  setStatus,
   setPayment,
-  setIsLoading,
-  setLoadingMessage,
   handleComplete,
   handleFail,
 }) => {
@@ -77,7 +76,8 @@ const CardPayment = ({
     setTouched((prev) => ({ ...prev, [target.name]: true }));
   };
 
-  const verifyCardDetails = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     const { number, ...rest } = form;
     const unformattedNumber = authWorker.removeStringFormat(number, "-");
     setPayment({
@@ -86,22 +86,28 @@ const CardPayment = ({
       details: { number: unformattedNumber, ...rest },
     });
 
-    setIsLoading(true);
-    setLoadingMessage("verifying");
+    setStatus({
+      on: true,
+      type: "LOADING",
+      message: "verifying",
+    });
     const loadingTimeout = setTimeout(() => {
-      setIsLoading(false);
+      setStatus({ on: false });
       handleComplete();
       clearTimeout(loadingTimeout);
     }, 2000);
   };
 
   return (
-    <Box
-      display={"flex"}
-      flexDirection={"column"}
-      gap={"20px"}
-      height={"100%"}
-      justifyContent={"space-evenly"}
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+        height: "100%",
+        justifyContent: "space-evenly",
+      }}
     >
       <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
         <Typography
@@ -178,12 +184,11 @@ const CardPayment = ({
               Boolean(Object.keys(errors).length)) ||
             Boolean(Object.keys(errors).length)
           }
-          onClick={verifyCardDetails}
         >
           confirm
         </Button>
       </Box>
-    </Box>
+    </form>
   );
 };
 

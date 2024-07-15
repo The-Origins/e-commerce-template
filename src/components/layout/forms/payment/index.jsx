@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SelectPayment from "./select";
 import CardPayment from "./card";
 import MobilePayment from "./mobile";
-import VerificationComponent from "../../verificationComponent";
+import VerificationComponent from "../../../auth/verificationComponent";
 import Carousel from "../../carousel";
 
 const Payment = ({
@@ -10,8 +10,9 @@ const Payment = ({
   onFail,
   onComplete,
   onCancel,
-  setIsLoading,
-  setLoadingMessage,
+  setStatus,
+  enableSkip = false,
+  onSkip,
 }) => {
   const [stage, setStage] = useState(0);
   const [payment, setPayment] = useState({});
@@ -21,11 +22,11 @@ const Payment = ({
   };
 
   const handleComplete = () => {
-    setStage(0);
     setPayment((prev) => {
       onComplete(prev);
       return prev;
     });
+    setStage(0);
   };
 
   return (
@@ -42,13 +43,12 @@ const Payment = ({
         justifyContent: "center",
       }}
     >
-      <SelectPayment {...{ setStage, onCancel }} />
+      <SelectPayment {...{ setStage, onCancel, enableSkip, onSkip }} />
       <CardPayment
         {...{
           setStage,
+          setStatus,
           setPayment,
-          setIsLoading,
-          setLoadingMessage,
           handleComplete,
           handleFail,
         }}
@@ -56,8 +56,7 @@ const Payment = ({
       <MobilePayment {...{ mobileValues, setStage, setPayment }} />
       <VerificationComponent
         type="mobile"
-        setIsLoading={setIsLoading}
-        setLoadingMessage={setLoadingMessage}
+        setStatus={setStatus}
         onVerifyFaliure={handleFail}
         onVerifySuccess={handleComplete}
       />

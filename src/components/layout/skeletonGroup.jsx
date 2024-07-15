@@ -1,12 +1,14 @@
 import { Box, Skeleton } from "@mui/material";
 import React from "react";
 
-const SkeletonGroup = ({count, variant, width, height, flexDirection, flexWrap,}) => {
-  let skeletonArr = [];
-  for (let i = 0; i < count; i++) {
-    skeletonArr.push(i);
-  }
-
+const SkeletonGroup = ({
+  count,
+  variant,
+  width,
+  height,
+  flexDirection,
+  flexWrap,
+}) => {
   return (
     <Box
       display={"flex"}
@@ -14,7 +16,7 @@ const SkeletonGroup = ({count, variant, width, height, flexDirection, flexWrap,}
       flexWrap={flexWrap}
       gap={"20px"}
     >
-      {skeletonArr.map(() => (
+      {Array.from({ length: count }).map(() => (
         <Skeleton
           width={width}
           height={height}

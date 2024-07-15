@@ -3,7 +3,14 @@ import SelectAddress from "./select";
 import AddressDetails from "./details";
 import Carousel from "../../carousel";
 
-const Address = ({ onFail, onComplete, onCancel }) => {
+const Address = ({
+  setStatus,
+  onFail,
+  onComplete,
+  onCancel,
+  enableSkip = false,
+  onSkip,
+}) => {
   const [stage, setStage] = useState(0);
   const [address, setAddress] = useState({});
 
@@ -12,11 +19,11 @@ const Address = ({ onFail, onComplete, onCancel }) => {
   };
 
   const handleComplete = () => {
-    setStage(0);
     setAddress((prev) => {
       onComplete(prev);
       return prev;
     });
+    setStage(0);
   };
 
   return (
@@ -33,9 +40,18 @@ const Address = ({ onFail, onComplete, onCancel }) => {
         justifyContent: "center",
       }}
     >
-      <SelectAddress {...{ setStage, setAddress, onCancel }} />
+      <SelectAddress
+        {...{ setStage, setAddress, onCancel, enableSkip, onSkip }}
+      />
       <AddressDetails
-        {...{ setStage, address, setAddress, handleComplete, handleFail }}
+        {...{
+          setStatus,
+          setStage,
+          address,
+          setAddress,
+          handleComplete,
+          handleFail,
+        }}
       />
     </Carousel>
   );

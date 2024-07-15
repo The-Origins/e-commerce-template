@@ -13,16 +13,38 @@ import { AddShoppingCart, Delete, Edit } from "@mui/icons-material";
 import ProductDetails from "./productDetails";
 import ProductWorker from "../../scripts/productWorker";
 import EditModal from "../layout/editModal";
+import { useDispatch } from "react-redux";
+import { activateConfirmationModal } from "../../state/store";
 
-const UserProductCard = (props) => {
+const UserProductCard = ({
+  id,
+  details,
+  type,
+  user,
+  currency,
+  isLink = false,
+}) => {
+  const dispatch = useDispatch();
   const productWorker = new ProductWorker();
+  const product = productWorker.findProduct(id);
+  const { total: value, ...remainingDetails } = details;
   const [isProductDetails, setIsProductDetails] = useState(false);
 
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
 
-  const switchIsProductDetails = () => {
-    setIsProductDetails((prev) => !prev);
+  const handleDelete = () => {
+    dispatch(
+      activateConfirmationModal({
+        message: `Are you sure you want to remove '${product.name}' from your ${type}`,
+        onCancel: () => {},
+        onConfirm: () => {},
+      })
+    );
+  };
+
+  const handleEdit = () => {
+    setIsProductDetails(true);
   };
 
   return (
@@ -38,7 +60,7 @@ const UserProductCard = (props) => {
         transition: "0.3s",
         ":hover": {
           boxShadow:
-            props.type === "cart"
+            type === "cart"
               ? `0px 0px 10px 0px ${theme.palette.grey[400]}`
               : undefined,
         },
@@ -47,7 +69,7 @@ const UserProductCard = (props) => {
         },
       }}
     >
-      {(props.type === "cart" || props.type === "favourites") && (
+      {(type === "cart" || type === "favourites") && (
         <EditModal
           isEdit={isProductDetails}
           width={"min(700px, 90%)"}
@@ -55,10 +77,8 @@ const UserProductCard = (props) => {
         >
           <ProductDetails
             title={"Edit your prefrences"}
-            product={props.item.product}
-            user={props.user}
-            switchIsProductDetails={switchIsProductDetails}
-            isProductDetails={isProductDetails}
+            {...{ product, user, currency }}
+            {...{ isProductDetails, setIsProductDetails }}
           />
         </EditModal>
       )}
@@ -66,14 +86,14 @@ const UserProductCard = (props) => {
         height={"90px"}
         width={"clamp(100px, 2vw, 200px)"}
         sx={{
-          backgroundImage: `url(${props.item.product.images[0]})`,
+          backgroundImage: `url(${product.images[0]})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           borderRadius: "5px",
         }}
       />
       <Link
-        href={props.isLink ? `/product/?p=${props.item.product.id}` : undefined}
+        href={isLink ? `/product/?p=${id}` : undefined}
         sx={{
           color: "black",
           textDecoration: "none",
@@ -91,30 +111,27 @@ const UserProductCard = (props) => {
           gap={"5px"}
         >
           <Typography fontWeight={"bold"} fontSize={"clamp(1rem, 6vw, 1.2rem)"}>
-            {props.item.product.name}
+            {product.name}
           </Typography>
           <Typography
             fontSize={"clamp(0.7rem, 2vw, 0.9rem)"}
             color={"text.secondary"}
           >
-            {Object.keys(props.item.details)
+            {Object.keys(remainingDetails)
               .map(
                 (detail) =>
                   `${detail.charAt(0).toUpperCase() + detail.substring(1)}: ${
-                    props.item.details[detail]
+                    remainingDetails[detail]
                   }`
               )
               .join(", ")}
           </Typography>
           <Typography>
-            {productWorker.getCurrencySymbol(
-              props.item.product.unitPrice.currency
-            )}{" "}
-            {props.item.total}
+            {currency.symbol} {details.total}
           </Typography>
-          {props.type === "favourites" && (
+          {type === "favourites" && (
             <Box
-              className={`${props.type || "user"}-item-actions`}
+              className={`${type || "user"}-item-actions`}
               display={"flex"}
               flexDirection={"row"}
               gap={"10px"}
@@ -124,6 +141,7 @@ const UserProductCard = (props) => {
                 size="small"
                 sx={{ ":hover": { color: "primary.main" } }}
                 startIcon={isNotPhone ? <Delete /> : undefined}
+                onClick={handleDelete}
               >
                 Remove
               </Button>
@@ -132,14 +150,14 @@ const UserProductCard = (props) => {
                 disableElevation
                 size="small"
                 sx={{ alignSelf: "flex-start" }}
-                onClick={switchIsProductDetails}
+                onClick={handleEdit}
                 startIcon={isNotPhone ? <AddShoppingCart /> : undefined}
               >
                 Add to cart
               </Button>
             </Box>
           )}
-          {!isNotPhone && props.type === "cart" && (
+          {!isNotPhone && type === "cart" && (
             <Box
               className={"cart-item-options"}
               display={"flex"}
@@ -149,7 +167,7 @@ const UserProductCard = (props) => {
             >
               <Button
                 sx={{ ":hover": { color: "primary.main" } }}
-                onClick={switchIsProductDetails}
+                onClick={handleEdit}
                 startIcon={<Edit />}
                 size="small"
               >
@@ -161,6 +179,7 @@ const UserProductCard = (props) => {
                 size="small"
                 sx={{ ":hover": { color: "primary.main" } }}
                 startIcon={<Delete />}
+                onClick={handleDelete}
               >
                 Remove
               </Button>
@@ -168,7 +187,7 @@ const UserProductCard = (props) => {
           )}
         </Box>
       </Link>
-      {isNotPhone && props.type === "cart" && (
+      {isNotPhone && type === "cart" && (
         <Box
           className={"cart-item-options"}
           display={"flex"}
@@ -179,13 +198,16 @@ const UserProductCard = (props) => {
           <Tooltip title="Edit" placement="right">
             <IconButton
               sx={{ ":hover": { color: "primary.main" } }}
-              onClick={switchIsProductDetails}
+              onClick={handleEdit}
             >
               <Edit />
             </IconButton>
           </Tooltip>
           <Tooltip title="Remove from cart" placement="right">
-            <IconButton sx={{ ":hover": { color: "primary.main" } }}>
+            <IconButton
+              sx={{ ":hover": { color: "primary.main" } }}
+              onClick={handleDelete}
+            >
               <Delete />
             </IconButton>
           </Tooltip>

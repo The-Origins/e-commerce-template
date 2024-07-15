@@ -1,6 +1,6 @@
 import { Box, MenuItem, Select, TextField, Typography } from "@mui/material";
 import React from "react";
-import AuthWorker from "../../../scripts/authWorker";
+import callingCodes from "../../../../lib/callingCodes.json";
 
 const TelTextField = ({
   number,
@@ -11,14 +11,14 @@ const TelTextField = ({
   handleChange,
   handleBlur,
   style,
+  size,
 }) => {
   number = number || "number";
   code = code || "code";
-  const authWorker = new AuthWorker();
-  const callingCodes = authWorker.getCallingCodes();
 
   return (
     <TextField
+      size={size || "medium"}
       type="tel"
       placeholder="phone number"
       name={number}
@@ -28,7 +28,7 @@ const TelTextField = ({
       error={Boolean(touched[number]) && Boolean(errors[number])}
       helperText={(touched[number] && errors[number]) || " "}
       sx={{
-        ...{ style },
+        ...style,
         "& > div": { padding: 0 },
         "& > div > div": { marginRight: "5px" },
       }}

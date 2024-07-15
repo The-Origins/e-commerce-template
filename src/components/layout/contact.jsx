@@ -8,11 +8,12 @@ import {
   useTheme,
 } from "@mui/material";
 import { PhoneInTalk, Mail, Close } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setIsContact } from "../../state/store";
 
-const Contact = ({isContact}) => {
+const Contact = () => {
   const theme = useTheme();
+  const isContact = useSelector((state) => state.isContact);
   const dispatch = useDispatch();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const [showPhone, setShowPhone] = useState(false);
@@ -52,8 +53,8 @@ const Contact = ({isContact}) => {
         </Box>
         <Typography
           textAlign={"center"}
-          fontSize={"2rem"}
-          fontFamily={theme.fonts.secondary}
+          fontSize={"1.5rem"}
+          fontWeight={"bold"}
           color={"black"}
         >
           Contact us

@@ -1,0 +1,110 @@
+{
+  "name": { "first": "john", "last": "doe" },
+  "email": "johndoe@email.com",
+  "phone": { "code": "US", "number": "+1 212 341 2321" },
+  "payments": {
+    "currency": {
+      "code": "USD",
+      "decimals": 2,
+      "name": "United States dollar",
+      "number": "840",
+      "symbol": "$"
+    },
+    "recent": 1,
+    "saved": [
+      {
+        "type": "mobile",
+        "number": "+1 2*******21"
+      },
+      {
+        "type": "card",
+        "number": "41************86"
+      }
+    ]
+  },
+  "addresses": {
+    "recent": 1,
+    "saved": [
+      {
+        "country": "Country 1",
+        "city": "City 1",
+        "street": "1st street",
+        "address": "Address 1",
+        "type": "home",
+        "locationInfo": "House no A5, 3rd floor",
+        "fee": { "amount": 40, "currency": "USD" }
+      },
+      {
+        "country": "Country 1",
+        "city": "City 1",
+        "street": "2nd street",
+        "address": "Address 2",
+        "type": "pick-up station",
+        "locationInfo": "4rd floor",
+        "fee": { "amount": 20, "currency": "USD" }
+      },
+      {
+        "country": "Country 1",
+        "city": "City 1",
+        "street": "3rd street",
+        "address": "Address 3",
+        "type": "office",
+        "locationInfo": "10th floor",
+        "fee": { "amount": 50, "currency": "USD" }
+      }
+    ]
+  },
+  "orders": [1, 2, 3],
+  "notifications": {
+    "items": [
+      {
+        "title": "This is a notification!!",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+        "dateCreated": "11/11/2013",
+        "unread": true
+      },
+      {
+        "title": "This is a notification!!",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+        "dateCreated": "11/11/2013",
+        "unread": true
+      },
+      {
+        "title": "This is a notification!!",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+        "dateCreated": "11/11/2013",
+        "unread": false
+      },
+      {
+        "title": "This is a notification!!",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. Sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+        "dateCreated": "11/11/2013",
+        "unread": false
+      }
+    ],
+    "new": true
+  },
+  "favourites": {
+    "18": { "quantity": 1, "total": 1000 },
+    "6": { "quantity": 2, "size": "m", "color": "blue", "total": 55 }
+  },
+  "cart": {
+    "total": 5530,
+    "items": {
+      "11": { "quantity": 1, "storage": "256gb", "total": 1400 },
+      "12": { "quantity": 2, "lens": "70-200mm", "total": 3500 },
+      "23": {
+        "quantity": 1,
+        "size": "large",
+        "total": 9
+      },
+      "25": {
+        "quantity": 2,
+        "size": "large",
+        "crust": "normal",
+        "extras": ["extra cheese"],
+        "total": 121
+      }
+    }
+  }
+}

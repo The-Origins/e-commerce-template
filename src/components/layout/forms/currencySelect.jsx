@@ -1,10 +1,8 @@
 import React from "react";
 import { Box, MenuItem, Select, Typography } from "@mui/material";
-import AuthWorker from "../../../scripts/authWorker";
+import currencies from "../../../../lib/currencies.json";
 
 const CurrencySelect = ({ form, handleChange }) => {
-  const authWorker = new AuthWorker();
-  const currencies = authWorker.getCurrencies();
   return (
     <Select
       autoWidth

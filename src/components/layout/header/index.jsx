@@ -6,30 +6,46 @@ import {
   Box,
   IconButton,
   Link,
-  TextField,
-  InputAdornment,
   useMediaQuery,
   Skeleton,
   useTheme,
 } from "@mui/material";
 import { Search, ShoppingCart } from "@mui/icons-material";
-import { useDispatch, useSelector } from "react-redux";
-import { addRecentSearch } from "../../../state/store";
 import SkeletonGroup from "../skeletonGroup";
-import SearchSuggestionsComponent from "./searchSuggestions";
+import SearchBar from "./searchBar";
 
-const Header = ({ user, isLoading }) => {
+const Header = ({ user, isLoading, setHeaderHeight }) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
-  const dispatch = useDispatch();
   const isUser = Object.keys(user).length;
   const [isUserMenu, setIsUserMenu] = useState(false);
   const [isMobileSearch, setIsMobileSearch] = useState(false);
   const mobileSearchRef = useRef(null);
-  const [search, setSearch] = useState("");
-  const recentSearches = useSelector((state) => state.recentSearches);
-  const [isSearchSuggestions, setIsSearchSuggestions] = useState(false);
-  const [searchSuggestions, setSearchSuggestions] = useState(recentSearches);
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.scrollHeight);
+      }
+    };
+
+    // Initial check
+    updateHeaderHeight();
+
+    // Set up a ResizeObserver to watch for changes to the element's size
+    const resizeObserver = new ResizeObserver(updateHeaderHeight);
+    if (headerRef.current) {
+      resizeObserver.observe(headerRef.current);
+    }
+
+    // Clean up the observer on component unmount
+    return () => {
+      if (headerRef.current) {
+        resizeObserver.unobserve(headerRef.current);
+      }
+    };
+  }, [headerRef.current]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -52,20 +68,9 @@ const Header = ({ user, isLoading }) => {
     setIsUserMenu(state);
   };
 
-  const handleSearch = () => {
-    dispatch(addRecentSearch(search));
-  };
-
-  const handleChange = ({ target }) => {
-    setSearch(target.value);
-  };
-
-  useEffect(() => {
-    setSearchSuggestions(recentSearches);
-  }, [recentSearches]);
-
   return (
     <header
+      ref={headerRef}
       style={{
         position: "fixed",
         top: 0,
@@ -134,40 +139,7 @@ const Header = ({ user, isLoading }) => {
                   flexDirection={"column"}
                   position={"relative"}
                 >
-                  <form
-                    action="/results"
-                    style={{ width: "100%" }}
-                    onSubmit={handleSearch}
-                  >
-                    <TextField
-                      fullWidth
-                      name="search"
-                      value={search}
-                      onChange={handleChange}
-                      onFocus={() => setIsSearchSuggestions(true)}
-                      onBlur={() => setIsSearchSuggestions(false)}
-                      InputProps={{
-                        autoComplete: "off",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton type="submit" disabled={!search.length}>
-                              <Search />
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                      type="search"
-                      placeholder="search for what you desire..."
-                      sx={{ "& > div": { borderRadius: "25px" } }}
-                    />
-                  </form>
-                  <SearchSuggestionsComponent
-                    {...{
-                      isSearchSuggestions,
-                      recentSearches,
-                      searchSuggestions,
-                    }}
-                  />
+                  <SearchBar />
                 </Box>
               ))}
             {isLoading ? (
@@ -189,6 +161,7 @@ const Header = ({ user, isLoading }) => {
                     onClick={() => {
                       setIsMobileSearch((prev) => !prev);
                     }}
+                    sx={{ color: isMobileSearch ? "primary.main" : undefined }}
                   >
                     <Search />
                   </IconButton>
@@ -207,28 +180,30 @@ const Header = ({ user, isLoading }) => {
                     </Badge>
                   </IconButton>
                 </Link>
-                <IconButton
-                  onClick={() => {
-                    switchIsUserMenu(true);
-                  }}
-                >
-                  <Badge
-                    color="primary"
-                    variant="dot"
-                    overlap="circular"
-                    invisible={isUser ? !user.notifications.new : true}
-                    badgeContent=" "
+                <Link href={isNotPhone ? undefined : "/user"}>
+                  <IconButton
+                    onClick={() => {
+                      switchIsUserMenu(true);
+                    }}
                   >
-                    <Avatar
-                      alt="profile image"
-                      sx={{
-                        bgcolor: isUserMenu ? "primary.main" : undefined,
-                        width: "clamp(1.8rem, 3vw, 2.3rem)",
-                        height: "clamp(1.8rem, 3vw, 2.3rem)",
-                      }}
-                    />
-                  </Badge>
-                </IconButton>
+                    <Badge
+                      color="primary"
+                      variant="dot"
+                      overlap="circular"
+                      invisible={isUser ? !user.notifications.new : true}
+                      badgeContent=" "
+                    >
+                      <Avatar
+                        alt="profile image"
+                        sx={{
+                          bgcolor: isUserMenu ? "primary.main" : undefined,
+                          width: "clamp(1.8rem, 3vw, 2.3rem)",
+                          height: "clamp(1.8rem, 3vw, 2.3rem)",
+                        }}
+                      />
+                    </Badge>
+                  </IconButton>
+                </Link>
               </Box>
             )}
           </Box>
@@ -241,41 +216,7 @@ const Header = ({ user, isLoading }) => {
               height={isMobileSearch ? "45px" : "0px"}
               mt={isMobileSearch && "10px"}
             >
-              <form
-                action="/results"
-                style={{ width: "100%" }}
-                onSubmit={handleSearch}
-              >
-                <TextField
-                  type="search"
-                  size="small"
-                  onFocus={() => setIsSearchSuggestions(true)}
-                  onBlur={() => setIsSearchSuggestions(false)}
-                  value={search}
-                  onChange={handleChange}
-                  placeholder="search for what you desire..."
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton type="submit">
-                          <Search />
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{
-                    width: "100%",
-                    "& > div": { borderRadius: "25px" },
-                  }}
-                />
-              </form>
-              <SearchSuggestionsComponent
-                {...{
-                  isSearchSuggestions,
-                  recentSearches,
-                  searchSuggestions,
-                }}
-              />
+              <SearchBar searchFocus={isMobileSearch} />
             </Box>
           )}
         </Box>

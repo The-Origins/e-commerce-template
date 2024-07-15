@@ -6,11 +6,12 @@ import ProductCard from "./productCard";
 
 const ProductCardContainer = ({
   user,
+  currency,
   title,
   category,
   isLoading,
   products,
-  disableLink,
+  disableLink = false
 }) => {
   const theme = useTheme();
   return (
@@ -91,7 +92,7 @@ const ProductCardContainer = ({
             ) : (
               <Box display={"flex"} gap={"20px"}>
                 {products.map((product) => (
-                  <ProductCard {...{ product, user }} />
+                  <ProductCard {...{ product, user, currency }} />
                 ))}
               </Box>
             )}

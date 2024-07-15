@@ -2,7 +2,7 @@ import { Payment, Payments, PhoneAndroid } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 
-const SelectPayment = ({ setStage, onCancel }) => {
+const SelectPayment = ({ setStage, onCancel, enableSkip, onSkip }) => {
   return (
     <Box
       display={"flex"}
@@ -49,6 +49,11 @@ const SelectPayment = ({ setStage, onCancel }) => {
         <Button variant="outlined" disableElevation onClick={onCancel}>
           Cancel
         </Button>
+        {enableSkip && (
+          <Button onClick={onSkip} sx={{color:"text.secondary", textTransform:"none"}}>
+            skip
+          </Button>
+        )}
       </Box>
     </Box>
   );

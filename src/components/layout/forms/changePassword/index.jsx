@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 import ConfirmEmail from "./confirmEmail";
 import { Box } from "@mui/material";
-import VerificationComponent from "../../verificationComponent";
+import VerificationComponent from "../../../auth/verificationComponent";
 import PasswordForm from "../passwordForm";
 import Carousel from "../../carousel";
 
-const ChangePassword = ({
-  setIsLoading,
-  setLoadingMessage,
-  onCancel,
-  onFail,
-  onComplete,
-}) => {
+const ChangePassword = ({ onCancel, onFail, onComplete, setStatus }) => {
   const [stage, setStage] = useState(0);
 
   const handleCancel = () => {
@@ -44,16 +38,14 @@ const ChangePassword = ({
       <ConfirmEmail
         {...{
           setStage,
-          setIsLoading,
-          setLoadingMessage,
+          setStatus,
           handleCancel,
         }}
       />
       <VerificationComponent
-        setIsLoading={setIsLoading}
-        setLoadingMessage={setLoadingMessage}
         onVerifyFaliure={handleFail}
         onVerifySuccess={() => setStage(2)}
+        setStatus={setStatus}
       />
       <PasswordForm handleBack={handleCancel} handleNext={handleComplete} />
     </Carousel>

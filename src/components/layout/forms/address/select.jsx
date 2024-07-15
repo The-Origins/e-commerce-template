@@ -6,67 +6,56 @@ import {
   Typography,
   InputAdornment,
   TextField,
-  useTheme,
+  Autocomplete,
 } from "@mui/material";
-import AuthWorker from "../../../../scripts/authWorker";
 import { useSelector } from "react-redux";
 
-const SelectAddress = ({ setStage, setAddress, onCancel }) => {
-  const theme = useTheme();
-  const region = useSelector((state) => state.region)
-  const authWorker = new AuthWorker();
+const SelectAddress = ({
+  setStage,
+  setAddress,
+  onCancel,
+  enableSkip,
+  onSkip,
+}) => {
+  const region = useSelector((state) => state.region);
+  const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [searchSuggestions, setSearchSuggestions] = useState([]);
-  const [touched, setTouched] = useState({});
-  const [errors, setErrors] = useState({ address: "required" });
-  const validator = {
-    address: [{ key: (value) => value.length, message: "required" }],
-  };
+  const [suggestions, setSuggestions] = useState([
+    {
+      country: "Country 1",
+      city: "City 1",
+      street: "1st street",
+      address: "Address 1",
+      type: "home",
+      locationInfo: "House no A5, 3rd floor",
+      fee: { amount: 40, currency: "USD" },
+    },
+    {
+      country: "Country 1",
+      city: "City 1",
+      street: "2nd street",
+      address: "Address 2",
+      type: "pick-up station",
+      locationInfo: "4rd floor",
+      fee: { amount: 20, currency: "USD" },
+    },
+    {
+      country: "Country 1",
+      city: "City 1",
+      street: "3rd street",
+      address: "Address 3",
+      type: "office",
+      locationInfo: "10th floor",
+      fee: { amount: 50, currency: "USD" },
+    },
+  ]);
 
-  const handleBlur = ({ target }) => {
-    setTouched((prev) => ({ ...prev, [target.name]: true }));
-  };
-
-  const handleSearchChange = ({ target }) => {
-    setErrors(authWorker.getErrors(errors, validator, target));
+  const handleChange = ({ target }) => {
     setSearch(target.value);
-    if (!search && !searchSuggestions.length) {
-      setSearchSuggestions([
-        {
-          country: "Kenya",
-          city: "Nairobi",
-          street: "Karen",
-          address: "The hub karen",
-          type: "home",
-          locationInfo: "House no A5, 3rd floor",
-          fee: 400,
-        },
-        {
-          country: "Kenya",
-          city: "Nairobi",
-          street: "Kilimani",
-          address: "Adams arcade",
-          locationInfo: "4th floor",
-          type: "pick-up station",
-          fee: 300,
-        },
-        {
-          country: "Kenya",
-          city: "Nairobi",
-          street: "Ngong",
-          address: "Milele mall",
-          locationInfo: "My business, 10th floor",
-          type: "other",
-          fee: 600,
-        },
-      ]);
-    }
-    if (!target.value.length && searchSuggestions.length) {
-      setSearchSuggestions([]);
-    }
   };
 
   const handleAddressSelect = (address) => {
+    setOpen(false);
     setAddress(address);
     setStage(1);
   };
@@ -89,85 +78,54 @@ const SelectAddress = ({ setStage, setAddress, onCancel }) => {
           <AddLocation />
           Add your adress
         </Typography>
-        <Box display={"flex"} flexDirection={"column"}>
-          <TextField
-            type="search"
-            placeholder={`${region.city}, ${region.country_name}`}
-            name="address"
-            value={search}
-            onChange={handleSearchChange}
-            onBlur={handleBlur}
-            error={Boolean(touched.address) && Boolean(errors.address)}
-            helperText={(touched.address && errors.address) || ""}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <Box
-            width={"100%"}
-            display={"flex"}
-            flexDirection={"column"}
-            justifyContent={"center"}
-            gap={"10px"}
-            height={searchSuggestions.length ? "260px" : "0px"}
-            overflow={"hidden"}
-            sx={{
-              transition: "0.3s",
-            }}
-          >
-            {searchSuggestions.map((suggestion, index) => (
-              <Box
-                width={"100%"}
-                padding={"10px"}
-                boxShadow={`0px 0px 10px 0px ${theme.palette.grey[300]}`}
-                borderRadius={"20px"}
-                display={"flex"}
-                alignItems={"center"}
-                gap={"5px"}
-                position={"relative"}
-                sx={{
-                  transition: "0.3s",
-                  ":hover": {
-                    bgcolor: theme.palette.grey[200],
-                    cursor: "pointer",
-                  },
-                  ":active": {
-                    bgcolor: "white",
-                  },
-                }}
-              >
-                <button
-                  onClick={() => handleAddressSelect(searchSuggestions[index])}
-                  style={{
-                    position: "absolute",
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: "transparent",
-                    padding: 0,
-                    border: "none",
-                    color: "transparent",
-                  }}
-                >
-                  .
-                </button>
-                <Place sx={{ color: "text.secondary", fontSize: "2rem" }} />
-                <Box display={"flex"} flexDirection={"column"} width={"100%"}>
-                  <Typography fontWeight={"bold"}>
-                    {suggestion.address}, {suggestion.street}
-                  </Typography>
-                  <Typography>
-                    {suggestion.city}, {suggestion.country}
-                  </Typography>
-                </Box>
-                <ChevronRight />
+        <Autocomplete
+          fullWidth
+          name="search"
+          autoHighlight
+          open={open}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+          options={suggestions}
+          inputValue={search}
+          onInputChange={handleChange}
+          onChange={(value) => handleAddressSelect(value)}
+          getOptionLabel={(option) => option.address}
+          renderOption={(props, option) => (
+            <Box
+              {...{ ...props, onClick: () => handleAddressSelect(option) }}
+              component={"li"}
+              display={"flex"}
+              gap={"10px"}
+            >
+              <Place />
+              <Box width={"100%"} display={"flex"} flexDirection={"column"}>
+                <Typography>
+                  {option.address}, {option.street}
+                </Typography>
+                <Typography color={"text.secondary"}>
+                  {option.country}, {option.city}
+                </Typography>
               </Box>
-            ))}
-          </Box>
-        </Box>
+              <ChevronRight />
+            </Box>
+          )}
+          renderInput={(props) => (
+            <TextField
+              {...props}
+              name="search"
+              placeholder={`${region.country}, ${region.city}`}
+              fullWidth
+              InputProps={{
+                ...props.InputProps,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          )}
+        />
       </Box>
       <Box
         width={"100%"}
@@ -178,6 +136,11 @@ const SelectAddress = ({ setStage, setAddress, onCancel }) => {
         <Button variant="outlined" disableElevation onClick={onCancel}>
           Cancel
         </Button>
+        {enableSkip && (
+          <Button onClick={onSkip} sx={{color:"text.secondary", textTransform:"none"}}>
+            skip
+          </Button>
+        )}
       </Box>
     </Box>
   );

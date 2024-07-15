@@ -11,8 +11,13 @@ import {
   useTheme,
 } from "@mui/material";
 
-
-const AddressDetails = ({ setStage, address, setAddress, handleComplete }) => {
+const AddressDetails = ({
+  setStatus,
+  setStage,
+  address,
+  setAddress,
+  handleComplete,
+}) => {
   const theme = useTheme();
   const [form, setForm] = useState({
     type: address.type || "other",
@@ -23,22 +28,35 @@ const AddressDetails = ({ setStage, address, setAddress, handleComplete }) => {
     setForm((prev) => ({ ...prev, [target.name]: target.value }));
   };
 
-  const handleConfirm = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     setAddress((prev) => ({
       ...prev,
       ...form,
     }));
-    handleComplete()
+    setStatus({
+      on: true,
+      type: "LOADING",
+      message: "saving",
+    });
+    const loadingTimeout = setTimeout(() => {
+      setStatus({ on: false });
+      handleComplete();
+      clearTimeout(loadingTimeout);
+    }, 1000);
   };
 
   return (
-    <Box
-      display={"flex"}
-      flexDirection={"column"}
-      gap={"20px"}
-      width={"min(400px, 90%)"}
-      height={"100%"}
-      justifyContent={"space-evenly"}
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-evenly",
+        gap: "20px",
+        height: "100%",
+        width: "min(400px, 90%)",
+      }}
     >
       <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
         <Box
@@ -150,16 +168,11 @@ const AddressDetails = ({ setStage, address, setAddress, handleComplete }) => {
         <Button variant="outlined" disableElevation onClick={() => setStage(0)}>
           Back
         </Button>
-        <Button
-          type="submit"
-          variant="contained"
-          disableElevation
-          onClick={handleConfirm}
-        >
+        <Button type="submit" variant="contained" disableElevation>
           confirm
         </Button>
       </Box>
-    </Box>
+    </form>
   );
 };
 

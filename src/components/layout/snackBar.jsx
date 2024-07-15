@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Alert,
   AlertTitle,
@@ -21,26 +21,26 @@ const SnackBarComponent = () => {
   const snackBarTypes = {
     error: (
       <Alert severity="error">
-        <AlertTitle>{snackBar.message.title || "Error"}</AlertTitle>
-        {snackBar.message.description}
+        <AlertTitle>{snackBar.title || "Error"}</AlertTitle>
+        {snackBar.message}
       </Alert>
     ),
     info: (
       <Alert severity="info">
-        <AlertTitle>{snackBar.message.title || "Info"}</AlertTitle>
-        {snackBar.message.description}
+        <AlertTitle>{snackBar.title || "Info"}</AlertTitle>
+        {snackBar.message}
       </Alert>
     ),
     success: (
       <Alert severity="success">
-        <AlertTitle>{snackBar.message.title || "Success"}</AlertTitle>
-        {snackBar.message.description}
+        <AlertTitle>{snackBar.title || "Success"}</AlertTitle>
+        {snackBar.message}
       </Alert>
     ),
     warning: (
       <Alert severity="warning">
-        <AlertTitle>{snackBar.message.title || "Warning"}</AlertTitle>
-        {snackBar.message.description}
+        <AlertTitle>{snackBar.title || "Warning"}</AlertTitle>
+        {snackBar.message}
       </Alert>
     ),
   };

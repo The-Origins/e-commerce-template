@@ -1,53 +1,18 @@
 import { Close } from "@mui/icons-material";
-import { Backdrop, Box, Button, IconButton, useTheme } from "@mui/material";
+import { Backdrop, Box, IconButton, useTheme } from "@mui/material";
 import React, { useState } from "react";
-import LoadingComponent from "./loadingComponent";
-import ErrorComponent from "./errorComponent";
-import SuccessComponent from "./successComponent";
+import StatusComponent from "./statusComponent";
 
 const EditModal = ({ isEdit, width, height, handleClose, children }) => {
   const theme = useTheme();
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState("");
-  const [isError, setIsError] = useState(false);
-  const [errorDetails, setErrorDetails] = useState({
-    message: "",
-    action: () => {},
-    actionTitle: "ok",
-  });
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [successDetails, setSuccessDetails] = useState({
-    message: "",
-    action: () => {},
-    actionTitle: "ok",
-  });
-
-  const resetDetails = () => {
-    setIsSuccess(false);
-    setSuccessDetails({
-      message: "",
-      action: () => {},
-      actionTitle: "ok",
-    });
-    setIsError(false);
-    setErrorDetails({
-      message: "",
-      action: () => {},
-      actionTitle: "ok",
-    });
-  };
+  const [status, setStatus] = useState({ on: false });
 
   const mappedChildren = React.Children.map(children, (child) => {
     // Check if the child is a valid React element
     if (React.isValidElement(child)) {
       // Clone the child element and add props and loading, success and error info
       return React.cloneElement(child, {
-        setIsLoading,
-        setLoadingMessage,
-        setIsError,
-        setErrorDetails,
-        setIsSuccess,
-        setSuccessDetails,
+        setStatus,
       });
     }
     // Return the child if it's not a React element (e.g., text nodes)
@@ -59,13 +24,7 @@ const EditModal = ({ isEdit, width, height, handleClose, children }) => {
       <Box
         position={"relative"}
         width={width || "min(300px, 90%)"}
-        height={
-          height
-            ? height
-            : isLoading || isError || isSuccess
-            ? "500px"
-            : undefined
-        }
+        height={height ? height : status.on ? "500px" : undefined}
         borderRadius={"25px"}
         boxShadow={`0px 0px 1px 10px ${theme.palette.grey}`}
         bgcolor={"white"}
@@ -81,50 +40,39 @@ const EditModal = ({ isEdit, width, height, handleClose, children }) => {
         }}
         overflow={"hidden"}
       >
-        {isLoading && <LoadingComponent message={loadingMessage} />}
-        {isError && (
-          <ErrorComponent details={errorDetails} resetDetails={resetDetails} />
-        )}
-        {isSuccess && (
-          <SuccessComponent
-            details={successDetails}
-            resetDetails={resetDetails}
-          />
-        )}
-        <>
-          <Box
-            width={"100%"}
-            display={"flex"}
-            justifyContent={"flex-end"}
-            padding={"20px"}
-          >
-            <IconButton onClick={handleClose}>
-              <Close />
-            </IconButton>
-          </Box>
-          <Box
-            height={"100%"}
-            width={"100%"}
-            padding={"0px 20px 20px 20px"}
-            sx={{
-              overflowY: "scroll",
-              "&::-webkit-scrollbar": {
-                bgcolor: "transparent",
-                width: "10px",
-              },
-              "&::-webkit-scrollbar-thumb": {
-                borderRadius: "25px",
-                bgcolor: theme.palette.grey[300],
-              },
-              "&::-webkit-scrollbar-thumb:hover": {
-                cursor: "pointer",
-                bgcolor: theme.palette.grey[400],
-              },
-            }}
-          >
-            {mappedChildren}
-          </Box>
-        </>
+        {status.on && <StatusComponent {...{ status, setStatus }} isAbsolute />}
+        <Box
+          width={"100%"}
+          display={"flex"}
+          justifyContent={"flex-end"}
+          padding={"20px"}
+        >
+          <IconButton onClick={handleClose}>
+            <Close />
+          </IconButton>
+        </Box>
+        <Box
+          height={"100%"}
+          width={"100%"}
+          padding={"0px 20px 20px 20px"}
+          sx={{
+            overflowY: "scroll",
+            "&::-webkit-scrollbar": {
+              bgcolor: "transparent",
+              width: "10px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              borderRadius: "25px",
+              bgcolor: theme.palette.grey[300],
+            },
+            "&::-webkit-scrollbar-thumb:hover": {
+              cursor: "pointer",
+              bgcolor: theme.palette.grey[400],
+            },
+          }}
+        >
+          {mappedChildren}
+        </Box>
       </Box>
     </Backdrop>
   );

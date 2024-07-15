@@ -14,28 +14,30 @@ import {
 } from "@mui/material";
 import {
   AddShoppingCart,
-  CheckCircle,
+  Edit,
   Favorite,
   PersonOff,
   Share,
+  ShoppingCartCheckout,
 } from "@mui/icons-material";
-import data from "../lib/data";
+import products from "../../lib/data/products.json";
+import offers from "../../lib/data/offers.json";
 import ProductWorker from "../scripts/productWorker";
-import RatingDistributionComponent from "../components/productPage/ratingDistribution";
-import ReviewComponent from "../components/productPage/reviewComponent";
+import RatingDistributionComponent from "../components/product/ratingDistribution";
+import ReviewComponent from "../components/product/reviewComponent";
 import ProductCardContainer from "../components/product/productCardContainer";
-import ProductCard from "../components/product/productCard";
 import ProductDetails from "../components/product/productDetails";
 import SkeletonGroup from "../components/layout/skeletonGroup";
-import { setIsAuth } from "../state/store";
 import EditModal from "../components/layout/editModal";
 import Carousel from "../components/layout/carousel";
+import { navigate } from "gatsby";
 
 const ProductPage = () => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const currency = useSelector((state) => state.currency);
 
   const productWorker = new ProductWorker();
   let params = new URLSearchParams(window.location.search);
@@ -45,8 +47,6 @@ const ProductPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [imageIndex, setImageIndex] = useState(0);
   const [product, setProduct] = useState({});
-  const [offers, setOffers] = useState({});
-  const [products, setProducts] = useState([]);
   const [isProductDetails, setIsProductDetails] = useState(false);
   const [ratingDistribution, setRatingDistribution] = useState({});
 
@@ -55,11 +55,8 @@ const ProductPage = () => {
       setIsLoading(false);
     }, 2000);
 
-    setOffers(data.offers);
-
     const productWorker = new ProductWorker();
     setProduct(productWorker.findProduct(id));
-    setProducts(data.products.slice(0, 4));
 
     return () => clearTimeout(loadingTimeout);
   }, []);
@@ -87,24 +84,22 @@ const ProductPage = () => {
     setImageIndex(Number(target.value));
   };
 
-  const switchIsProductDetails = () => {
-    setIsProductDetails((prev) => !prev);
-  };
-
   const addToCart = () => {
-    switchIsProductDetails();
+    setIsProductDetails(true);
   };
 
   const handleFavourite = () => {
     if (!Object.keys(user).length) {
-      return dispatch(setIsAuth(true));
+      navigate(
+        `/auth/login?ref=/product?p=${id}&message=login+to+add+to+favourites`
+      );
     }
   };
 
   const handleShare = () => {};
 
   return (
-    <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
+    <Box display={"flex"} justifyContent={"center"}>
       {!isLoading && (
         <EditModal
           isEdit={isProductDetails}
@@ -113,21 +108,17 @@ const ProductPage = () => {
         >
           <ProductDetails
             title={isInCart && "Change your prefrences"}
-            product={product}
-            user={user}
-            switchIsProductDetails={switchIsProductDetails}
-            isProductDetails={isProductDetails}
+            {...{ product, user, currency }}
+            {...{ isProductDetails, setIsProductDetails }}
           />
         </EditModal>
       )}
       <Box width={isNotPhone ? "80%" : "90%"}>
         <Box
-          mt={"50px"}
-          height={isNotPhone ? "100vh" : "130vh"}
+          height={"100vh"}
           width={"100%"}
           display={"flex"}
           flexDirection={"column"}
-          justifyContent={"center"}
           alignItems={"center"}
         >
           <Box
@@ -144,13 +135,13 @@ const ProductPage = () => {
             >
               <Carousel
                 width={"100%"}
-                height={"100%"}
+                height={isNotPhone ? "100%" : "300px"}
                 index={imageIndex}
                 setIndex={setImageIndex}
                 maxIndex={product.images?.length - 1}
                 isLoading={isLoading}
-                controls={true}
-                swipeable={true}
+                controls
+                swipeable
               >
                 {product.images?.map((image) => (
                   <Box
@@ -234,18 +225,41 @@ const ProductPage = () => {
                   <IconButton onClick={handleShare} disabled={isLoading}>
                     <Share />
                   </IconButton>
-                  <Button
-                    disableElevation
-                    fullWidth
-                    color={isInCart ? "success" : "primary"}
-                    sx={{ height: "50px", width: "100%" }}
-                    variant="contained"
-                    startIcon={isInCart ? <CheckCircle /> : <AddShoppingCart />}
-                    onClick={addToCart}
-                    disabled={isLoading}
-                  >
-                    {isInCart ? "added to cart" : "add to cart"}
-                  </Button>
+                  {isLoading ? (
+                    <Skeleton width={"100%"} variant="rounded" />
+                  ) : isInCart ? (
+                    <Box width={"100%"} display={"flex"} gap={"20px"}>
+                      <Button
+                        onClick={() => setIsProductDetails(true)}
+                        startIcon={<Edit />}
+                        variant="outlined"
+                      >
+                        edit
+                      </Button>
+                      <Link href="/cart" width={"100%"}>
+                        <Button
+                          fullWidth
+                          disableElevation
+                          startIcon={<ShoppingCartCheckout />}
+                          variant="contained"
+                        >
+                          go to cart
+                        </Button>
+                      </Link>
+                    </Box>
+                  ) : (
+                    <Button
+                      fullWidth
+                      disableElevation
+                      disabled={isLoading}
+                      sx={{ height: "50px" }}
+                      variant="contained"
+                      startIcon={<AddShoppingCart />}
+                      onClick={addToCart}
+                    >
+                      add to cart
+                    </Button>
+                  )}
                 </Box>
               )}
               <Box
@@ -292,11 +306,14 @@ const ProductPage = () => {
                 ) : (
                   <>
                     <Typography>{product.description}</Typography>
+                    <Typography
+                      color={theme.palette.productStateColors[product.state]}
+                    >
+                      {product.state}
+                    </Typography>
                     <Box display={"flex"} alignItems={"center"} gap={"10px"}>
                       <Typography fontWeight={"bold"} fontSize={"1.3rem"}>
-                        {productWorker.getCurrencySymbol(
-                          product.unitPrice.currency
-                        )}{" "}
+                        {currency.symbol}{" "}
                         {offers[product.id]
                           ? productWorker.getDiscount(
                               offers[product.id],
@@ -311,10 +328,7 @@ const ProductPage = () => {
                             textDecoration: "line-through",
                           }}
                         >
-                          {productWorker.getCurrencySymbol(
-                            product.unitPrice.currency
-                          )}{" "}
-                          {product.unitPrice.amount}
+                          {currency.symbol} {product.unitPrice.amount}
                         </Typography>
                       )}
                     </Box>
@@ -333,26 +347,48 @@ const ProductPage = () => {
                         <Share />
                       </IconButton>
                     </Tooltip>
-                    <Button
-                      disableElevation
-                      disabled={isLoading}
-                      color={isInCart ? "success" : "primary"}
-                      sx={{ height: "50px", width: "100%" }}
-                      variant="contained"
-                      startIcon={
-                        isInCart ? <CheckCircle /> : <AddShoppingCart />
-                      }
-                      onClick={addToCart}
-                    >
-                      {isInCart ? "added to cart" : "add to cart"}
-                    </Button>
+                    {isLoading ? (
+                      <Skeleton width={"100%"} variant="rounded" />
+                    ) : isInCart ? (
+                      <Box width={"100%"} display={"flex"} gap={"20px"}>
+                        <Button
+                          onClick={() => setIsProductDetails(true)}
+                          startIcon={<Edit />}
+                          variant="outlined"
+                        >
+                          edit
+                        </Button>
+                        <Link href="/cart" width={"100%"}>
+                          <Button
+                            fullWidth
+                            disableElevation
+                            startIcon={<ShoppingCartCheckout />}
+                            variant="contained"
+                          >
+                            go to cart
+                          </Button>
+                        </Link>
+                      </Box>
+                    ) : (
+                      <Button
+                        fullWidth
+                        disableElevation
+                        disabled={isLoading}
+                        sx={{ height: "50px" }}
+                        variant="contained"
+                        startIcon={<AddShoppingCart />}
+                        onClick={addToCart}
+                      >
+                        add to cart
+                      </Button>
+                    )}
                   </Box>
                 )}
               </Box>
             </Box>
           </Box>
         </Box>
-        {!isLoading && Object.keys(product.features).length && (
+        {!isLoading && Object.keys(product.features).length ? (
           <Box
             width={"100%"}
             display={"flex"}
@@ -399,9 +435,7 @@ const ProductPage = () => {
                   <Box display={"flex"} gap={"10px"}>
                     <Typography fontWeight={"bold"}>{product.name}</Typography>
                     <Typography>
-                      {productWorker.getCurrencySymbol(
-                        product.unitPrice.currency
-                      )}{" "}
+                      {currency.symbol}{" "}
                       {offers[product.id]
                         ? productWorker.getDiscount(
                             offers[product.id],
@@ -419,40 +453,60 @@ const ProductPage = () => {
                 flexDirection={"column"}
                 gap={"20px"}
               >
-                {Object.keys(product.features).map((feature) => (
-                  <Tooltip
-                    title={`search: ${product.type}, ${feature}:${product.features[feature]}`}
-                  >
-                    <Link
-                      href={`/results?search=${product.type}+${feature}:${product.features[feature]}`}
-                      sx={{
-                        textDecoration: "none",
-                        color: theme.palette.text.primary,
-                        width: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "10px",
-                        padding: "10px 20px",
-                        borderRadius: "10px",
-                        boxShadow: `0px 0px 10px 0px ${theme.palette.grey[300]}`,
-                        transition: "0.3s",
-                        ":hover": {
-                          cursor: "pointer",
-                          color: "primary.main",
-                          boxShadow: `0px 0px 10px 0px ${theme.palette.grey[400]}`,
-                        },
-                      }}
+                {Object.keys(product.features).map((feature) => {
+                  const isSearchExeption =
+                    productWorker.searchExeptions.includes(feature);
+                  const featureSearch =
+                    !isSearchExeption &&
+                    new URLSearchParams(product.features[feature])
+                      .toString()
+                      .replace("=", "");
+                  return (
+                    <Tooltip
+                      title={
+                        !isSearchExeption &&
+                        `search: ${product.type}, ${feature}=${featureSearch}`
+                      }
                     >
-                      <Typography fontWeight={"bold"} fontSize={"1.1rem"}>
-                        {feature}:
-                      </Typography>
-                      <Typography>{product.features[feature]}</Typography>
-                    </Link>
-                  </Tooltip>
-                ))}
+                      <Link
+                        href={
+                          !isSearchExeption
+                            ? `/results?search=${product.type}&${feature}=${featureSearch}`
+                            : undefined
+                        }
+                        sx={{
+                          textDecoration: "none",
+                          color: theme.palette.text.primary,
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px",
+                          padding: "10px 20px",
+                          borderRadius: "10px",
+                          boxShadow: `0px 0px 10px 0px ${theme.palette.grey[300]}`,
+                          transition: "0.3s",
+                          ":hover": !isSearchExeption
+                            ? {
+                                cursor: "pointer",
+                                color: "primary.main",
+                                boxShadow: `0px 0px 10px 0px ${theme.palette.grey[400]}`,
+                              }
+                            : {},
+                        }}
+                      >
+                        <Typography fontWeight={"bold"} fontSize={"1.1rem"}>
+                          {feature}:
+                        </Typography>
+                        <Typography>{product.features[feature]}</Typography>
+                      </Link>
+                    </Tooltip>
+                  );
+                })}
               </Box>
             </Box>
           </Box>
+        ) : (
+          <></>
         )}
         <Box
           height={"90vh"}
@@ -584,18 +638,16 @@ const ProductPage = () => {
           </Box>
         </Box>
         <ProductCardContainer
-          user={user}
+          {...{ user, isLoading, currency }}
           title={`More in ${product.categories?.[0]}`}
           category={product.categories?.[0]}
-          isLoading={isLoading}
-          products={data.products.slice(0, 4)}
+          products={products.slice(0, 4)}
         />
         <ProductCardContainer
-          user={user}
-          title={`Recently seen`}
-          isLoading={isLoading}
-          products={data.products.slice(0, 4)}
-          disableLink={true}
+          {...{ user, isLoading, currency }}
+          title={`Recently viewed`}
+          products={products.slice(5, 9)}
+          disableLink
         />
       </Box>
     </Box>

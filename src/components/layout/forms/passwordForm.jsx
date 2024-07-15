@@ -64,22 +64,24 @@ const PasswordForm = ({ handleBack, handleNext }) => {
     setIsPassVisible((prev) => !prev);
   };
 
-  const onNext = () =>
-    {
-      setForm((prev) => { 
-        handleNext(prev.password)
-        return {}
-      })
-
-    }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setForm((prev) => {
+      handleNext(prev.password);
+      return {};
+    });
+  };
   return (
-    <Box
-      display={"flex"}
-      flexDirection={"column"}
-      gap={"20px"}
-      width={"min(400px, 90%)"}
-      height={"100%"}
-      justifyContent={"space-evenly"}
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        width: "min(400px, 90%)",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-evenly",
+        gap: "20px",
+      }}
     >
       <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
         <Typography
@@ -145,6 +147,7 @@ const PasswordForm = ({ handleBack, handleNext }) => {
           Back
         </Button>
         <Button
+          type="submit"
           variant="contained"
           disableElevation
           disabled={
@@ -152,12 +155,11 @@ const PasswordForm = ({ handleBack, handleNext }) => {
               Boolean(Object.keys(errors).length)) ||
             Boolean(Object.keys(errors).length)
           }
-          onClick={onNext}
         >
           next
         </Button>
       </Box>
-    </Box>
+    </form>
   );
 };
 

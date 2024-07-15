@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "@mui/material";
 
-const FooterLegalLink = (props) => {
+const FooterLegalLink = ({ children }) => {
   return (
     <Link
       sx={{
@@ -15,7 +15,7 @@ const FooterLegalLink = (props) => {
         },
       }}
     >
-      {props.children}
+      {children}
     </Link>
   );
 };

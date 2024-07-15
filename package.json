@@ -1,7 +1,7 @@
 {
-  "name": "Wendoh Cakes website",
+  "name": "ecommerce-website",
   "private": true,
-  "description": "Get delicious and amazing cakes today",
+  "description": "Find what you're searching for",
   "version": "0.1.0",
   "license": "0BSD",
   "scripts": {
@@ -28,6 +28,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.0.2",
+    "react-router-dom": "^6.24.1",
     "react-swipeable": "^7.0.1",
     "redux-persist": "^6.0.0"
   },

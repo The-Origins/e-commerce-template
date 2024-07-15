@@ -1,0 +1,1559 @@
+[
+  {
+    "images": [
+      "https://i.etsystatic.com/15515907/r/il/20a858/2314845316/il_1140xN.2314845316_9lg3.jpg",
+      "https://img.romwe.com/images/romwe.com/201703/1489627160858728237.jpg",
+      "https://i5.walmartimages.com/asr/536dd76b-957f-457c-b3eb-f392b859759b_1.9d5076091fad01b2d315f328ca33f28f.jpeg"
+    ],
+    "name": "Casual T-shirt",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 20
+    },
+    "features": {
+      "SKU": "TsH001",
+      "material": "Cotton",
+      "color": "white"
+    },
+    "variants": {
+      "color": {
+        "white": 0,
+        "black": 0,
+        "blue": 0
+      },
+      "size": {
+        "s": 0,
+        "m": 0,
+        "l": 0
+      }
+    },
+    "rating": {
+      "votes": [5, 4, 3, 5, 4],
+      "score": 4.2,
+      "reviews": [
+        {
+          "userName": "Alice Wonderland",
+          "dateCreated": "10/01/2024",
+          "rating": 5,
+          "review": {
+            "title": "Great Fit",
+            "body": "Very comfortable and fits perfectly."
+          }
+        },
+        {
+          "userName": "Bob Builder",
+          "dateCreated": "12/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Nice material",
+            "body": "The cotton feels very soft."
+          }
+        },
+        {
+          "userName": "Charlie brown",
+          "dateCreated": "15/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Good Value",
+            "body": "Great quality for the price."
+          }
+        }
+      ]
+    },
+    "stock": 100,
+    "state": "In stock",
+    "brand": "ComfortWear",
+    "categories": ["clothing", "t-shirts", "casual"],
+    "id": 1,
+    "type": "t-shirt"
+  },
+  {
+    "images": [
+      "https://media.istockphoto.com/id/1178379920/photo/mens-black-blank-sweatshirt-template-from-two-sides-natural-shape-on-invisible-mannequin-for.jpg?b=1&s=612x612&w=0&k=20&c=uKq6TRlKrLHl9i1nUkel-KLDkXa0GoxnNblL1-8knfY=",
+      "https://media.istockphoto.com/id/1134011741/photo/mens-grey-blank-sweatshirt-template-from-two-sides-natural-shape-on-invisible-mannequin-for.jpg?b=1&s=612x612&w=0&k=20&c=0UeBe99l6lvyYpjsrybht7ZaSQfDOnaolX_l68jP2Bo=",
+      "https://media.istockphoto.com/id/1124815039/photo/white-male-hoodie-sweatshirt-long-sleeve-with-clipping-path-mens-hoody-with-hood-for-your.jpg?b=1&s=612x612&w=0&k=20&c=oDmbUDm0HWkkFiJr_hUn1i_Q7cShJo5l-aQIvhKlyXc="
+    ],
+    "name": "Cozy sweater",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 50
+    },
+    "features": {
+      "SKU": "sWE001",
+      "material": "Wool",
+      "color": "black"
+    },
+    "variants": {
+      "color": {
+        "black": 0,
+        "gray": 0,
+        "white": 0
+      },
+      "size": {
+        "s": 0,
+        "m": 0,
+        "l": 0
+      }
+    },
+    "rating": {
+      "votes": [5, 4, 3, 5, 4],
+      "score": 4.2,
+      "reviews": [
+        {
+          "userName": "Dave Grohl",
+          "dateCreated": "11/01/2024",
+          "rating": 5,
+          "review": {
+            "title": "Warm and Comfy",
+            "body": "Keeps me warm during winter."
+          }
+        },
+        {
+          "userName": "Eva mendes",
+          "dateCreated": "13/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Nice Fit",
+            "body": "Fits well and looks good."
+          }
+        },
+        {
+          "userName": "Frank Ocean",
+          "dateCreated": "16/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Good Quality",
+            "body": "Well-made and durable."
+          }
+        }
+      ]
+    },
+    "stock": 80,
+    "state": "In stock",
+    "brand": "WarmWear",
+    "categories": ["clothing", "sweaters", "winter"],
+    "id": 2,
+    "type": "sweater"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg",
+      "https://images.pexels.com/photos/4109759/pexels-photo-4109759.jpeg",
+      "https://images.pexels.com/photos/9775494/pexels-photo-9775494.jpeg"
+    ],
+    "name": "Denim Jeans",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 40
+    },
+    "features": {
+      "SKU": "PNT001",
+      "material": "Denim",
+      "color": "blue"
+    },
+    "variants": {
+      "color": {
+        "blue": 0,
+        "black": 0,
+        "gray": 0
+      },
+      "size": {
+        "30": 0,
+        "32": 0,
+        "34": 0
+      }
+    },
+    "rating": {
+      "votes": [5, 4, 3, 5, 4],
+      "score": 4.2,
+      "reviews": [
+        {
+          "userName": "Gina Rodriguez",
+          "dateCreated": "12/01/2024",
+          "rating": 5,
+          "review": {
+            "title": "Great Fit",
+            "body": "Very comfortable and stylish."
+          }
+        },
+        {
+          "userName": "Hank Hill",
+          "dateCreated": "14/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Nice Quality",
+            "body": "The denim feels very sturdy."
+          }
+        },
+        {
+          "userName": "Isaac Newton",
+          "dateCreated": "17/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Good Value",
+            "body": "Great quality for the price."
+          }
+        }
+      ]
+    },
+    "stock": 90,
+    "state": "In stock",
+    "brand": "DenimCo",
+    "categories": ["clothing", "pants", "casual"],
+    "id": 3,
+    "type": "pants"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/1670766/pexels-photo-1670766.jpeg",
+      "https://images.pexels.com/photos/1478442/pexels-photo-1478442.jpeg",
+      "https://images.pexels.com/photos/13691725/pexels-photo-13691725.jpeg"
+    ],
+    "name": "Running sneakers",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 80
+    },
+    "features": {
+      "SKU": "sHO001",
+      "material": "mesh",
+      "color": "white"
+    },
+    "variants": {
+      "color": {
+        "white": 0,
+        "black": 0,
+        "red": 0
+      }
+    },
+    "rating": {
+      "votes": [5, 4, 3, 5, 4],
+      "score": 4.2,
+      "reviews": [
+        {
+          "userName": "Nancy Drew",
+          "dateCreated": "05/01/2024",
+          "rating": 5,
+          "review": {
+            "title": "Comfortable",
+            "body": "Very comfortable and stylish."
+          }
+        },
+        {
+          "userName": "Oscar Wilde",
+          "dateCreated": "12/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Great Quality",
+            "body": "Excellent material and support."
+          }
+        },
+        {
+          "userName": "Peter Parker",
+          "dateCreated": "20/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Highly Recommend",
+            "body": "Perfect for running and daily use."
+          }
+        }
+      ]
+    },
+    "stock": 70,
+    "state": "In stock",
+    "brand": "sportFlex",
+    "categories": ["shoes", "sneakers", "running"],
+    "id": 4,
+    "type": "shoes"
+  },
+  {
+    "images": [
+      "https://i.etsystatic.com/15515907/r/il/20a858/2314845316/il_1140xN.2314845316_9lg3.jpg",
+      "https://img.romwe.com/images/romwe.com/201703/1489627160858728237.jpg",
+      "https://i5.walmartimages.com/asr/536dd76b-957f-457c-b3eb-f392b859759b_1.9d5076091fad01b2d315f328ca33f28f.jpeg"
+    ],
+    "name": "Graphic T-shirt",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 25
+    },
+    "features": {
+      "SKU": "TsH002",
+      "material": "Polyester",
+      "color": "black"
+    },
+    "variants": {
+      "color": {
+        "black": 0,
+        "gray": 0,
+        "Green": 0
+      },
+      "size": {
+        "s": 0,
+        "m": 0,
+        "l": 0
+      }
+    },
+    "rating": {
+      "votes": [5, 4, 3, 5, 4],
+      "score": 4.2,
+      "reviews": [
+        {
+          "userName": "Quincy Adams",
+          "dateCreated": "10/01/2024",
+          "rating": 5,
+          "review": {
+            "title": "Nice Design",
+            "body": "Very cool graphic design."
+          }
+        },
+        {
+          "userName": "Rachel Green",
+          "dateCreated": "12/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Good Fit",
+            "body": "Fits well and looks great."
+          }
+        },
+        {
+          "userName": "sandy Cheeks",
+          "dateCreated": "15/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Comfortable",
+            "body": "Very comfortable to wear."
+          }
+        }
+      ]
+    },
+    "stock": 110,
+    "state": "In stock",
+    "brand": "TrendyTees",
+    "categories": ["clothing", "t-shirts", "graphic"],
+    "id": 5,
+    "type": "t-shirt"
+  },
+  {
+    "images": [
+      "https://media.istockphoto.com/id/1178379920/photo/mens-black-blank-sweatshirt-template-from-two-sides-natural-shape-on-invisible-mannequin-for.jpg?b=1&s=612x612&w=0&k=20&c=uKq6TRlKrLHl9i1nUkel-KLDkXa0GoxnNblL1-8knfY=",
+      "https://media.istockphoto.com/id/1134011741/photo/mens-grey-blank-sweatshirt-template-from-two-sides-natural-shape-on-invisible-mannequin-for.jpg?b=1&s=612x612&w=0&k=20&c=0UeBe99l6lvyYpjsrybht7ZaSQfDOnaolX_l68jP2Bo=",
+      "https://media.istockphoto.com/id/1124815039/photo/white-male-hoodie-sweatshirt-long-sleeve-with-clipping-path-mens-hoody-with-hood-for-your.jpg?b=1&s=612x612&w=0&k=20&c=oDmbUDm0HWkkFiJr_hUn1i_Q7cShJo5l-aQIvhKlyXc="
+    ],
+    "name": "Hoodie sweatshirt",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 55
+    },
+    "features": {
+      "SKU": "sWE002",
+      "material": "Cotton Blend",
+      "color": "gray"
+    },
+    "variants": {
+      "color": {
+        "gray": 0,
+        "blue": 0,
+        "red": 0
+      },
+      "size": {
+        "s": 0,
+        "m": 0,
+        "l": 0
+      }
+    },
+    "rating": {
+      "votes": [5, 4, 3, 5, 4],
+      "score": 4.2,
+      "reviews": [
+        {
+          "userName": "Tony stark",
+          "dateCreated": "10/01/2024",
+          "rating": 5,
+          "review": {
+            "title": "Very Warm",
+            "body": "Keeps me warm in cold weather."
+          }
+        },
+        {
+          "userName": "Uma Thurman",
+          "dateCreated": "12/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Nice Design",
+            "body": "stylish and functional."
+          }
+        },
+        {
+          "userName": "Vin Diesel",
+          "dateCreated": "15/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Good Quality",
+            "body": "Well-made and durable."
+          }
+        }
+      ]
+    },
+    "stock": 85,
+    "state": "In stock",
+    "brand": "CozyWear",
+    "categories": ["clothing", "sweaters", "hoodies"],
+    "id": 6,
+    "type": "sweater"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg",
+      "https://images.pexels.com/photos/4109759/pexels-photo-4109759.jpeg",
+      "https://images.pexels.com/photos/9775494/pexels-photo-9775494.jpeg"
+    ],
+    "name": "Chino Pants",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 45
+    },
+    "features": {
+      "SKU": "PNT002",
+      "material": "Chino",
+      "color": "khaki"
+    },
+    "variants": {
+      "color": {
+        "khaki": 0,
+        "black": 0,
+        "navy": 0
+      },
+      "size": {
+        "30": 0,
+        "32": 0,
+        "34": 0
+      }
+    },
+    "rating": {
+      "votes": [5, 4, 3, 5, 4],
+      "score": 4.2,
+      "reviews": [
+        {
+          "userName": "Will smith",
+          "dateCreated": "10/01/2024",
+          "rating": 5,
+          "review": {
+            "title": "Great Fit",
+            "body": "Very comfortable and fits well."
+          }
+        },
+        {
+          "userName": "Xander Cage",
+          "dateCreated": "12/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Nice material",
+            "body": "The chino fabric is soft."
+          }
+        },
+        {
+          "userName": "Yara shahidi",
+          "dateCreated": "15/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Good Value",
+            "body": "Great quality for the price."
+          }
+        }
+      ]
+    },
+    "stock": 95,
+    "state": "In stock",
+    "brand": "ClassicWear",
+    "categories": ["clothing", "pants", "chino"],
+    "id": 7,
+    "type": "pants"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/1670766/pexels-photo-1670766.jpeg",
+      "https://images.pexels.com/photos/1478442/pexels-photo-1478442.jpeg",
+      "https://images.pexels.com/photos/13691725/pexels-photo-13691725.jpeg"
+    ],
+    "name": "Formal shoes",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 100
+    },
+    "features": {
+      "SKU": "sHO002",
+      "material": "leather",
+      "color": "brown"
+    },
+    "variants": {
+      "color": {
+        "brown": 0,
+        "black": 0,
+        "tan": 0
+      }
+    },
+    "rating": {
+      "votes": [5, 4, 3, 5, 4],
+      "score": 4.2,
+      "reviews": [
+        {
+          "userName": "Zane malik",
+          "dateCreated": "05/01/2024",
+          "rating": 5,
+          "review": {
+            "title": "Elegant",
+            "body": "Perfect for formal occasions."
+          }
+        },
+        {
+          "userName": "Anna Kendrick",
+          "dateCreated": "12/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Good Quality",
+            "body": "The leather is of high quality."
+          }
+        },
+        {
+          "userName": "Brad Pitt",
+          "dateCreated": "20/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Comfortable",
+            "body": "Very comfortable to wear."
+          }
+        }
+      ]
+    },
+    "stock": 60,
+    "state": "In stock",
+    "brand": "ElegantFoot",
+    "categories": ["shoes", "formal", "leather"],
+    "id": 8,
+    "type": "shoes"
+  },
+  {
+    "images": [
+      "https://i.etsystatic.com/15515907/r/il/20a858/2314845316/il_1140xN.2314845316_9lg3.jpg",
+      "https://img.romwe.com/images/romwe.com/201703/1489627160858728237.jpg",
+      "https://i5.walmartimages.com/asr/536dd76b-957f-457c-b3eb-f392b859759b_1.9d5076091fad01b2d315f328ca33f28f.jpeg"
+    ],
+    "name": "striped T-shirt",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 22
+    },
+    "features": {
+      "SKU": "TsH003",
+      "material": "Cotton",
+      "color": "navy"
+    },
+    "variants": {
+      "color": {
+        "navy": 0,
+        "white": 0,
+        "red": 0
+      },
+      "size": {
+        "s": 0,
+        "m": 0,
+        "l": 0
+      }
+    },
+    "rating": {
+      "votes": [5, 4, 3, 5, 4],
+      "score": 4.2,
+      "reviews": [
+        {
+          "userName": "Chris Pratt",
+          "dateCreated": "10/01/2024",
+          "rating": 5,
+          "review": {
+            "title": "Nice Design",
+            "body": "love the stripes."
+          }
+        },
+        {
+          "userName": "Diana Prince",
+          "dateCreated": "12/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Good Fit",
+            "body": "Fits well and looks great."
+          }
+        },
+        {
+          "userName": "Eddie murphy",
+          "dateCreated": "15/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Comfortable",
+            "body": "Very comfortable to wear."
+          }
+        }
+      ]
+    },
+    "stock": 120,
+    "state": "In stock",
+    "brand": "NauticalTees",
+    "categories": ["clothing", "t-shirts", "striped"],
+    "id": 9,
+    "type": "t-shirt"
+  },
+  {
+    "images": [
+      "https://www.mockupworld.co/wp-content/uploads/2023/03/laptop-free-mockup.jpg",
+      "https://elements-cover-images-0.imgix.net/6ba82f51-e9ce-4c43-8515-c9ec31fb5a8b?auto=compress%2Cformat&fit=max&w=2038&s=ebe7707ab55fd788f76bb379fe9f77fd",
+      "https://imockups.com/storage/product/4883/thumb/WbXxxlCIdmANbD0nvuWh.jpeg"
+    ],
+    "name": "laptop",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 2000
+    },
+    "features": {
+      "SKU": "0123083423X",
+      "weight": "2kg",
+      "CPU": "i9-1200K",
+      "GPU": "RTX3060",
+      "color": "black"
+    },
+    "variants": {
+      "ram": {
+        "8gb": 0,
+        "16gb": 3000
+      },
+      "storage": {
+        "500gb-ssD": 0,
+        "1TB-ssD": 1000
+      }
+    },
+    "rating": {
+      "votes": [4, 3, 3, 4, 5],
+      "score": 4.3,
+      "reviews": [
+        {
+          "userName": "John Doe",
+          "dateCreated": "10/10/2023",
+          "rating": 4,
+          "review": {
+            "title": "Very Good!",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 200,
+    "state": "In stock",
+    "brand": "dell",
+    "categories": ["electronics", "laptops", "trending"],
+    "id": 10,
+    "type": "laptop"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/257923/pexels-photo-257923.jpeg",
+      "https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg",
+      "https://images.pexels.com/photos/805922/pexels-photo-805922.jpeg"
+    ],
+    "name": "Smartphone",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 1200
+    },
+    "features": {
+      "SKU": "0123098765Y",
+      "weight": "200g",
+      "CPU": "snapdragon 888",
+      "GPU": "Adreno 660",
+      "color": "silver"
+    },
+    "variants": {
+      "storage": {
+        "128gb": 0,
+        "256gb": 200
+      }
+    },
+    "rating": {
+      "votes": [5, 4, 4, 5, 5],
+      "score": 4.6,
+      "reviews": [
+        {
+          "userName": "Jane smith",
+          "dateCreated": "05/12/2023",
+          "rating": 5,
+          "review": {
+            "title": "Excellent!",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 150,
+    "state": "In stock",
+    "brand": "samsung",
+    "categories": ["electronics", "phones", "new arrivals"],
+    "id": 11,
+    "type": "phone"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/51383/photo-camera-subject-photographer-51383.jpeg",
+      "https://images.pexels.com/photos/4861432/pexels-photo-4861432.jpeg",
+      "https://images.pexels.com/photos/19847113/pexels-photo-19847113/free-photo-of-close-up-of-a-nikon-slr-camera.jpeg"
+    ],
+    "name": "DSLR Camera",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 1500
+    },
+    "features": {
+      "SKU": "0123012345A",
+      "weight": "1.5kg",
+      "sensor": "Full-frame",
+      "resolution": "24mp",
+      "color": "black"
+    },
+    "variants": {
+      "lens": {
+        "18-55mm": 0,
+        "70-200mm": 500
+      }
+    },
+    "rating": {
+      "votes": [4, 5, 4, 4, 5],
+      "score": 4.4,
+      "reviews": [
+        {
+          "userName": "sam Wilson",
+          "dateCreated": "18/11/2023",
+          "rating": 5,
+          "review": {
+            "title": "Amazing Quality",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 80,
+    "state": "In stock",
+    "brand": "Canon",
+    "categories": ["electronics", "cameras", "photography", "new arrivals"],
+    "id": 12,
+    "type": "camera"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/7014415/pexels-photo-7014415.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    ],
+    "name": "laser Printer",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 300
+    },
+    "features": {
+      "SKU": "0123016789B",
+      "weight": "8kg",
+      "type": "laser",
+      "color": "white"
+    },
+    "variants": {},
+    "rating": {
+      "votes": [4, 3, 4, 4, 4],
+      "score": 3.8,
+      "reviews": [
+        {
+          "userName": "Peter Parker",
+          "dateCreated": "20/10/2023",
+          "rating": 4,
+          "review": {
+            "title": "Good Printer",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 60,
+    "state": "In stock",
+    "brand": "HP",
+    "categories": ["electronics", "printers", "office"],
+    "id": 13,
+    "type": "printer"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/1649771/pexels-photo-1649771.jpeg?auto=compress",
+      "https://images.pexels.com/photos/205926/pexels-photo-205926.jpeg?auto=compress"
+    ],
+    "name": "Wireless Headphones",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 150
+    },
+    "features": {
+      "SKU": "0123023456C",
+      "weight": "300g",
+      "battery life": "20 hours",
+      "color": "black"
+    },
+    "variants": {},
+    "rating": {
+      "votes": [5, 4, 4, 5, 5],
+      "score": 4.6,
+      "reviews": [
+        {
+          "userName": "Bruce Wayne",
+          "dateCreated": "25/09/2023",
+          "rating": 5,
+          "review": {
+            "title": "Excellent sound",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 100,
+    "state": "In stock",
+    "brand": "sony",
+    "categories": ["electronics", "headphones", "audio", "new arrivals"],
+    "id": 14,
+    "type": "headphones"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/6322727/pexels-photo-6322727.jpeg?auto=compress",
+      "https://images.pexels.com/photos/6322737/pexels-photo-6322737.jpeg?auto=compress",
+      "https://images.pexels.com/photos/6322724/pexels-photo-6322724.jpeg?auto=compress"
+    ],
+    "name": "bluetooth speaker",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 100
+    },
+    "features": {
+      "SKU": "0123045678D",
+      "weight": "500g",
+      "battery life": "12 hours",
+      "color": "blue"
+    },
+    "variants": {},
+    "rating": {
+      "votes": [4, 4, 3, 4, 5],
+      "score": 4.0,
+      "reviews": [
+        {
+          "userName": "Diana Prince",
+          "dateCreated": "15/08/2023",
+          "rating": 4,
+          "review": {
+            "title": "Great speaker",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 75,
+    "state": "In stock",
+    "brand": "JBl",
+    "categories": ["electronics", "speakers", "audio"],
+    "id": 15,
+    "type": "speaker"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress"
+    ],
+    "name": "smart Watch",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 250
+    },
+    "features": {
+      "SKU": "0123056789E",
+      "weight": "100g",
+      "battery life": "24 hours",
+      "color": "black"
+    },
+    "variants": {},
+    "rating": {
+      "votes": [5, 5, 4, 5, 4],
+      "score": 4.6,
+      "reviews": [
+        {
+          "userName": "Clark Kent",
+          "dateCreated": "05/07/2023",
+          "rating": 5,
+          "review": {
+            "title": "Very Useful",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 50,
+    "state": "In stock",
+    "brand": "Apple",
+    "categories": ["electronics", "watches", "wearable", "new arrivals"],
+    "id": 16,
+    "type": "watch"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/8059123/pexels-photo-8059123.jpeg?auto=compress",
+      "https://images.pexels.com/photos/7046979/pexels-photo-7046979.jpeg?auto=compress"
+    ],
+    "name": "VR Headset",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 400
+    },
+    "features": {
+      "SKU": "0123067890F",
+      "weight": "600g",
+      "resolution": "4K",
+      "color": "white"
+    },
+    "variants": {},
+    "rating": {
+      "votes": [4, 5, 4, 4, 5],
+      "score": 4.4,
+      "reviews": [
+        {
+          "userName": "Tony stark",
+          "dateCreated": "25/06/2023",
+          "rating": 5,
+          "review": {
+            "title": "Immersive Experience",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 40,
+    "state": "In stock",
+    "brand": "Oculus",
+    "categories": ["electronics", "VR", "gaming"],
+    "id": 17,
+    "type": "vr headset"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/3945659/pexels-photo-3945659.jpeg?auto=compress"
+    ],
+    "name": "Gaming Console",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 500
+    },
+    "features": {
+      "SKU": "0123078901G",
+      "weight": "3kg",
+      "storage": "1TB",
+      "color": "black"
+    },
+    "variants": {},
+    "rating": {
+      "votes": [5, 4, 5, 5, 4],
+      "score": 4.6,
+      "reviews": [
+        {
+          "userName": "steve Rogers",
+          "dateCreated": "15/05/2023",
+          "rating": 5,
+          "review": {
+            "title": "Best Console",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 30,
+    "state": "In stock",
+    "brand": "sony",
+    "categories": ["electronics", "gaming", "console"],
+    "id": 18,
+    "type": "gaming console"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/51383/photo-camera-subject-photographer-51383.jpeg",
+      "https://images.pexels.com/photos/4861432/pexels-photo-4861432.jpeg",
+      "https://images.pexels.com/photos/19847113/pexels-photo-19847113/free-photo-of-close-up-of-a-nikon-slr-camera.jpeg"
+    ],
+    "name": "Digital Camera",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 800
+    },
+    "features": {
+      "SKU": "0123089012H",
+      "weight": "1kg",
+      "resolution": "20mP",
+      "color": "black"
+    },
+    "variants": {},
+    "rating": {
+      "votes": [4, 4, 5, 4, 4],
+      "score": 4.2,
+      "reviews": [
+        {
+          "userName": "Natasha Romanoff",
+          "dateCreated": "10/04/2023",
+          "rating": 4,
+          "review": {
+            "title": "Great Camera",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 70,
+    "state": "In stock",
+    "brand": "Nikon",
+    "categories": ["electronics", "cameras", "photography"],
+    "id": 19,
+    "type": "camera"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/257923/pexels-photo-257923.jpeg",
+      "https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg",
+      "https://images.pexels.com/photos/805922/pexels-photo-805922.jpeg"
+    ],
+    "name": "Tablet",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 600
+    },
+    "features": {
+      "SKU": "0123090123I",
+      "weight": "400g",
+      "screensize": "10 inches",
+      "color": "silver"
+    },
+    "variants": {},
+    "rating": {
+      "votes": [4, 5, 4, 4, 5],
+      "score": 4.4,
+      "reviews": [
+        {
+          "userName": "Bruce Banner",
+          "dateCreated": "01/03/2023",
+          "rating": 5,
+          "review": {
+            "title": "Very Handy",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 90,
+    "state": "In stock",
+    "brand": "Apple",
+    "categories": ["electronics", "tablets", "portable"],
+    "id": 20,
+    "type": "tablet"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/1653877/pexels-photo-1653877.jpeg",
+      "https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/2147491/pexels-photo-2147491.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    ],
+    "name": "Pizza",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 50
+    },
+    "features": {
+      "flavour": "pepperoni"
+    },
+    "variants": {
+      "size": {
+        "small": 0,
+        "medium": 20,
+        "large": 30
+      },
+      "crust": {
+        "thin": 0,
+        "normal": 0
+      },
+      "extras": {
+        "multiSelect": true,
+        "extra cheese": 10,
+        "extra pepperoni": 10
+      }
+    },
+    "rating": {
+      "votes": [4, 3, 3, 4, 5],
+      "score": 5,
+      "reviews": [
+        {
+          "userName": "John Doe",
+          "dateCreated": "10/10/2023",
+          "rating": 4,
+          "review": {
+            "title": "Very Good!",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend"
+          }
+        },
+        {
+          "userName": "John Doe",
+          "dateCreated": "10/10/2023",
+          "rating": 4,
+          "review": {
+            "title": "Very Good!",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend"
+          }
+        },
+        {
+          "userName": "John Doe",
+          "dateCreated": "10/10/2023",
+          "rating": 4,
+          "review": {
+            "title": "Very Good!",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend"
+          }
+        }
+      ]
+    },
+    "stock": 200,
+    "state": "In stock",
+    "categories": ["food", "pizza"],
+    "id": 21,
+    "type": "pizza"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/1639562/pexels-photo-1639562.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1639565/pexels-photo-1639565.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    ],
+    "name": "Burger",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 20
+    },
+    "features": {
+      "flavour": "beef"
+    },
+    "variants": {
+      "size": {
+        "small": 0,
+        "medium": 5,
+        "large": 10
+      },
+      "extras": {
+        "multiSelect": true,
+        "extra cheese": 2,
+        "bacon": 3
+      }
+    },
+    "rating": {
+      "votes": [5, 4, 4, 5, 5],
+      "score": 4.6,
+      "reviews": [
+        {
+          "userName": "Jane smith",
+          "dateCreated": "05/12/2023",
+          "rating": 5,
+          "review": {
+            "title": "Delicious!",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 150,
+    "state": "In stock",
+    "categories": ["food", "burger"],
+    "id": 22,
+    "type": "burger"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/3558/morning-breakfast-orange-juice.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/158053/fresh-orange-juice-squeezed-refreshing-citrus-158053.jpeg",
+      "https://images.pexels.com/photos/1337824/pexels-photo-1337824.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    ],
+    "name": "Orange Juice",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 5
+    },
+    "features": {
+      "flavour": "orange"
+    },
+    "variants": {
+      "size": {
+        "small": 0,
+        "medium": 2,
+        "large": 4
+      }
+    },
+    "rating": {
+      "votes": [4, 3, 3, 4, 5],
+      "score": 4.2,
+      "reviews": [
+        {
+          "userName": "Peter Parker",
+          "dateCreated": "20/10/2023",
+          "rating": 4,
+          "review": {
+            "title": "Refreshing",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 200,
+    "state": "In stock",
+    "categories": ["beverages", "juice"],
+    "id": 23,
+    "type": "beverage"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/1893555/pexels-photo-1893555.jpeg",
+      "https://images.pexels.com/photos/11975890/pexels-photo-11975890.jpeg",
+      "https://images.pexels.com/photos/12653337/pexels-photo-12653337.jpeg"
+    ],
+    "name": "French Fries",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 3
+    },
+    "features": {
+      "flavour": "salted"
+    },
+    "variants": {
+      "size": {
+        "small": 0,
+        "medium": 1,
+        "large": 2
+      }
+    },
+    "rating": {
+      "votes": [4, 5, 4, 4, 5],
+      "score": 4.4,
+      "reviews": [
+        {
+          "userName": "sam Wilson",
+          "dateCreated": "18/11/2023",
+          "rating": 5,
+          "review": {
+            "title": "Crispy and Delicious",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 300,
+    "state": "In stock",
+    "categories": ["food", "fries"],
+    "id": 24,
+    "type": "fries"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/1653877/pexels-photo-1653877.jpeg",
+      "https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/2147491/pexels-photo-2147491.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    ],
+    "name": "Veggie Pizza",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 40
+    },
+    "features": {
+      "flavour": "vegetable"
+    },
+    "variants": {
+      "size": {
+        "small": 0,
+        "medium": 20,
+        "large": 30
+      },
+      "crust": {
+        "thin": 0,
+        "normal": 0
+      },
+      "extras": {
+        "multiSelect": true,
+        "extra cheese": 10,
+        "olives": 5
+      }
+    },
+    "rating": {
+      "votes": [4, 3, 3, 4, 5],
+      "score": 4.0,
+      "reviews": [
+        {
+          "userName": "Diana Prince",
+          "dateCreated": "12/12/2023",
+          "rating": 4,
+          "review": {
+            "title": "Healthy Choice",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 150,
+    "state": "In stock",
+    "categories": ["food", "pizza"],
+    "id": 25,
+    "type": "pizza"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/1639562/pexels-photo-1639562.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1639565/pexels-photo-1639565.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    ],
+    "name": "Chicken sandwich",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 15
+    },
+    "features": {
+      "flavour": "chicken"
+    },
+    "variants": {
+      "size": {
+        "small": 0,
+        "medium": 5,
+        "large": 10
+      },
+      "extras": {
+        "multiSelect": true,
+        "extra mayo": 1,
+        "bacon": 2
+      }
+    },
+    "rating": {
+      "votes": [5, 4, 4, 5, 5],
+      "score": 4.6,
+      "reviews": [
+        {
+          "userName": "Bruce Wayne",
+          "dateCreated": "22/11/2023",
+          "rating": 5,
+          "review": {
+            "title": "Tasty!",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 120,
+    "state": "In stock",
+    "categories": ["food", "sandwich"],
+    "id": 26,
+    "type": "sandwich"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/3558/morning-breakfast-orange-juice.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/158053/fresh-orange-juice-squeezed-refreshing-citrus-158053.jpeg",
+      "https://images.pexels.com/photos/1337824/pexels-photo-1337824.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    ],
+    "name": "Apple Juice",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 4
+    },
+    "features": {
+      "flavour": "apple"
+    },
+    "variants": {
+      "size": {
+        "small": 0,
+        "medium": 1,
+        "large": 2
+      }
+    },
+    "rating": {
+      "votes": [4, 3, 3, 4, 5],
+      "score": 4.0,
+      "reviews": [
+        {
+          "userName": "Clark Kent",
+          "dateCreated": "15/09/2023",
+          "rating": 4,
+          "review": {
+            "title": "sweet and Refreshing",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 250,
+    "state": "In stock",
+    "categories": ["beverages", "juice"],
+    "id": 27,
+    "type": "beverage"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/1893555/pexels-photo-1893555.jpeg",
+      "https://images.pexels.com/photos/11975890/pexels-photo-11975890.jpeg",
+      "https://images.pexels.com/photos/12653337/pexels-photo-12653337.jpeg"
+    ],
+    "name": "mozzarella sticks",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 6
+    },
+    "features": {
+      "flavour": "cheese"
+    },
+    "variants": {
+      "size": {
+        "small": 0,
+        "medium": 1,
+        "large": 2
+      }
+    },
+    "rating": {
+      "votes": [5, 4, 5, 5, 4],
+      "score": 4.6,
+      "reviews": [
+        {
+          "userName": "steve Rogers",
+          "dateCreated": "18/06/2023",
+          "rating": 5,
+          "review": {
+            "title": "Cheesy Goodness",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 180,
+    "state": "In stock",
+    "categories": ["food", "snacks"],
+    "id": 28,
+    "type": "snack"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/3558/morning-breakfast-orange-juice.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/158053/fresh-orange-juice-squeezed-refreshing-citrus-158053.jpeg",
+      "https://images.pexels.com/photos/1337824/pexels-photo-1337824.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    ],
+    "name": "lemonade",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 3
+    },
+    "features": {
+      "flavour": "lemon"
+    },
+    "variants": {
+      "size": {
+        "small": 0,
+        "medium": 1,
+        "large": 2
+      }
+    },
+    "rating": {
+      "votes": [4, 3, 3, 4, 5],
+      "score": 4.0,
+      "reviews": [
+        {
+          "userName": "Tony stark",
+          "dateCreated": "10/08/2023",
+          "rating": 4,
+          "review": {
+            "title": "Perfect summer Drink",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 220,
+    "state": "In stock",
+    "categories": ["beverages", "juice"],
+    "id": 29,
+    "type": "beverage"
+  },
+  {
+    "images": [
+      "https://images.pexels.com/photos/1893555/pexels-photo-1893555.jpeg",
+      "https://images.pexels.com/photos/11975890/pexels-photo-11975890.jpeg",
+      "https://images.pexels.com/photos/12653337/pexels-photo-12653337.jpeg"
+    ],
+    "name": "Chicken Nuggets",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo. Fusce vel eleifend mauris. sed efficitur lacus vel bibendum vulputate. Nulla facilisi. In hac habitasse platea dictumst. Integer sed lectus auctor, suscipit nisl in, bibendum dui. Vivamus sit amet metus ut elit auctor tincidunt. Proin in sagittis arcu. ",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 8
+    },
+    "features": {
+      "flavour": "chicken"
+    },
+    "variants": {
+      "size": {
+        "small": 0,
+        "medium": 2,
+        "large": 4
+      },
+      "extras": {
+        "multiSelect": true,
+        "extra sauce": 1,
+        "extra nuggets": 2
+      }
+    },
+    "rating": {
+      "votes": [5, 4, 4, 5, 5],
+      "score": 4.6,
+      "reviews": [
+        {
+          "userName": "Natasha Romanoff",
+          "dateCreated": "01/07/2023",
+          "rating": 5,
+          "review": {
+            "title": "Crispy and Juicy",
+            "body": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae lectus at libero venenatis commodo."
+          }
+        }
+      ]
+    },
+    "stock": 300,
+    "state": "In stock",
+    "categories": ["food", "snacks"],
+    "id": 30,
+    "type": "snack"
+  }
+]

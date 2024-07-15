@@ -1,27 +1,34 @@
-import { Box, Button, Skeleton, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Skeleton,
+  Tooltip,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import React, { useState } from "react";
 import EditModal from "../layout/editModal";
 import ChangeCheckoutDetail from "./changeCheckoutDetail";
 
-const CheckoutDetail = (props) => {
+const CheckoutDetail = ({ type, icon, user, currency, content, isLoading }) => {
   const theme = useTheme();
   const [isChange, setIsChange] = useState(false);
   return (
     <Box display={"flex"} flexDirection={"column"} flexBasis={300} flexGrow={1}>
       <EditModal
         width={"min(600px, 90%)"}
-        height={"600px"}
+        height={"650px"}
         isEdit={isChange}
         handleClose={() => setIsChange(false)}
       >
         <ChangeCheckoutDetail
-          type={props.type}
-          setIsChange={setIsChange}
+
+          {...{type, currency, setIsChange}}
           data={
-            props.type === "payment"
-              ? props.user.payments.saved
-              : props.type === "delivery"
-              ? props.user.addresses.saved
+            type === "payment"
+              ? user.payments.saved
+              : type === "delivery"
+              ? user.addresses.saved
               : []
           }
         />
@@ -35,8 +42,7 @@ const CheckoutDetail = (props) => {
           alignItems: "flex-end",
         }}
       >
-        {props.icon}{" "}
-        {props.type.charAt(0).toUpperCase() + props.type.substring(1)}
+        {icon} {type.charAt(0).toUpperCase() + type.substring(1)}
       </Typography>
       <Box
         border={`1px solid ${theme.palette.grey[400]}`}
@@ -52,7 +58,7 @@ const CheckoutDetail = (props) => {
           borderRadius={"25px"}
           boxShadow={`0px 0px 10px 0px ${theme.palette.grey[300]}`}
         >
-          {props.isLoading ? (
+          {isLoading ? (
             <Skeleton
               variant="rounded"
               width={"100%"}
@@ -61,25 +67,37 @@ const CheckoutDetail = (props) => {
             />
           ) : (
             <Box display={"flex"} gap={"5px"} alignItems={"center"}>
-              {props.content.icon}
-              <Box display={"flex"} flexDirection={"column"} gap={"5px"}>
-                <Box display={"flex"} gap={"5px"}>
-                  <Typography>{props.content.title}</Typography>
-                  {props.content.fee && (
-                    <Typography color={"primary.main"}>
-                      (+{props.content.fee})
-                    </Typography>
+              {content.icon}
+              <Box
+                width={"100%"}
+                display={"flex"}
+                flexDirection={"column"}
+                gap={"5px"}
+              >
+                <Box
+                  width={"100%"}
+                  display={"flex"}
+                  justifyContent={"space-between"}
+                >
+                  <Typography>{content.title}</Typography>
+                  {content.fee && (
+                    <Tooltip title="fee" placement="left">
+                      <Typography color={"primary.main"}>
+                        +{currency.symbol}
+                        {content.fee.amount}
+                      </Typography>
+                    </Tooltip>
                   )}
                 </Box>
                 <Typography color={"text.secondary"}>
-                  {props.content.description}
+                  {content.description}
                 </Typography>
               </Box>
             </Box>
           )}
           <Box display={"flex"} justifyContent={"flex-end"}>
             <Button
-              disabled={props.isLoading}
+              disabled={isLoading}
               variant="contained"
               disableElevation
               onClick={() => setIsChange(true)}
