@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import { activateSnackBar } from "../state/store";
 import { useDispatch } from "react-redux";
 import { navigate } from "gatsby";
 
-const Page404 = () => {
+const Page404 = ({ setConfirmationModal }) => {
   const [counter, setCounter] = useState(5);
   document.title = "404 Error | Wendoh Cakes";
   const dispatch = useDispatch();
-  dispatch(
-    activateSnackBar({
-      title: "404 Error",
-      message: "Couldn't find the page you're looking for",
-      snackBarType: "error",
-    })
-  );
+  setConfirmationModal({
+    title: "404 Error",
+    message: "Couldn't find the page you're looking for",
+    snackBarType: "error",
+  });
   useEffect(() => {
     const counterInterval = setInterval(() => {
       setCounter((prev) => prev - 1);

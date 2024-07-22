@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -21,15 +21,25 @@ import orders from "../../../lib/data/orders.json";
 const OrderDetails = ({ user, currency }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
-  const order = orders.find(
-    (order) =>
-      order.id ===
-      Number(
-        String(window.location.hash).substring(
-          String(window.location.hash).indexOf("/") + 1
-        )
+
+  //this is just an example
+  const [order, setOrder] = useState({});
+
+  useEffect(() => {
+    setOrder(
+      orders.find(
+        (order) =>
+          order.id ===
+          Number(
+            String(window.location.hash).substring(
+              String(window.location.hash).indexOf("/") + 1
+            )
+          )
       )
-  );
+    );
+  }, []);
+
+  console.log(order);
 
   return (
     <Box
@@ -132,7 +142,7 @@ const OrderDetails = ({ user, currency }) => {
               {Object.keys(order.items).map((item) => {
                 return (
                   <UserProductCard
-                  {...{ user, currency }}
+                    {...{ user, currency }}
                     id={item}
                     details={order.items[item]}
                     isLink
@@ -232,12 +242,11 @@ const OrderDetails = ({ user, currency }) => {
                   <Place sx={{ fontSize: "2.6rem", color: "text.secondary" }} />
                   <Box display={"flex"} flexDirection={"column"} width={"100%"}>
                     <Typography color={"text.secondary"}>
-                      {order.delivery.location.address},{" "}
-                      {order.delivery.location.street}
+                      {order.delivery.details.name}
                     </Typography>
                     <Typography ml={"3px"} color={"text.secondary"}>
-                      {order.delivery.location.country},{" "}
-                      {order.delivery.location.city}
+                      {order.delivery.details.country},{" "}
+                      {order.delivery.details.city}
                     </Typography>
                   </Box>
                 </Box>

@@ -10,11 +10,12 @@ import {
   useTheme,
 } from "@mui/material";
 import { AddShoppingCart, Delete, Edit } from "@mui/icons-material";
-import ProductDetails from "./productDetails";
+import CustomizeProduct from "./customizeProduct";
 import ProductWorker from "../../scripts/productWorker";
-import EditModal from "../layout/editModal";
+import EditModal from "../layout/modals/edit";
+import { navigate } from "gatsby";
 import { useDispatch } from "react-redux";
-import { activateConfirmationModal } from "../../state/store";
+import { updateUser } from "../../state/user";
 
 const UserProductCard = ({
   id,
@@ -22,29 +23,38 @@ const UserProductCard = ({
   type,
   user,
   currency,
+  setConfirmationModal,
   isLink = false,
 }) => {
   const dispatch = useDispatch();
   const productWorker = new ProductWorker();
   const product = productWorker.findProduct(id);
   const { total: value, ...remainingDetails } = details;
-  const [isProductDetails, setIsProductDetails] = useState(false);
-
+  const [customizeProduct, setCustomizeProduct] = useState({
+    on: false,
+    title: "Edit your prefrences",
+  });
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
 
-  const handleDelete = () => {
-    dispatch(
-      activateConfirmationModal({
-        message: `Are you sure you want to remove '${product.name}' from your ${type}`,
-        onCancel: () => {},
-        onConfirm: () => {},
-      })
-    );
+  const handleDelete = (path = "cart") => {
+    setConfirmationModal({
+      on: true,
+      message: `Are you sure you want to remove '${product.name}' from your ${path}`,
+      onCancel: () => {},
+      onConfirm: () =>
+        dispatch(
+          updateUser({ path, action: "DELETE", data: { productId: product.id } })
+        ),
+    });
   };
 
-  const handleEdit = () => {
-    setIsProductDetails(true);
+  const changeCustomizeProduct = (path, action) => {
+    if (user.isLoggedIn) {
+      setCustomizeProduct((prev) => ({ ...prev, on: true, path, action }));
+    } else {
+      navigate(`/auth/login?tab=${window.location.pathname}`);
+    }
   };
 
   return (
@@ -71,14 +81,18 @@ const UserProductCard = ({
     >
       {(type === "cart" || type === "favourites") && (
         <EditModal
-          isEdit={isProductDetails}
+          isEdit={customizeProduct.on}
           width={"min(700px, 90%)"}
-          handleClose={() => setIsProductDetails(false)}
+          handleClose={() => setCustomizeProduct({ on: false })}
         >
-          <ProductDetails
-            title={"Edit your prefrences"}
-            {...{ product, user, currency }}
-            {...{ isProductDetails, setIsProductDetails }}
+          <CustomizeProduct
+            {...{
+              product,
+              user,
+              currency,
+              customizeProduct,
+              setCustomizeProduct,
+            }}
           />
         </EditModal>
       )}
@@ -141,7 +155,7 @@ const UserProductCard = ({
                 size="small"
                 sx={{ ":hover": { color: "primary.main" } }}
                 startIcon={isNotPhone ? <Delete /> : undefined}
-                onClick={handleDelete}
+                onClick={() => handleDelete("favourites")}
               >
                 Remove
               </Button>
@@ -150,7 +164,7 @@ const UserProductCard = ({
                 disableElevation
                 size="small"
                 sx={{ alignSelf: "flex-start" }}
-                onClick={handleEdit}
+                onClick={() => changeCustomizeProduct("cart", "ADD")}
                 startIcon={isNotPhone ? <AddShoppingCart /> : undefined}
               >
                 Add to cart
@@ -167,7 +181,7 @@ const UserProductCard = ({
             >
               <Button
                 sx={{ ":hover": { color: "primary.main" } }}
-                onClick={handleEdit}
+                onClick={() => changeCustomizeProduct("cart", "EDIT")}
                 startIcon={<Edit />}
                 size="small"
               >
@@ -179,7 +193,7 @@ const UserProductCard = ({
                 size="small"
                 sx={{ ":hover": { color: "primary.main" } }}
                 startIcon={<Delete />}
-                onClick={handleDelete}
+                onClick={() => handleDelete("cart")}
               >
                 Remove
               </Button>
@@ -198,7 +212,7 @@ const UserProductCard = ({
           <Tooltip title="Edit" placement="right">
             <IconButton
               sx={{ ":hover": { color: "primary.main" } }}
-              onClick={handleEdit}
+              onClick={() => changeCustomizeProduct("cart", "EDIT")}
             >
               <Edit />
             </IconButton>
@@ -206,7 +220,7 @@ const UserProductCard = ({
           <Tooltip title="Remove from cart" placement="right">
             <IconButton
               sx={{ ":hover": { color: "primary.main" } }}
-              onClick={handleDelete}
+              onClick={() => handleDelete("cart")}
             >
               <Delete />
             </IconButton>

@@ -1,8 +1,8 @@
 import { AsYouType, isValidPhoneNumber } from "libphonenumber-js";
 import callingCodes from "../../lib/callingCodes.json";
+import cardValidator from "card-validator";
 
 class AuthWorker {
-  
   redact(str, startCharacters = 2, endCharacters = 2) {
     str = String(str);
     if (str.length <= startCharacters + endCharacters) {
@@ -75,45 +75,82 @@ class AuthWorker {
   //   return filteredCurrencies;
   // }
 
-  luhnCheck(value) {
-    let sum = 0;
-    for (let i = 0; i < value.length; i++) {
-      let intVal = parseInt(value.substr(i, 1));
-      if (i % 2 === value.length % 2) {
-        intVal *= 2;
-        if (intVal > 9) {
-          intVal -= 9;
+  getErrors(errors = {}, target, form = {}) {
+    const validator = {
+      password: [
+        {
+          key: (value) => value.length >= 8,
+          message: "Password must be at least 8 characters long",
+        },
+        {
+          key: (value) => /[A-Z]/.test(value),
+          message: "Password must contain at least one uppercase letter",
+        },
+        {
+          key: (value) => /[a-z]/.test(value),
+          message: "Password must contain at least one lowercase letter",
+        },
+        {
+          key: (value) => /\d/.test(value),
+          message: "Password must contain at least one number",
+        },
+        { key: (value) => value !== "", message: "Password is required" },
+      ],
+      confirmPassword: {
+        key: (value, form) => value === form.password,
+        message: "passwords must match",
+      },
+      phoneNumber: {
+        key: (value, form) => isValidPhoneNumber(value, form.code),
+        message: "invalid phone number",
+      },
+      email: {
+        key: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+        message: "invalid email",
+      },
+      cardName: {
+        key: (value) => cardValidator.cardholderName(value).isValid,
+        message: "invalid card holder name",
+      },
+      cardNumber: {
+        key: (value) =>
+          cardValidator.number(this.removeStringFormat(value, "-")).isValid,
+        message: "invalid card number",
+      },
+      cardExpiry: {
+        key: (value) => cardValidator.expirationDate(value).isValid,
+        message: "invalid expiry",
+      },
+      cardCvv: {
+        key: (value) => cardValidator.cvv(value).isValid,
+        message: "invalid cvv",
+      },
+    };
+
+    //checks for length by default
+    if (!target.value.length) {
+      return { ...errors, [target.name]: "required" };
+    }
+
+    //checks for errors using validator
+    if(validator[target.name])
+    {
+      if (Array.isArray(validator[target.name])) {
+        for (let element of validator[target.name]) {
+          if (!element.key(target.value, form)) {
+            return { ...errors, [target.name]: element.message };
+          }
+        }
+      } else {
+        if (!validator[target.name].key(target.value, form)) {
+          return { ...errors, [target.name]: validator[target.name].message };
         }
       }
-      sum += intVal;
+  
     }
-    return sum % 10 === 0;
-  }
-
-  isCvvExpired(value) {
-    const [month, year] = value.split("/").map(Number);
-    const now = new Date();
-    const currentYear = now.getFullYear() % 100; // Get last two digits of the year
-    const currentMonth = now.getMonth() + 1; // getMonth() is zero-based
-
-    if (year < currentYear || (year === currentYear && month < currentMonth)) {
-      return true;
-    }
-    return false;
-  }
-
-  getErrors(errors = {}, validator = {}, target = {}, form = {}) {
-    if (!Object.keys(validator).length || !validator[target.name]) {
-      return errors;
-    }
-
-    for (const element of validator[target.name]) {
-      if (!element.key(target.value, form)) {
-        return { ...errors, [target.name]: element.message };
-      }
-    }
-    const { [target.name]: value, ...rest } = errors;
-    return rest;
+    //if no errors remove it from errors array
+    const { [target.name]: value, ...remainingErrors } = errors;
+    return remainingErrors;
   }
 }
 

@@ -1,67 +1,49 @@
 import { PhoneAndroid } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
 import React, { useState } from "react";
-import AuthWorker from "../../../../scripts/authWorker";
-import { isValidPhoneNumber } from "libphonenumber-js";
-import TelTextField from "../telTextField";
-import { useSelector } from "react-redux";
-import callingCodes from "../../../../../lib/callingCodes.json";
+import AuthWorker from "../../../scripts/authWorker";
+import TelTextField from "../inputs/telTextField";
+import callingCodes from "../../../../lib/callingCodes.json";
 
 const MobilePayment = ({ mobileValues, setStage, setPayment }) => {
   const authWorker = new AuthWorker();
-  const region = useSelector((state) => state.region);
   const [form, setForm] = useState({
-    code: mobileValues?.code || region.country_code || "US",
-    number:
-      mobileValues?.number ||
-      callingCodes[region.country_code].callingCode ||
-      "",
+    phoneCode: mobileValues?.code || "US",
+    phoneNumber: mobileValues?.number || callingCodes["US"].callingCode,
   });
+
   const [touched, setTouched] = useState({});
   const [errors, setErrors] = useState(
-    form.number > callingCodes[form.code].callingCode
+    form.phoneNumber > callingCodes[form.phoneCode].callingCode
       ? {}
-      : { number: "required" }
+      : { phoneNumber: "required" }
   );
-
-  const validator = {
-    number: [
-      {
-        key: (value, form) => value.length > form.code.length,
-        message: "required",
-      },
-      {
-        key: (value, form) => isValidPhoneNumber(value, form.code),
-        message: "invalid phone number",
-      },
-    ],
-  };
 
   const handleChange = ({ target }) => {
     setForm((prev) => {
-      if (target.name === "code") {
+      if (target.name === "phoneCode") {
         return {
           ...prev,
-          code: target.value,
-          number: callingCodes[target.value].callingCode,
+          phoneCode: target.value,
+          phoneNumber: callingCodes[target.value].callingCode,
         };
-      } else if (target.name === "number") {
+      } else if (target.name === "phoneNumber") {
         return {
           ...prev,
-          number: authWorker.formatPhoneNumber(
-            prev.number,
+          phoneNumber: authWorker.formatPhoneNumber(
+            prev.phoneNumber,
             target.value,
-            prev.code
+            prev.phoneCode
           ),
         };
       }
       return { ...prev, [target.name]: target.value };
     });
+    //for the most current value
     setForm((prev) => {
       setErrors(
         authWorker.getErrors(
           errors,
-          validator,
           { name: target.name, value: prev[target.name] },
           form
         )
@@ -78,10 +60,11 @@ const MobilePayment = ({ mobileValues, setStage, setPayment }) => {
     event.preventDefault();
     setPayment({
       type: "mobile",
-      number: authWorker.redact(form.number, 4),
-      details: { ...form },
+      number: authWorker.redact(form.phoneNumber, 4),
+      details: { code: form.phoneCode, number: form.phoneNumber },
     });
     setStage(3);
+    
   };
 
   return (

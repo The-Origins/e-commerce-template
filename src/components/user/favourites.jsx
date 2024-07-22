@@ -29,12 +29,12 @@ const UserFavourites = ({ user, currency }) => {
       flexDirection={"column"}
       gap={"20px"}
     >
-      {Object.keys(user.favourites).map((favourite) => {
+      {Object.keys(user.data.favourites).map((favourite) => {
         return (
           <UserProductCard
             {...{user, currency}}
             id={favourite}
-            details={user.favourites[favourite]}
+            details={user.data.favourites[favourite]}
             type="favourites"
           />
         );

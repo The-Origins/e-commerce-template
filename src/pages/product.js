@@ -26,18 +26,19 @@ import ProductWorker from "../scripts/productWorker";
 import RatingDistributionComponent from "../components/product/ratingDistribution";
 import ReviewComponent from "../components/product/reviewComponent";
 import ProductCardContainer from "../components/product/productCardContainer";
-import ProductDetails from "../components/product/productDetails";
+import CustomizeProduct from "../components/product/customizeProduct";
 import SkeletonGroup from "../components/layout/skeletonGroup";
-import EditModal from "../components/layout/editModal";
+import EditModal from "../components/layout/modals/edit";
 import Carousel from "../components/layout/carousel";
 import { navigate } from "gatsby";
+import { updateUser } from "../state/user";
 
-const ProductPage = () => {
+const ProductPage = ({ setConfirmationModal }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const currency = useSelector((state) => state.currency);
+  const dispatch = useDispatch();
 
   const productWorker = new ProductWorker();
   let params = new URLSearchParams(window.location.search);
@@ -47,7 +48,10 @@ const ProductPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [imageIndex, setImageIndex] = useState(0);
   const [product, setProduct] = useState({});
-  const [isProductDetails, setIsProductDetails] = useState(false);
+  const [customizeProduct, setCustomizeProduct] = useState({
+    on: false,
+    title: (isInCart || isLiked) && "Edit your prefrences",
+  });
   const [ratingDistribution, setRatingDistribution] = useState({});
 
   useEffect(() => {
@@ -71,9 +75,9 @@ const ProductPage = () => {
   }, [product]);
 
   useEffect(() => {
-    if (Object.keys(user).length) {
-      setIsLiked(Boolean(user.favourites[product.id]));
-      setIsInCart(Boolean(user.cart.items[product.id]));
+    if (user.isLoggedIn) {
+      setIsLiked(Boolean(user.data.favourites[product.id]));
+      setIsInCart(Boolean(user.data.cart.items[product.id]));
     } else {
       setIsLiked(false);
       setIsInCart(false);
@@ -84,32 +88,56 @@ const ProductPage = () => {
     setImageIndex(Number(target.value));
   };
 
-  const addToCart = () => {
-    setIsProductDetails(true);
-  };
-
   const handleFavourite = () => {
-    if (!Object.keys(user).length) {
-      navigate(
-        `/auth/login?ref=/product?p=${id}&message=login+to+add+to+favourites`
-      );
+    if (isLiked) {
+      handleDelete();
+    } else {
+      changeCustomizeProduct("favourites", "ADD");
     }
   };
 
   const handleShare = () => {};
 
+  const handleDelete = (path = "favourites") => {
+    setConfirmationModal({
+      on: true,
+      message: `Are you sure you want to remove '${product.name}' from your ${path}`,
+      onCancel: () => {},
+      onConfirm: () =>
+        dispatch(
+          updateUser({
+            path,
+            action: "DELETE",
+            data: { productId: product.id },
+          })
+        ),
+    });
+  };
+
+  const changeCustomizeProduct = (path, action) => {
+    if (user.isLoggedIn) {
+      setCustomizeProduct((prev) => ({ ...prev, on: true, path, action }));
+    } else {
+      navigate(`/auth/login?tab=${window.location.pathname}`);
+    }
+  };
+
   return (
     <Box display={"flex"} justifyContent={"center"}>
       {!isLoading && (
         <EditModal
-          isEdit={isProductDetails}
+          isEdit={customizeProduct.on}
           width={"min(700px, 90%)"}
-          handleClose={() => setIsProductDetails(false)}
+          handleClose={() => setCustomizeProduct({ on: false })}
         >
-          <ProductDetails
-            title={isInCart && "Change your prefrences"}
-            {...{ product, user, currency }}
-            {...{ isProductDetails, setIsProductDetails }}
+          <CustomizeProduct
+            {...{
+              user,
+              product,
+              currency,
+              customizeProduct,
+              setCustomizeProduct,
+            }}
           />
         </EditModal>
       )}
@@ -230,7 +258,7 @@ const ProductPage = () => {
                   ) : isInCart ? (
                     <Box width={"100%"} display={"flex"} gap={"20px"}>
                       <Button
-                        onClick={() => setIsProductDetails(true)}
+                        onClick={() => changeCustomizeProduct("cart", "EDIT")}
                         startIcon={<Edit />}
                         variant="outlined"
                       >
@@ -255,7 +283,7 @@ const ProductPage = () => {
                       sx={{ height: "50px" }}
                       variant="contained"
                       startIcon={<AddShoppingCart />}
-                      onClick={addToCart}
+                      onClick={() => changeCustomizeProduct("cart", "ADD")}
                     >
                       add to cart
                     </Button>
@@ -352,7 +380,9 @@ const ProductPage = () => {
                     ) : isInCart ? (
                       <Box width={"100%"} display={"flex"} gap={"20px"}>
                         <Button
-                          onClick={() => setIsProductDetails(true)}
+                          onClick={() =>
+                            changeCustomizeProduct("favourites", "EDIT")
+                          }
                           startIcon={<Edit />}
                           variant="outlined"
                         >
@@ -377,7 +407,7 @@ const ProductPage = () => {
                         sx={{ height: "50px" }}
                         variant="contained"
                         startIcon={<AddShoppingCart />}
-                        onClick={addToCart}
+                        onClick={() => changeCustomizeProduct("cart", "ADD")}
                       >
                         add to cart
                       </Button>
@@ -638,13 +668,13 @@ const ProductPage = () => {
           </Box>
         </Box>
         <ProductCardContainer
-          {...{ user, isLoading, currency }}
+          {...{ user, isLoading, currency, setConfirmationModal }}
           title={`More in ${product.categories?.[0]}`}
           category={product.categories?.[0]}
           products={products.slice(0, 4)}
         />
         <ProductCardContainer
-          {...{ user, isLoading, currency }}
+          {...{ user, isLoading, currency, setConfirmationModal }}
           title={`Recently viewed`}
           products={products.slice(5, 9)}
           disableLink

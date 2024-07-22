@@ -3,40 +3,13 @@ import { Box, Typography, useTheme } from "@mui/material";
 import Carousel from "../../components/layout/carousel";
 import LoginIntro from "../../components/auth/login/intro";
 import LoginForm from "../../components/auth/login/loginForm";
-import ChangePassword from "../../components/layout/forms/changePassword";
+import ChangePassword from "../../components/forms/changePassword";
 
-const Login = ({ setStatus }) => {
+const Login = ({ setStatus, location }) => {
+  const searchParams = new URLSearchParams(location.search);
+  const tab = searchParams.get("tab");
   const theme = useTheme();
   const [stage, setStage] = useState(0);
-
-  const changePassword = (password) => {
-    console.log(password);
-    setStatus({ on: true, type: "LOADING", message: "changing password" });
-    const loadingTimeout = setTimeout(() => {
-      clearTimeout(loadingTimeout);
-      setStatus({
-        on: true,
-        type: "SUCCESS",
-        message: "password changed successfully",
-        action: () => {
-          setStage(1);
-        },
-        actionTitle: "Back to login",
-      });
-    }, 2000);
-  };
-
-  const handleFail = (message) => {
-    setStatus({
-      on: true,
-      type: "ERROR",
-      message: message,
-      action: () => {
-        setStage(1);
-      },
-      actionTitle: "Back to login",
-    });
-  };
 
   return (
     <Box
@@ -74,17 +47,19 @@ const Login = ({ setStatus }) => {
             alignItems: "center",
           }}
         >
-          <LoginIntro {...{ setStage }} />
+          <LoginIntro {...{ setStage, tab }} />
           <LoginForm
             {...{
               setStage,
               setStatus,
+              tab,
             }}
           />
           <ChangePassword
             onCancel={() => setStage(1)}
-            onFail={handleFail}
-            onComplete={changePassword}
+            onComplete={() => {
+              setStage(1);
+            }}
             {...{ setStatus }}
           />
         </Carousel>

@@ -14,14 +14,18 @@
     },
     "delivery": {
       "status": "pending",
-      "location": {
+      "details": {
+        "name": "My address 3",
+        "region": "region 3",
         "country": "Country 1",
         "city": "City 1",
-        "street": "1st street",
-        "address": "Address 1",
-        "type": "home",
-        "locationInfo": "House no A5, 3rd floor",
-        "fee": { "amount": 40, "currency": "USD" }
+        "street": "3rd street",
+        "address": "Address 3",
+        "type": "office",
+        "location": {
+          "info": "10th floor",
+          "deliveryFee": { "amount": 50, "currency": "USD" }
+        }
       }
     },
     "items": {
@@ -54,14 +58,18 @@
     },
     "delivery": {
       "status": "pending",
-      "location": {
+      "details": {
+        "name": "Pick up station 1",
+        "region": "region 2",
         "country": "Country 1",
         "city": "City 1",
         "street": "2nd street",
         "address": "Address 2",
         "type": "pick-up station",
-        "locationInfo": "4rd floor",
-        "fee": { "amount": 20, "currency": "USD" }
+        "location": {
+          "info": "4rd floor",
+          "deliveryFee": { "amount": 20, "currency": "USD" }
+        }
       }
     },
     "items": {
@@ -92,14 +100,18 @@
     },
     "delivery": {
       "status": "delivered",
-      "location": {
+      "details": {
+        "name": "My address 1",
+        "region": "region 1",
         "country": "Country 1",
         "city": "City 1",
-        "street": "3rd street",
-        "address": "Address 3",
-        "type": "office",
-        "locationInfo": "10th floor",
-        "fee": { "amount": 50, "currency": "USD" }
+        "street": "1st street",
+        "address": "Address 1",
+        "type": "home",
+        "location": {
+          "info": "House no A5, 3rd floor",
+          "deliveryFee": { "amount": 40, "currency": "USD" }
+        }
       }
     },
     "items": {

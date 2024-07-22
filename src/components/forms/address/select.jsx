@@ -8,7 +8,6 @@ import {
   TextField,
   Autocomplete,
 } from "@mui/material";
-import { useSelector } from "react-redux";
 
 const SelectAddress = ({
   setStage,
@@ -17,36 +16,47 @@ const SelectAddress = ({
   enableSkip,
   onSkip,
 }) => {
-  const region = useSelector((state) => state.region);
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState([
     {
+      name: "My address 1",
+      region: "region 1",
       country: "Country 1",
       city: "City 1",
       street: "1st street",
       address: "Address 1",
-      type: "home",
-      locationInfo: "House no A5, 3rd floor",
-      fee: { amount: 40, currency: "USD" },
+      location: {
+        type: "home",
+        info: "House no A5, 3rd floor",
+        deliveryFee: { amount: 40, currency: "USD" },
+      },
     },
     {
+      name: "Pick up station 1",
+      region: "region 2",
       country: "Country 1",
       city: "City 1",
       street: "2nd street",
       address: "Address 2",
-      type: "pick-up station",
-      locationInfo: "4rd floor",
-      fee: { amount: 20, currency: "USD" },
+      location: {
+        type: "pick-up station",
+        info: "4rd floor",
+        deliveryFee: { amount: 20, currency: "USD" },
+      },
     },
     {
+      name: "My address 3",
+      region: "region 3",
       country: "Country 1",
       city: "City 1",
       street: "3rd street",
       address: "Address 3",
-      type: "office",
-      locationInfo: "10th floor",
-      fee: { amount: 50, currency: "USD" },
+      location: {
+        type: "office",
+        info: "10th floor",
+        deliveryFee: { amount: 50, currency: "USD" },
+      },
     },
   ]);
 
@@ -99,9 +109,7 @@ const SelectAddress = ({
             >
               <Place />
               <Box width={"100%"} display={"flex"} flexDirection={"column"}>
-                <Typography>
-                  {option.address}, {option.street}
-                </Typography>
+                <Typography>{option.name}</Typography>
                 <Typography color={"text.secondary"}>
                   {option.country}, {option.city}
                 </Typography>
@@ -113,7 +121,7 @@ const SelectAddress = ({
             <TextField
               {...props}
               name="search"
-              placeholder={`${region.country}, ${region.city}`}
+              placeholder={`Search`}
               fullWidth
               InputProps={{
                 ...props.InputProps,
@@ -137,7 +145,10 @@ const SelectAddress = ({
           Cancel
         </Button>
         {enableSkip && (
-          <Button onClick={onSkip} sx={{color:"text.secondary", textTransform:"none"}}>
+          <Button
+            onClick={onSkip}
+            sx={{ color: "text.secondary", textTransform: "none" }}
+          >
             skip
           </Button>
         )}

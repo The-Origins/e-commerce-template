@@ -7,20 +7,13 @@ const SelectCheckoutChange = ({
   type,
   data,
   currency,
-  setIsChange,
   setStage,
-  setDetail,
+  handleSelect,
 }) => {
   const theme = useTheme();
-
-  const handleSelect = ({ target }) => {
-    setDetail(target.value);
-    setIsChange(false);
-  };
-
   return (
     <Box
-      width={"min(400px, 90%)"}
+      width={"min(400px, 100%)"}
       height={"100%"}
       display={"flex"}
       flexDirection={"column"}
@@ -53,13 +46,12 @@ const SelectCheckoutChange = ({
         <Box
           display={"flex"}
           flexDirection={"column"}
-          padding={"20px"}
+          padding={"0px 10px"}
           gap={"20px"}
         >
           {data.map((element) => (
             <button
-              onClick={handleSelect}
-              value={element}
+              onClick={() => handleSelect(element)}
               style={{
                 width: "100%",
                 backgroundColor: "transparent",
@@ -106,13 +98,13 @@ const SelectCheckoutChange = ({
                       {type === "payment"
                         ? element.type
                         : type === "delivery"
-                        ? `${element.address}, ${element.street}`
+                        ? `${element.name}`
                         : ""}
                     </Typography>
                     {type === "delivery" ? (
                       <Typography fontSize={"0.9rem"} color={"primary.main"}>
                         {currency.symbol}{" "}
-                        {element.fee.amount}
+                        {element.location.deliveryFee.amount}
                       </Typography>
                     ) : (
                       <Box></Box>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setIsContact } from "../state/store";
+import { useSelector } from "react-redux";
 import {
   Box,
   useTheme,
@@ -17,12 +16,11 @@ import CategoryCard from "../components/home/categoryCard";
 import SkeletonGroup from "../components/layout/skeletonGroup";
 import Spotlights from "../components/home/spotlights";
 
-const Home = () => {
-  const dispatch = useDispatch();
+const Home = ({ setIsContact, setConfirmationModal }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const user = useSelector((state) => state.user);
-  const currency = useSelector((state) => state.currency)
+  const currency = useSelector((state) => state.currency);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -65,7 +63,7 @@ const Home = () => {
             ) : (
               <Button
                 size="big"
-                onClick={() => dispatch(setIsContact(true))}
+                onClick={() => setIsContact(true)}
                 disableElevation
                 variant="contained"
                 startIcon={<PhoneInTalk />}
@@ -98,19 +96,19 @@ const Home = () => {
               </Typography>
             </Box>
             <ProductCardContainer
-              {...{user, isLoading, currency}}
+              {...{ user, isLoading, currency, setConfirmationModal }}
               title="Clothing"
               category={"clothing"}
               products={products.slice(0, 4)}
             />
             <ProductCardContainer
-              {...{user, isLoading, currency}}
+              {...{ user, isLoading, currency, setConfirmationModal }}
               title="Electronics"
               category={"electronics"}
               products={products.slice(14, 18)}
             />
             <ProductCardContainer
-              {...{user, isLoading, currency}}
+              {...{ user, isLoading, currency, setConfirmationModal }}
               title="Food"
               category="food"
               products={products.slice(21, 25)}

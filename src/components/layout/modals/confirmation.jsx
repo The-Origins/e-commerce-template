@@ -1,17 +1,13 @@
-import { Backdrop, Box, Button, IconButton, Typography } from "@mui/material";
+import { Backdrop, Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { deactivateConfirmationModal } from "../../state/store";
-import { useTheme } from "@emotion/react";
+import { useSelector } from "react-redux";
 import { Close, Info } from "@mui/icons-material";
 
-const ConfirmationModal = () => {
+const ConfirmationModal = ({confirmationModal, setConfirmationModal}) => {
   const theme = useTheme();
-  const dispatch = useDispatch();
-  const confirmationModal = useSelector((state) => state.confirmationModal);
 
   const handleClose = () => {
-    dispatch(deactivateConfirmationModal());
+    setConfirmationModal({on:false, message:""})
   };
 
   return (

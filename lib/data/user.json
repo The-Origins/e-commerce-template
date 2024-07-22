@@ -3,22 +3,23 @@
   "email": "johndoe@email.com",
   "phone": { "code": "US", "number": "+1 212 341 2321" },
   "payments": {
-    "currency": {
-      "code": "USD",
-      "decimals": 2,
-      "name": "United States dollar",
-      "number": "840",
-      "symbol": "$"
-    },
+    "currency": "USD",
     "recent": 1,
     "saved": [
       {
         "type": "mobile",
-        "number": "+1 2*******21"
+        "number": "+1 2*******21",
+        "details": { "code": "US", "number": "+1 212 341 2321" }
       },
       {
         "type": "card",
-        "number": "41************86"
+        "number": "41************86",
+        "details": {
+          "number": "4111111111186",
+          "name": "John Doe",
+          "cvv": "221",
+          "expiry": "12/26"
+        }
       }
     ]
   },
@@ -26,33 +27,49 @@
     "recent": 1,
     "saved": [
       {
+        "name": "My address 1",
+        "region": "region 1",
         "country": "Country 1",
         "city": "City 1",
         "street": "1st street",
         "address": "Address 1",
-        "type": "home",
-        "locationInfo": "House no A5, 3rd floor",
-        "fee": { "amount": 40, "currency": "USD" }
+        "location": {
+          "type": "home",
+          "info": "House no A5, 3rd floor",
+          "deliveryFee": { "amount": 40, "currency": "USD" }
+        }
       },
       {
+        "name": "Pick up station 1",
+        "region": "region 2",
         "country": "Country 1",
         "city": "City 1",
         "street": "2nd street",
         "address": "Address 2",
-        "type": "pick-up station",
-        "locationInfo": "4rd floor",
-        "fee": { "amount": 20, "currency": "USD" }
+        "location": {
+          "type": "pick-up station",
+          "info": "4rd floor",
+          "deliveryFee": { "amount": 20, "currency": "USD" }
+        }
       },
       {
+        "name": "My address 3",
+        "region": "region 3",
         "country": "Country 1",
         "city": "City 1",
         "street": "3rd street",
         "address": "Address 3",
-        "type": "office",
-        "locationInfo": "10th floor",
-        "fee": { "amount": 50, "currency": "USD" }
+        "location": {
+          "type": "office",
+          "info": "10th floor",
+          "deliveryFee": { "amount": 50, "currency": "USD" }
+        }
       }
     ]
+  },
+  "recent": {
+    "searches": ["electronics", "clothing", "food", "trending"],
+    "veiwedProducts": [14, 28, 9, 2]
   },
   "orders": [1, 2, 3],
   "notifications": {

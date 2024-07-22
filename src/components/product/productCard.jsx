@@ -10,51 +10,68 @@ import {
   useMediaQuery,
   Tooltip,
 } from "@mui/material";
-import ProductDetails from "./productDetails";
 import offers from "../../../lib/data/offers.json";
-import { useSelector } from "react-redux";
+import CustomizeProduct from "./customizeProduct";
 import ProductWorker from "../../scripts/productWorker";
-import EditModal from "../layout/editModal";
+import EditModal from "../layout/modals/edit";
 import { convertHex } from "../../theme";
 import { navigate } from "gatsby";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../../state/user";
 
-const ProductCard = ({ product, user, currency }) => {
+const ProductCard = ({ product, user, currency, setConfirmationModal }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const productWorker = new ProductWorker();
-  const [isProductDetails, setIsProductDetails] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
-
-  const addToCart = () => {
-    if (Object.keys(user).length) {
-      setIsProductDetails(true);
-    } else {
-      login();
-    }
-  };
-
-  const favourite = () => {
-    if (Object.keys(user).length) {
-      // favourite logic
-    } else {
-      login();
-    }
-  };
-
-  const login = () => {
-    navigate("/auth/login");
-  };
+  const [customizeProduct, setCustomizeProduct] = useState({
+    on: false,
+    title: (isInCart || isLiked) && "Edit your prefrences",
+  });
 
   useEffect(() => {
-    if (Object.keys(user).length) {
-      setIsLiked(Boolean(user.favourites[product.id]));
-      setIsInCart(Boolean(user.cart.items[product.id]));
+    if (user.isLoggedIn) {
+      setIsLiked(Boolean(user.data.favourites[product.id]));
+      setIsInCart(Boolean(user.data.cart.items[product.id]));
     } else {
       setIsLiked(false);
       setIsInCart(false);
     }
   }, [user, product]);
+
+  const handleFavourite = () => {
+    if (isLiked) {
+      handleDelete();
+    } else {
+      changeCustomizeProduct("favourites", "ADD");
+    }
+  };
+
+  const handleDelete = (path = "favourites") => {
+    setConfirmationModal({
+      on: true,
+      message: `Are you sure you want to remove '${product.name}' from your ${path}`,
+      onCancel: () => {},
+      onConfirm: () =>
+        dispatch(
+          updateUser({
+            path,
+            action: "DELETE",
+            data: { productId: product.id },
+          })
+        ),
+    });
+  };
+
+  const changeCustomizeProduct = (path, action) => {
+    if (user.isLoggedIn) {
+      setCustomizeProduct((prev) => ({ ...prev, on: true, path, action }));
+    } else {
+      navigate(`/auth/login?tab=${window.location.pathname}`);
+    }
+  };
 
   return (
     <Box
@@ -73,14 +90,18 @@ const ProductCard = ({ product, user, currency }) => {
       }}
     >
       <EditModal
-        isEdit={isProductDetails}
+        isEdit={customizeProduct.on}
         width={"min(700px, 90%)"}
-        handleClose={() => setIsProductDetails(false)}
+        handleClose={() => setCustomizeProduct({ on: false })}
       >
-        <ProductDetails
-          title={isInCart || isLiked ? "Change your prefrences" : undefined}
-          {...{ product, user, currency }}
-          setIsProductDetails={setIsProductDetails}
+        <CustomizeProduct
+          {...{
+            product,
+            user,
+            currency,
+            customizeProduct,
+            setCustomizeProduct,
+          }}
         />
       </EditModal>
       <Box
@@ -105,7 +126,7 @@ const ProductCard = ({ product, user, currency }) => {
             alignItems={"center"}
           >
             <Tooltip title={isLiked ? "Favourited" : "Add to favourites"}>
-              <IconButton onClick={favourite}>
+              <IconButton onClick={handleFavourite}>
                 <Favorite sx={{ color: isLiked ? "primary.main" : "white" }} />
               </IconButton>
             </Tooltip>
@@ -114,7 +135,7 @@ const ProductCard = ({ product, user, currency }) => {
                 <Tooltip title="edit">
                   <IconButton
                     sx={{ transition: "0.2s" }}
-                    onClick={() => setIsProductDetails(true)}
+                    onClick={() => changeCustomizeProduct("cart", "EDIT")}
                   >
                     <Edit sx={{ color: "white" }} />
                   </IconButton>
@@ -133,7 +154,10 @@ const ProductCard = ({ product, user, currency }) => {
               </Box>
             ) : (
               <Tooltip title={"add to cart"}>
-                <IconButton onClick={addToCart} sx={{ color: "white" }}>
+                <IconButton
+                  onClick={() => changeCustomizeProduct("cart", "ADD")}
+                  sx={{ color: "white" }}
+                >
                   <AddCircle />
                 </IconButton>
               </Tooltip>

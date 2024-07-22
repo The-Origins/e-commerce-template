@@ -1,7 +1,8 @@
 import React from "react";
-import { MenuItem, Link, ListItemIcon } from "@mui/material";
+import { MenuItem, Link, ListItemIcon, useTheme } from "@mui/material";
 
 const SideBarElement = ({ path, stage, title, icon }) => {
+  const theme = useTheme();
   return (
     <Link
       href={`/user/#${path}`}
@@ -16,7 +17,7 @@ const SideBarElement = ({ path, stage, title, icon }) => {
           height: "50px",
           bgcolor:
             ((stage === "order" && path === "orders") || path === stage) &&
-            "#F5F5F5",
+            theme.palette.grey[300],
         }}
       >
         <ListItemIcon color="inherit">{icon}</ListItemIcon>

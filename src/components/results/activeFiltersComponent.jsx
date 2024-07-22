@@ -7,6 +7,7 @@ const ActiveFiltersComponent = ({
   resultCount,
   filters,
   price,
+  currency,
   resetFilter,
 }) => {
   const theme = useTheme();
@@ -51,7 +52,7 @@ const ActiveFiltersComponent = ({
               (filter === "min" && filters.min === price.min) ||
               (filter === "max" && filters.max === price.max)
             ) {
-              return;
+              return <></>;
             }
             return (
               <Box
@@ -61,11 +62,14 @@ const ActiveFiltersComponent = ({
                 borderRadius={"10px"}
                 padding={"0px 10px"}
                 color={"primary.main"}
-                bgcolor={`rgba(${ convertHex(theme.palette.primary.main)
-                  .join(" ")} / 0.2)`}
+                bgcolor={`rgba(${convertHex(theme.palette.primary.main).join(
+                  " "
+                )} / 0.2)`}
               >
                 <Typography fontSize={"0.75rem"}>
-                  {filter}:{filters[filter]}
+                  {filter}:{" "}
+                  {(filter === "max" || filter === "min") && currency.symbol}
+                  {filters[filter]}
                 </Typography>
                 <IconButton onClick={() => handleReset(filter)} size="small">
                   <Close sx={{ fontSize: "0.7rem" }} />

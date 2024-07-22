@@ -1,22 +1,11 @@
 import React, { useState } from "react";
 import SelectAddress from "./select";
 import AddressDetails from "./details";
-import Carousel from "../../carousel";
+import Carousel from "../../layout/carousel";
 
-const Address = ({
-  setStatus,
-  onFail,
-  onComplete,
-  onCancel,
-  enableSkip = false,
-  onSkip,
-}) => {
+const Address = ({ onComplete, onCancel, enableSkip = false, onSkip }) => {
   const [stage, setStage] = useState(0);
   const [address, setAddress] = useState({});
-
-  const handleFail = (message) => {
-    onFail(message);
-  };
 
   const handleComplete = () => {
     setAddress((prev) => {
@@ -45,12 +34,10 @@ const Address = ({
       />
       <AddressDetails
         {...{
-          setStatus,
           setStage,
           address,
           setAddress,
           handleComplete,
-          handleFail,
         }}
       />
     </Carousel>

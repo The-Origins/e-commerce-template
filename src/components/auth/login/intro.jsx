@@ -2,7 +2,7 @@ import React from "react";
 import { Email, Facebook, Google } from "@mui/icons-material";
 import { Box, Button, Link } from "@mui/material";
 
-const LoginIntro = ({ setStage, }) => {
+const LoginIntro = ({ setStage, tab }) => {
   return (
     <Box
       width={"100%"}
@@ -35,7 +35,7 @@ const LoginIntro = ({ setStage, }) => {
       >
         Email
       </Button>
-      <Link href="/auth/register">
+      <Link href={`/auth/register${tab ? "?tab=" + tab : ""}`}>
         <Button
           sx={{
             mt: "50px",

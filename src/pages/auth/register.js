@@ -1,20 +1,25 @@
 import React, { useState } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Carousel from "../../components/layout/carousel";
 import RegisterIntro from "../../components/auth/register/intro";
 import GeneralInfo from "../../components/auth/register/general";
-import PasswordForm from "../../components/layout/forms/passwordForm";
-import Address from "../../components/layout/forms/address";
-import Payment from "../../components/layout/forms/payment";
+import PasswordForm from "../../components/forms/password";
+import Address from "../../components/forms/address";
+import Payment from "../../components/forms/payment";
 import Currency from "../../components/auth/register/currency";
+import { registerUser } from "../../state/user";
+import { navigate } from "gatsby";
 
-const Register = ({ setStatus }) => {
+const Register = ({ setStatus, location }) => {
+  const searchParams = new URLSearchParams(location.search)
+  const tab = searchParams.get("tab")
   const theme = useTheme();
+  const dispatch = useDispatch();
   const [stage, setStage] = useState(0);
   const [registerForm, setRegisterForm] = useState({});
 
-  const region = useSelector((state) => state.region);
+  const region = useSelector((state) => state.session.region);
 
   const addPassword = (password) => {
     setRegisterForm((prev) => ({ ...prev, password }));
@@ -34,19 +39,23 @@ const Register = ({ setStatus }) => {
     setStage(5);
   };
 
-  const handleErrors = (message) => {
-    setStatus({
-      on: true,
-      type: "ERROR",
-      message: message,
-      action: () => setStage(0),
-      actionTitle: "Back",
-    });
-  };
-
   const handleRegister = () => {
+    //for the most updated value
     setRegisterForm((prev) => {
-      console.log(prev);
+      dispatch(
+        registerUser({
+          data: prev,
+          setStatus,
+          onSuccess: () => {
+            navigate(`/auth/login${tab ? "?tab=" + tab : ""}`)
+            setStage(0);
+          },
+          onError: () =>
+          {
+            setStage(0)
+          }
+        })
+      );
       return {};
     });
   };
@@ -82,13 +91,11 @@ const Register = ({ setStatus }) => {
           padding: "20px",
         }}
       >
-        <RegisterIntro {...{ setStage }} />
+        <RegisterIntro {...{ setStage , tab}} />
         <GeneralInfo {...{ setStage, setRegisterForm, region }} />
         <PasswordForm handleBack={() => setStage(1)} handleNext={addPassword} />
         <Address
-          setStatus={setStatus}
           onCancel={() => setStage(2)}
-          onFail={handleErrors}
           onComplete={addAddress}
           enableSkip
           onSkip={() => setStage(4)}
@@ -96,7 +103,6 @@ const Register = ({ setStatus }) => {
         <Payment
           mobileValues={registerForm.phone}
           onCancel={() => setStage(3)}
-          onFail={handleErrors}
           onComplete={addPayment}
           {...{ setStatus }}
           enableSkip
@@ -106,7 +112,6 @@ const Register = ({ setStatus }) => {
           {...{
             region,
             setStage,
-            setStatus,
             setRegisterForm,
             handleRegister,
           }}

@@ -20,6 +20,7 @@
     "@mui/x-date-pickers": "^6.18.5",
     "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.7.2",
+    "card-validator": "^10.0.0",
     "country-data": "^0.0.31",
     "dayjs": "^1.11.10",
     "gatsby": "^5.12.4",

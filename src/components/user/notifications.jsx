@@ -29,7 +29,7 @@ const Notifications = ({ user }) => {
         },
       }}
     >
-      {user.notifications.items.map((notification) => (
+      {user.data.notifications.items.map((notification) => (
         <NotificationItem {...notification} />
       ))}
     </Box>

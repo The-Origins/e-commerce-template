@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 
 const AddressDetails = ({
-  setStatus,
   setStage,
   address,
   setAddress,
@@ -20,8 +19,8 @@ const AddressDetails = ({
 }) => {
   const theme = useTheme();
   const [form, setForm] = useState({
-    type: address.type || "other",
-    locationInfo: address.locationInfo,
+    type: "other",
+    info: "",
   });
 
   const handleChange = ({ target }) => {
@@ -32,18 +31,9 @@ const AddressDetails = ({
     event.preventDefault();
     setAddress((prev) => ({
       ...prev,
-      ...form,
+      location: { ...prev.location, ...form },
     }));
-    setStatus({
-      on: true,
-      type: "LOADING",
-      message: "saving",
-    });
-    const loadingTimeout = setTimeout(() => {
-      setStatus({ on: false });
-      handleComplete();
-      clearTimeout(loadingTimeout);
-    }, 1000);
+    handleComplete();
   };
 
   return (
@@ -69,15 +59,13 @@ const AddressDetails = ({
         >
           <Place sx={{ color: "text.secondary" }} />
           <Box display={"flex"} flexDirection={"column"}>
-            <Typography>
-              {address.address}, {address.street}
-            </Typography>
+            <Typography>{address.name}</Typography>
             <Typography fontSize={"0.8rem"} color={"text.secondary"}>
               {address.city}, {address.country}
             </Typography>
           </Box>
         </Box>
-        {address.type !== "pick-up station" ? (
+        {address.location?.type !== "pick-up station" ? (
           <>
             <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
               <Typography fontWeight={"bold"}>Address type:</Typography>
@@ -122,8 +110,8 @@ const AddressDetails = ({
                 info:
               </Typography>
               <TextField
-                name="locationInfo"
-                value={form.locationInfo}
+                name="info"
+                value={form.info}
                 onChange={handleChange}
                 placeholder={
                   form.type === "home"

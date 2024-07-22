@@ -2,24 +2,19 @@ import React, { useState } from "react";
 import SelectPayment from "./select";
 import CardPayment from "./card";
 import MobilePayment from "./mobile";
-import VerificationComponent from "../../../auth/verificationComponent";
-import Carousel from "../../carousel";
+import VerificationComponent from "../../auth/verificationComponent";
+import Carousel from "../../layout/carousel";
 
 const Payment = ({
+  setStatus,
   mobileValues,
-  onFail,
   onComplete,
   onCancel,
-  setStatus,
   enableSkip = false,
   onSkip,
 }) => {
   const [stage, setStage] = useState(0);
-  const [payment, setPayment] = useState({});
-
-  const handleFail = (message) => {
-    onFail(message);
-  };
+  const [payment, setPayment] = useState({ details: {} });
 
   const handleComplete = () => {
     setPayment((prev) => {
@@ -47,18 +42,17 @@ const Payment = ({
       <CardPayment
         {...{
           setStage,
-          setStatus,
           setPayment,
           handleComplete,
-          handleFail,
         }}
       />
       <MobilePayment {...{ mobileValues, setStage, setPayment }} />
       <VerificationComponent
         type="mobile"
+        data={payment.details.number}
         setStatus={setStatus}
-        onVerifyFaliure={handleFail}
-        onVerifySuccess={handleComplete}
+        onError={onCancel}
+        onSuccess={handleComplete}
       />
     </Carousel>
   );

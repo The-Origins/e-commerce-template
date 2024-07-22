@@ -1,20 +1,12 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { setIsContact } from "../../state/store";
-import {
-  Box,
-  Button,
-  Link,
-  ThemeProvider,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Link, ThemeProvider, Typography } from "@mui/material";
 import { PhoneInTalk } from "@mui/icons-material";
 import theme from "../../theme";
-import Contact from "../layout/contact";
+import ContactModal from "../layout/modals/contact";
 import StatusComponent from "../layout/statusComponent";
 
 const AuthLayout = ({ children }) => {
-  const dispatch = useDispatch();
+  const [isContact, setIsContact] = useState(false);
   const [status, setStatus] = useState({
     on: false,
     type: "LOADING",
@@ -55,7 +47,7 @@ const AuthLayout = ({ children }) => {
           E-commerce
         </Link>
       </header>
-      <Contact />
+      <ContactModal {...{ isContact, setIsContact }} />
       <Box
         height={"80vh"}
         width={"100%"}
@@ -72,7 +64,9 @@ const AuthLayout = ({ children }) => {
           position={"relative"}
           overflow={"hidden"}
         >
-          {status.on && <StatusComponent isAbsolute {...{ status, setStatus}} />}
+          {status.on && (
+            <StatusComponent isAbsolute {...{ status, setStatus }} />
+          )}
           {mappedChildren}
         </Box>
       </Box>
@@ -89,7 +83,7 @@ const AuthLayout = ({ children }) => {
         <Typography>Need assistance ?</Typography>
         <Button
           endIcon={<PhoneInTalk />}
-          onClick={() => dispatch(setIsContact(true))}
+          onClick={() => setIsContact(true)}
           variant="contained"
           disableElevation
           color="primary"

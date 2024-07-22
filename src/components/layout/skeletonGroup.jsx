@@ -8,6 +8,7 @@ const SkeletonGroup = ({
   height,
   flexDirection,
   flexWrap,
+  style,
 }) => {
   return (
     <Box
@@ -21,6 +22,7 @@ const SkeletonGroup = ({
           width={width}
           height={height}
           variant={variant || "rounded"}
+          sx={style}
         />
       ))}
     </Box>

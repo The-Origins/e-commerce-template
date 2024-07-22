@@ -22,7 +22,7 @@ const AddressItem = (props) => {
       <Place sx={{ fontSize: "30px" }} />
       <Box width={"100%"} display={"flex"} flexDirection={"column"}>
         <Typography fontWeight={"bold"}>
-          {props.address}, {props.street}
+          {props.name}
         </Typography>
         <Typography color={"text.secondary"} ml={"4px"}>
           {props.country}, {props.city}

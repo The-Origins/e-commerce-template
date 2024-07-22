@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { AddCircle, Paid, Place } from "@mui/icons-material";
-import { Box, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
+import { Add, AddCircle, Paid, Place } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Tooltip,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import ProfileListElement from "./profileListElement";
-import EditModal from "../layout/editModal";
+import EditModal from "../layout/modals/edit";
 import AddProfileListItem from "./addProfileListItem";
 
-const UserProfileList = ({type, title, icon, data}) => {
+const UserProfileList = ({ type, title, icon, data, setConfirmationModal }) => {
   const [isAdd, setIsAdd] = useState(false);
   const theme = useTheme();
   return (
@@ -51,29 +58,49 @@ const UserProfileList = ({type, title, icon, data}) => {
           </IconButton>
         </Tooltip>
       </Box>
-      <Box
-        display={"flex"}
-        flexDirection={"column"}
-        gap={"20px"}
-        padding={"20px"}
-      >
-        {data.map((data) => (
-          <ProfileListElement
-            icon={type === "address" ? <Place /> : <Paid />}
-            title={
-              type === "address"
-                ? `${data.address}, ${data.street}`
-                : data.type
-            }
-            description={
-              type === "address"
-                ? `${data.country}, ${data.city}`
-                : data.number
-            }
-            type={data.type}
-          />
-        ))}
-      </Box>
+      {data.length ? (
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          gap={"20px"}
+          padding={"20px"}
+        >
+          {data.map((data) => (
+            <ProfileListElement
+              path={type === "address" ? "addresses" : type === "payment" ? "payments" : ""}
+              setConfirmationModal={setConfirmationModal}
+              icon={type === "address" ? <Place /> : <Paid />}
+              title={type === "address" ? data.name : data.type}
+              description={
+                type === "address"
+                  ? `${data.country}, ${data.city}`
+                  : data.number
+              }
+              type={data.type}
+            />
+          ))}
+        </Box>
+      ) : (
+        <Box
+          width={"100%"}
+          height={"100%"}
+          display={"flex"}
+          flexDirection={"column"}
+          alignItems={"center"}
+          justifyContent={"center"}
+        >
+          <AddCircle sx={{ color: "text.secondary" }} />
+          <Typography>No {type} saved</Typography>
+          <Button
+            variant="contained"
+            disableElevation
+            startIcon={<Add />}
+            onClick={() => setIsAdd(true)}
+          >
+            add new
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };

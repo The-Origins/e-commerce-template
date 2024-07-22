@@ -1,70 +1,30 @@
 import { Payment } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import AuthWorker from "../../../../scripts/authWorker";
+import AuthWorker from "../../../scripts/authWorker";
 
-const CardPayment = ({
-  setStage,
-  setStatus,
-  setPayment,
-  handleComplete,
-  handleFail,
-}) => {
+const CardPayment = ({ setStage, setPayment, handleComplete }) => {
   const authWorker = new AuthWorker();
   const [form, setForm] = useState({});
   const [touched, setTouched] = useState({});
   const [errors, setErrors] = useState({
-    name: "required",
-    number: "required",
-    expiry: "required",
-    cvv: "required",
+    cardName: "required",
+    cardNumber: "required",
+    cardExpiry: "required",
+    cardCvv: "required",
   });
 
-  const validator = {
-    name: [{ key: (value) => value.length, message: "required" }],
-    number: [
-      { key: (value) => value.length, message: "required" },
-      {
-        key: (value) =>
-          /^\d{13,19}$/.test(authWorker.removeStringFormat(value, "-")),
-        message: "invalid card number",
-      },
-      {
-        key: (value) =>
-          authWorker.luhnCheck(authWorker.removeStringFormat(value, "-")), //validate card number
-        message: "invalid card number",
-      },
-    ],
-    expiry: [
-      { key: (value) => value.length, message: "required" },
-      {
-        key: (value) => /^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(value),
-        message: "Expiration date must be in MM/YY format",
-      },
-      {
-        key: (value) => !authWorker.isCvvExpired(value), //check if cvv is expired
-        message: "invalid expiry",
-      },
-    ],
-    cvv: [
-      { key: (value) => String(value).length, message: "required" },
-      {
-        key: (value) => /^\d{3,4}$/.test(value), //check if cvv has 3-4 values
-        message: "invalid cvv",
-      },
-    ],
-  };
-
   const handleChange = ({ target }) => {
-    setErrors(authWorker.getErrors(errors, validator, target));
+    setErrors(authWorker.getErrors(errors, target));
+
     setForm((prev) => ({
       ...prev,
       [target.name]:
-        target.name === "number"
+        target.name === "cardNumber"
           ? target.value.length
             ? authWorker.formatString(target.value, "-", 4)
             : target.value
-          : target.name === "expiry"
+          : target.name === "cardExpiry"
           ? target.value.length
             ? authWorker.formatString(target.value, "/")
             : target.value
@@ -78,24 +38,20 @@ const CardPayment = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { number, ...rest } = form;
-    const unformattedNumber = authWorker.removeStringFormat(number, "-");
+    const { cardName, cardNumber, cardExpiry, cardCvv } = form;
+    const unformattedNumber = authWorker.removeStringFormat(cardNumber, "-");
     setPayment({
       type: "card",
       number: authWorker.redact(unformattedNumber),
-      details: { number: unformattedNumber, ...rest },
+      details: {
+        name: cardName,
+        number: unformattedNumber,
+        expiry: cardExpiry,
+        cvv: cardCvv,
+      },
     });
-
-    setStatus({
-      on: true,
-      type: "LOADING",
-      message: "verifying",
-    });
-    const loadingTimeout = setTimeout(() => {
-      setStatus({ on: false });
-      handleComplete();
-      clearTimeout(loadingTimeout);
-    }, 2000);
+    handleComplete();
+    setForm({})
   };
 
   return (
@@ -122,44 +78,44 @@ const CardPayment = ({
           <TextField
             type="text"
             label="Full name"
-            name="name"
-            value={form.name}
+            name="cardName"
+            value={form.cardName}
             onChange={handleChange}
             onBlur={handleBlur}
-            helperText={(touched.name && errors.name) || " "}
-            error={touched.name && errors.name}
+            helperText={(touched.cardName && errors.cardName) || " "}
+            error={touched.cardName && errors.cardName}
             inputProps={{ maxLength: 32 }}
             fullWidth
           />
           <TextField
             label="Card number"
-            name={"number"}
-            value={form.number}
+            name={"cardNumber"}
+            value={form.cardNumber}
             onChange={handleChange}
             onBlur={handleBlur}
-            helperText={(touched.number && errors.number) || " "}
-            error={touched.number && errors.number}
+            helperText={(touched.cardNumber && errors.cardNumber) || " "}
+            error={touched.cardNumber && errors.cardNumber}
             inputProps={{ maxLength: 22 }}
             fullWidth
           />
           <Box display={"flex"} gap={"20px"} flexWrap={"wrap"}>
             <TextField
-              name="expiry"
-              value={form.expiry}
+              name="cardExpiry"
+              value={form.cardExpiry}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={(touched.expiry && errors.expiry) || " "}
-              error={touched.expiry && errors.expiry}
+              helperText={(touched.cardExpiry && errors.cardExpiry) || " "}
+              error={touched.cardExpiry && errors.cardExpiry}
               label={"Expiry"}
               inputProps={{ maxLength: 5 }}
             />
             <TextField
-              name="cvv"
-              value={form.cvv}
+              name="cardCvv"
+              value={form.cardCvv}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={(touched.cvv && errors.cvv) || " "}
-              error={touched.cvv && errors.cvv}
+              helperText={(touched.cardCvv && errors.cardCvv) || " "}
+              error={touched.cardCvv && errors.cardCvv}
               inputProps={{ maxLength: 4 }}
               label={"CVV"}
             />

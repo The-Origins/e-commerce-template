@@ -9,8 +9,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import AuthWorker from "../../../scripts/authWorker";
-import { isValidPhoneNumber } from "libphonenumber-js";
-import TelTextField from "../../layout/forms/telTextField";
+import TelTextField from "../../forms/inputs/telTextField";
 import callingCodes from "../../../../lib/callingCodes.json";
 
 const GeneralInfo = ({ setStage, setRegisterForm, region }) => {
@@ -19,7 +18,7 @@ const GeneralInfo = ({ setStage, setRegisterForm, region }) => {
   const authWorker = new AuthWorker();
   const [form, setForm] = useState({
     phoneCode: region.country_code || "US",
-    phoneNumber: callingCodes[region.country_code].callingCode,
+    phoneNumber: callingCodes[region.country_code || "US"].callingCode,
   });
   const [touched, setTouched] = useState({});
   const [errors, setErrors] = useState({
@@ -28,28 +27,6 @@ const GeneralInfo = ({ setStage, setRegisterForm, region }) => {
     email: "required",
     phoneNumber: "required",
   });
-
-  const validator = {
-    firstName: [{ key: (value) => value.length, message: "required" }],
-    lastName: [{ key: (value) => value.length, message: "required" }],
-    email: [
-      { key: (value) => value.length, message: "required" },
-      {
-        key: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-        message: "Email must be valid",
-      },
-    ],
-    phoneNumber: [
-      {
-        key: (value, form) => value.length > form.phoneCode.length,
-        message: "required",
-      },
-      {
-        key: (value, form) => isValidPhoneNumber(value, form.phoneCode),
-        message: "invalid phone number",
-      },
-    ],
-  };
 
   const handleChange = ({ target }) => {
     setForm((prev) => {
@@ -75,7 +52,6 @@ const GeneralInfo = ({ setStage, setRegisterForm, region }) => {
       setErrors(
         authWorker.getErrors(
           errors,
-          validator,
           { name: target.name, value: prev[target.name] },
           prev
         )
@@ -96,6 +72,10 @@ const GeneralInfo = ({ setStage, setRegisterForm, region }) => {
       email: form.email,
       phone: { code: form.phoneCode, number: form.phoneNumber },
     }));
+    setForm({
+      phoneCode: region.country_code || "US",
+      phoneNumber: callingCodes[region.country_code || "US"].callingCode,
+    });
     setStage(2);
   };
 

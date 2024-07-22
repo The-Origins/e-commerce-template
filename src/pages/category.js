@@ -27,11 +27,7 @@ const CategoryPage = ({ location }) => {
     }
   }, [search]);
 
-  return (
-    Boolean(results.length) && (
-      <ResultsComponent path={"category"} data={results} />
-    )
-  );
+  return <ResultsComponent path={"category"} data={results} />;
 };
 
 export default CategoryPage;

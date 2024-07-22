@@ -27,7 +27,7 @@ const ResultsPage = ({ location }) => {
     }
   }, [search]);
 
-  return Boolean(results.length) && <ResultsComponent data={results} />;
+  return <ResultsComponent data={results} />;
 };
 
 export default ResultsPage;

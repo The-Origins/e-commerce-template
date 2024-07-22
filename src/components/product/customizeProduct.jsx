@@ -15,27 +15,35 @@ import {
 import offers from "../../../lib/data/offers.json";
 import ProductWorker from "../../scripts/productWorker";
 import { AddCircle, RemoveCircle } from "@mui/icons-material";
+import { updateUser} from "../../state/user";
+import { useDispatch } from "react-redux";
 
-const ProductDetails = ({ product, user, currency, title, setIsProductDetails }) => {
+const CustomizeProduct = ({
+  product,
+  user,
+  currency,
+  customizeProduct,
+  setCustomizeProduct,
+}) => {
+  const dispatch = useDispatch();
   const theme = useTheme();
-  const maxQuantity = 10;
   const productWorker = new ProductWorker();
+  const maxQuantity = productWorker.maxQuantity;
   const [productDetails, setProductDetails] = useState({});
 
   useEffect(() => {
     const productWorker = new ProductWorker();
-    if (Object.keys(user).length) {
+    if (user.isLoggedIn) {
       setProductDetails(
         productWorker.getProductDetails(
-          user.cart.items,
-          user.favourites,
+          user.data.cart.items,
+          user.data.favourites,
           product,
           offers
         )
       );
     }
   }, [product, user]);
-
 
   const handleProductDetailsChange = ({ target }) => {
     setProductDetails((prev) => {
@@ -90,7 +98,14 @@ const ProductDetails = ({ product, user, currency, title, setIsProductDetails })
   };
 
   const handleConfirm = () => {
-    setIsProductDetails(false);
+    dispatch(
+      updateUser({
+        path: customizeProduct.path,
+        action: customizeProduct.action,
+        data: { productId: product.id, ...productDetails },
+      })
+    );
+    setCustomizeProduct({ on: false });
   };
 
   return (
@@ -119,7 +134,7 @@ const ProductDetails = ({ product, user, currency, title, setIsProductDetails })
             fontSize={"clamp(1rem, 5vw, 1.5rem)"}
             fontWeight={"bold"}
           >
-            {title || "Confirm a few details first"}
+            {customizeProduct.title || "Confirm a few details first"}
           </Typography>
           <Typography
             padding={"7px 12px"}
@@ -285,7 +300,10 @@ const ProductDetails = ({ product, user, currency, title, setIsProductDetails })
         justifyContent={"space-between"}
         padding={"30px 0px"}
       >
-        <Button variant="outlined" onClick={() => setIsProductDetails(false)}>
+        <Button
+          variant="outlined"
+          onClick={() => setCustomizeProduct({ on: false })}
+        >
           cancel
         </Button>
         <Button variant="contained" onClick={handleConfirm}>
@@ -296,4 +314,4 @@ const ProductDetails = ({ product, user, currency, title, setIsProductDetails })
   );
 };
 
-export default ProductDetails;
+export default CustomizeProduct;

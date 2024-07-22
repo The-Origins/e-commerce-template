@@ -16,35 +16,6 @@ const PasswordForm = ({ handleBack, handleNext }) => {
   const authWorker = new AuthWorker();
   const [isPassVisible, setIsPassVisible] = useState(false);
   const [form, setForm] = useState({});
-  const validator = {
-    password: [
-      { key: (value) => value.length, message: "required" },
-      {
-        key: (value) => value.length >= 8,
-        message: "Password must be at least 8 characters long",
-      },
-      {
-        key: (value) => /[A-Z]/.test(value),
-        message: "Password must contain at least one uppercase letter",
-      },
-      {
-        key: (value) => /[a-z]/.test(value),
-        message: "Password must contain at least one lowercase letter",
-      },
-      {
-        key: (value) => /\d/.test(value),
-        message: "Password must contain at least one number",
-      },
-      { key: (value) => value !== "", message: "Password is required" },
-    ],
-    confirmPassword: [
-      { key: (value) => value.length, message: "required" },
-      {
-        key: (value, form) => value === form.password,
-        message: "passwords must match",
-      },
-    ],
-  };
   const [errors, setErrors] = useState({
     password: "required",
     confirmPassword: "required",
@@ -52,7 +23,7 @@ const PasswordForm = ({ handleBack, handleNext }) => {
   const [touched, setTouched] = useState({});
 
   const handleChange = ({ target }) => {
-    setErrors(authWorker.getErrors(errors, validator, target, form));
+    setErrors(authWorker.getErrors(errors, target, form));
     setForm((prev) => ({ ...prev, [target.name]: target.value }));
   };
 

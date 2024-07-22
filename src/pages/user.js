@@ -5,6 +5,7 @@ import {
   Badge,
   Box,
   Button,
+  CircularProgress,
   Divider,
   IconButton,
   Link,
@@ -28,18 +29,18 @@ import OrderDetails from "../components/user/orderDetails";
 import UserFavourites from "../components/user/favourites";
 import UserProfile from "../components/user/profile";
 import Notifications from "../components/user/notifications";
-import { activateConfirmationModal, setUser } from "../state/store";
 import { convertHex } from "../theme";
 import { navigate } from "gatsby";
-import StatusComponent from "../components/layout/statusComponent";
+import NotLoggedInComponent from "../components/user/notLoggedInComponent";
+import { logoutUser } from "../state/user";
 
-const UserPage = () => {
+const UserPage = ({ location, setConfirmationModal }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const currency = useSelector((state) => state.currency);
   const [isLoading, setIsLoading] = useState(true);
-  const [status, setStatus] = useState({ on: false, type: "LOADING" });
   const [stages, setStages] = useState({});
   let stage = String(window.location.hash).includes("/")
     ? window.location.hash.substring(1, window.location.hash.indexOf("/"))
@@ -52,41 +53,30 @@ const UserPage = () => {
   }, [stage]);
 
   useEffect(() => {
-    if (!Object.keys(user).length) {
-      navigate(`/auth/login?ref=${window.location.pathname}`);
-    }
-    const loadingTimeout = setTimeout(() => {
+    if (!user.isFetching) {
       setIsLoading(false);
-    }, 2000);
-    return () => clearTimeout(loadingTimeout);
-  }, []);
+    }
+  }, [user]);
 
   useEffect(() => {
-    if (Object.keys(user).length) {
+    if (user.isLoggedIn) {
       setStages({
-        profile: <UserProfile {...{ user, setStatus }} />,
-        orders: <UserOrders {...{ setStatus }} />,
-        order: <OrderDetails {...{ user, setStatus }} />,
-        favourites: <UserFavourites {...{ user, setStatus }} />,
+        profile: <UserProfile {...{ user, setConfirmationModal }} />,
+        orders: <UserOrders {...{ user, currency }} />,
+        order: <OrderDetails {...{ user, currency }} />,
+        favourites: <UserFavourites {...{ user, currency }} />,
         notifications: <Notifications {...{ user }} />,
       });
     }
   }, [user]);
 
-  const handleLogin = () => {
-    navigate(`/auth/login?ref=${window.location.pathname}`);
-  };
-
   const handleLogout = () => {
-    dispatch(
-      activateConfirmationModal({
-        message: "Are you sure you want to logout?",
-        onConfirm: () => {
-          dispatch(setUser({}));
-        },
-        onCancel: () => {},
-      })
-    );
+    setConfirmationModal({
+      on: true,
+      message: "Are you sure you want to log out ?",
+      onConfirm: () => dispatch(logoutUser()),
+      onCancel: () => {},
+    });
   };
 
   return (
@@ -111,7 +101,7 @@ const UserPage = () => {
             flexDirection={"column"}
             gap={"20px"}
           >
-            {!isLoading && !Object.keys(user).length ? (
+            {!isLoading && !user.isLoggedIn ? (
               <Box
                 width={"100%"}
                 height={"100%"}
@@ -132,7 +122,9 @@ const UserPage = () => {
                       variant="contained"
                       size="large"
                       startIcon={<Person />}
-                      onClick={handleLogin}
+                      onClick={() =>
+                        navigate(`/auth/login?tab=${location.pathname}`)
+                      }
                     >
                       Log in
                     </Button>
@@ -140,7 +132,15 @@ const UserPage = () => {
                 )}
               </Box>
             ) : isLoading ? (
-              <StatusComponent {...{ status, setStatus }} />
+              <Box
+                width={"100%"}
+                height={"100%"}
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <CircularProgress />
+              </Box>
             ) : (
               <>
                 <Link
@@ -149,7 +149,8 @@ const UserPage = () => {
                     height: "40%",
                     color: "black",
                     textDecoration: "none",
-                    bgcolor: stage === "profile" ? "#F5F5F5" : undefined,
+                    bgcolor:
+                      stage === "profile" ? theme.palette.grey[300] : undefined,
                   }}
                 >
                   <MenuItem
@@ -168,7 +169,7 @@ const UserPage = () => {
                     >
                       <Avatar />
                       <Typography fontWeight={"bold"} fontSize={"1.6rem"}>
-                        {user.name.first} {user.name.last}
+                        {user.data.name.first} {user.data.name.last}
                       </Typography>
                     </Box>
                     <Typography fontSize={"0.8rem"} color={"text.secondary"}>
@@ -186,7 +187,7 @@ const UserPage = () => {
                         color="primary"
                         variant="dot"
                         overlap="circular"
-                        invisible={!isLoading && !user.notifications.new}
+                        invisible={!user.data.notifications.new}
                       >
                         <NotificationsSharp />
                       </Badge>
@@ -260,64 +261,40 @@ const UserPage = () => {
                 overflow={isNotPhone ? "hidden" : undefined}
                 borderRadius={isNotPhone ? "0px 25px 25px 0px" : "25px"}
               >
-                {!isLoading && !Object.keys(user).length ? (
+                {isLoading ? (
                   <Box
                     width={"100%"}
                     height={"100%"}
                     display={"flex"}
-                    flexDirection={"column"}
                     justifyContent={"center"}
                     alignItems={"center"}
-                    gap={"20px"}
                   >
-                    <PersonOff
-                      sx={{ fontSize: "3rem", color: "text.secondary" }}
-                    />
-                    <Typography fontWeight={"bold"} fontSize={"1.5rem"}>
-                      Login to access user info
-                    </Typography>
-                    <Button
-                      disableElevation
-                      variant="contained"
-                      size="large"
-                      startIcon={<Person />}
-                      onClick={handleLogin}
-                    >
-                      Log in{" "}
-                    </Button>
+                    <CircularProgress />
                   </Box>
-                ) : isLoading ? (
-                  <StatusComponent {...{ status, setStatus }} />
+                ) : !user.isLoggedIn ? (
+                  <NotLoggedInComponent
+                    message={"Login to access user info"}
+                    size={"small"}
+                  />
                 ) : (
                   stages[stage]
                 )}
               </Box>
-            ) : !isLoading && !Object.keys(user).length ? (
+            ) : isLoading ? (
               <Box
                 width={"100%"}
                 height={"100%"}
                 display={"flex"}
-                flexDirection={"column"}
                 justifyContent={"center"}
                 alignItems={"center"}
-                gap={"20px"}
               >
-                <PersonOff sx={{ fontSize: "3rem", color: "text.secondary" }} />
-                <Typography fontWeight={"bold"} fontSize={"1.5rem"}>
-                  Login to access user info
-                </Typography>
-                <Button
-                  disableElevation
-                  variant="contained"
-                  size="large"
-                  startIcon={<Person />}
-                  onClick={handleLogin}
-                >
-                  Log in{" "}
-                </Button>
+                <CircularProgress />
               </Box>
-            ) : isLoading ? (
-              <StatusComponent {...{ status, setStatus }} />
+            ) : !user.isLoggedIn ? (
+              <NotLoggedInComponent
+                message={"Login to access user info"}
+                size={"small"}
+              />
             ) : (
               stages[stage]
             )}

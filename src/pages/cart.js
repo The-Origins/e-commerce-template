@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   Box,
   Button,
@@ -11,16 +11,14 @@ import {
 } from "@mui/material";
 import UserProductCard from "../components/product/userProductCard";
 import {
-  Person,
-  RemoveShoppingCart,
   ShoppingCartCheckout,
 } from "@mui/icons-material";
 import SkeletonGroup from "../components/layout/skeletonGroup";
 import products from "../../lib/data/products.json";
 import ProductCardContainer from "../components/product/productCardContainer";
-import { navigate } from "gatsby";
+import NotLoggedInComponent from "../components/user/notLoggedInComponent";
 
-const CartPage = () => {
+const CartPage = ({ setConfirmationModal }) => {
   const currency = useSelector((state) => state.currency);
   const [isLoading, setIsLoading] = useState(true);
   const user = useSelector((state) => state.user);
@@ -29,49 +27,19 @@ const CartPage = () => {
 
   useEffect(() => {
     document.title = "Cart | E-commerce";
-
-    const loadingTimeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-
-    return () => {
-      clearTimeout(loadingTimeout);
-    };
   }, []);
 
   useEffect(() => {
-    if (!isLoading && !Object.keys(user).length) {
-      navigate("/auth/login?ref=/cart");
+    if (!user.isFetching) {
+      setIsLoading(false);
     }
-  }, [isLoading]);
+  }, [user.isFetching]);
 
   return (
     <Box display={"flex"} justifyContent={"center"}>
       <Box minHeight={"100vh"} width={isNotPhone ? "80%" : "90%"}>
-        {!isLoading && !Object.keys(user).length ? (
-          <Box
-            display={"flex"}
-            flexDirection={"column"}
-            alignItems={"center"}
-            gap={"20px"}
-          >
-            <RemoveShoppingCart
-              sx={{ fontSize: "5rem", color: "text.secondary" }}
-            />
-            <Typography fontSize={"1.4rem"} fontWeight={"bold"}>
-              Login to access your cart
-            </Typography>
-            <Link href="/auth/login?ref=/cart">
-              <Button
-                variant="contained"
-                disableElevation
-                size="large"
-                startIcon={<Person />}
-              >
-                Login
-              </Button>
-            </Link>
-          </Box>
+        {!isLoading && !user.isLoggedIn ? (
+          <NotLoggedInComponent message={"login to access cart"} size="large" />
         ) : (
           <Box display={"flex"} flexDirection={"column"}>
             <Box
@@ -115,7 +83,7 @@ const CartPage = () => {
                         <Box display={"flex"} justifyContent={"space-between"}>
                           <Typography fontSize={"0.8rem"}>Subtotal</Typography>
                           <Typography fontSize={"0.8rem"}>
-                            {currency.symbol} {user.cart.total}
+                            {currency.symbol} {user.data.cart.total}
                           </Typography>
                         </Box>
                         <Box display={"flex"} justifyContent={"center"}>
@@ -147,7 +115,7 @@ const CartPage = () => {
                           borderRadius={"10px"}
                           fontSize={"0.9rem"}
                         >
-                          SubTotal: {currency.symbol} {user.cart.total}
+                          SubTotal: {currency.symbol} {user.data.cart.total}
                         </Typography>
                       )}
                       <Link href="/checkout">
@@ -191,12 +159,12 @@ const CartPage = () => {
                     {isLoading ? (
                       <SkeletonGroup count={4} width="100%" height={"100px"} />
                     ) : (
-                      Object.keys(user.cart.items).map((cartItem) => {
+                      Object.keys(user.data.cart.items).map((cartItem) => {
                         return (
                           <UserProductCard
-                            {...{ user, currency }}
+                            {...{ user, currency, setConfirmationModal }}
                             id={cartItem}
-                            details={user.cart.items[cartItem]}
+                            details={user.data.cart.items[cartItem]}
                             type="cart"
                             isLink
                           />
@@ -236,7 +204,7 @@ const CartPage = () => {
                       <Box display={"flex"} justifyContent={"space-between"}>
                         <Typography fontSize={"0.8rem"}>Subtotal</Typography>
                         <Typography fontSize={"0.8rem"}>
-                          {currency.symbol} {user.cart.total}
+                          {currency.symbol} {user.data.cart.total}
                         </Typography>
                       </Box>
                       <Box
@@ -269,7 +237,7 @@ const CartPage = () => {
                     >
                       <Typography fontWeight={"bold"}>Total</Typography>
                       <Typography fontWeight={"bold"}>
-                        {currency.symbol} {user.cart.total}
+                        {currency.symbol} {user.data.cart.total}
                       </Typography>
                     </Box>
                   )}
@@ -287,9 +255,8 @@ const CartPage = () => {
               )}
             </Box>
             <ProductCardContainer
-              {...{ user, isLoading, currency }}
+              {...{ user, isLoading, currency, setConfirmationModal }}
               title={`Recently viewed`}
-              isLoading={isLoading}
               products={products.slice(0, 4)}
               disableLink
             />

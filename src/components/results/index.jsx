@@ -12,6 +12,7 @@ import {
   Skeleton,
   Button,
   Link,
+  InputAdornment,
 } from "@mui/material";
 import ProductCard from "../product/productCard";
 import {
@@ -43,14 +44,21 @@ const ResultsComponent = ({ path, data }) => {
   const user = useSelector((state) => state.user);
   const currency = useSelector((state) => state.currency);
   const [isLoading, setIsLoading] = useState(true);
-  const [results, setResults] = useState(null);
-  const [resultsLength, setResultsLength] = useState(0);
+  const [results, setResults] = useState({ pages: 1, pageData: [], all: [] });
   const [price, setPrice] = useState({ min: 0, max: 0 });
   const [priceFilter, setPriceFilter] = useState({});
   const [filterOptions, setFilterOptions] = useState({});
   const [filters, setFilters] = useState({});
   const [isMobileFilters, setIsMobileFilters] = useState(false);
   const mobileFiltersRef = useRef(null);
+
+  useEffect(() => {
+    if (results.pageData.length) {
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+  }, [results]);
 
   useEffect(() => {
     resultsWorker.parseInfo(data);
@@ -61,7 +69,9 @@ const ResultsComponent = ({ path, data }) => {
       min: resultsWorker.minPrice,
       max: resultsWorker.maxPrice,
     });
+  }, [data]);
 
+  useEffect(() => {
     document.title = `Search results for '${search}'`;
     const handleClickOutside = (event) => {
       if (
@@ -80,17 +90,9 @@ const ResultsComponent = ({ path, data }) => {
   }, []);
 
   useEffect(() => {
-    if (results) {
-      setIsLoading(false);
-    } else {
-      setIsLoading(true);
-    }
-  }, [results]);
-
-  useEffect(() => {
-    setResults(null);
-    setResults(resultsWorker.getResults(filters, data));
-    setResultsLength(resultsWorker.resultsLength);
+    setResults(
+      resultsWorker.getResults(resultsWorker.filterResults(filters, data), 1)
+    );
     setFilterOptions(resultsWorker.filterOptions);
     resetPage();
   }, [filters]);
@@ -163,6 +165,7 @@ const ResultsComponent = ({ path, data }) => {
   };
 
   const handlePageChange = (event, value) => {
+    setResults((prev) => resultsWorker.getResults(prev.all, value));
     resetPage(value);
   };
 
@@ -254,9 +257,14 @@ const ResultsComponent = ({ path, data }) => {
                     value={priceFilter.min}
                     onChange={handlePriceChange}
                     sx={{ "& > div": { fontSize: "13px" } }}
-                    inputProps={{
+                    InputProps={{
                       min: price.min,
                       max: price.max,
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Typography>{currency.symbol}</Typography>
+                        </InputAdornment>
+                      ),
                     }}
                   />
                   <TextField
@@ -269,9 +277,14 @@ const ResultsComponent = ({ path, data }) => {
                     value={priceFilter.max}
                     onChange={handlePriceChange}
                     sx={{ "& > div": { fontSize: "13px" } }}
-                    inputProps={{
+                    InputProps={{
                       min: price.min,
                       max: price.max,
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Typography>{currency.symbol}</Typography>
+                        </InputAdornment>
+                      ),
                     }}
                   />
                   <Slider
@@ -281,7 +294,7 @@ const ResultsComponent = ({ path, data }) => {
                     value={[priceFilter.min, priceFilter.max]}
                     onChange={handlePriceChange}
                     valueLabelDisplay="auto"
-                    step={100}
+                    step={10}
                   />
                   {(priceFilter.min !== price.min ||
                     priceFilter.max !== price.max) &&
@@ -360,8 +373,8 @@ const ResultsComponent = ({ path, data }) => {
                 </Typography>
               </Box>
               <ActiveFiltersComponent
-                resultCount={resultsLength}
-                {...{ filters, price, resetFilter }}
+                resultCount={results.all.length}
+                {...{ filters, price, currency, resetFilter }}
               />
             </Box>
           ) : (
@@ -382,8 +395,8 @@ const ResultsComponent = ({ path, data }) => {
                   Search results for "{search}"
                 </Typography>
                 <ActiveFiltersComponent
-                  resultCount={resultsLength}
-                  {...{ filters, price, resetFilter }}
+                  resultCount={results.all.length}
+                  {...{ filters, price, currency, resetFilter }}
                 />
               </Box>
             </Box>
@@ -409,7 +422,7 @@ const ResultsComponent = ({ path, data }) => {
               width={"clamp(80px, 42vw, 250px)"}
               height={"clamp(300px, 50vw, 350px)"}
             />
-          ) : results[page - 1] && results[page - 1].length ? (
+          ) : results.pageData.length ? (
             <Box
               display={"flex"}
               flexWrap={"wrap"}
@@ -417,7 +430,7 @@ const ResultsComponent = ({ path, data }) => {
               width={"100%"}
               minHeight={"100vh"}
             >
-              {results[page - 1].map((product) => (
+              {results.pageData.map((product) => (
                 <ProductCard {...{ product, user, currency }} />
               ))}
             </Box>
@@ -470,7 +483,7 @@ const ResultsComponent = ({ path, data }) => {
           >
             <Pagination
               page={page}
-              count={results ? results.length : 1}
+              count={results.pages}
               variant="outlined"
               shape="rounded"
               onChange={handlePageChange}

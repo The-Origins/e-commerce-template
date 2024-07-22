@@ -11,11 +11,11 @@ import {
 } from "@mui/icons-material";
 import UserProfileDetail from "./profileDetail";
 import UserProfileList from "./profileList";
-import { isValidPhoneNumber } from "libphonenumber-js";
-import EditModal from "../layout/editModal";
-import ChangePasswordProfile from "./changePasswordProfile";
+import EditModal from "../layout/modals/edit";
+import ChangePassword from "../forms/changePassword";
 
-const UserProfile = ({ user }) => {
+const UserProfile = ({ user, setConfirmationModal }) => {
+  user = user.data;
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const [isChangePassword, setIsChangePassword] = useState(false);
@@ -50,59 +50,38 @@ const UserProfile = ({ user }) => {
         width={"min(500px, 90%)"}
         height={"600px"}
       >
-        <ChangePasswordProfile {...{ setIsChangePassword }} />
+        <ChangePassword
+          onCancel={() => setIsChangePassword(false)}
+          onComplete={() => setIsChangePassword(false)}
+        />
       </EditModal>
       <Box display={"flex"} flexWrap={"wrap"} gap={"20px"}>
         <UserProfileDetail
           icon={<AccountCircle />}
           title={"name"}
           description={`${user.name.first} ${user.name.last}`}
-          editable={false}
+          disableEdit
         />
         <UserProfileDetail
           icon={<Mail />}
           title={"email"}
           details={{ email: user.email }}
           description={user.email}
-          validator={{
-            email: [
-              { key: (value) => value.length, message: "required" },
-              {
-                key: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-                message: "Email must be valid",
-              },
-            ],
-          }}
-          editable={true}
         />
         <UserProfileDetail
           icon={<Phone />}
           title={"phone number"}
           details={{
-            code: user.phone.code,
-            number: user.phone.number,
+            phoneCode: user.phone.code,
+            phoneNumber: user.phone.number,
           }}
           description={user.phone.number}
-          validator={{
-            number: [
-              {
-                key: (value, form) => value.length > form.code.length,
-                message: "required",
-              },
-              {
-                key: (value, form) => isValidPhoneNumber(value, form.code),
-                message: "invalid phone number",
-              },
-            ],
-          }}
-          editable={true}
         />
         <UserProfileDetail
           icon={<Paid />}
           title={"currency"}
-          description={user.payments.currency.name}
-          details={{ currency: user.payments.currency.code }}
-          editable={true}
+          description={user.payments.currency}
+          details={{ currency: user.payments.currency }}
         />
       </Box>
       <Box display={"flex"} flexWrap={"wrap"} gap={"20px"}>
@@ -111,12 +90,14 @@ const UserProfile = ({ user }) => {
           title={"Saved Payments"}
           data={user.payments.saved}
           type="payment"
+          setConfirmationModal={setConfirmationModal}
         />
         <UserProfileList
           icon={<Explore />}
           title={"Saved Addresses"}
           data={user.addresses.saved}
           type="address"
+          setConfirmationModal={setConfirmationModal}
         />
       </Box>
       <Box display={"flex"} justifyContent={"center"} padding={"30px"}>

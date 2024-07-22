@@ -3,6 +3,7 @@ import { Box, Link, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { CalendarMonth } from "@mui/icons-material";
 import UserProductCard from "../product/userProductCard";
 import orders from "../../../lib/data/orders.json";
+import { useSelector } from "react-redux";
 
 const UserOrders = ({ user, currency }) => {
   const theme = useTheme();

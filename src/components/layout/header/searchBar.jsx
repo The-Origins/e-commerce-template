@@ -12,17 +12,16 @@ import {
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  activateConfirmationModal,
-  addRecentSearch,
-  removeRecentSearch,
-} from "../../../state/store";
+import { updateRecent, } from "../../../state/user";
 
-const SearchBar = ({ searchFocus = false }) => {
+const SearchBar = ({ searchFocus = false, setConfirmationModal }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
-  const recentSearches = useSelector((state) => state.recentSearches);
+  //fetch recent searches from user or session
+  const recentSearches = useSelector(
+    (state) => state.user?.recent?.searches || state.session.recent?.searches
+  );
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -40,18 +39,24 @@ const SearchBar = ({ searchFocus = false }) => {
   }, [recentSearches]);
 
   const handleSubmit = () => {
-    dispatch(addRecentSearch(search));
+    dispatch(updateRecent({ path: "search", action: "ADD", data: search }));
   };
 
   const handleOptionDelete = (option) => {
     setOpen(false);
-    dispatch(
-      activateConfirmationModal({
-        message: `Are you sure you want to remove '${option}' from your search history?`,
-        onCancel: () => {},
-        onConfirm: () => dispatch(removeRecentSearch(option)),
-      })
-    );
+    setConfirmationModal({
+      on: true,
+      message: `Are you sure you want to remove '${option}' from your search history?`,
+      onCancel: () => {},
+      onConfirm: () =>
+        dispatch(
+          updateRecent({
+            path: "search",
+            action: "REMOVE",
+            data: option,
+          })
+        ),
+    });
   };
 
   const handleOptionSelect = (option) => {

@@ -1,7 +1,7 @@
 import ProductWorker from "./productWorker";
 
 class ResultsWorker {
-  constructor(params, productOffers,) {
+  constructor(params, productOffers) {
     this.params = params || {};
     this.productOffers = productOffers || {};
     this.pageLimit = 16;
@@ -11,12 +11,10 @@ class ResultsWorker {
     this.filterExeptions = new ProductWorker().searchExeptions;
     this.filterOptions = {};
     this.filters = {};
-    this.resultsLength = 0;
   }
 
   parseInfo(data) {
     const productWorker = new ProductWorker();
-    this.resultsLength = data.length;
     data.forEach((result) => {
       //get prices even those on offer
       if (this.productOffers[result.id]) {
@@ -93,7 +91,7 @@ class ResultsWorker {
     });
   }
 
-  filter(filters, data) {
+  filterResults(filters, data) {
     this.filters = filters;
     const filteredResults = data.filter((result) => {
       //filter out products by their features
@@ -117,33 +115,18 @@ class ResultsWorker {
     });
 
     this.parseInfo(filteredResults);
-    return filteredResults;
+    return filteredResults
   }
 
-  paginate(filteredResults) {
-    let results = [];
-    if (filteredResults.length) {
-      for (
-        let i = 1;
-        i <= Math.ceil(filteredResults.length / this.pageLimit);
-        i++
-      ) {
-        results = [
-          ...results,
-          filteredResults.slice(
-            this.pageLimit * i - this.pageLimit,
-            this.pageLimit * i
-          ),
-        ];
-      }
-    } else {
-      results = [[]];
-    }
-    return results;
-  }
-
-  getResults(filters, data) {
-    return this.paginate(this.filter(filters, data));
+  getResults(data, page) {
+    return {
+      all: data,
+      pages: Math.ceil(data.length / this.pageLimit),
+      pageData: data.slice(
+        this.pageLimit * page - this.pageLimit,
+        this.pageLimit * page
+      ),
+    };
   }
 }
 

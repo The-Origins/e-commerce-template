@@ -12,25 +12,26 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AuthWorker from "../../scripts/authWorker";
-import TelTextField from "../layout/forms/telTextField";
-import CurrencySelect from "../layout/forms/currencySelect";
-import callingCodes from "../../../lib/callingCodes.json"
+import TelTextField from "../forms/inputs/telTextField";
+import CurrencySelect from "../forms/inputs/currencySelect";
+import callingCodes from "../../../lib/callingCodes.json";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../../state/user";
 
 const UserProfileDetail = ({
   title,
   description,
   details,
   icon,
-  validator,
-  editable,
+  disableEdit = false,
 }) => {
   const authWorker = new AuthWorker();
   const theme = useTheme();
+  const dispatch = useDispatch();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [form, setForm] = useState(details);
-
   const [isEdit, setIsEdit] = useState(false);
 
   const handleBlur = ({ target }) => {
@@ -39,19 +40,19 @@ const UserProfileDetail = ({
 
   const handleChange = ({ target }) => {
     setForm((prev) => {
-      if (target.name === "code") {
+      if (target.name === "phoneCode") {
         return {
           ...prev,
-          code: target.value,
-          number: callingCodes[target.value].callingCode,
+          phoneCode: target.value,
+          phoneNumber: callingCodes[target.value].callingCode,
         };
-      } else if (target.name === "number") {
+      } else if (target.name === "phoneNumber") {
         return {
           ...prev,
-          number: authWorker.formatPhoneNumber(
-            prev.number,
+          phoneNumber: authWorker.formatPhoneNumber(
+            prev.phoneNumber,
             target.value,
-            prev.code
+            prev.phoneCode
           ),
         };
       }
@@ -61,7 +62,6 @@ const UserProfileDetail = ({
       setErrors(
         authWorker.getErrors(
           errors,
-          validator,
           { name: target.name, value: prev[target.name] },
           prev
         )
@@ -73,6 +73,11 @@ const UserProfileDetail = ({
   useEffect(() => {
     setForm(details);
   }, [details]);
+
+  const handleSave = () => {
+    setIsEdit(false);
+    dispatch(updateUser({ path: title.split(" ")[0], action: "EDIT", data: form }));
+  };
 
   return (
     <Box
@@ -93,11 +98,11 @@ const UserProfileDetail = ({
         },
         ":hover .profile-form-edit": { opacity: 1 },
         ":hover .profile-form-title": {
-          color: editable ? "primary.main" : "black",
+          color: !disableEdit ? "primary.main" : "black",
         },
       }}
     >
-      {isEdit && editable ? (
+      {isEdit && !disableEdit ? (
         <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
           {title === "currency" ? (
             <CurrencySelect {...{ form, handleChange }} />
@@ -131,7 +136,7 @@ const UserProfileDetail = ({
               Cancel
             </Button>
             <Button
-              onClick={() => setIsEdit(false)}
+              onClick={handleSave}
               disableElevation
               variant="contained"
               size="small"
@@ -162,7 +167,7 @@ const UserProfileDetail = ({
           <Typography sx={{ transition: "0.3s" }} color={"text.secondary"}>
             {description}
           </Typography>
-          {editable && (
+          {!disableEdit && (
             <Tooltip title="edit" placement="right">
               <IconButton
                 onClick={() => setIsEdit(true)}

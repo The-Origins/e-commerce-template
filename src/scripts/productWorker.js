@@ -4,6 +4,7 @@ import { currencies } from "country-data";
 class ProductWorker {
   constructor() {
     this.products = data;
+    this.maxQuantity = 10;
     this.searchExeptions = ["SKU", "weight"];
   }
 

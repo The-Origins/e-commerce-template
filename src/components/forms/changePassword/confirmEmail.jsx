@@ -1,25 +1,15 @@
 import React, { useState } from "react";
 import { Email } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import AuthWorker from "../../../../scripts/authWorker";
+import AuthWorker from "../../../scripts/authWorker";
 
-const ConfirmEmail = ({ setStage, setStatus, handleCancel }) => {
+const ConfirmEmail = ({ setStage, email, setEmail, onCancel }) => {
   const authWorker = new AuthWorker();
-  const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({ email: "required" });
   const [touched, setTouched] = useState({});
-  const validator = {
-    email: [
-      { key: (value) => value.length, message: "required" },
-      {
-        key: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-        message: "Email must be valid",
-      },
-    ],
-  };
 
   const handleChange = ({ target }) => {
-    setErrors(authWorker.getErrors(errors, validator, target));
+    setErrors(authWorker.getErrors(errors, target));
     setEmail(target.value);
   };
 
@@ -29,16 +19,7 @@ const ConfirmEmail = ({ setStage, setStatus, handleCancel }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setStatus({
-      on: true,
-      type: "LOADING",
-      message: "verifying",
-    });
-    const waitingTimeout = setTimeout(() => {
-      setStage(1);
-      setStatus({ on: false });
-      clearTimeout(waitingTimeout);
-    }, 2000);
+    setStage(1);
   };
 
   return (
@@ -80,7 +61,7 @@ const ConfirmEmail = ({ setStage, setStatus, handleCancel }) => {
         justifyContent={"space-between"}
         alignItems={"center"}
       >
-        <Button variant="outlined" disableElevation onClick={handleCancel}>
+        <Button variant="outlined" disableElevation onClick={onCancel}>
           cancel
         </Button>
         <Button

@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, MenuItem, Select, Typography } from "@mui/material";
-import currencies from "../../../../lib/currencies.json";
+import currencies from "../../../../lib/currencies.json"
 
 const CurrencySelect = ({ form, handleChange }) => {
   return (

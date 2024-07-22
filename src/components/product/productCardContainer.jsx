@@ -11,8 +11,10 @@ const ProductCardContainer = ({
   category,
   isLoading,
   products,
+  setConfirmationModal,
   disableLink = false
 }) => {
+  
   const theme = useTheme();
   return (
     <Box
@@ -92,7 +94,7 @@ const ProductCardContainer = ({
             ) : (
               <Box display={"flex"} gap={"20px"}>
                 {products.map((product) => (
-                  <ProductCard {...{ product, user, currency }} />
+                  <ProductCard {...{ product, user, currency, setConfirmationModal}} />
                 ))}
               </Box>
             )}

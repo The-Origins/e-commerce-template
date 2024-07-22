@@ -2,24 +2,25 @@ import { Email, PhoneAndroid } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import AuthWorker from "../../scripts/authWorker";
+import { useDispatch } from "react-redux";
+import { verifyCode } from "../../state/user";
 
 const VerificationComponent = ({
   type = "email",
-  onVerifySuccess = () => {},
-  onVerifyFaliure = () => {},
+  data,
+  onSuccess = () => {},
+  onError = () => {},
   setStatus,
 }) => {
+  const dispatch = useDispatch();
   const authWorker = new AuthWorker();
   const [timer, setTimer] = useState(0);
   const [code, setCode] = useState("");
   const [errors, setErrors] = useState({ code: "required" });
   const [touched, setTouched] = useState({});
-  const validator = {
-    code: [{ key: (value) => value.length, message: "required" }],
-  };
 
   const handleChange = ({ target }) => {
-    setErrors(authWorker.getErrors(errors, validator, target));
+    setErrors(authWorker.getErrors(errors, target));
     setCode(target.value);
   };
 
@@ -41,16 +42,7 @@ const VerificationComponent = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setStatus({
-      on: true,
-      type: "LOADING",
-      message: "verifying",
-    });
-    const loadingTimeout = setTimeout(() => {
-      setStatus({ on: false });
-      onVerifySuccess();
-      clearTimeout(loadingTimeout);
-    }, 2000);
+    dispatch(verifyCode({ type, data, setStatus, onSuccess, onError }));
   };
 
   return (

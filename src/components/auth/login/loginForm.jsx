@@ -8,12 +8,11 @@ import {
 import React, { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../../state/store";
-import user from "../../../../lib/data/user.json";
 import AuthWorker from "../../../scripts/authWorker";
 import { navigate } from "gatsby";
+import { loginUser } from "../../../state/user";
 
-const LoginForm = ({ setStage, setStatus }) => {
+const LoginForm = ({ setStage, setStatus, tab}) => {
   const authWorker = new AuthWorker();
   const dispatch = useDispatch();
   const [form, setForm] = useState({});
@@ -23,25 +22,9 @@ const LoginForm = ({ setStage, setStatus }) => {
   });
   const [touched, setTouched] = useState({});
   const [isPassVisible, setIsPassVisible] = useState(false);
-  const validator = {
-    email: [
-      { key: (value) => value.length, message: "required" },
-      {
-        key: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-        message: "Email must be valid",
-      },
-    ],
-    password: [
-      { key: (value) => value.length, message: "required" },
-      {
-        key: (value) => value.length >= 8,
-        message: "Password must be at least 8 characters long",
-      },
-    ],
-  };
 
   const handleChange = ({ target }) => {
-    setErrors(authWorker.getErrors(errors, validator, target));
+    setErrors(authWorker.getErrors(errors, target));
     setForm((prev) => ({ ...prev, [target.name]: target.value }));
   };
 
@@ -51,24 +34,22 @@ const LoginForm = ({ setStage, setStatus }) => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    setStatus({
-      on: true,
-      type: "LOADING",
-      message: "login in",
-    });
-    const loadingTimeout = setTimeout(() => {
-      dispatch(setUser(user));
-      setStatus({
-        on: true,
-        type: "SUCCESS",
-        message: "You're logged in",
-        action: () => {
-          navigate("/");
-          setStage(0);
-        },
-      });
-      clearTimeout(loadingTimeout);
-    }, 1000);
+    setForm((prev) => {
+      dispatch(
+        loginUser({
+          data: prev,
+          setStatus,
+          onSuccess: () => {
+            navigate(tab || "/");
+            setStage(0);
+          },
+          onError: () => {
+            setStage(0);
+          },
+        })
+      );
+      return {}
+    })
   };
 
   return (

@@ -2,20 +2,26 @@ import React from "react";
 import { Box, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
 import { Business, Delete, Home, LocalShipping } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { activateConfirmationModal } from "../../state/store";
+import { updateUser } from "../../state/user";
 
-const ProfileListElement = ({ type, title, icon, description }) => {
+const ProfileListElement = ({
+  path,
+  type,
+  title,
+  icon,
+  description,
+  setConfirmationModal,
+}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    dispatch(
-      activateConfirmationModal({
-        message: `Are you sure you want to delete this ${type}`,
-        onConfirm: () => {},
-        onCancel: () => {},
-      })
-    );
+    setConfirmationModal({
+      on: true,
+      message: `Are you sure you want to delete this ${type}`,
+      onConfirm:() => dispatch(updateUser({path, action:"DELETE", data:type,})),
+      onCancel:() => {}
+    });
   };
 
   return (

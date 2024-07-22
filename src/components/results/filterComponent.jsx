@@ -5,6 +5,7 @@ import {
   IconButton,
   Radio,
   RadioGroup,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -33,24 +34,23 @@ const FilterComponent = ({
         position={"relative"}
         justifyContent={"center"}
       >
-        <Typography
-          padding={"10px"}
-          fontWeight={"bold"}
-        >
+        <Typography padding={"10px"} fontWeight={"bold"}>
           {option.charAt(0).toUpperCase() + option.substring(1)}
         </Typography>
-        <IconButton
-          disabled={filters[option] === "All"}
-          onClick={() => resetFilter(option)}
-          sx={{
-            opacity: filters[option] === "All" ? 0 : 1,
-            position: "absolute",
-            right: 0,
-            m: "5px",
-          }}
-        >
-          <RotateLeft />
-        </IconButton>
+        <Tooltip title={"reset filter"}>
+          <IconButton
+            disabled={filters[option] === "All"}
+            onClick={() => resetFilter(option)}
+            sx={{
+              opacity: filters[option] === "All" ? 0 : 1,
+              position: "absolute",
+              right: 0,
+              m: "5px",
+            }}
+          >
+            <RotateLeft />
+          </IconButton>
+        </Tooltip>
       </Box>
       <Box
         width={"100%"}

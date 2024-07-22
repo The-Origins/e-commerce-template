@@ -3,8 +3,6 @@ import React from "react";
 import callingCodes from "../../../../lib/callingCodes.json";
 
 const TelTextField = ({
-  number,
-  code,
   form,
   errors,
   touched,
@@ -13,20 +11,17 @@ const TelTextField = ({
   style,
   size,
 }) => {
-  number = number || "number";
-  code = code || "code";
-
   return (
     <TextField
       size={size || "medium"}
       type="tel"
       placeholder="phone number"
-      name={number}
-      value={form[number]}
+      name={"phoneNumber"}
+      value={form.phoneNumber}
       onChange={handleChange}
       onBlur={handleBlur}
-      error={Boolean(touched[number]) && Boolean(errors[number])}
-      helperText={(touched[number] && errors[number]) || " "}
+      error={Boolean(touched.phoneNumber) && Boolean(errors.phoneNumber)}
+      helperText={(touched.phoneNumber && errors.phoneNumber) || " "}
       sx={{
         ...style,
         "& > div": { padding: 0 },
@@ -36,8 +31,8 @@ const TelTextField = ({
         startAdornment: (
           <Select
             autoWidth
-            name={code}
-            value={form[code]}
+            name={"phoneCode"}
+            value={form.phoneCode}
             onChange={handleChange}
             renderValue={(value) => value}
           >

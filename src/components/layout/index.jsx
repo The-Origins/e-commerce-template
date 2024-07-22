@@ -1,57 +1,51 @@
 import React, { useEffect, useState } from "react";
 import { Box, ThemeProvider } from "@mui/material";
 import theme from "../../theme";
-import Contact from "./contact";
 import "../../index.css";
 import Header from "./header";
 import Footer from "./footer";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { activateSnackBar, setRegion } from "../../state/store";
 import SnackBarComponent from "./snackBar";
-import ConfirmationModal from "./confirmationModal";
+import { fetchUser } from "../../state/user";
+import { fetchCurrency } from "../../state/currency";
+import { fetchSession } from "../../state/session";
+import ContactModal from "./modals/contact";
+import ConfirmationModal from "./modals/confirmation";
 
 const Layout = ({ children }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  const region = useSelector((state) => state.region);
-  const [isLoading, setIsLoading] = useState(true);
+  const user = useSelector((store) => store.user);
   const [headerHeight, setHeaderHeight] = useState(0);
+  const [confirmationModal, setConfirmationModal] = useState({ on: false });
+  const [isContact, setIsContact] = useState();
 
-  // only as an example. Do this on the api.
-  useEffect(() => {
-    axios
-      .get("https://ipapi.co/json/")
-      .then((res) => {
-        if (!Object.keys(region) || region.ip !== res.data.ip) {
-          dispatch(setRegion(res.data));
-        }
-      })
-      .catch((err) => {
-        dispatch(
-          activateSnackBar({
-            message: "Error fetching region",
-            snackBarType: "error",
-          })
-        );
+  const mappedChildren = React.Children.map(children, (child) => {
+    // Check if the child is a valid React element
+    if (React.isValidElement(child)) {
+      // Clone the child element and add props, setIsContact and setConfirmationModal functions
+      return React.cloneElement(child, {
+        setIsContact,
+        setConfirmationModal,
       });
-  }, []);
+    }
+    // Return the child if it's not a React element (e.g., text nodes)
+    return child;
+  });
 
   useEffect(() => {
-    const loadingTimout = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-    return () => clearTimeout(loadingTimout);
+    dispatch(fetchUser());
+    dispatch(fetchSession());
+    dispatch(fetchCurrency());
   }, []);
 
   return (
     <ThemeProvider theme={theme}>
       <SnackBarComponent />
-      <Contact />
-      <ConfirmationModal />
-      <Header {...{ isLoading, user, setHeaderHeight }} />
-      <Box mt={`${headerHeight + 30}px`}>{children}</Box>
-      <Footer {...{ isLoading }} />
+      <ContactModal {...{ isContact, setIsContact }} />
+      <ConfirmationModal {...{ confirmationModal, setConfirmationModal }} />
+      <Header {...{ user, setHeaderHeight, setConfirmationModal }} />
+      <Box mt={`${headerHeight + 30}px`}>{mappedChildren}</Box>
+      <Footer {...{setIsContact}}/>
     </ThemeProvider>
   );
 };

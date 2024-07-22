@@ -2,27 +2,33 @@ import { Box, Button, Typography, useTheme } from "@mui/material";
 import React from "react";
 import ProductWorker from "../../scripts/productWorker";
 import { navigate } from "gatsby";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { checkOutUser } from "../../state/user";
 
-const ConfirmCheckout = ({ currency, setIsConfirm, setStatus, checkoutDetails }) => {
+const ConfirmCheckout = ({
+  currency,
+  setIsConfirm,
+  setStatus,
+  checkoutDetails,
+}) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const productWorker = new ProductWorker();
 
   const handlePayment = () => {
-    setStatus({ on: true, type: "LOADING", message: "Awaiting payment" });
-    const loadingTimeout = setTimeout(() => {
-      setStatus({
-        on: true,
-        type: "SUCCESS",
-        message: "order confirmed",
-        action: () => {
+    dispatch(
+      checkOutUser({
+        data: checkoutDetails,
+        setStatus,
+        onSuccess: () => {
           setIsConfirm(false);
           navigate("/user/#orders");
         },
-        actionTitle: "done",
-      });
-      clearTimeout(loadingTimeout);
-    }, 2000);
+        onError: () => {
+          setIsConfirm(false);
+        },
+      })
+    );
   };
 
   return (
@@ -60,14 +66,19 @@ const ConfirmCheckout = ({ currency, setIsConfirm, setStatus, checkoutDetails })
           gap={"20px"}
           padding={"20px"}
         >
-          <Box display={"flex"} flexDirection={"column"} width={"100%"}>
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            width={"100%"}
+            gap={"10px"}
+          >
             {Object.keys(checkoutDetails.items).map((item) => {
               const product = productWorker.findProduct(item);
               const { total, ...details } = checkoutDetails.items[item];
               return (
                 <Box display={"flex"} width={"100%"} gap={"10px"}>
                   <Box
-                    height={"50px"}
+                    height={"40px"}
                     width={"50px"}
                     borderRadius={"10px"}
                     sx={{
@@ -89,16 +100,12 @@ const ConfirmCheckout = ({ currency, setIsConfirm, setStatus, checkoutDetails })
                         )
                         .join(", ")}
                     </Typography>
-                    <Box
-                      width={"100%"}
-                      display={"flex"}
-                      justifyContent={"flex-end"}
-                    >
-                      <Typography fontSize={"0.8rem"} color={"primary.main"}>
-                        total: {currency.symbol}
-                        {checkoutDetails.items[item].total}
-                      </Typography>
-                    </Box>
+                  </Box>
+                  <Box display={"flex"} alignItems={"flex-start"}>
+                    <Typography fontSize={"0.8rem"} color={"primary.main"}>
+                      {currency.symbol}
+                      {checkoutDetails.items[item].total}
+                    </Typography>
                   </Box>
                 </Box>
               );
@@ -107,8 +114,8 @@ const ConfirmCheckout = ({ currency, setIsConfirm, setStatus, checkoutDetails })
           <Box display={"flex"} gap={"10px"} alignItems={"center"}>
             <Typography fontSize={"0.9rem"}>Deliver to:</Typography>
             <Typography fontSize={"0.9rem"} color={"text.secondary"}>
-              {checkoutDetails.delivery.details?.address},{" "}
-              {checkoutDetails.delivery.details?.street}
+              {checkoutDetails.delivery.details?.name},{" "}
+              {checkoutDetails.delivery.details?.city}
             </Typography>
           </Box>
           <Box display={"flex"} gap={"10px"} alignItems={"center"}>
@@ -130,7 +137,12 @@ const ConfirmCheckout = ({ currency, setIsConfirm, setStatus, checkoutDetails })
         <Button variant="outlined" onClick={() => setIsConfirm(false)}>
           back
         </Button>
-        <Button variant="contained" disableElevation onClick={handlePayment}>
+        <Button
+          variant="contained"
+          disableElevation
+          disabled={!Object.keys(checkoutDetails.items || {}).length}
+          onClick={handlePayment}
+        >
           confirm
         </Button>
       </Box>

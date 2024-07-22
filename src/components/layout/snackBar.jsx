@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Alert,
   AlertTitle,
-  Button,
   Snackbar,
   useMediaQuery,
 } from "@mui/material";
-import { deactivateSnackBar } from "../../state/store";
 import { useSelector, useDispatch } from "react-redux";
+import { deactivateSnackBar } from "../../state/snackBar";
 
 const SnackBarComponent = () => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -49,11 +48,6 @@ const SnackBarComponent = () => {
     <Snackbar
       open={snackBar.on}
       autoHideDuration={5000}
-      action={
-        <Button size="small" onClick={handleSnackBarClose}>
-          ok
-        </Button>
-      }
       onClose={handleSnackBarClose}
       anchorOrigin={
         isNotPhone
@@ -61,7 +55,7 @@ const SnackBarComponent = () => {
           : { horizontal: "center", vertical: "bottom" }
       }
     >
-      {snackBarTypes[snackBar.snackBarType]}
+      {snackBarTypes[snackBar.type]}
     </Snackbar>
   );
 };

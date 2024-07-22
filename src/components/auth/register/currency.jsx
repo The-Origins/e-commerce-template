@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { Paid } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
-import CurrencySelect from "../../layout/forms/currencySelect";
+import CurrencySelect from "../../forms/inputs/currencySelect";
 import currencies from "../../../../lib/currencies.json";
-import { navigate } from "gatsby";
 
 const Currency = ({
   region,
   setStage,
-  setStatus,
   setRegisterForm,
   handleRegister,
 }) => {
@@ -19,26 +17,11 @@ const Currency = ({
   };
 
   const handleConfirm = () => {
-    setStatus({
-      on: true,
-      type: "LOADING",
-      message: "registering",
-    });
     setRegisterForm((prev) => ({
       ...prev,
       payments: { ...prev.payments, currency: currencies[form.currency] },
     }));
-    const loadingTimeout = setTimeout(() => {
-      handleRegister();
-      setStatus({
-        on: true,
-        type: "SUCCESS",
-        message: "account created successfully",
-        action: () => navigate("/auth/login"),
-        actionTitle: "back to login",
-      });
-      clearTimeout(loadingTimeout);
-    }, 2000);
+    handleRegister();
   };
 
   return (

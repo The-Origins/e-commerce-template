@@ -7,12 +7,36 @@ import {
   useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
-import EditModal from "../layout/editModal";
+import EditModal from "../layout/modals/edit";
 import ChangeCheckoutDetail from "./changeCheckoutDetail";
 
-const CheckoutDetail = ({ type, icon, user, currency, content, isLoading }) => {
+const CheckoutDetail = ({
+  type,
+  icon,
+  user,
+  currency,
+  content,
+  setCheckoutDetails,
+}) => {
+  user = user.data;
   const theme = useTheme();
   const [isChange, setIsChange] = useState(false);
+
+  const changePayment = (payment) => {
+    setCheckoutDetails((prev) => ({
+      ...prev,
+      payment: { ...prev.payment, details: payment },
+    }));
+  };
+
+  const changeAddress = (address) => {
+    setCheckoutDetails((prev) => ({
+      ...prev,
+      delivery: { ...prev.address, details: address },
+      total: prev.itemsTotal + address.location.deliveryFee.amount,
+    }));
+  };
+
   return (
     <Box display={"flex"} flexDirection={"column"} flexBasis={300} flexGrow={1}>
       <EditModal
@@ -22,8 +46,7 @@ const CheckoutDetail = ({ type, icon, user, currency, content, isLoading }) => {
         handleClose={() => setIsChange(false)}
       >
         <ChangeCheckoutDetail
-
-          {...{type, currency, setIsChange}}
+          {...{ type, currency, setIsChange, changeAddress, changePayment }}
           data={
             type === "payment"
               ? user.payments.saved
@@ -58,46 +81,36 @@ const CheckoutDetail = ({ type, icon, user, currency, content, isLoading }) => {
           borderRadius={"25px"}
           boxShadow={`0px 0px 10px 0px ${theme.palette.grey[300]}`}
         >
-          {isLoading ? (
-            <Skeleton
-              variant="rounded"
+          <Box display={"flex"} gap={"5px"} alignItems={"center"}>
+            {content.icon}
+            <Box
               width={"100%"}
-              height={"100px"}
-              sx={{ mb: "10px" }}
-            />
-          ) : (
-            <Box display={"flex"} gap={"5px"} alignItems={"center"}>
-              {content.icon}
+              display={"flex"}
+              flexDirection={"column"}
+              gap={"5px"}
+            >
               <Box
                 width={"100%"}
                 display={"flex"}
-                flexDirection={"column"}
-                gap={"5px"}
+                justifyContent={"space-between"}
               >
-                <Box
-                  width={"100%"}
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                >
-                  <Typography>{content.title}</Typography>
-                  {content.fee && (
-                    <Tooltip title="fee" placement="left">
-                      <Typography color={"primary.main"}>
-                        +{currency.symbol}
-                        {content.fee.amount}
-                      </Typography>
-                    </Tooltip>
-                  )}
-                </Box>
-                <Typography color={"text.secondary"}>
-                  {content.description}
-                </Typography>
+                <Typography>{content.title}</Typography>
+                {content.fee && (
+                  <Tooltip title="fee" placement="left">
+                    <Typography color={"primary.main"}>
+                      +{currency.symbol}
+                      {content.fee.amount}
+                    </Typography>
+                  </Tooltip>
+                )}
               </Box>
+              <Typography color={"text.secondary"}>
+                {content.description}
+              </Typography>
             </Box>
-          )}
+          </Box>
           <Box display={"flex"} justifyContent={"flex-end"}>
             <Button
-              disabled={isLoading}
               variant="contained"
               disableElevation
               onClick={() => setIsChange(true)}

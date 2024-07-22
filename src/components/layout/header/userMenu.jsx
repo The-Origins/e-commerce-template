@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import {
-  useTheme,
   MenuItem,
   Box,
   Button,
@@ -10,6 +9,7 @@ import {
   Avatar,
   Link,
   Badge,
+  Paper,
 } from "@mui/material";
 import {
   BookmarkAdded,
@@ -18,68 +18,50 @@ import {
   PersonOff,
 } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import {
-  activateConfirmationModal,
-  setUser,
-} from "../../../state/store";
+import { logoutUser } from "../../../state/user";
 
-const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
+const UserMenu = ({ isUserMenu, user, setConfirmationModal }) => {
   const dispatch = useDispatch();
-  const theme = useTheme();
-  const userMenuRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
-        switchIsUserMenu(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []); //eslint: react-hooks/exhaustive-deps
-
-  const handleClick = () => {
-    switchIsUserMenu(false);
-  };
+  const menuRef = useRef(null);
 
   const handleLogout = () => {
-    dispatch(
-      activateConfirmationModal({
-        message: "Are you sure you want to logout?",
-        onConfirm: () => {
-          handleClick();
-          dispatch(setUser({}));
-        },
-        onCancel: () => {},
-      })
-    );
+    setConfirmationModal({
+      on: true,
+      message: "Are you sure you want to logout?",
+      onConfirm: () => {
+        dispatch(logoutUser());
+      },
+      onCancel: () => {},
+    });
   };
 
+  useEffect(() => {
+    if (menuRef.current) {
+      menuRef.current.style.height = isUserMenu
+        ? `${menuRef.current.scrollHeight + 40}px`
+        : "0px";
+    }
+  }, [isUserMenu]);
+
   return (
-    <Box
-      ref={userMenuRef}
-      zIndex={10}
-      className="user-menu"
-      position={"absolute"}
-      right={0}
-      top={"114%"}
-      display={"flex"}
-      flexDirection={"column"}
-      justifyContent={"center"}
-      gap={"20px"}
-      height={isUserMenu ? "400px" : "0%"}
-      width={"min(300px, 100%)"}
-      borderRadius={"0px 0px 10px 10px"}
-      bgcolor={"white"}
-      boxShadow={`0px 5px 10px 0px ${theme.palette.grey[500]}`}
-      overflow={"hidden"}
-      sx={{ transition: "0.3s ease-in-out" }}
+    <Paper
+      elevation={2}
+      ref={menuRef}
+      sx={{
+        height: "0px",
+        position: "absolute",
+        right: 0,
+        top: "100%",
+        transformOrigin: "top",
+        padding: isUserMenu ? "20px" : "0px 20px",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+        transition: "0.3s ease-in-out",
+      }}
     >
-      {Object.keys(user).length ? (
+      {user.isLoggedIn ? (
         <>
           <Link
             href={"/user/#profile"}
@@ -88,10 +70,7 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
               color: "black",
             }}
           >
-            <MenuItem
-              sx={{ display: "flex", flexDirection: "column" }}
-              onClick={handleClick}
-            >
+            <MenuItem sx={{ display: "flex", flexDirection: "column" }}>
               <Box
                 display={"flex"}
                 flexDirection={"column"}
@@ -99,7 +78,7 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
               >
                 <Avatar sx={{ fontSize: "15px" }} />
                 <Typography fontWeight={"bold"} fontSize={"1.2rem"}>
-                  {user.name.first} {user.name.last}
+                  {user.data.name.first} {user.data.name.last}
                 </Typography>
               </Box>
               <Typography fontSize={"0.5rem"} color={"text.secondary"}>
@@ -115,13 +94,13 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
               ":hover": { color: "primary.main" },
             }}
           >
-            <MenuItem onClick={handleClick}>
+            <MenuItem>
               <ListItemIcon>
                 <Badge
                   color="primary"
                   variant="dot"
                   overlap="circular"
-                  invisible={!user.notifications.new}
+                  invisible={!user.data.notifications.new}
                 >
                   <NotificationsSharp />
                 </Badge>
@@ -137,7 +116,7 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
               ":hover": { color: "primary.main" },
             }}
           >
-            <MenuItem onClick={handleClick}>
+            <MenuItem>
               <ListItemIcon>
                 <BookmarkAdded />
               </ListItemIcon>
@@ -152,14 +131,14 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
               ":hover": { color: "primary.main" },
             }}
           >
-            <MenuItem onClick={handleClick}>
+            <MenuItem>
               <ListItemIcon>
                 <Favorite />
               </ListItemIcon>
               My Favourites
             </MenuItem>
           </Link>
-          <Divider />
+          <Divider sx={{ width: "300px" }} />
           <Button
             onClick={handleLogout}
             sx={{ alignSelf: "center" }}
@@ -170,22 +149,18 @@ const UserMenu = ({ isUserMenu, switchIsUserMenu, user }) => {
           </Button>
         </>
       ) : (
-        <Box
-          width={"100%"}
-          display={"flex"}
-          flexDirection={"column"}
-          alignItems={"center"}
-          gap={"20px"}
-        >
-          <PersonOff sx={{ fontSize: "2rem", color: "text.secondary" }} />
-          <Link href="/auth/login">
-            <Button disableElevation variant="contained">
-              Login/signup
+        <Box display={"flex"} gap={"20px"}>
+          <Link href={`/auth/register?tab=${window.location.pathname}`}>
+            <Button variant="outlined">Register</Button>
+          </Link>
+          <Link href={`/auth/login?tab=${window.location.pathname}`}>
+            <Button variant="contained" disableElevation>
+              login
             </Button>
           </Link>
         </Box>
       )}
-    </Box>
+    </Paper>
   );
 };
 

@@ -1,7 +1,13 @@
 import { Close } from "@mui/icons-material";
-import { Backdrop, Box, IconButton, useTheme } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  ClickAwayListener,
+  IconButton,
+  useTheme,
+} from "@mui/material";
 import React, { useState } from "react";
-import StatusComponent from "./statusComponent";
+import StatusComponent from "../statusComponent";
 
 const EditModal = ({ isEdit, width, height, handleClose, children }) => {
   const theme = useTheme();

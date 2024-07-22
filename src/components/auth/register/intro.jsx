@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Button, Link, Typography, useTheme } from "@mui/material";
 import { East } from "@mui/icons-material";
 
-const RegisterIntro = ({ setStage,}) => {
+const RegisterIntro = ({ setStage, tab }) => {
   const theme = useTheme();
   return (
     <Box
@@ -39,7 +39,7 @@ const RegisterIntro = ({ setStage,}) => {
       >
         Start
       </Button>
-      <Link href="/auth/login">
+      <Link href={`/auth/login${tab ? "?tab=" + tab : ""}`}>
         <Button
           sx={{
             mt: "50px",
