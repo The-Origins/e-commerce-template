@@ -1,13 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Link, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { CalendarMonth } from "@mui/icons-material";
 import UserProductCard from "../product/userProductCard";
-import orders from "../../../lib/data/orders.json";
-import { useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
+import FetchWorker from "../../scripts/fetchWorker";
+import { setSnackBar } from "../../state/snackBar";
 
-const UserOrders = ({ user, currency }) => {
+const UserOrders = ({ user, currency, setIsLoading }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
+  const dispatch = useDispatch();
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const fetchWorker = new FetchWorker();
+    setIsLoading(true);
+    fetchWorker
+      .fetchOrders(user.data.orders)
+      .then((res) => {
+        setOrders(res);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        dispatch(
+          setSnackBar({
+            on:true,
+            type: "ERROR",
+            message: `Error fetching orders: ${err}`,
+          })
+        );
+        setIsLoading(false);
+      });
+  }, []);
 
   return (
     <Box
@@ -92,12 +116,11 @@ const UserOrders = ({ user, currency }) => {
               flexDirection={"column"}
               gap={"10px"}
             >
-              {Object.keys(order.items).map((item) => {
+              {Object.keys(order.items).map((id) => {
                 return (
                   <UserProductCard
-                    {...{ user, currency }}
-                    id={item}
-                    details={order.items[item]}
+                    {...{ id, user, currency}}
+                    details={order.items[id]}
                     type={"orders"}
                   />
                 );

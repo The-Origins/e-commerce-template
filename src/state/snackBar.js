@@ -9,21 +9,12 @@ const snackBarSlice = createSlice({
     message: "",
   },
   reducers: {
-    activateSnackBar: (state, action) => {
-      state.on = true;
-      state.title = action.payload.title;
-      state.message = action.payload.message;
-      state.type = action.payload.type || state.type;
-    },
-    deactivateSnackBar: (state) => {
-      state.on = false;
-      state.type = "info";
-      state.title = "";
-      state.message = "";
+    setSnackBar: (state, action) => {
+      return action.payload;
     },
   },
 });
 
-export const { activateSnackBar, deactivateSnackBar } = snackBarSlice.actions;
+export const { setSnackBar } = snackBarSlice.actions;
 
 export default snackBarSlice.reducer;

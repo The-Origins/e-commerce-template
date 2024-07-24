@@ -41,10 +41,11 @@ const AuthLayout = ({ children }) => {
           sx={{
             textDecoration: "none",
             color: "black",
-            fontFamily: theme.fonts.secondary,
+            typography: "secondaryFont",
+            fontWeight:"bold"
           }}
         >
-          E-commerce
+          {theme.title}
         </Link>
       </header>
       <ContactModal {...{ isContact, setIsContact }} />
@@ -87,7 +88,6 @@ const AuthLayout = ({ children }) => {
           variant="contained"
           disableElevation
           color="primary"
-          sx={{ height: "40px", width: "300px", borderRadius: "25px" }}
         >
           Contact us
         </Button>

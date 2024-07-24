@@ -1,21 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
   IconButton,
   Link,
+  Skeleton,
   Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { AddShoppingCart, Delete, Edit } from "@mui/icons-material";
+import {
+  AddShoppingCart,
+  Delete,
+  Edit,
+  NewReleases,
+  Replay,
+} from "@mui/icons-material";
 import CustomizeProduct from "./customizeProduct";
-import ProductWorker from "../../scripts/productWorker";
 import EditModal from "../layout/modals/edit";
 import { navigate } from "gatsby";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../state/user";
+import FetchWorker from "../../scripts/fetchWorker";
 
 const UserProductCard = ({
   id,
@@ -27,15 +34,31 @@ const UserProductCard = ({
   isLink = false,
 }) => {
   const dispatch = useDispatch();
-  const productWorker = new ProductWorker();
-  const product = productWorker.findProduct(id);
   const { total: value, ...remainingDetails } = details;
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [product, setProduct] = useState({});
+  const [reloadCounter, setReloadCounter] = useState(0);
   const [customizeProduct, setCustomizeProduct] = useState({
     on: false,
     title: "Edit your prefrences",
   });
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
+
+  useEffect(() => {
+    const fetchWorker = new FetchWorker();
+    fetchWorker
+      .fetchProduct(id)
+      .then((res) => {
+        setProduct(res);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setIsError(true);
+      });
+  }, [reloadCounter]);
 
   const handleDelete = (path = "cart") => {
     setConfirmationModal({
@@ -44,7 +67,11 @@ const UserProductCard = ({
       onCancel: () => {},
       onConfirm: () =>
         dispatch(
-          updateUser({ path, action: "DELETE", data: { productId: product.id } })
+          updateUser({
+            path,
+            action: "DELETE",
+            data: { productId: product.id },
+          })
         ),
     });
   };
@@ -62,9 +89,9 @@ const UserProductCard = ({
       maxWidth={"100%"}
       display={"flex"}
       alignItems={"center"}
-      boxShadow={`0px 0px 10px 0px ${theme.palette.grey[300]}`}
+      boxShadow={!isLoading && `0px 0px 10px 0px ${theme.palette.grey[300]}`}
       borderRadius={"20px"}
-      padding={"20px"}
+      padding={!isLoading && "20px"}
       gap={"20px"}
       sx={{
         transition: "0.3s",
@@ -79,153 +106,178 @@ const UserProductCard = ({
         },
       }}
     >
-      {(type === "cart" || type === "favourites") && (
-        <EditModal
-          isEdit={customizeProduct.on}
-          width={"min(700px, 90%)"}
-          handleClose={() => setCustomizeProduct({ on: false })}
-        >
-          <CustomizeProduct
-            {...{
-              product,
-              user,
-              currency,
-              customizeProduct,
-              setCustomizeProduct,
-            }}
-          />
-        </EditModal>
-      )}
-      <Box
-        height={"90px"}
-        width={"clamp(100px, 2vw, 200px)"}
-        sx={{
-          backgroundImage: `url(${product.images[0]})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          borderRadius: "5px",
-        }}
-      />
-      <Link
-        href={isLink ? `/product/?p=${id}` : undefined}
-        sx={{
-          color: "black",
-          textDecoration: "none",
-          width: "100%",
-          height: "100%",
-        }}
-      >
+      {isLoading ? (
+        <Skeleton width={"100%"} height={"100px"} variant="rounded" />
+      ) : isError ? (
         <Box
-          pl={"10px"}
-          display={"flex"}
-          flexDirection={"column"}
           width={"100%"}
           height={"100%"}
-          justifyContent={"space-evenly"}
-          gap={"5px"}
+          display={"flex"}
+          alignItems={"center"}
+          gap={"10px"}
         >
-          <Typography fontWeight={"bold"} fontSize={"clamp(1rem, 6vw, 1.2rem)"}>
-            {product.name}
-          </Typography>
-          <Typography
-            fontSize={"clamp(0.7rem, 2vw, 0.9rem)"}
-            color={"text.secondary"}
-          >
-            {Object.keys(remainingDetails)
-              .map(
-                (detail) =>
-                  `${detail.charAt(0).toUpperCase() + detail.substring(1)}: ${
-                    remainingDetails[detail]
-                  }`
-              )
-              .join(", ")}
-          </Typography>
-          <Typography>
-            {currency.symbol} {details.total}
-          </Typography>
-          {type === "favourites" && (
-            <Box
-              className={`${type || "user"}-item-actions`}
-              display={"flex"}
-              flexDirection={"row"}
-              gap={"10px"}
-              sx={{ opacity: 1, transition: "0.2s" }}
+          <NewReleases sx={{ color: "warning.main" }} />
+          <Typography fontWeight={"bold"}>Error</Typography>
+          <Tooltip title={"reload"}>
+            <IconButton onClick={() => setReloadCounter((prev) => prev++)}>
+              <Replay />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      ) : (
+        <>
+          {(type === "cart" || type === "favourites") && (
+            <EditModal
+              isEdit={customizeProduct.on}
+              width={"min(700px, 90%)"}
+              handleClose={() => setCustomizeProduct({ on: false })}
             >
-              <Button
-                size="small"
-                sx={{ ":hover": { color: "primary.main" } }}
-                startIcon={isNotPhone ? <Delete /> : undefined}
-                onClick={() => handleDelete("favourites")}
-              >
-                Remove
-              </Button>
-              <Button
-                variant="contained"
-                disableElevation
-                size="small"
-                sx={{ alignSelf: "flex-start" }}
-                onClick={() => changeCustomizeProduct("cart", "ADD")}
-                startIcon={isNotPhone ? <AddShoppingCart /> : undefined}
-              >
-                Add to cart
-              </Button>
-            </Box>
+              <CustomizeProduct
+                {...{
+                  product,
+                  user,
+                  currency,
+                  customizeProduct,
+                  setCustomizeProduct,
+                }}
+              />
+            </EditModal>
           )}
-          {!isNotPhone && type === "cart" && (
+          <Box
+            height={"90px"}
+            width={"clamp(100px, 2vw, 200px)"}
+            sx={{
+              backgroundImage: `url(${product.images[0]})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              borderRadius: "5px",
+            }}
+          />
+          <Link
+            href={isLink ? `/product/?p=${id}` : undefined}
+            sx={{
+              color: "black",
+              textDecoration: "none",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <Box
+              pl={"10px"}
+              display={"flex"}
+              flexDirection={"column"}
+              width={"100%"}
+              height={"100%"}
+              justifyContent={"space-evenly"}
+              gap={"5px"}
+            >
+              <Typography
+                fontWeight={"bold"}
+                fontSize={"clamp(1rem, 6vw, 1.2rem)"}
+              >
+                {product.name}
+              </Typography>
+              <Typography
+                fontSize={"clamp(0.7rem, 2vw, 0.9rem)"}
+                color={"text.secondary"}
+              >
+                {Object.keys(remainingDetails)
+                  .map(
+                    (detail) =>
+                      `${
+                        detail.charAt(0).toUpperCase() + detail.substring(1)
+                      }: ${remainingDetails[detail]}`
+                  )
+                  .join(", ")}
+              </Typography>
+              <Typography>
+                {currency.symbol} {details.total}
+              </Typography>
+              {type === "favourites" && (
+                <Box
+                  className={`${type || "user"}-item-actions`}
+                  display={"flex"}
+                  flexDirection={"row"}
+                  gap={"10px"}
+                  sx={{ opacity: 1, transition: "0.2s" }}
+                >
+                  <Button
+                    size="small"
+                    sx={{ ":hover": { color: "primary.main" } }}
+                    startIcon={isNotPhone ? <Delete /> : undefined}
+                    onClick={() => handleDelete("favourites")}
+                  >
+                    Remove
+                  </Button>
+                  <Button
+                    variant="contained"
+                    disableElevation
+                    size="small"
+                    sx={{ alignSelf: "flex-start" }}
+                    onClick={() => changeCustomizeProduct("cart", "ADD")}
+                    startIcon={isNotPhone ? <AddShoppingCart /> : undefined}
+                  >
+                    Add to cart
+                  </Button>
+                </Box>
+              )}
+              {!isNotPhone && type === "cart" && (
+                <Box
+                  className={"cart-item-options"}
+                  display={"flex"}
+                  flexDirection={"row"}
+                  gap={"10px"}
+                  sx={{ opacity: 1, transition: "0.2s" }}
+                >
+                  <Button
+                    sx={{ ":hover": { color: "primary.main" } }}
+                    onClick={() => changeCustomizeProduct("cart", "EDIT")}
+                    startIcon={<Edit />}
+                    size="small"
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="contained"
+                    disableElevation
+                    size="small"
+                    sx={{ ":hover": { color: "primary.main" } }}
+                    startIcon={<Delete />}
+                    onClick={() => handleDelete("cart")}
+                  >
+                    Remove
+                  </Button>
+                </Box>
+              )}
+            </Box>
+          </Link>
+          {isNotPhone && type === "cart" && (
             <Box
               className={"cart-item-options"}
               display={"flex"}
-              flexDirection={"row"}
+              flexDirection={"column"}
               gap={"10px"}
-              sx={{ opacity: 1, transition: "0.2s" }}
+              sx={{ opacity: 0, transition: "0.2s" }}
             >
-              <Button
-                sx={{ ":hover": { color: "primary.main" } }}
-                onClick={() => changeCustomizeProduct("cart", "EDIT")}
-                startIcon={<Edit />}
-                size="small"
-              >
-                Edit
-              </Button>
-              <Button
-                variant="contained"
-                disableElevation
-                size="small"
-                sx={{ ":hover": { color: "primary.main" } }}
-                startIcon={<Delete />}
-                onClick={() => handleDelete("cart")}
-              >
-                Remove
-              </Button>
+              <Tooltip title="Edit" placement="right">
+                <IconButton
+                  sx={{ ":hover": { color: "primary.main" } }}
+                  onClick={() => changeCustomizeProduct("cart", "EDIT")}
+                >
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Remove from cart" placement="right">
+                <IconButton
+                  sx={{ ":hover": { color: "primary.main" } }}
+                  onClick={() => handleDelete("cart")}
+                >
+                  <Delete />
+                </IconButton>
+              </Tooltip>
             </Box>
           )}
-        </Box>
-      </Link>
-      {isNotPhone && type === "cart" && (
-        <Box
-          className={"cart-item-options"}
-          display={"flex"}
-          flexDirection={"column"}
-          gap={"10px"}
-          sx={{ opacity: 0, transition: "0.2s" }}
-        >
-          <Tooltip title="Edit" placement="right">
-            <IconButton
-              sx={{ ":hover": { color: "primary.main" } }}
-              onClick={() => changeCustomizeProduct("cart", "EDIT")}
-            >
-              <Edit />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Remove from cart" placement="right">
-            <IconButton
-              sx={{ ":hover": { color: "primary.main" } }}
-              onClick={() => handleDelete("cart")}
-            >
-              <Delete />
-            </IconButton>
-          </Tooltip>
-        </Box>
+        </>
       )}
     </Box>
   );

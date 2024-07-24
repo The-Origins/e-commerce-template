@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Button,
@@ -10,9 +10,7 @@ import {
   useTheme,
 } from "@mui/material";
 import UserProductCard from "../components/product/userProductCard";
-import {
-  ShoppingCartCheckout,
-} from "@mui/icons-material";
+import { ShoppingCartCheckout } from "@mui/icons-material";
 import SkeletonGroup from "../components/layout/skeletonGroup";
 import products from "../../lib/data/products.json";
 import ProductCardContainer from "../components/product/productCardContainer";
@@ -20,20 +18,24 @@ import NotLoggedInComponent from "../components/user/notLoggedInComponent";
 
 const CartPage = ({ setConfirmationModal }) => {
   const currency = useSelector((state) => state.currency);
-  const [isLoading, setIsLoading] = useState(true);
   const user = useSelector((state) => state.user);
+  const session = useSelector((state) => state.session);
+  const [isLoading, setIsLoading] = useState(true);
+  const [recentProducts, setRecentProducts] = useState([]);
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
 
   useEffect(() => {
-    document.title = "Cart | E-commerce";
+    document.title = `Cart | ${theme.title}`;
   }, []);
 
   useEffect(() => {
+    let products;
+
     if (!user.isFetching) {
       setIsLoading(false);
     }
-  }, [user.isFetching]);
+  }, [user, session]);
 
   return (
     <Box display={"flex"} justifyContent={"center"}>
@@ -68,7 +70,7 @@ const CartPage = ({ setConfirmationModal }) => {
                   >
                     <Typography
                       fontSize={"1.2rem"}
-                      fontFamily={theme.fonts.secondary}
+                      sx={{ typography: "secondaryFont", fontWeight:"bold" }}
                     >
                       Summary
                     </Typography>
@@ -189,7 +191,7 @@ const CartPage = ({ setConfirmationModal }) => {
                 >
                   <Typography
                     fontSize={"1.2rem"}
-                    fontFamily={theme.fonts.secondary}
+                    sx={{ typography: "secondaryFont", fontWeight:"bold" }}
                   >
                     Summary
                   </Typography>

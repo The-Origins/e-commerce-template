@@ -1,13 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import user from "../../lib/data/user.json";
 import { fetchSession } from "./session";
-import { activateSnackBar } from "./snackBar";
+import { setSnackBar } from "./snackBar";
+import { setCurrency } from "./currency";
+import { currencies } from "country-data";
 
 // Thunk to fetch user data with simulated delay
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
-  async (props, { dispatch }) => {
+  async (props, { dispatch, getState }) => {
     try {
+      const state = getState();
       // Simulate an API request with a setTimeout wrapped in a Promise
       const simulateApiRequest = () => {
         return new Promise((resolve) => {
@@ -23,10 +26,10 @@ export const fetchUser = createAsyncThunk(
       return data;
     } catch (error) {
       dispatch(
-        activateSnackBar({
+        setSnackBar({
           on: true,
-          type: "error",
-          message: "error fetching user data",
+          type: "ERROR",
+          message: "Error fetching user data",
         })
       );
       return {};
@@ -83,7 +86,7 @@ export const loginUser = createAsyncThunk(
       const simulateApiRequest = () => {
         return new Promise((resolve) => {
           const fetchingTimeOut = setTimeout(() => {
-            resolve(props.data);
+            resolve(user);
             clearTimeout(fetchingTimeOut);
           }, 1000);
         });
@@ -91,6 +94,7 @@ export const loginUser = createAsyncThunk(
 
       const response = await simulateApiRequest();
 
+      dispatch(setCurrency(currencies[response.payments.currency]));
       props.setStatus({
         on: true,
         type: "SUCCESS",
@@ -263,9 +267,9 @@ const updateFavourites = createAsyncThunk(
     const { productId, details } = props.data;
 
     dispatch(
-      activateSnackBar({
+      setSnackBar({
         on: true,
-        type: "success",
+        type: "SUCCESS",
         message: `Successful action ${props.action} for product ${productId} to ${props.path}`,
       })
     );
@@ -280,9 +284,9 @@ const updateCart = createAsyncThunk(
     const { productId, details } = props.data;
 
     dispatch(
-      activateSnackBar({
+      setSnackBar({
         on: true,
-        type: "success",
+        type: "SUCCESS",
         message: `Successful action ${props.action} for product ${productId} to ${props.path}`,
       })
     );
@@ -401,6 +405,7 @@ const updatePhone = createAsyncThunk(
 const updateCurrency = createAsyncThunk(
   "user/updateCurrency",
   async (props, { dispatch }) => {
+    dispatch(setCurrency(currencies[props.data.currency]));
     await dispatch(fetchUser());
   }
 );

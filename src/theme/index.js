@@ -1,14 +1,25 @@
 import { createTheme } from "@mui/material";
 
 const theme = createTheme({
-  documentTitle: "E-commerce",
-  fonts: { primary: "roboto mono", secondary: "pacifico" },
+  title: "E-commerce",
+  typography: {
+    fontFamily: "Quicksand, sans-serif",
+    fontWeightLight: 200, // Corresponds to <weight> 200
+    fontWeightRegular: 500, // Corresponds to <weight> 400
+    fontWeightBold: 700, // Corresponds to <weight> 700
+    secondaryFont: {
+      fontFamily: "Libre Baskerville, sans-serif",
+      fontWeightLight: 200,
+      fontWeightRegular: 400,
+      fontWeightBold: 700,
+    },
+  },
   palette: {
     primary: { main: "#FF2681" },
     secondary: { main: "#26FFFF" },
-    text: { primary: "#000000", secondary: "#898989" },
+    text: { primary: "#000000", secondary: "#707070" },
     productStateColors: {
-      "In stock": "#898989",
+      "In stock": "#707070",
       "Few left": "#FF9000",
       "Out of stock": "#FF0000",
       other: "#FF0000",

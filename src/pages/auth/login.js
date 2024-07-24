@@ -21,8 +21,8 @@ const Login = ({ setStatus, location }) => {
     >
       <Typography
         mt={"20px"}
-        fontFamily={theme.fonts.secondary}
         fontSize={"clamp(1rem, 5vw, 2rem)"}
+        sx={{ typography: "secondaryFont", fontWeight: "bold" }}
       >
         Login
       </Typography>

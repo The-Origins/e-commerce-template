@@ -1,5 +1,4 @@
 import data from "../../lib/data/products.json";
-import { currencies } from "country-data";
 
 class ProductWorker {
   constructor() {

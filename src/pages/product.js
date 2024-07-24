@@ -32,6 +32,8 @@ import EditModal from "../components/layout/modals/edit";
 import Carousel from "../components/layout/carousel";
 import { navigate } from "gatsby";
 import { updateUser } from "../state/user";
+import FetchWorker from "../scripts/fetchWorker";
+import { setSnackBar } from "../state/snackBar";
 
 const ProductPage = ({ setConfirmationModal }) => {
   const theme = useTheme();
@@ -42,7 +44,7 @@ const ProductPage = ({ setConfirmationModal }) => {
 
   const productWorker = new ProductWorker();
   let params = new URLSearchParams(window.location.search);
-  const id = Number(params.get("p"));
+
   const [isLiked, setIsLiked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -55,19 +57,29 @@ const ProductPage = ({ setConfirmationModal }) => {
   const [ratingDistribution, setRatingDistribution] = useState({});
 
   useEffect(() => {
-    const loadingTimeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-
-    const productWorker = new ProductWorker();
-    setProduct(productWorker.findProduct(id));
-
-    return () => clearTimeout(loadingTimeout);
+    const id = Number(params.get("p"));
+    const fetchWorker = new FetchWorker();
+    fetchWorker
+      .fetchProduct(id)
+      .then((res) => {
+        setIsLoading(false);
+        setProduct(res);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        dispatch(
+          setSnackBar({
+            on: true,
+            type: "ERROR",
+            message: `Error fetching product: ${err}`,
+          })
+        );
+      });
   }, []);
 
   useEffect(() => {
     const productWorker = new ProductWorker();
-    document.title = (product.name || "product page") + " | E-commerce";
+    document.title = (product.name || "product page") + ` | ${theme.title}`;
 
     if (Object.keys(product).length) {
       setRatingDistribution(productWorker.getRatingDistribution(product));
@@ -430,7 +442,8 @@ const ProductPage = ({ setConfirmationModal }) => {
             <Typography
               variant="h2"
               sx={{
-                fontFamily: theme.fonts.secondary,
+                typography: "secondaryFont",
+                fontWeight: "bold",
                 fontSize: "clamp(1rem, 7vw, 3rem)",
                 marginBottom: "50px",
               }}
@@ -549,7 +562,8 @@ const ProductPage = ({ setConfirmationModal }) => {
           <Typography
             variant="h2"
             sx={{
-              fontFamily: theme.fonts.secondary,
+              typography: "secondaryFont",
+              fontWeight: "bold",
               fontSize: "clamp(1rem, 7vw, 3rem)",
               marginBottom: "50px",
             }}

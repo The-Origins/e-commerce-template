@@ -115,7 +115,7 @@ class ResultsWorker {
     });
 
     this.parseInfo(filteredResults);
-    return filteredResults
+    return filteredResults;
   }
 
   getResults(data, page) {

@@ -49,7 +49,7 @@ const UserPage = ({ location, setConfirmationModal }) => {
   useEffect(() => {
     document.title = `My ${
       stage.charAt(0).toUpperCase() + stage.substring(1)
-    } | E-commerce`;
+    } | ${theme.title}`;
   }, [stage]);
 
   useEffect(() => {
@@ -61,10 +61,14 @@ const UserPage = ({ location, setConfirmationModal }) => {
   useEffect(() => {
     if (user.isLoggedIn) {
       setStages({
-        profile: <UserProfile {...{ user, setConfirmationModal }} />,
-        orders: <UserOrders {...{ user, currency }} />,
-        order: <OrderDetails {...{ user, currency }} />,
-        favourites: <UserFavourites {...{ user, currency }} />,
+        profile: (
+          <UserProfile {...{ user, setConfirmationModal, setIsLoading }} />
+        ),
+        orders: <UserOrders {...{ user, currency, setIsLoading }} />,
+        order: <OrderDetails {...{ user, currency, setIsLoading }} />,
+        favourites: (
+          <UserFavourites {...{ user, currency, setConfirmationModal }} />
+        ),
         notifications: <Notifications {...{ user }} />,
       });
     }
@@ -111,7 +115,7 @@ const UserPage = ({ location, setConfirmationModal }) => {
                 alignItems={"center"}
                 gap={"20px"}
               >
-                <PersonOff sx={{ fontSize: "2rem", color: "text.secondary" }} />
+                <PersonOff sx={{ fontSize: "2rem" }} />
                 {!stage && (
                   <>
                     <Typography fontWeight={"bold"} fontSize={"1.5rem"}>
@@ -131,20 +135,10 @@ const UserPage = ({ location, setConfirmationModal }) => {
                   </>
                 )}
               </Box>
-            ) : isLoading ? (
-              <Box
-                width={"100%"}
-                height={"100%"}
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems={"center"}
-              >
-                <CircularProgress />
-              </Box>
             ) : (
               <>
                 <Link
-                  href="/user/#profile"
+                  href={"/user/#profile"}
                   sx={{
                     height: "40%",
                     color: "black",
@@ -168,13 +162,17 @@ const UserPage = ({ location, setConfirmationModal }) => {
                       alignItems={"center"}
                     >
                       <Avatar />
-                      <Typography fontWeight={"bold"} fontSize={"1.6rem"}>
-                        {user.data.name.first} {user.data.name.last}
-                      </Typography>
+                      {user.isLoggedIn && (
+                        <Typography fontWeight={"bold"} fontSize={"1.6rem"}>
+                          {user.data.name.first} {user.data.name.last}
+                        </Typography>
+                      )}
                     </Box>
-                    <Typography fontSize={"0.8rem"} color={"text.secondary"}>
-                      logged in
-                    </Typography>
+                    {user.isLoggedIn && (
+                      <Typography fontSize={"0.8rem"} color={"text.secondary"}>
+                        logged in
+                      </Typography>
+                    )}
                   </MenuItem>
                 </Link>
                 <Box display={"flex"} flexDirection={"column"}>
@@ -187,7 +185,9 @@ const UserPage = ({ location, setConfirmationModal }) => {
                         color="primary"
                         variant="dot"
                         overlap="circular"
-                        invisible={!user.data.notifications.new}
+                        invisible={
+                          user.isLoggedIn ? !user.data.notifications.new : true
+                        }
                       >
                         <NotificationsSharp />
                       </Badge>
@@ -211,6 +211,7 @@ const UserPage = ({ location, setConfirmationModal }) => {
                     sx={{ alignSelf: "center" }}
                     disableElevation
                     variant="contained"
+                    disabled={!user.isLoggedIn}
                   >
                     Logout
                   </Button>
@@ -250,54 +251,40 @@ const UserPage = ({ location, setConfirmationModal }) => {
                 </Typography>
               </Box>
             )}
-            {isNotPhone ? (
-              <Box
-                width={"100%"}
-                height={"100%"}
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                border={`1px solid ${theme.palette.grey[400]}`}
-                overflow={isNotPhone ? "hidden" : undefined}
-                borderRadius={isNotPhone ? "0px 25px 25px 0px" : "25px"}
-              >
-                {isLoading ? (
-                  <Box
-                    width={"100%"}
-                    height={"100%"}
-                    display={"flex"}
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                  >
-                    <CircularProgress />
-                  </Box>
-                ) : !user.isLoggedIn ? (
-                  <NotLoggedInComponent
-                    message={"Login to access user info"}
-                    size={"small"}
-                  />
-                ) : (
-                  stages[stage]
-                )}
-              </Box>
-            ) : isLoading ? (
-              <Box
-                width={"100%"}
-                height={"100%"}
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems={"center"}
-              >
-                <CircularProgress />
-              </Box>
-            ) : !user.isLoggedIn ? (
-              <NotLoggedInComponent
-                message={"Login to access user info"}
-                size={"small"}
-              />
-            ) : (
-              stages[stage]
-            )}
+            <Box
+              width={"100%"}
+              height={"100%"}
+              display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              border={
+                isNotPhone ? `1px solid ${theme.palette.grey[400]}` : undefined
+              }
+              overflow={isNotPhone ? "hidden" : undefined}
+              borderRadius={isNotPhone ? "0px 25px 25px 0px" : "25px"}
+              position={"relative"}
+            >
+              {isLoading ? (
+                <Box
+                  position={"absolute"}
+                  width={"100%"}
+                  height={"100%"}
+                  display={"flex"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  <CircularProgress />
+                </Box>
+              ) : !user.isLoggedIn ? (
+                <NotLoggedInComponent
+                  message={"Login to access user info"}
+                  size={"small"}
+                />
+              ) : (
+                <></>
+              )}
+              {stages[stage]}
+            </Box>
           </Box>
         )}
       </Box>

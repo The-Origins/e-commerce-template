@@ -89,6 +89,7 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
           alignItems={"center"}
           justifyContent={"space-between"}
           mt={isNotPhone ? undefined : "5px"}
+          padding={"10px 0px"}
           position={"relative"}
         >
           <UserMenu
@@ -99,19 +100,18 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
               setConfirmationModal,
             }}
           />
-          <Box display={"flex"} alignItems={"center"}>
-            <Link
-              href="/"
-              fontSize={"clamp(0.4rem, 5vw, 3rem)"}
-              sx={{
-                textDecoration: "none",
-                color: "black",
-                fontFamily: theme.fonts.secondary,
-              }}
-            >
-              E-commerce
-            </Link>
-          </Box>
+          <Link
+            href="/"
+            fontSize={"clamp(0.4rem, 5vw, 3rem)"}
+            sx={{
+              textDecoration: "none",
+              color: "black",
+              typography: "secondaryFont",
+              fontWeight:"bold"
+            }}
+          >
+            {theme.title}
+          </Link>
           {isNotPhone && (
             <Box width={"50%"} display={"flex"} flexDirection={"column"}>
               <SearchBar {...{ setConfirmationModal }} />
@@ -151,6 +151,7 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
             <ClickAwayListener onClickAway={() => setIsUserMenu(false)}>
               <Link href={isNotPhone ? undefined : "/user"}>
                 <IconButton
+                  disabled={user.isFetching}
                   onClick={() => {
                     setIsUserMenu((prev) => !prev);
                   }}

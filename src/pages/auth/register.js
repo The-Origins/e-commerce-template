@@ -12,8 +12,8 @@ import { registerUser } from "../../state/user";
 import { navigate } from "gatsby";
 
 const Register = ({ setStatus, location }) => {
-  const searchParams = new URLSearchParams(location.search)
-  const tab = searchParams.get("tab")
+  const searchParams = new URLSearchParams(location.search);
+  const tab = searchParams.get("tab");
   const theme = useTheme();
   const dispatch = useDispatch();
   const [stage, setStage] = useState(0);
@@ -47,13 +47,12 @@ const Register = ({ setStatus, location }) => {
           data: prev,
           setStatus,
           onSuccess: () => {
-            navigate(`/auth/login${tab ? "?tab=" + tab : ""}`)
+            navigate(`/auth/login${tab ? "?tab=" + tab : ""}`);
             setStage(0);
           },
-          onError: () =>
-          {
-            setStage(0)
-          }
+          onError: () => {
+            setStage(0);
+          },
         })
       );
       return {};
@@ -70,8 +69,8 @@ const Register = ({ setStatus, location }) => {
     >
       <Typography
         mt={"10px"}
-        fontFamily={theme.fonts.secondary}
         fontSize={"clamp(1rem, 5vw, 2rem)"}
+        sx={{ typography: "secondaryFont", fontWeight: "bold" }}
       >
         {Boolean(stage) && "Register"}
       </Typography>
@@ -91,7 +90,7 @@ const Register = ({ setStatus, location }) => {
           padding: "20px",
         }}
       >
-        <RegisterIntro {...{ setStage , tab}} />
+        <RegisterIntro {...{ setStage, tab }} />
         <GeneralInfo {...{ setStage, setRegisterForm, region }} />
         <PasswordForm handleBack={() => setStage(1)} handleNext={addPassword} />
         <Address

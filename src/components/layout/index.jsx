@@ -35,7 +35,6 @@ const Layout = ({ children }) => {
   useEffect(() => {
     dispatch(fetchUser());
     dispatch(fetchSession());
-    dispatch(fetchCurrency());
   }, []);
 
   return (

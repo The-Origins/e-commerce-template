@@ -16,30 +16,41 @@ import {
   Place,
 } from "@mui/icons-material";
 import UserProductCard from "../product/userProductCard";
-import orders from "../../../lib/data/orders.json";
+import FetchWorker from "../../scripts/fetchWorker";
+import { useDispatch } from "react-redux";
+import { setSnackBar } from "../../state/snackBar";
 
-const OrderDetails = ({ user, currency }) => {
+const OrderDetails = ({ user, currency, setIsLoading }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
-
-  //this is just an example
   const [order, setOrder] = useState({});
 
   useEffect(() => {
-    setOrder(
-      orders.find(
-        (order) =>
-          order.id ===
-          Number(
-            String(window.location.hash).substring(
-              String(window.location.hash).indexOf("/") + 1
-            )
-          )
+    const id = Number(
+      String(window.location.hash).substring(
+        String(window.location.hash).indexOf("/") + 1
       )
     );
+    const fetchWorker = new FetchWorker();
+    setIsLoading(true);
+    fetchWorker
+      .fetchOrder(id)
+      .then((res) => {
+        setOrder(res);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        dispatch(
+          setSnackBar({
+            on:true,
+            type: "ERROR",
+            message: `Error fetching order: ${err}`,
+          })
+        );
+      });
   }, []);
-
-  console.log(order);
 
   return (
     <Box
@@ -71,7 +82,7 @@ const OrderDetails = ({ user, currency }) => {
           </IconButton>
         </Link>
       </Box>
-      {Object.keys(order || {}).length && (
+      {Boolean(Object.keys(order).length) && (
         <Box
           borderRadius={"25px"}
           display={"flex"}
@@ -139,12 +150,11 @@ const OrderDetails = ({ user, currency }) => {
               flexDirection={"column"}
               padding={"20px"}
             >
-              {Object.keys(order.items).map((item) => {
+              {Object.keys(order.items).map((id) => {
                 return (
                   <UserProductCard
-                    {...{ user, currency }}
-                    id={item}
-                    details={order.items[item]}
+                    {...{ id, user, currency }}
+                    details={order.items[id]}
                     isLink
                     type={"orders"}
                   />

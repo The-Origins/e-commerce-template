@@ -22,8 +22,8 @@ const RegisterIntro = ({ setStage, tab }) => {
       >
         <Typography
           mt={"10px"}
-          fontFamily={theme.fonts.secondary}
           fontSize={"clamp(1rem, 5vw, 2rem)"}
+          sx={{typography: "secondaryFont", fontWeight:"bold"}}
         >
           Register
         </Typography>

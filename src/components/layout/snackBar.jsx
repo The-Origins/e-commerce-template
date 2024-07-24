@@ -1,12 +1,7 @@
 import React from "react";
-import {
-  Alert,
-  AlertTitle,
-  Snackbar,
-  useMediaQuery,
-} from "@mui/material";
+import { Alert, AlertTitle, Snackbar, useMediaQuery } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { deactivateSnackBar } from "../../state/snackBar";
+import { setSnackBar } from "../../state/snackBar";
 
 const SnackBarComponent = () => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -14,29 +9,29 @@ const SnackBarComponent = () => {
   const dispatch = useDispatch();
 
   const handleSnackBarClose = () => {
-    dispatch(deactivateSnackBar());
+    dispatch(setSnackBar({ on: false }));
   };
 
   const snackBarTypes = {
-    error: (
+    ERROR: (
       <Alert severity="error">
         <AlertTitle>{snackBar.title || "Error"}</AlertTitle>
         {snackBar.message}
       </Alert>
     ),
-    info: (
+    INFO: (
       <Alert severity="info">
         <AlertTitle>{snackBar.title || "Info"}</AlertTitle>
         {snackBar.message}
       </Alert>
     ),
-    success: (
+    SUCCESS: (
       <Alert severity="success">
         <AlertTitle>{snackBar.title || "Success"}</AlertTitle>
         {snackBar.message}
       </Alert>
     ),
-    warning: (
+    WARNING: (
       <Alert severity="warning">
         <AlertTitle>{snackBar.title || "Warning"}</AlertTitle>
         {snackBar.message}

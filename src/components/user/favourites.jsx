@@ -2,7 +2,7 @@ import React from "react";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import UserProductCard from "../product/userProductCard";
 
-const UserFavourites = ({ user, currency }) => {
+const UserFavourites = ({ user, currency, setConfirmationModal }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   return (
@@ -29,12 +29,11 @@ const UserFavourites = ({ user, currency }) => {
       flexDirection={"column"}
       gap={"20px"}
     >
-      {Object.keys(user.data.favourites).map((favourite) => {
+      {Object.keys(user.data.favourites).map((id) => {
         return (
           <UserProductCard
-            {...{user, currency}}
-            id={favourite}
-            details={user.data.favourites[favourite]}
+            {...{ id, user, currency, setConfirmationModal }}
+            details={user.data.favourites[id]}
             type="favourites"
           />
         );

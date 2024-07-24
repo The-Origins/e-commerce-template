@@ -24,7 +24,7 @@ const Home = ({ setIsContact, setConfirmationModal }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    document.title = "E-commerce | slogan";
+    document.title = theme.title;
     const loadingTimeout = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
@@ -85,7 +85,8 @@ const Home = ({ setIsContact, setConfirmationModal }) => {
               <Typography
                 variant="h2"
                 sx={{
-                  fontFamily: theme.fonts.secondary,
+                  typography: "secondaryFont",
+                  fontWeight: "bold",
                   fontSize: "clamp(1rem, 7vw, 3rem)",
                 }}
               >
@@ -170,8 +171,8 @@ const Home = ({ setIsContact, setConfirmationModal }) => {
             >
               <Typography
                 fontWeight={"bold"}
-                fontFamily={theme.fonts.secondary}
                 fontSize={"2rem"}
+                sx={{ typography: "secondaryFont", fontWeight: "bold" }}
               >
                 About Us
               </Typography>

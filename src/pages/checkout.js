@@ -36,7 +36,7 @@ const CheckoutPage = () => {
   const [checkoutDetails, setCheckoutDetails] = useState({});
 
   useEffect(() => {
-    document.title = "Checkout | E-commerce";
+    document.title = `Checkout | ${theme.title}`;
   }, []);
 
   useEffect(() => {
@@ -111,7 +111,7 @@ const CheckoutPage = () => {
               >
                 <Typography
                   fontSize={"1.2rem"}
-                  fontFamily={theme.fonts.secondary}
+                  sx={{ typography: "secondaryFont", fontWeight: "bold" }}
                 >
                   Summary
                 </Typography>
@@ -324,7 +324,7 @@ const CheckoutPage = () => {
             >
               <Typography
                 fontSize={"1.2rem"}
-                fontFamily={theme.fonts.secondary}
+                sx={{ typography: "secondaryFont", fontWeight: "bold" }}
               >
                 Summary
               </Typography>

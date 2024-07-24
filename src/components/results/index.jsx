@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Typography,
@@ -29,10 +29,13 @@ import resultHeaders from "./resultHeaders";
 import ResultsWorker from "../../scripts/resultsWorker";
 import FilterComponent from "./filterComponent";
 import ActiveFiltersComponent from "./activeFiltersComponent";
+import FetchWorker from "../../scripts/fetchWorker";
+import { setSnackBar } from "../../state/snackBar";
 
-const ResultsComponent = ({ path, data }) => {
+const ResultsComponent = ({ path }) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
+  const dispatch = useDispatch();
   const searchParams = new URLSearchParams(window.location.search);
 
   let page = Number(searchParams.get("p")) || 1;
@@ -40,11 +43,13 @@ const ResultsComponent = ({ path, data }) => {
   const [params, setParams] = useState(
     Object.fromEntries(searchParams.entries())
   );
+
   const resultsWorker = new ResultsWorker(params, offers);
   const user = useSelector((state) => state.user);
   const currency = useSelector((state) => state.currency);
   const [isLoading, setIsLoading] = useState(true);
-  const [results, setResults] = useState({ pages: 1, pageData: [], all: [] });
+  const [data, setData] = useState([]);
+  const [results, setResults] = useState({ pages: 1, all: [] });
   const [price, setPrice] = useState({ min: 0, max: 0 });
   const [priceFilter, setPriceFilter] = useState({});
   const [filterOptions, setFilterOptions] = useState({});
@@ -53,26 +58,38 @@ const ResultsComponent = ({ path, data }) => {
   const mobileFiltersRef = useRef(null);
 
   useEffect(() => {
-    if (results.pageData.length) {
+    if (results.pageData) {
       setIsLoading(false);
-    } else {
-      setIsLoading(true);
     }
   }, [results]);
 
   useEffect(() => {
-    resultsWorker.parseInfo(data);
-    setFilterOptions(resultsWorker.filterOptions);
-    setFilters(resultsWorker.filters);
-    setPrice({ min: resultsWorker.minPrice, max: resultsWorker.maxPrice });
-    setPriceFilter({
-      min: resultsWorker.minPrice,
-      max: resultsWorker.maxPrice,
-    });
-  }, [data]);
-
-  useEffect(() => {
     document.title = `Search results for '${search}'`;
+
+    const fetchWorker = new FetchWorker();
+    fetchWorker
+      .fetchResults(search, path)
+      .then((data) => {
+        setData(data);
+        resultsWorker.parseInfo(data);
+        setFilterOptions(resultsWorker.filterOptions);
+        setFilters(resultsWorker.filters);
+        setPrice({ min: resultsWorker.minPrice, max: resultsWorker.maxPrice });
+        setPriceFilter({
+          min: resultsWorker.minPrice,
+          max: resultsWorker.maxPrice,
+        });
+      })
+      .catch((err) => {
+        dispatch(
+          setSnackBar({
+            on: true,
+            type: "ERROR",
+            message: `Error fetching results: ${err}`,
+          })
+        );
+      });
+
     const handleClickOutside = (event) => {
       if (
         mobileFiltersRef.current &&
@@ -90,12 +107,14 @@ const ResultsComponent = ({ path, data }) => {
   }, []);
 
   useEffect(() => {
-    setResults(
-      resultsWorker.getResults(resultsWorker.filterResults(filters, data), 1)
-    );
-    setFilterOptions(resultsWorker.filterOptions);
-    resetPage();
-  }, [filters]);
+    if (data.length) {
+      setResults(
+        resultsWorker.getResults(resultsWorker.filterResults(filters, data), 1)
+      );
+      setFilterOptions(resultsWorker.filterOptions);
+      resetPage();
+    }
+  }, [filters, data]);
 
   const resetPage = (page = 1) => {
     setParams((prev) => ({ ...prev, p: page }));
@@ -204,7 +223,7 @@ const ResultsComponent = ({ path, data }) => {
                 alignItems={"center"}
                 position={"relative"}
               >
-                <Typography fontFamily={theme.fonts.secondary}>
+                <Typography sx={{ typography: "secondaryFont", fontWeight:"bold" }}>
                   Filters
                 </Typography>
                 <IconButton

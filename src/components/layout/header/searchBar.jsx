@@ -134,7 +134,7 @@ const SearchBar = ({ searchFocus = false, setConfirmationModal }) => {
                 {recentSearches.includes(option) && (
                   <History sx={{ fontSize: "1rem", color: "text.secondary" }} />
                 )}
-                <Typography fontFamily={theme.fonts.primary}>
+                <Typography>
                   {option}
                 </Typography>
               </Box>
