@@ -12,16 +12,18 @@ import {
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateRecent, } from "../../../state/user";
+import { updateRecent } from "../../../state/user";
 
 const SearchBar = ({ searchFocus = false, setConfirmationModal }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   //fetch recent searches from user or session
-  const recentSearches = useSelector(
-    (state) => state.user?.recent?.searches || state.session.recent?.searches
-  );
+  const user = useSelector((state) => state.user);
+  const session = useSelector((state) => state.session);
+  const recentSearches = user.isLoggedIn
+    ? user.data.recent.searches
+    : session?.recent.searches;
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -35,7 +37,9 @@ const SearchBar = ({ searchFocus = false, setConfirmationModal }) => {
   }, [searchFocus]);
 
   useEffect(() => {
-    setSuggestions(recentSearches);
+    if (recentSearches) {
+      setSuggestions(recentSearches);
+    }
   }, [recentSearches]);
 
   const handleSubmit = () => {
@@ -134,9 +138,7 @@ const SearchBar = ({ searchFocus = false, setConfirmationModal }) => {
                 {recentSearches.includes(option) && (
                   <History sx={{ fontSize: "1rem", color: "text.secondary" }} />
                 )}
-                <Typography>
-                  {option}
-                </Typography>
+                <Typography>{option}</Typography>
               </Box>
             </button>
             {recentSearches.includes(option) && (

@@ -44,7 +44,7 @@ const OrderDetails = ({ user, currency, setIsLoading }) => {
         setIsLoading(false);
         dispatch(
           setSnackBar({
-            on:true,
+            on: true,
             type: "ERROR",
             message: `Error fetching order: ${err}`,
           })
@@ -111,9 +111,9 @@ const OrderDetails = ({ user, currency, setIsLoading }) => {
               width={"10px"}
               height={"10px"}
               borderRadius={"50%"}
-              bgcolor={theme.palette.orderStatusColors[order.status]}
+              bgcolor={theme.palette.status.order[order.status]}
             />
-            <Typography color={theme.palette.orderStatusColors[order.status]}>
+            <Typography color={theme.palette.status.order[order.status]}>
               {order.status.charAt(0).toUpperCase() + order.status.substring(1)}
             </Typography>
           </Box>
@@ -209,14 +209,10 @@ const OrderDetails = ({ user, currency, setIsLoading }) => {
                     width={"10px"}
                     height={"10px"}
                     borderRadius={"50%"}
-                    bgcolor={
-                      theme.palette.paymentStatusColors[order.payment.status]
-                    }
+                    bgcolor={theme.palette.status.payment[order.payment.status]}
                   />
                   <Typography
-                    color={
-                      theme.palette.paymentStatusColors[order.payment.status]
-                    }
+                    color={theme.palette.status.payment[order.payment.status]}
                   >
                     {order.payment.status}
                   </Typography>
@@ -266,13 +262,11 @@ const OrderDetails = ({ user, currency, setIsLoading }) => {
                     height={"10px"}
                     borderRadius={"50%"}
                     bgcolor={
-                      theme.palette.deliveryStatusColors[order.delivery.status]
+                      theme.palette.status.delivery[order.delivery.status]
                     }
                   />
                   <Typography
-                    color={
-                      theme.palette.deliveryStatusColors[order.delivery.status]
-                    }
+                    color={theme.palette.status.delivery[order.delivery.status]}
                   >
                     {order.delivery.status}
                   </Typography>

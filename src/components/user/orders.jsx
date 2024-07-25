@@ -90,10 +90,10 @@ const UserOrders = ({ user, currency, setIsLoading }) => {
                   width={"10px"}
                   height={"10px"}
                   borderRadius={"50%"}
-                  bgcolor={theme.palette.orderStatusColors[order.status]}
+                  bgcolor={theme.palette.status.order[order.status]}
                 />
                 <Typography
-                  color={theme.palette.orderStatusColors[order.status]}
+                  color={theme.palette.status.order[order.status]}
                 >
                   {order.status.charAt(0).toUpperCase() +
                     order.status.substring(1)}

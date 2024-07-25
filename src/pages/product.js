@@ -347,7 +347,7 @@ const ProductPage = ({ setConfirmationModal }) => {
                   <>
                     <Typography>{product.description}</Typography>
                     <Typography
-                      color={theme.palette.productStateColors[product.state]}
+                      color={theme.palette.status.product[product.state]}
                     >
                       {product.state}
                     </Typography>

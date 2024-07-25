@@ -18,26 +18,28 @@ const theme = createTheme({
     primary: { main: "#FF2681" },
     secondary: { main: "#26FFFF" },
     text: { primary: "#000000", secondary: "#707070" },
-    productStateColors: {
-      "In stock": "#707070",
-      "Few left": "#FF9000",
-      "Out of stock": "#FF0000",
-      other: "#FF0000",
-    },
-    orderStatusColors: {
-      processing: "#0382FF",
-      fulfilling: "#FF9000",
-      fulfilled: "#15FF02",
-    },
-    paymentStatusColors: {
-      paid: "#15FF02",
-      failed: "#FF0000",
-      pending: "#FF9000",
-    },
-    deliveryStatusColors: {
-      pending: "#FF9000",
-      delivered: "#15FF02",
-      failed: "#FF0000",
+    status: {
+      product: {
+        "In stock": "#707070",
+        "Few left": "#FF9000",
+        "Out of stock": "#FF0000",
+        other: "#FF0000",
+      },
+      order: {
+        processing: "#0382FF",
+        fulfilling: "#FF9000",
+        fulfilled: "#15FF02",
+      },
+      payment: {
+        paid: "#15FF02",
+        failed: "#FF0000",
+        pending: "#FF9000",
+      },
+      delivery: {
+        pending: "#FF9000",
+        delivered: "#15FF02",
+        failed: "#FF0000",
+      },
     },
   },
 });

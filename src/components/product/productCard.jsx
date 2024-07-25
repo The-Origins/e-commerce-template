@@ -231,7 +231,10 @@ const ProductCard = ({ product, user, currency, setConfirmationModal }) => {
                   sx={{ fontSize: "clamp(1rem, 2vw, 1.4rem)" }}
                   readOnly
                 />
-                <Typography fontSize={"0.6rem"} color={"text.secondary"}>
+                <Typography
+                  fontSize={"0.6rem"}
+                  color={theme.palette.status.product[product.state]}
+                >
                   {product.state}
                 </Typography>
               </Box>
