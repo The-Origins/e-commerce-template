@@ -36,23 +36,22 @@ const Footer = ({ isLoading, setIsContact }) => {
       <Box
         borderTop={`1px solid ${theme.palette.grey[400]}`}
         width={"100%"}
-        minHeight={"80px"}
         display={"flex"}
         justifyContent={"center"}
         alignItems={"center"}
       >
         <Box
-          margin={isNotPhone ? undefined : "30px 0px 30px 0px"}
           display={"flex"}
-          flexDirection={isNotPhone ? "row" : "column"}
-          gap={isNotPhone ? undefined : "50px"}
+          flexWrap={"wrap"}
+          gap={"30px"}
           justifyContent={"space-between"}
           alignItems={"center"}
           width={isNotPhone ? "80%" : "90%"}
+          padding={"20px 0px"}
         >
           <Box
             display={"flex"}
-            flexDirection={isNotPhone ? "row" : "column"}
+            flexWrap={"wrap"}
             alignItems={"center"}
             gap={"20px"}
           >
@@ -126,7 +125,7 @@ const Footer = ({ isLoading, setIsContact }) => {
                   textDecoration: "none",
                   color: "black",
                   typography: "secondaryFont",
-                  fontWeight:"bold"
+                  fontWeight: "bold",
                 }}
               >
                 {theme.title}

@@ -1,21 +1,68 @@
 import { useTheme, Box, Typography, Link, Button } from "@mui/material";
 import { ArrowRightAlt } from "@mui/icons-material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SkeletonGroup from "../layout/skeletonGroup";
 import ProductCard from "./productCard";
+import { useDispatch } from "react-redux";
+import FetchWorker from "../../scripts/fetchWorker";
+import { setSnackBar } from "../../state/snackBar";
+import IsErrorComponent from "../layout/isError";
 
 const ProductCardContainer = ({
   user,
+  session,
   currency,
   title,
   category,
-  isLoading,
-  products,
   setConfirmationModal,
-  disableLink = false
+  isRecentlyViewedProducts = false,
 }) => {
-  
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const fetchWorker = new FetchWorker();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    if (!isRecentlyViewedProducts) {
+      fetchWorker
+        .fetchResults(category, "category", 4)
+        .then((res) => {
+          setProducts(res);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          setIsError(true);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isRecentlyViewedProducts) {
+      if (!user.isFetching && !session.isFetching) {
+        fetchWorker
+          .fetchRecentlyViewedProducts(user, session)
+          .then((res) => {
+            setProducts(res);
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            setIsLoading(false);
+            setIsError(true);
+            dispatch(
+              setSnackBar({
+                on: true,
+                type: "ERROR",
+                message: `Error fetching recently viewed products: ${err}`,
+              })
+            );
+          });
+      }
+    }
+  }, [user, session]);
+
   return (
     <Box
       width={"100%"}
@@ -24,41 +71,16 @@ const ProductCardContainer = ({
       justifyContent={"center"}
       alignItems={"center"}
     >
-      <Box
-        width={"100%"}
-        display={"flex"}
-        flexDirection={"column"}
-        position={"relative"}
-      >
-        <Typography margin={"20px"} color={"text.secondary"}>
+      <Box width={"100%"} display={"flex"} flexDirection={"column"}>
+        <Typography margin={"10px 20px"} color={"text.secondary"}>
           {title}
         </Typography>
-        {!disableLink && (
-          <Box
-            position={"absolute"}
-            bottom={18}
-            height={"40px"}
-            width={"100%"}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            <Link
-              href={`/category?search=${category}`}
-              sx={{
-                textDecoration: "none",
-              }}
-            >
-              <Button endIcon={<ArrowRightAlt />}>View more</Button>
-            </Link>
-          </Box>
-        )}
         <Box
           width={"100%"}
           display={"flex"}
-          alignItems={"center"}
+          flexDirection={"column"}
           borderRadius={"25px"}
-          padding={"50px 2vw"}
+          padding={"30px 2vw"}
           border={`1px solid ${theme.palette.grey[400]}`}
           overflow={"hidden"}
         >
@@ -91,14 +113,35 @@ const ProductCardContainer = ({
                 height={"clamp(300px, 50vw, 350px)"}
                 flexDirection={"row"}
               />
+            ) : isError ? (
+              <IsErrorComponent message={"Error fetching products"}/>
             ) : (
               <Box display={"flex"} gap={"20px"}>
                 {products.map((product) => (
-                  <ProductCard {...{ product, user, currency, setConfirmationModal}} />
+                  <ProductCard
+                    {...{ product, user, currency, setConfirmationModal }}
+                  />
                 ))}
               </Box>
             )}
           </Box>
+          {!isRecentlyViewedProducts && (
+            <Box
+              width={"100%"}
+              display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              <Link
+                href={`/category?search=${category}`}
+                sx={{
+                  textDecoration: "none",
+                }}
+              >
+                <Button endIcon={<ArrowRightAlt />}>View more</Button>
+              </Link>
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>

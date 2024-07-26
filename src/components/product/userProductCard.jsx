@@ -23,6 +23,7 @@ import { navigate } from "gatsby";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../state/user";
 import FetchWorker from "../../scripts/fetchWorker";
+import IsErrorComponent from "../layout/isError";
 
 const UserProductCard = ({
   id,
@@ -109,21 +110,7 @@ const UserProductCard = ({
       {isLoading ? (
         <Skeleton width={"100%"} height={"100px"} variant="rounded" />
       ) : isError ? (
-        <Box
-          width={"100%"}
-          height={"100%"}
-          display={"flex"}
-          alignItems={"center"}
-          gap={"10px"}
-        >
-          <NewReleases sx={{ color: "warning.main" }} />
-          <Typography fontWeight={"bold"}>Error</Typography>
-          <Tooltip title={"reload"}>
-            <IconButton onClick={() => setReloadCounter((prev) => prev++)}>
-              <Replay />
-            </IconButton>
-          </Tooltip>
-        </Box>
+        <IsErrorComponent size={"small"} flexDirection={"row"} />
       ) : (
         <>
           {(type === "cart" || type === "favourites") && (

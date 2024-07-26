@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   Box,
   Button,
@@ -12,16 +12,14 @@ import {
 import UserProductCard from "../components/product/userProductCard";
 import { ShoppingCartCheckout } from "@mui/icons-material";
 import SkeletonGroup from "../components/layout/skeletonGroup";
-import products from "../../lib/data/products.json";
 import ProductCardContainer from "../components/product/productCardContainer";
-import NotLoggedInComponent from "../components/user/notLoggedInComponent";
+import NotLoggedInComponent from "../components/layout/notLoggedInComponent";
 
 const CartPage = ({ setConfirmationModal }) => {
   const currency = useSelector((state) => state.currency);
   const user = useSelector((state) => state.user);
   const session = useSelector((state) => state.session);
   const [isLoading, setIsLoading] = useState(true);
-  const [recentProducts, setRecentProducts] = useState([]);
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
 
@@ -30,12 +28,10 @@ const CartPage = ({ setConfirmationModal }) => {
   }, []);
 
   useEffect(() => {
-    let products;
-
     if (!user.isFetching) {
       setIsLoading(false);
     }
-  }, [user, session]);
+  }, [user]);
 
   return (
     <Box display={"flex"} justifyContent={"center"}>
@@ -70,7 +66,7 @@ const CartPage = ({ setConfirmationModal }) => {
                   >
                     <Typography
                       fontSize={"1.2rem"}
-                      sx={{ typography: "secondaryFont", fontWeight:"bold" }}
+                      sx={{ typography: "secondaryFont", fontWeight: "bold" }}
                     >
                       Summary
                     </Typography>
@@ -135,7 +131,7 @@ const CartPage = ({ setConfirmationModal }) => {
                 )}
                 <Box
                   width={"100%"}
-                  height={"80vh"}
+                  height={isNotPhone ? "80vh" : "50vh"}
                   sx={{
                     overflowY: "scroll",
                     "&::-webkit-scrollbar": {
@@ -191,7 +187,7 @@ const CartPage = ({ setConfirmationModal }) => {
                 >
                   <Typography
                     fontSize={"1.2rem"}
-                    sx={{ typography: "secondaryFont", fontWeight:"bold" }}
+                    sx={{ typography: "secondaryFont", fontWeight: "bold" }}
                   >
                     Summary
                   </Typography>
@@ -257,10 +253,9 @@ const CartPage = ({ setConfirmationModal }) => {
               )}
             </Box>
             <ProductCardContainer
-              {...{ user, isLoading, currency, setConfirmationModal }}
+              {...{ user, session, currency, setConfirmationModal }}
               title={`Recently viewed`}
-              products={products.slice(0, 4)}
-              disableLink
+              isRecentlyViewedProducts
             />
           </Box>
         )}

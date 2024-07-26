@@ -31,7 +31,7 @@ import UserProfile from "../components/user/profile";
 import Notifications from "../components/user/notifications";
 import { convertHex } from "../theme";
 import { navigate } from "gatsby";
-import NotLoggedInComponent from "../components/user/notLoggedInComponent";
+import NotLoggedInComponent from "../components/layout/notLoggedInComponent";
 import { logoutUser } from "../state/user";
 
 const UserPage = ({ location, setConfirmationModal }) => {

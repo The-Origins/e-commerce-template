@@ -24,7 +24,7 @@ import CheckoutDetail from "../components/checkout/checkoutDetail";
 import SkeletonGroup from "../components/layout/skeletonGroup";
 import EditModal from "../components/layout/modals/edit";
 import ConfirmCheckout from "../components/checkout/confirm";
-import NotLoggedInComponent from "../components/user/notLoggedInComponent";
+import NotLoggedInComponent from "../components/layout/notLoggedInComponent";
 
 const CheckoutPage = () => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");

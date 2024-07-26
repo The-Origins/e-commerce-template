@@ -19,7 +19,7 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
   const theme = useTheme();
   const [isUserMenu, setIsUserMenu] = useState(false);
   const [isMobileSearch, setIsMobileSearch] = useState(false);
-  const mobileSearchRef = useRef(null);
+  const searchButtonRef = useRef(null);
   const headerRef = useRef(null);
 
   useEffect(() => {
@@ -46,22 +46,15 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
     };
   }, [headerRef.current]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        mobileSearchRef.current &&
-        !mobileSearchRef.current.contains(event.target)
-      ) {
-        setIsMobileSearch(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const handleClickAway = (event) => {
+    if (
+      searchButtonRef.current &&
+      searchButtonRef.current.contains(event.target)
+    ) {
+      return; // Do nothing if the click is on the button
+    }
+    setIsMobileSearch(false);
+  };
 
   return (
     <header
@@ -107,7 +100,7 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
               textDecoration: "none",
               color: "black",
               typography: "secondaryFont",
-              fontWeight:"bold"
+              fontWeight: "bold",
             }}
           >
             {theme.title}
@@ -124,6 +117,7 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
           >
             {!isNotPhone && (
               <IconButton
+                ref={searchButtonRef}
                 onClick={() => {
                   setIsMobileSearch((prev) => !prev);
                 }}
@@ -180,19 +174,21 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
           </Box>
         </Box>
         {!isNotPhone && (
-          <Box
-            position={"relative"}
-            ref={mobileSearchRef}
-            sx={{ transition: "0.2s" }}
-            overflow={isMobileSearch ? undefined : "hidden"}
-            height={isMobileSearch ? "45px" : "0px"}
-            mt={isMobileSearch && "10px"}
-          >
-            <SearchBar
-              searchFocus={isMobileSearch}
-              {...{ setConfirmationModal }}
-            />
-          </Box>
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <Box
+              width={"100%"}
+              sx={{ transition: "0.2s" }}
+              overflow={"hidden"}
+              height={isMobileSearch ? "45px" : "0px"}
+              display={"flex"}
+              alignItems={"center"}
+            >
+              <SearchBar
+                searchFocus={isMobileSearch}
+                {...{ setConfirmationModal }}
+              />
+            </Box>
+          </ClickAwayListener>
         )}
         {user.isFetching && <LinearProgress sx={{ width: "100%" }} />}
       </Box>

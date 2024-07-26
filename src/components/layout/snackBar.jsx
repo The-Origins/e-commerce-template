@@ -14,25 +14,25 @@ const SnackBarComponent = () => {
 
   const snackBarTypes = {
     ERROR: (
-      <Alert severity="error">
+      <Alert severity="error" color="error" variant="filled">
         <AlertTitle>{snackBar.title || "Error"}</AlertTitle>
         {snackBar.message}
       </Alert>
     ),
     INFO: (
-      <Alert severity="info">
+      <Alert severity="info" color="info" variant="filled">
         <AlertTitle>{snackBar.title || "Info"}</AlertTitle>
         {snackBar.message}
       </Alert>
     ),
     SUCCESS: (
-      <Alert severity="success">
+      <Alert severity="success" color="success" variant="filled">
         <AlertTitle>{snackBar.title || "Success"}</AlertTitle>
         {snackBar.message}
       </Alert>
     ),
     WARNING: (
-      <Alert severity="warning">
+      <Alert severity="warning" color="warning" variant="filled">
         <AlertTitle>{snackBar.title || "Warning"}</AlertTitle>
         {snackBar.message}
       </Alert>

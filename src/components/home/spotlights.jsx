@@ -1,11 +1,29 @@
-import React, { useState } from "react";
-import spotlights from "../../../lib/data/spotlights.json";
+import React, { useEffect, useState } from "react";
 import Carousel from "../layout/carousel";
 import { Box, Button, Link, Typography, useMediaQuery } from "@mui/material";
+import FetchWorker from "../../scripts/fetchWorker";
+import IsErrorComponent from "../layout/isError";
 
-const Spotlights = ({ isLoading }) => {
+const Spotlights = () => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const [spotlightIndex, setSpotlightIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [spotlights, setSpotlights] = useState([]);
+
+  useEffect(() => {
+    const fetchWorker = new FetchWorker();
+    fetchWorker
+      .fetchSpotlights()
+      .then((res) => {
+        setSpotlights(res);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setIsError(true);
+      });
+  }, []);
 
   return (
     <Carousel
@@ -20,59 +38,63 @@ const Spotlights = ({ isLoading }) => {
       controls
       swipeable
     >
-      {spotlights.map((spotlight) => (
-        <Box
-          width={"100%"}
-          height={"100%"}
-          display={"flex"}
-          flexDirection={isNotPhone ? "row" : "column-reverse"}
-        >
+      {isError ? (
+        <IsErrorComponent />
+      ) : (
+        spotlights.map((spotlight) => (
           <Box
-            width={isNotPhone ? "50%" : "100%"}
-            height={isNotPhone ? "100%" : "50%"}
+            width={"100%"}
+            height={"100%"}
             display={"flex"}
-            justifyContent={"space-evenly"}
-            alignItems={"center"}
-            position={"relative"}
+            flexDirection={isNotPhone ? "row" : "column-reverse"}
           >
             <Box
-              width={isNotPhone ? "80%" : "90%"}
-              height={"100%"}
+              width={isNotPhone ? "50%" : "100%"}
+              height={isNotPhone ? "100%" : "50%"}
               display={"flex"}
-              flexDirection={"column"}
               justifyContent={"space-evenly"}
-              alignItems={"flex-start"}
+              alignItems={"center"}
+              position={"relative"}
             >
               <Box
+                width={isNotPhone ? "80%" : "90%"}
+                height={"100%"}
                 display={"flex"}
                 flexDirection={"column"}
-                gap={isNotPhone ? "20px" : "1px"}
+                justifyContent={"space-evenly"}
+                alignItems={"flex-start"}
               >
-                <Typography
-                  variant="h3"
-                  fontSize={"clamp(1rem, 7vw, 2.5rem)"}
-                  fontWeight={"bold"}
+                <Box
+                  display={"flex"}
+                  flexDirection={"column"}
+                  gap={isNotPhone ? "20px" : "1px"}
                 >
-                  {spotlight.title}
-                </Typography>
-                <Typography>{spotlight.description}</Typography>
+                  <Typography
+                    variant="h3"
+                    fontSize={"clamp(1rem, 7vw, 2.5rem)"}
+                    fontWeight={"bold"}
+                  >
+                    {spotlight.title}
+                  </Typography>
+                  <Typography>{spotlight.description}</Typography>
+                </Box>
+                <Link href={spotlight.action.path}>
+                  <Button variant="outlined">{spotlight.action.title}</Button>
+                </Link>
               </Box>
-              <Link href={spotlight.action.path}>
-                <Button variant="outlined">{spotlight.action.title}</Button>
-              </Link>
             </Box>
+            <Box
+              width={isNotPhone ? "50%" : "100%"}
+              height={isNotPhone ? "100%" : "50%"}
+              sx={{
+                backgroundImage: `url(${spotlight.image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            ></Box>
           </Box>
-          <Box
-            width={isNotPhone ? "50%" : "100%"}
-            height={isNotPhone ? "100%" : "50%"}
-            sx={{
-              backgroundImage: `url(${spotlight.image})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          ></Box>
-        </Box>
-      ))}
+        ))
+      )}
     </Carousel>
   );
 };

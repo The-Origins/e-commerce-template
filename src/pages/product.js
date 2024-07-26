@@ -20,7 +20,6 @@ import {
   Share,
   ShoppingCartCheckout,
 } from "@mui/icons-material";
-import products from "../../lib/data/products.json";
 import offers from "../../lib/data/offers.json";
 import ProductWorker from "../scripts/productWorker";
 import RatingDistributionComponent from "../components/product/ratingDistribution";
@@ -39,6 +38,7 @@ const ProductPage = ({ setConfirmationModal }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const user = useSelector((state) => state.user);
+  const session = useSelector((state) => state.session);
   const currency = useSelector((state) => state.currency);
   const dispatch = useDispatch();
 
@@ -682,16 +682,14 @@ const ProductPage = ({ setConfirmationModal }) => {
           </Box>
         </Box>
         <ProductCardContainer
-          {...{ user, isLoading, currency, setConfirmationModal }}
+          {...{ user, currency, setConfirmationModal }}
           title={`More in ${product.categories?.[0]}`}
           category={product.categories?.[0]}
-          products={products.slice(0, 4)}
         />
         <ProductCardContainer
-          {...{ user, isLoading, currency, setConfirmationModal }}
+          {...{ user, session, currency, setConfirmationModal }}
           title={`Recently viewed`}
-          products={products.slice(5, 9)}
-          disableLink
+          isRecentlyViewedProducts
         />
       </Box>
     </Box>

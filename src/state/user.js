@@ -8,9 +8,8 @@ import { currencies } from "country-data";
 // Thunk to fetch user data with simulated delay
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
-  async (props, { dispatch, getState }) => {
+  async (props, { dispatch}) => {
     try {
-      const state = getState();
       // Simulate an API request with a setTimeout wrapped in a Promise
       const simulateApiRequest = () => {
         return new Promise((resolve) => {

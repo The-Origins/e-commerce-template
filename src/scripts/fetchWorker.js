@@ -1,5 +1,7 @@
 import orders from "../../lib/data/orders.json";
 import products from "../../lib/data/products.json";
+import offers from "../../lib/data/offers.json";
+import spotlights from "../../lib/data/spotlights.json";
 
 class FetchWorker {
   async fetchResults(query, scope, limit) {
@@ -10,6 +12,7 @@ class FetchWorker {
     }).toString();
     // /myapi/search?${searchString}
 
+    //this is all done by the api
     const simulateApiRequest = () => {
       return new Promise((resolve) => {
         // only as an example
@@ -36,17 +39,56 @@ class FetchWorker {
         }, 1000);
       });
     };
+    let data = await simulateApiRequest();
+
+    if (limit) {
+      data = data.slice(0, limit);
+    }
+
+    return data;
+  }
+
+  async fetchOffers() {
+    const simulateApiRequest = () => {
+      return new Promise((resolve) => {
+        const fetchingTimeOut = setTimeout(() => {
+          resolve(offers);
+          clearTimeout(fetchingTimeOut);
+        }, 1000);
+      });
+    };
     const data = await simulateApiRequest();
     return data;
   }
 
-  async fetchCategory(query, limit) {
+  async fetchSpotlights() {
     const simulateApiRequest = () => {
       return new Promise((resolve) => {
         const fetchingTimeOut = setTimeout(() => {
-          const data =
-            products.slice(0)
-          resolve(data);
+          resolve(spotlights);
+          clearTimeout(fetchingTimeOut);
+        }, 1000);
+      });
+    };
+    const data = await simulateApiRequest();
+    return data;
+  }
+
+  async fetchRecentlyViewedProducts(user, session) {
+    const simulateApiRequest = () => {
+      return new Promise((resolve) => {
+        const fetchingTimeOut = setTimeout(() => {
+          let recentlyViewedProducts = [];
+          if (user.isLoggedIn) {
+            recentlyViewedProducts = products.filter((product) =>
+              user.data.recent.veiwedProducts.includes(product.id)
+            );
+          } else {
+            recentlyViewedProducts = products.filter((product) =>
+              session.recent.veiwedProducts.includes(product.id)
+            );
+          }
+          resolve(recentlyViewedProducts);
           clearTimeout(fetchingTimeOut);
         }, 1000);
       });

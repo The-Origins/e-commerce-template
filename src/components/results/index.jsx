@@ -13,6 +13,7 @@ import {
   Button,
   Link,
   InputAdornment,
+  ClickAwayListener,
 } from "@mui/material";
 import ProductCard from "../product/productCard";
 import {
@@ -55,7 +56,7 @@ const ResultsComponent = ({ path }) => {
   const [filterOptions, setFilterOptions] = useState({});
   const [filters, setFilters] = useState({});
   const [isMobileFilters, setIsMobileFilters] = useState(false);
-  const mobileFiltersRef = useRef(null);
+  const mobileFiltersButtonRef = useRef(null);
 
   useEffect(() => {
     if (results.pageData) {
@@ -89,21 +90,6 @@ const ResultsComponent = ({ path }) => {
           })
         );
       });
-
-    const handleClickOutside = (event) => {
-      if (
-        mobileFiltersRef.current &&
-        !mobileFiltersRef.current.contains(event.target)
-      ) {
-        setIsMobileFilters(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
   }, []);
 
   useEffect(() => {
@@ -188,6 +174,16 @@ const ResultsComponent = ({ path }) => {
     resetPage(value);
   };
 
+  const handleClickAway = (event) => {
+    if (
+      mobileFiltersButtonRef.current &&
+      mobileFiltersButtonRef.current.contains(event.target)
+    ) {
+      return;
+    }
+    setIsMobileFilters(false);
+  };
+
   return (
     <Box display={"flex"} justifyContent={"center"}>
       <Box
@@ -195,154 +191,158 @@ const ResultsComponent = ({ path }) => {
         display={"flex"}
         width={isNotPhone ? "87%" : "95%"}
       >
-        <Box
-          ref={mobileFiltersRef}
-          position={isNotPhone ? "static" : "fixed"}
-          width={isNotPhone ? "290px" : "95%"}
-          borderRadius={"25px 25px 0px 0px"}
-          height={isNotPhone ? undefined : isMobileFilters ? "70%" : "0px"}
-          bottom={0}
-          display={"flex"}
-          flexDirection={"column"}
-          bgcolor={"white"}
-          zIndex={!isNotPhone && isMobileFilters ? 1 : 0}
-          sx={{ transformOrigin: "bottom", transition: "0.4s" }}
-          boxShadow={
-            isNotPhone
-              ? undefined
-              : `0px 0px 10px 0px ${theme.palette.grey[400]}`
-          }
-        >
-          {!isNotPhone && (
-            <>
-              <Box
-                padding={"10px"}
-                width={"100%"}
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                position={"relative"}
-              >
-                <Typography sx={{ typography: "secondaryFont", fontWeight:"bold" }}>
-                  Filters
-                </Typography>
-                <IconButton
-                  onClick={() => setIsMobileFilters(false)}
-                  sx={{ position: "absolute", right: 5 }}
-                >
-                  <Close />
-                </IconButton>
-              </Box>
-            </>
-          )}
-          <Box height={"100%"} overflow={isNotPhone ? undefined : "scroll"}>
-            {isLoading ? (
-              <SkeletonGroup count={3} height="200px" width={"200px"} />
-            ) : (
-              <Box
-                display={"flex"}
-                flexDirection={"column"}
-                gap={"20px"}
-                padding={"20px"}
-              >
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <Box
+            position={isNotPhone ? "static" : "fixed"}
+            width={isNotPhone ? "290px" : "95%"}
+            borderRadius={"25px 25px 0px 0px"}
+            height={isNotPhone ? undefined : isMobileFilters ? "70%" : "0px"}
+            bottom={0}
+            display={"flex"}
+            flexDirection={"column"}
+            bgcolor={"white"}
+            zIndex={!isNotPhone && isMobileFilters ? 1 : 0}
+            sx={{ transformOrigin: "bottom", transition: "0.4s" }}
+            boxShadow={
+              isNotPhone
+                ? undefined
+                : `0px 0px 10px 0px ${theme.palette.grey[400]}`
+            }
+          >
+            {!isNotPhone && (
+              <>
                 <Box
+                  padding={"10px"}
                   width={"100%"}
-                  boxShadow={`0px 0px 10px 0px ${theme.palette.grey[400]}`}
                   display={"flex"}
-                  flexDirection={"column"}
+                  justifyContent={"center"}
                   alignItems={"center"}
-                  borderRadius={"10px"}
-                  gap={"20px"}
-                  padding={"30px"}
                   position={"relative"}
                 >
-                  <Typography justifySelf={"center"} fontWeight={"bold"}>
-                    Price
+                  <Typography
+                    sx={{ typography: "secondaryFont", fontWeight: "bold" }}
+                  >
+                    Filters
                   </Typography>
-                  {(filters.min !== price.min || filters.max !== price.max) && (
-                    <Box position={"absolute"} right={5} top={25}>
-                      <IconButton onClick={() => resetFilter("price")}>
-                        <RotateLeft />
-                      </IconButton>
-                    </Box>
-                  )}
-                  <TextField
-                    fullWidth
-                    step="10"
-                    type="number"
-                    size="small"
-                    label="min"
-                    name="min"
-                    value={priceFilter.min}
-                    onChange={handlePriceChange}
-                    sx={{ "& > div": { fontSize: "13px" } }}
-                    InputProps={{
-                      min: price.min,
-                      max: price.max,
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <Typography>{currency.symbol}</Typography>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <TextField
-                    fullWidth
-                    step="10"
-                    type="number"
-                    size="small"
-                    label="max"
-                    name="max"
-                    value={priceFilter.max}
-                    onChange={handlePriceChange}
-                    sx={{ "& > div": { fontSize: "13px" } }}
-                    InputProps={{
-                      min: price.min,
-                      max: price.max,
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <Typography>{currency.symbol}</Typography>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <Slider
-                    name="priceSlider"
-                    max={price.max}
-                    min={price.min}
-                    value={[priceFilter.min, priceFilter.max]}
-                    onChange={handlePriceChange}
-                    valueLabelDisplay="auto"
-                    step={10}
-                  />
-                  {(priceFilter.min !== price.min ||
-                    priceFilter.max !== price.max) &&
-                    (filters.min !== priceFilter.min ||
-                      filters.max !== priceFilter.max) && (
-                      <Button
-                        variant="contained"
-                        disableElevation
-                        onClick={handlePriceSave}
-                      >
-                        save
-                      </Button>
-                    )}
+                  <IconButton
+                    onClick={() => setIsMobileFilters(false)}
+                    sx={{ position: "absolute", right: 5 }}
+                  >
+                    <Close />
+                  </IconButton>
                 </Box>
-                {Object.keys(filterOptions).map((option) => (
-                  <FilterComponent
-                    {...{
-                      option,
-                      filterOptions,
-                      filters,
-                      handleFilterChange,
-                      resetFilter,
-                    }}
-                  />
-                ))}
-              </Box>
+              </>
             )}
+            <Box height={"100%"} overflow={isNotPhone ? undefined : "scroll"}>
+              {isLoading ? (
+                <SkeletonGroup count={3} height="200px" width={"200px"} />
+              ) : (
+                <Box
+                  display={"flex"}
+                  flexDirection={"column"}
+                  gap={"20px"}
+                  padding={"20px"}
+                >
+                  <Box
+                    width={"100%"}
+                    boxShadow={`0px 0px 10px 0px ${theme.palette.grey[400]}`}
+                    display={"flex"}
+                    flexDirection={"column"}
+                    alignItems={"center"}
+                    borderRadius={"10px"}
+                    gap={"20px"}
+                    padding={"30px"}
+                    position={"relative"}
+                  >
+                    <Typography justifySelf={"center"} fontWeight={"bold"}>
+                      Price
+                    </Typography>
+                    {(filters.min !== price.min ||
+                      filters.max !== price.max) && (
+                      <Box position={"absolute"} right={5} top={25}>
+                        <IconButton onClick={() => resetFilter("price")}>
+                          <RotateLeft />
+                        </IconButton>
+                      </Box>
+                    )}
+                    <TextField
+                      fullWidth
+                      step="10"
+                      type="number"
+                      size="small"
+                      label="min"
+                      name="min"
+                      value={priceFilter.min}
+                      onChange={handlePriceChange}
+                      sx={{ "& > div": { fontSize: "13px" } }}
+                      InputProps={{
+                        min: price.min,
+                        max: price.max,
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Typography>{currency.symbol}</Typography>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    <TextField
+                      fullWidth
+                      step="10"
+                      type="number"
+                      size="small"
+                      label="max"
+                      name="max"
+                      value={priceFilter.max}
+                      onChange={handlePriceChange}
+                      sx={{ "& > div": { fontSize: "13px" } }}
+                      InputProps={{
+                        min: price.min,
+                        max: price.max,
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Typography>{currency.symbol}</Typography>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    <Slider
+                      name="priceSlider"
+                      max={price.max}
+                      min={price.min}
+                      value={[priceFilter.min, priceFilter.max]}
+                      onChange={handlePriceChange}
+                      valueLabelDisplay="auto"
+                      step={10}
+                    />
+                    {(priceFilter.min !== price.min ||
+                      priceFilter.max !== price.max) &&
+                      (filters.min !== priceFilter.min ||
+                        filters.max !== priceFilter.max) && (
+                        <Button
+                          variant="contained"
+                          disableElevation
+                          onClick={handlePriceSave}
+                        >
+                          save
+                        </Button>
+                      )}
+                  </Box>
+                  {Object.keys(filterOptions).map((option) => (
+                    <FilterComponent
+                      {...{
+                        option,
+                        filterOptions,
+                        filters,
+                        handleFilterChange,
+                        resetFilter,
+                      }}
+                    />
+                  ))}
+                </Box>
+              )}
+            </Box>
           </Box>
-        </Box>
+        </ClickAwayListener>
         <Box width={"100%"} display={"flex"} flexDirection={"column"}>
           {isLoading ? (
             <Skeleton
@@ -423,7 +423,8 @@ const ResultsComponent = ({ path }) => {
           {!isNotPhone && (
             <Box padding={"10px"} display={"flex"} justifyContent={"flex-end"}>
               <Button
-                onClick={() => setIsMobileFilters(true)}
+                ref={mobileFiltersButtonRef}
+                onClick={() => setIsMobileFilters((prev) => !prev)}
                 size="small"
                 variant="outlined"
                 sx={{ textTransform: "none" }}
