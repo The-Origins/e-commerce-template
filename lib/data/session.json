@@ -42,6 +42,6 @@
   },
   "recent": {
     "searches": ["trending", "electronics", "laptops", "vr headsets"],
-    "veiwedProducts": [1, 25, 3, 6]
+    "veiwedProducts": ["1", "25", "3", "6"]
   }
 }

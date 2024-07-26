@@ -5,6 +5,75 @@
       "https://img.romwe.com/images/romwe.com/201703/1489627160858728237.jpg",
       "https://i5.walmartimages.com/asr/536dd76b-957f-457c-b3eb-f392b859759b_1.9d5076091fad01b2d315f328ca33f28f.jpeg"
     ],
+    "name": "T-shirt",
+    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "unitPrice": {
+      "currency": "USD",
+      "amount": 20
+    },
+    "features": {
+      "SKU": "TsH001",
+      "material": "Cotton",
+      "color": "white"
+    },
+    "variants": {
+      "color": {
+        "white": 0,
+        "black": 0,
+        "blue": 0
+      },
+      "size": {
+        "s": 0,
+        "m": 0,
+        "l": 0
+      }
+    },
+    "rating": {
+      "votes": [5, 4, 3, 5, 4],
+      "score": 4.2,
+      "reviews": [
+        {
+          "userName": "Alice Wonderland",
+          "dateCreated": "10/01/2024",
+          "rating": 5,
+          "review": {
+            "title": "Great Fit",
+            "body": "Very comfortable and fits perfectly."
+          }
+        },
+        {
+          "userName": "Bob Builder",
+          "dateCreated": "12/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Nice material",
+            "body": "The cotton feels very soft."
+          }
+        },
+        {
+          "userName": "Charlie brown",
+          "dateCreated": "15/01/2024",
+          "rating": 4,
+          "review": {
+            "title": "Good Value",
+            "body": "Great quality for the price."
+          }
+        }
+      ]
+    },
+    "stock": 100,
+    "state": "In stock",
+    "brand": "ComfortWear",
+    "categories": ["clothing", "t-shirts", "casual"],
+    "id":"0",
+    "type": "t-shirt"
+  },
+  {
+    "images": [
+      "https://i.etsystatic.com/15515907/r/il/20a858/2314845316/il_1140xN.2314845316_9lg3.jpg",
+      "https://img.romwe.com/images/romwe.com/201703/1489627160858728237.jpg",
+      "https://i5.walmartimages.com/asr/536dd76b-957f-457c-b3eb-f392b859759b_1.9d5076091fad01b2d315f328ca33f28f.jpeg"
+    ],
     "name": "Casual T-shirt",
     "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     "unitPrice": {
@@ -65,7 +134,7 @@
     "state": "In stock",
     "brand": "ComfortWear",
     "categories": ["clothing", "t-shirts", "casual"],
-    "id": 1,
+    "id":"1",
     "type": "t-shirt"
   },
   {
@@ -134,7 +203,7 @@
     "state": "In stock",
     "brand": "WarmWear",
     "categories": ["clothing", "sweaters", "winter"],
-    "id": 2,
+    "id":"2",
     "type": "sweater"
   },
   {
@@ -203,7 +272,7 @@
     "state": "In stock",
     "brand": "DenimCo",
     "categories": ["clothing", "pants", "casual"],
-    "id": 3,
+    "id":"3",
     "type": "pants"
   },
   {
@@ -267,7 +336,7 @@
     "state": "In stock",
     "brand": "sportFlex",
     "categories": ["shoes", "sneakers", "running"],
-    "id": 4,
+    "id":"4",
     "type": "shoes"
   },
   {
@@ -336,7 +405,7 @@
     "state": "In stock",
     "brand": "TrendyTees",
     "categories": ["clothing", "t-shirts", "graphic"],
-    "id": 5,
+    "id":"5",
     "type": "t-shirt"
   },
   {
@@ -405,7 +474,7 @@
     "state": "In stock",
     "brand": "CozyWear",
     "categories": ["clothing", "sweaters", "hoodies"],
-    "id": 6,
+    "id":"6",
     "type": "sweater"
   },
   {
@@ -474,7 +543,7 @@
     "state": "In stock",
     "brand": "ClassicWear",
     "categories": ["clothing", "pants", "chino"],
-    "id": 7,
+    "id":"7",
     "type": "pants"
   },
   {
@@ -538,7 +607,7 @@
     "state": "In stock",
     "brand": "ElegantFoot",
     "categories": ["shoes", "formal", "leather"],
-    "id": 8,
+    "id":"8",
     "type": "shoes"
   },
   {
@@ -607,7 +676,7 @@
     "state": "In stock",
     "brand": "NauticalTees",
     "categories": ["clothing", "t-shirts", "striped"],
-    "id": 9,
+    "id":"9",
     "type": "t-shirt"
   },
   {
@@ -658,7 +727,7 @@
     "state": "In stock",
     "brand": "dell",
     "categories": ["electronics", "laptops", "trending"],
-    "id": 10,
+    "id":"10",
     "type": "laptop"
   },
   {
@@ -705,7 +774,7 @@
     "state": "In stock",
     "brand": "samsung",
     "categories": ["electronics", "phones", "new arrivals"],
-    "id": 11,
+    "id":"11",
     "type": "phone"
   },
   {
@@ -752,7 +821,7 @@
     "state": "In stock",
     "brand": "Canon",
     "categories": ["electronics", "cameras", "photography", "new arrivals"],
-    "id": 12,
+    "id":"12",
     "type": "camera"
   },
   {
@@ -791,7 +860,7 @@
     "state": "In stock",
     "brand": "HP",
     "categories": ["electronics", "printers", "office"],
-    "id": 13,
+    "id":"13",
     "type": "printer"
   },
   {
@@ -831,7 +900,7 @@
     "state": "In stock",
     "brand": "sony",
     "categories": ["electronics", "headphones", "audio", "new arrivals"],
-    "id": 14,
+    "id":"14",
     "type": "headphones"
   },
   {
@@ -872,7 +941,7 @@
     "state": "In stock",
     "brand": "JBl",
     "categories": ["electronics", "speakers", "audio"],
-    "id": 15,
+    "id":"15",
     "type": "speaker"
   },
   {
@@ -911,7 +980,7 @@
     "state": "In stock",
     "brand": "Apple",
     "categories": ["electronics", "watches", "wearable", "new arrivals"],
-    "id": 16,
+    "id":"16",
     "type": "watch"
   },
   {
@@ -951,7 +1020,7 @@
     "state": "In stock",
     "brand": "Oculus",
     "categories": ["electronics", "VR", "gaming"],
-    "id": 17,
+    "id":"17",
     "type": "vr headset"
   },
   {
@@ -990,7 +1059,7 @@
     "state": "In stock",
     "brand": "sony",
     "categories": ["electronics", "gaming", "console"],
-    "id": 18,
+    "id":"18",
     "type": "gaming console"
   },
   {
@@ -1031,7 +1100,7 @@
     "state": "In stock",
     "brand": "Nikon",
     "categories": ["electronics", "cameras", "photography"],
-    "id": 19,
+    "id":"19",
     "type": "camera"
   },
   {
@@ -1072,7 +1141,7 @@
     "state": "In stock",
     "brand": "Apple",
     "categories": ["electronics", "tablets", "portable"],
-    "id": 20,
+    "id":"20",
     "type": "tablet"
   },
   {
@@ -1142,7 +1211,7 @@
     "stock": 200,
     "state": "In stock",
     "categories": ["food", "pizza"],
-    "id": 21,
+    "id":"21",
     "type": "pizza"
   },
   {
@@ -1190,7 +1259,7 @@
     "stock": 150,
     "state": "In stock",
     "categories": ["food", "burger"],
-    "id": 22,
+    "id":"22",
     "type": "burger"
   },
   {
@@ -1233,7 +1302,7 @@
     "stock": 200,
     "state": "In stock",
     "categories": ["beverages", "juice"],
-    "id": 23,
+    "id":"23",
     "type": "beverage"
   },
   {
@@ -1276,7 +1345,7 @@
     "stock": 300,
     "state": "In stock",
     "categories": ["food", "fries"],
-    "id": 24,
+    "id":"24",
     "type": "fries"
   },
   {
@@ -1328,7 +1397,7 @@
     "stock": 150,
     "state": "In stock",
     "categories": ["food", "pizza"],
-    "id": 25,
+    "id":"25",
     "type": "pizza"
   },
   {
@@ -1376,7 +1445,7 @@
     "stock": 120,
     "state": "In stock",
     "categories": ["food", "sandwich"],
-    "id": 26,
+    "id":"26",
     "type": "sandwich"
   },
   {
@@ -1419,7 +1488,7 @@
     "stock": 250,
     "state": "In stock",
     "categories": ["beverages", "juice"],
-    "id": 27,
+    "id":"27",
     "type": "beverage"
   },
   {
@@ -1462,7 +1531,7 @@
     "stock": 180,
     "state": "In stock",
     "categories": ["food", "snacks"],
-    "id": 28,
+    "id":"28",
     "type": "snack"
   },
   {
@@ -1505,7 +1574,7 @@
     "stock": 220,
     "state": "In stock",
     "categories": ["beverages", "juice"],
-    "id": 29,
+    "id":"29",
     "type": "beverage"
   },
   {
@@ -1553,7 +1622,7 @@
     "stock": 300,
     "state": "In stock",
     "categories": ["food", "snacks"],
-    "id": 30,
+    "id":"30",
     "type": "snack"
   }
 ]

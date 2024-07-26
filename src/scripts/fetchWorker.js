@@ -75,20 +75,20 @@ class FetchWorker {
   }
 
   async fetchRecentlyViewedProducts(user, session) {
+    const data = await this.fetchProducts(
+      user.isLoggedIn
+        ? user.data.recent.veiwedProducts
+        : session.recent.veiwedProducts
+    );
+    return data;
+  }
+
+  async fetchProducts(ids) {
     const simulateApiRequest = () => {
       return new Promise((resolve) => {
         const fetchingTimeOut = setTimeout(() => {
-          let recentlyViewedProducts = [];
-          if (user.isLoggedIn) {
-            recentlyViewedProducts = products.filter((product) =>
-              user.data.recent.veiwedProducts.includes(product.id)
-            );
-          } else {
-            recentlyViewedProducts = products.filter((product) =>
-              session.recent.veiwedProducts.includes(product.id)
-            );
-          }
-          resolve(recentlyViewedProducts);
+          const data = products.filter((product) => ids.includes(product.id));
+          resolve(data);
           clearTimeout(fetchingTimeOut);
         }, 1000);
       });
@@ -101,7 +101,7 @@ class FetchWorker {
     const simulateApiRequest = () => {
       return new Promise((resolve) => {
         const fetchingTimeOut = setTimeout(() => {
-          const product = products.find((product) => product.id === Number(id));
+          const product = products.find((product) => product.id === String(id));
           resolve(product);
           clearTimeout(fetchingTimeOut);
         }, 1000);

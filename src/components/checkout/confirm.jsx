@@ -1,9 +1,10 @@
 import { Box, Button, Typography, useTheme } from "@mui/material";
-import React from "react";
-import ProductWorker from "../../scripts/productWorker";
+import React, { useEffect, useState } from "react";
 import { navigate } from "gatsby";
 import { useDispatch } from "react-redux";
 import { checkOutUser } from "../../state/user";
+import FetchWorker from "../../scripts/fetchWorker";
+import { setSnackBar } from "../../state/snackBar";
 
 const ConfirmCheckout = ({
   currency,
@@ -13,7 +14,25 @@ const ConfirmCheckout = ({
 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const productWorker = new ProductWorker();
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchWorker = new FetchWorker();
+    fetchWorker
+      .fetchProducts(Object.keys(checkoutDetails.items))
+      .then((res) => {
+        setProducts(res);
+      })
+      .catch((err) => {
+        dispatch(
+          setSnackBar({
+            on: true,
+            type: "ERROR",
+            message: `Error fetching order items: ${err}`,
+          })
+        );
+      });
+  }, [checkoutDetails]);
 
   const handlePayment = () => {
     dispatch(
@@ -72,9 +91,8 @@ const ConfirmCheckout = ({
             width={"100%"}
             gap={"10px"}
           >
-            {Object.keys(checkoutDetails.items).map((item) => {
-              const product = productWorker.findProduct(item);
-              const { total, ...details } = checkoutDetails.items[item];
+            {products.map((product) => {
+              const { total, ...details } = checkoutDetails.items[product.id];
               return (
                 <Box display={"flex"} width={"100%"} gap={"10px"}>
                   <Box
@@ -104,7 +122,7 @@ const ConfirmCheckout = ({
                   <Box display={"flex"} alignItems={"flex-start"}>
                     <Typography fontSize={"0.8rem"} color={"primary.main"}>
                       {currency.symbol}
-                      {checkoutDetails.items[item].total}
+                      {checkoutDetails.items[product.id].total}
                     </Typography>
                   </Box>
                 </Box>
