@@ -111,12 +111,13 @@ class FetchWorker {
     return product;
   }
 
-  async fetchOrders() {
+  async fetchOrders(ids) {
     //only as example
     const simulateApiRequest = () => {
       return new Promise((resolve) => {
         const fetchingTimeOut = setTimeout(() => {
-          resolve(orders);
+          const data = orders.filter((order) => ids.includes(order.id));
+          resolve(data);
           clearTimeout(fetchingTimeOut);
         }, 1000);
       });
@@ -129,7 +130,7 @@ class FetchWorker {
     const simulateApiRequest = () => {
       return new Promise((resolve) => {
         const fetchingTimeOut = setTimeout(() => {
-          const order = orders.find((order) => order.id === id);
+          const order = orders.find((order) => order.id === String(id));
           resolve(order);
           clearTimeout(fetchingTimeOut);
         }, 1000);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
   Box,
@@ -18,6 +18,10 @@ const Home = ({ setIsContact, setConfirmationModal }) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const user = useSelector((state) => state.user);
   const currency = useSelector((state) => state.currency);
+
+  useEffect(() => {
+    document.title = theme.title;
+  }, []);
 
   return (
     <Box display={"flex"} justifyContent={"center"}>
@@ -67,7 +71,7 @@ const Home = ({ setIsContact, setConfirmationModal }) => {
                 sx={{
                   typography: "secondaryFont",
                   fontWeight: "bold",
-                  fontSize: "clamp(1rem, 7vw, 3rem)",
+                  fontSize: "clamp(1.5rem, 4vw, 2rem)",
                 }}
               >
                 Explore our catalogue

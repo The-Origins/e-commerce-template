@@ -101,7 +101,7 @@ class AuthWorker {
         message: "passwords must match",
       },
       phoneNumber: {
-        key: (value, form) => isValidPhoneNumber(value, form.code),
+        key: (value, form) => isValidPhoneNumber(value, form.phoneCode),
         message: "invalid phone number",
       },
       email: {
@@ -133,8 +133,7 @@ class AuthWorker {
     }
 
     //checks for errors using validator
-    if(validator[target.name])
-    {
+    if (validator[target.name]) {
       if (Array.isArray(validator[target.name])) {
         for (let element of validator[target.name]) {
           if (!element.key(target.value, form)) {
@@ -146,7 +145,6 @@ class AuthWorker {
           return { ...errors, [target.name]: validator[target.name].message };
         }
       }
-  
     }
     //if no errors remove it from errors array
     const { [target.name]: value, ...remainingErrors } = errors;

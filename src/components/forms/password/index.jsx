@@ -46,7 +46,7 @@ const PasswordForm = ({ handleBack, handleNext }) => {
     <form
       onSubmit={handleSubmit}
       style={{
-        width: "min(400px, 90%)",
+        width: "100%",
         height: "100%",
         display: "flex",
         flexDirection: "column",

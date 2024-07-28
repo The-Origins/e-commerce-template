@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import Carousel from "../../components/layout/carousel";
 import RegisterIntro from "../../components/auth/register/intro";
 import GeneralInfo from "../../components/auth/register/general";
 import PasswordForm from "../../components/forms/password";
@@ -18,8 +17,10 @@ const Register = ({ setStatus, location }) => {
   const dispatch = useDispatch();
   const [stage, setStage] = useState(0);
   const [registerForm, setRegisterForm] = useState({});
-
   const region = useSelector((state) => state.session.region);
+  useEffect(() => {
+    document.title = `Register | ${theme.title}`;
+  }, []);
 
   const addPassword = (password) => {
     setRegisterForm((prev) => ({ ...prev, password }));
@@ -59,6 +60,34 @@ const Register = ({ setStatus, location }) => {
     });
   };
 
+  const stages = [
+    <RegisterIntro {...{ setStage, tab }} />,
+    <GeneralInfo {...{ setStage, setRegisterForm, region }} />,
+    <PasswordForm handleBack={() => setStage(1)} handleNext={addPassword} />,
+    <Address
+      onCancel={() => setStage(2)}
+      onComplete={addAddress}
+      enableSkip
+      onSkip={() => setStage(4)}
+    />,
+    <Payment
+      mobileValues={registerForm.phone}
+      onCancel={() => setStage(3)}
+      onComplete={addPayment}
+      {...{ setStatus }}
+      enableSkip
+      onSkip={() => setStage(5)}
+    />,
+    <Currency
+      {...{
+        region,
+        setStage,
+        setRegisterForm,
+        handleRegister,
+      }}
+    />,
+  ];
+
   return (
     <Box
       width={"100%"}
@@ -74,48 +103,9 @@ const Register = ({ setStatus, location }) => {
       >
         {Boolean(stage) && "Register"}
       </Typography>
-      <Carousel
-        width={"100%"}
-        height={"100%"}
-        index={stage}
-        setIndex={setStage}
-        maxIndex={6}
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "20px",
-          padding: "20px",
-        }}
-      >
-        <RegisterIntro {...{ setStage, tab }} />
-        <GeneralInfo {...{ setStage, setRegisterForm, region }} />
-        <PasswordForm handleBack={() => setStage(1)} handleNext={addPassword} />
-        <Address
-          onCancel={() => setStage(2)}
-          onComplete={addAddress}
-          enableSkip
-          onSkip={() => setStage(4)}
-        />
-        <Payment
-          mobileValues={registerForm.phone}
-          onCancel={() => setStage(3)}
-          onComplete={addPayment}
-          {...{ setStatus }}
-          enableSkip
-          onSkip={() => setStage(5)}
-        />
-        <Currency
-          {...{
-            region,
-            setStage,
-            setRegisterForm,
-            handleRegister,
-          }}
-        />
-      </Carousel>
+      <Box width={"min(500px, 100%)"} height={"100%"} padding={"0px 20px"}>
+        {stages[stage]}
+      </Box>
     </Box>
   );
 };

@@ -45,7 +45,6 @@ const AddressDetails = ({
         justifyContent: "space-evenly",
         gap: "20px",
         height: "100%",
-        width: "min(400px, 90%)",
       }}
     >
       <Box display={"flex"} flexDirection={"column"} gap={"20px"}>

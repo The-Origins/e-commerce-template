@@ -10,6 +10,7 @@ const SelectPayment = ({ setStage, onCancel, enableSkip, onSkip }) => {
       gap={"20px"}
       height={"100%"}
       justifyContent={"space-evenly"}
+      alignItems={"center"}
     >
       <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
         <Typography

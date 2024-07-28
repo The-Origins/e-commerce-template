@@ -67,7 +67,9 @@ const UserPage = ({ location, setConfirmationModal }) => {
         orders: <UserOrders {...{ user, currency, setIsLoading }} />,
         order: <OrderDetails {...{ user, currency, setIsLoading }} />,
         favourites: (
-          <UserFavourites {...{ user, currency, setConfirmationModal }} />
+          <UserFavourites
+            {...{ user, currency, setConfirmationModal, setIsLoading }}
+          />
         ),
         notifications: <Notifications {...{ user }} />,
       });
@@ -106,35 +108,14 @@ const UserPage = ({ location, setConfirmationModal }) => {
             gap={"20px"}
           >
             {!isLoading && !user.isLoggedIn ? (
-              <Box
-                width={"100%"}
-                height={"100%"}
-                display={"flex"}
-                flexDirection={"column"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                gap={"20px"}
-              >
-                <PersonOff sx={{ fontSize: "2rem" }} />
+              <>
                 {!stage && (
-                  <>
-                    <Typography fontWeight={"bold"} fontSize={"1.5rem"}>
-                      Login to access user info
-                    </Typography>
-                    <Button
-                      disableElevation
-                      variant="contained"
-                      size="large"
-                      startIcon={<Person />}
-                      onClick={() =>
-                        navigate(`/auth/login?tab=${location.pathname}`)
-                      }
-                    >
-                      Log in
-                    </Button>
-                  </>
+                  <NotLoggedInComponent
+                    message={"Login to access user info"}
+                    size={"small"}
+                  />
                 )}
-              </Box>
+              </>
             ) : (
               <>
                 <Link
@@ -254,15 +235,26 @@ const UserPage = ({ location, setConfirmationModal }) => {
             <Box
               width={"100%"}
               height={"100%"}
-              display={"flex"}
-              justifyContent={"center"}
-              alignItems={"center"}
               border={
                 isNotPhone ? `1px solid ${theme.palette.grey[400]}` : undefined
               }
-              overflow={isNotPhone ? "hidden" : undefined}
               borderRadius={isNotPhone ? "0px 25px 25px 0px" : "25px"}
               position={"relative"}
+              sx={{
+                overflowY: "scroll",
+                "&::-webkit-scrollbar": {
+                  bgcolor: "transparent",
+                  width: isNotPhone ? "10px" : 0,
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  borderRadius: "25px",
+                  bgcolor: theme.palette.grey[300],
+                },
+                "&::-webkit-scrollbar-thumb:hover": {
+                  cursor: "pointer",
+                  bgcolor: theme.palette.grey[400],
+                },
+              }}
             >
               {isLoading ? (
                 <Box
@@ -272,6 +264,7 @@ const UserPage = ({ location, setConfirmationModal }) => {
                   display={"flex"}
                   justifyContent={"center"}
                   alignItems={"center"}
+                  bgcolor={"white"}
                 >
                   <CircularProgress />
                 </Box>

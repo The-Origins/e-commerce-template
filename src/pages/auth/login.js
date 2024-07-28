@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import Carousel from "../../components/layout/carousel";
 import LoginIntro from "../../components/auth/login/intro";
@@ -10,6 +10,28 @@ const Login = ({ setStatus, location }) => {
   const tab = searchParams.get("tab");
   const theme = useTheme();
   const [stage, setStage] = useState(0);
+
+  useEffect(() => {
+    document.title = `Login | ${theme.title}`;
+  }, []);
+
+  const stages = [
+    <LoginIntro {...{ setStage, tab }} />,
+    <LoginForm
+      {...{
+        setStage,
+        setStatus,
+        tab,
+      }}
+    />,
+    <ChangePassword
+      onCancel={() => setStage(1)}
+      onComplete={() => {
+        setStage(1);
+      }}
+      {...{ setStatus }}
+    />,
+  ];
 
   return (
     <Box
@@ -28,41 +50,12 @@ const Login = ({ setStatus, location }) => {
       </Typography>
       <Box
         display={"flex"}
-        alignItems={"center"}
-        justifyContent={"center"}
-        width={"100%"}
+        width={"min(400px, 100%)"}
         height={"100%"}
+        alignItems={"center"}
+        padding={"0px 30px"}
       >
-        <Carousel
-          width={"min(400px, 90%)"}
-          height={"100%"}
-          index={stage}
-          setIndex={setStage}
-          maxIndex={3}
-          style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <LoginIntro {...{ setStage, tab }} />
-          <LoginForm
-            {...{
-              setStage,
-              setStatus,
-              tab,
-            }}
-          />
-          <ChangePassword
-            onCancel={() => setStage(1)}
-            onComplete={() => {
-              setStage(1);
-            }}
-            {...{ setStatus }}
-          />
-        </Carousel>
+        {stages[stage]}
       </Box>
     </Box>
   );

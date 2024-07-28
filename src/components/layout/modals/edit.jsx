@@ -26,18 +26,16 @@ const EditModal = ({ isEdit, width, height, handleClose, children }) => {
   });
 
   return (
-    <Backdrop sx={{ color: "#fff", zIndex: 2 }} open={isEdit}>
+    <Backdrop sx={{ color: "#fff", zIndex: 5}} open={isEdit}>
       <Box
         position={"relative"}
         width={width || "min(300px, 90%)"}
-        height={height ? height : status.on ? "500px" : undefined}
+        height={height || (status.on ? "500px" : undefined)}
         borderRadius={"25px"}
         boxShadow={`0px 0px 1px 10px ${theme.palette.grey}`}
         bgcolor={"white"}
         display={"flex"}
         flexDirection={"column"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
         color="black"
         sx={{
           transitionDelay: "0.1s",
@@ -60,7 +58,7 @@ const EditModal = ({ isEdit, width, height, handleClose, children }) => {
         <Box
           height={"100%"}
           width={"100%"}
-          padding={"0px 20px 20px 20px"}
+          padding={"0px 30px"}
           sx={{
             overflowY: "scroll",
             "&::-webkit-scrollbar": {

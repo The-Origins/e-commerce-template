@@ -10,7 +10,6 @@ import {
   useMediaQuery,
   Tooltip,
 } from "@mui/material";
-import offers from "../../../lib/data/offers.json";
 import CustomizeProduct from "./customizeProduct";
 import ProductWorker from "../../scripts/productWorker";
 import EditModal from "../layout/modals/edit";
@@ -19,7 +18,7 @@ import { navigate } from "gatsby";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../state/user";
 
-const ProductCard = ({ product, user, currency, setConfirmationModal }) => {
+const ProductCard = ({ product, user, currency, setConfirmationModal, offers }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -98,6 +97,7 @@ const ProductCard = ({ product, user, currency, setConfirmationModal }) => {
           {...{
             product,
             user,
+            offers,
             currency,
             customizeProduct,
             setCustomizeProduct,

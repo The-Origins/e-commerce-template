@@ -1,10 +1,8 @@
 import ProductWorker from "./productWorker";
 
 class ResultsWorker {
-  constructor(params, productOffers) {
-    this.params = params || {};
-    this.productOffers = productOffers || {};
-    this.pageLimit = 16;
+  constructor() {
+    this.pageLimit = 20;
     this.prices = [];
     this.minPrice = 0;
     this.maxPrice = 0;
@@ -13,14 +11,14 @@ class ResultsWorker {
     this.filters = {};
   }
 
-  parseInfo(data) {
+  parseInfo(data, params, offers) {
     const productWorker = new ProductWorker();
     data.forEach((result) => {
       //get prices even those on offer
-      if (this.productOffers[result.id]) {
+      if (offers[result.id]) {
         this.prices.push(
           productWorker.getDiscount(
-            this.productOffers[result.id],
+            offers[result.id],
             result.unitPrice.amount
           )
         );
@@ -52,7 +50,7 @@ class ResultsWorker {
           if (!this.filterExeptions.includes(feature)) {
             this.filterOptions[feature] = this.filterOptions[feature] || [];
             if (!this.filters[feature]) {
-              this.filters[feature] = this.params[feature] || "All";
+              this.filters[feature] = params[feature] || "All";
             }
 
             if (
@@ -65,17 +63,17 @@ class ResultsWorker {
       }
     });
 
-    this.filters.brand = this.filters.brand || this.params.brand || "All";
+    this.filters.brand = this.filters.brand || params.brand || "All";
     this.filters.category =
-      this.filters.category || this.params.category || "All";
+      this.filters.category || params.category || "All";
 
     this.minPrice = Math.min(...this.prices);
     this.maxPrice = Math.max(...this.prices);
 
     this.filters = {
       ...this.filters,
-      min: this.filters.min || this.params.min || this.minPrice,
-      max: this.filters.max || this.params.min || this.maxPrice,
+      min: this.filters.min || params.min || this.minPrice,
+      max: this.filters.max || params.min || this.maxPrice,
     };
 
     //remove filters that don't have more than 1 option
@@ -91,7 +89,7 @@ class ResultsWorker {
     });
   }
 
-  filterResults(filters, data) {
+  filterResults(filters, data, params, offers) {
     this.filters = filters;
     const filteredResults = data.filter((result) => {
       //filter out products by their features
@@ -114,7 +112,7 @@ class ResultsWorker {
       );
     });
 
-    this.parseInfo(filteredResults);
+    this.parseInfo(filteredResults, params, offers);
     return filteredResults;
   }
 

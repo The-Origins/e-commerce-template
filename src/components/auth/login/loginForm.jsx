@@ -12,7 +12,7 @@ import AuthWorker from "../../../scripts/authWorker";
 import { navigate } from "gatsby";
 import { loginUser } from "../../../state/user";
 
-const LoginForm = ({ setStage, setStatus, tab}) => {
+const LoginForm = ({ setStage, setStatus, tab }) => {
   const authWorker = new AuthWorker();
   const dispatch = useDispatch();
   const [form, setForm] = useState({});
@@ -48,14 +48,19 @@ const LoginForm = ({ setStage, setStatus, tab}) => {
           },
         })
       );
-      return {}
-    })
+      return {};
+    });
   };
 
   return (
     <form
       onSubmit={handleLogin}
-      style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+      style={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+      }}
     >
       <Box display={"flex"} flexDirection={"column"} gap={"5px"}>
         <TextField

@@ -10,6 +10,7 @@ import {
   useTheme,
   LinearProgress,
   ClickAwayListener,
+  Tooltip,
 } from "@mui/material";
 import { Search, ShoppingCart } from "@mui/icons-material";
 import SearchBar from "./searchBar";
@@ -95,7 +96,7 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
           />
           <Link
             href="/"
-            fontSize={"clamp(0.4rem, 5vw, 3rem)"}
+            fontSize={"clamp(0.5rem, 5vw, 2.7rem)"}
             sx={{
               textDecoration: "none",
               color: "black",
@@ -106,7 +107,7 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
             {theme.title}
           </Link>
           {isNotPhone && (
-            <Box width={"50%"} display={"flex"} flexDirection={"column"}>
+            <Box width={"45%"} display={"flex"} flexDirection={"column"}>
               <SearchBar {...{ setConfirmationModal }} />
             </Box>
           )}
@@ -127,20 +128,22 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
               </IconButton>
             )}
             <Link href="/cart">
-              <IconButton>
-                <Badge
-                  color="primary"
-                  badgeContent={
-                    user.isLoggedIn
-                      ? Object.keys(user.data.cart.items).length
-                      : 0
-                  }
-                >
-                  <ShoppingCart
-                    sx={{ fontSize: "clamp(1.4rem, 3vw, 1.8rem)" }}
-                  />
-                </Badge>
-              </IconButton>
+              <Tooltip title="cart">
+                <IconButton>
+                  <Badge
+                    color="primary"
+                    badgeContent={
+                      user.isLoggedIn
+                        ? Object.keys(user.data.cart.items).length
+                        : 0
+                    }
+                  >
+                    <ShoppingCart
+                      sx={{ fontSize: "clamp(1.4rem, 3vw, 1.8rem)" }}
+                    />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
             </Link>
             <ClickAwayListener onClickAway={() => setIsUserMenu(false)}>
               <Link href={isNotPhone ? undefined : "/user"}>
@@ -182,6 +185,7 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
               height={isMobileSearch ? "45px" : "0px"}
               display={"flex"}
               alignItems={"center"}
+              padding={"0px 5px"}
             >
               <SearchBar
                 searchFocus={isMobileSearch}

@@ -24,7 +24,6 @@ import {
   SearchOff,
 } from "@mui/icons-material";
 import { navigate } from "gatsby";
-import offers from "../../../lib/data/offers.json";
 import SkeletonGroup from "../layout/skeletonGroup";
 import resultHeaders from "./resultHeaders";
 import ResultsWorker from "../../scripts/resultsWorker";
@@ -35,6 +34,8 @@ import { setSnackBar } from "../../state/snackBar";
 
 const ResultsComponent = ({ path }) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
+  const fetchWorker = new FetchWorker();
+  const resultsWorker = new ResultsWorker();
   const theme = useTheme();
   const dispatch = useDispatch();
   const searchParams = new URLSearchParams(window.location.search);
@@ -45,11 +46,11 @@ const ResultsComponent = ({ path }) => {
     Object.fromEntries(searchParams.entries())
   );
 
-  const resultsWorker = new ResultsWorker(params, offers);
   const user = useSelector((state) => state.user);
   const currency = useSelector((state) => state.currency);
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [offers, setOffers] = useState();
   const [results, setResults] = useState({ pages: 1, all: [] });
   const [price, setPrice] = useState({ min: 0, max: 0 });
   const [priceFilter, setPriceFilter] = useState({});
@@ -61,25 +62,31 @@ const ResultsComponent = ({ path }) => {
   useEffect(() => {
     if (results.pageData) {
       setIsLoading(false);
+    } else {
+      setIsLoading(true);
     }
   }, [results]);
 
   useEffect(() => {
     document.title = `Search results for '${search}'`;
-
-    const fetchWorker = new FetchWorker();
+    fetchWorker
+      .fetchOffers()
+      .then((res) => {
+        setOffers(res);
+      })
+      .catch((err) => {
+        dispatch(
+          setSnackBar({
+            on: true,
+            type: "ERROR",
+            message: `Error fetching offers: ${err}`,
+          })
+        );
+      });
     fetchWorker
       .fetchResults(search, path)
       .then((data) => {
         setData(data);
-        resultsWorker.parseInfo(data);
-        setFilterOptions(resultsWorker.filterOptions);
-        setFilters(resultsWorker.filters);
-        setPrice({ min: resultsWorker.minPrice, max: resultsWorker.maxPrice });
-        setPriceFilter({
-          min: resultsWorker.minPrice,
-          max: resultsWorker.maxPrice,
-        });
       })
       .catch((err) => {
         dispatch(
@@ -93,9 +100,28 @@ const ResultsComponent = ({ path }) => {
   }, []);
 
   useEffect(() => {
+    if (offers && data.length) {
+      resultsWorker.parseInfo(data, params, offers);
+      setFilterOptions(resultsWorker.filterOptions);
+      setFilters(resultsWorker.filters);
+      setPrice({
+        min: resultsWorker.minPrice,
+        max: resultsWorker.maxPrice,
+      });
+      setPriceFilter({
+        min: resultsWorker.minPrice,
+        max: resultsWorker.maxPrice,
+      });
+    }
+  }, [offers, data]);
+
+  useEffect(() => {
     if (data.length) {
       setResults(
-        resultsWorker.getResults(resultsWorker.filterResults(filters, data), 1)
+        resultsWorker.getResults(
+          resultsWorker.filterResults(filters, data, params, offers),
+          1
+        )
       );
       setFilterOptions(resultsWorker.filterOptions);
       resetPage();
@@ -170,6 +196,7 @@ const ResultsComponent = ({ path }) => {
   };
 
   const handlePageChange = (event, value) => {
+    const resultsWorker = new ResultsWorker(params, offers);
     setResults((prev) => resultsWorker.getResults(prev.all, value));
     resetPage(value);
   };
@@ -451,7 +478,7 @@ const ResultsComponent = ({ path }) => {
               minHeight={"100vh"}
             >
               {results.pageData.map((product) => (
-                <ProductCard {...{ product, user, currency }} />
+                <ProductCard {...{ product, user, currency, offers }} />
               ))}
             </Box>
           ) : (

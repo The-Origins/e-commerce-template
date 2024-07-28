@@ -75,7 +75,6 @@ const SelectAddress = ({
       display={"flex"}
       flexDirection={"column"}
       gap={"20px"}
-      width={"min(400px, 90%)"}
       height={"100%"}
       justifyContent={"space-evenly"}
     >

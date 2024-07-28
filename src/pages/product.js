@@ -20,7 +20,6 @@ import {
   Share,
   ShoppingCartCheckout,
 } from "@mui/icons-material";
-import offers from "../../lib/data/offers.json";
 import ProductWorker from "../scripts/productWorker";
 import RatingDistributionComponent from "../components/product/ratingDistribution";
 import ReviewComponent from "../components/product/reviewComponent";
@@ -50,6 +49,7 @@ const ProductPage = ({ setConfirmationModal }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [imageIndex, setImageIndex] = useState(0);
   const [product, setProduct] = useState({});
+  const [offers, setOffers] = useState({});
   const [customizeProduct, setCustomizeProduct] = useState({
     on: false,
     title: (isInCart || isLiked) && "Edit your prefrences",
@@ -57,23 +57,17 @@ const ProductPage = ({ setConfirmationModal }) => {
   const [ratingDistribution, setRatingDistribution] = useState({});
 
   useEffect(() => {
-    const id = Number(params.get("p"));
+    const id = params.get("p");
     const fetchWorker = new FetchWorker();
-    fetchWorker
-      .fetchProduct(id)
+    Promise.all([fetchWorker.fetchOffers(), fetchWorker.fetchProduct(id)])
       .then((res) => {
-        setIsLoading(false);
-        setProduct(res);
+        setOffers(res[0])
+        setProduct(res[1])
+        setIsLoading(false)
       })
       .catch((err) => {
-        setIsLoading(false);
-        dispatch(
-          setSnackBar({
-            on: true,
-            type: "ERROR",
-            message: `Error fetching product: ${err}`,
-          })
-        );
+        setIsLoading(false)
+        dispatch(setSnackBar({on:true, type:"ERROR", message:`Error fetching info: ${err}`}))
       });
   }, []);
 
@@ -145,6 +139,7 @@ const ProductPage = ({ setConfirmationModal }) => {
           <CustomizeProduct
             {...{
               user,
+              offers,
               product,
               currency,
               customizeProduct,
@@ -499,22 +494,23 @@ const ProductPage = ({ setConfirmationModal }) => {
                 {Object.keys(product.features).map((feature) => {
                   const isSearchExeption =
                     productWorker.searchExeptions.includes(feature);
-                  const featureSearch =
+                  const searchString =
                     !isSearchExeption &&
-                    new URLSearchParams(product.features[feature])
-                      .toString()
-                      .replace("=", "");
+                    new URLSearchParams({
+                      search: product.type,
+                      [feature]: product.features[feature],
+                    }).toString();
                   return (
                     <Tooltip
                       title={
                         !isSearchExeption &&
-                        `search: ${product.type}, ${feature}=${featureSearch}`
+                        `search: ${product.type} for ${feature}=${product.features[feature]}`
                       }
                     >
                       <Link
                         href={
                           !isSearchExeption
-                            ? `/results?search=${product.type}&${feature}=${featureSearch}`
+                            ? `/results?${searchString}`
                             : undefined
                         }
                         sx={{

@@ -13,6 +13,7 @@ import UserProfileDetail from "./profileDetail";
 import UserProfileList from "./profileList";
 import EditModal from "../layout/modals/edit";
 import ChangePassword from "../forms/changePassword";
+import { currencies } from "country-data";
 
 const UserProfile = ({ user, setConfirmationModal }) => {
   user = user.data;
@@ -22,24 +23,7 @@ const UserProfile = ({ user, setConfirmationModal }) => {
 
   return (
     <Box
-      width={"100%"}
-      height={"100%"}
       padding={isNotPhone ? "20px" : "20px 0px"}
-      sx={{
-        overflowY: "scroll",
-        "&::-webkit-scrollbar": {
-          bgcolor: "transparent",
-          width: isNotPhone ? "10px" : 0,
-        },
-        "&::-webkit-scrollbar-thumb": {
-          borderRadius: "25px",
-          bgcolor: theme.palette.grey[300],
-        },
-        "&::-webkit-scrollbar-thumb:hover": {
-          cursor: "pointer",
-          bgcolor: theme.palette.grey[400],
-        },
-      }}
       display={"flex"}
       flexDirection={"column"}
       gap={"20px"}
@@ -80,7 +64,7 @@ const UserProfile = ({ user, setConfirmationModal }) => {
         <UserProfileDetail
           icon={<Paid />}
           title={"currency"}
-          description={user.payments.currency}
+          description={currencies[user.payments.currency].name}
           details={{ currency: user.payments.currency }}
         />
       </Box>

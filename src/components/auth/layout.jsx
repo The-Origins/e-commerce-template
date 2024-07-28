@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Link, ThemeProvider, Typography } from "@mui/material";
 import { PhoneInTalk } from "@mui/icons-material";
 import theme from "../../theme";
 import ContactModal from "../layout/modals/contact";
 import StatusComponent from "../layout/statusComponent";
+import { useDispatch } from "react-redux";
+import { fetchSession } from "../../state/session";
 
 const AuthLayout = ({ children }) => {
+  const dispatch = useDispatch();
   const [isContact, setIsContact] = useState(false);
   const [status, setStatus] = useState({
-    on: false,
+    on: true,
     type: "LOADING",
   });
 
@@ -23,6 +26,15 @@ const AuthLayout = ({ children }) => {
     // Return the child if it's not a React element (e.g., text nodes)
     return child;
   });
+
+  useEffect(() => {
+    const handleSessionFetch = async () =>
+    {
+      await dispatch(fetchSession()).unwrap();
+      setStatus({on:false,})
+    }
+    handleSessionFetch()
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -42,7 +54,7 @@ const AuthLayout = ({ children }) => {
             textDecoration: "none",
             color: "black",
             typography: "secondaryFont",
-            fontWeight:"bold"
+            fontWeight: "bold",
           }}
         >
           {theme.title}

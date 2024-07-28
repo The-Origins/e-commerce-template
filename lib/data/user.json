@@ -71,7 +71,7 @@
     "searches": ["electronics", "clothing", "food", "trending"],
     "veiwedProducts": ["14", "28", "9", "2"]
   },
-  "orders": [1, 2, 3],
+  "orders": ["1", "2", "3"],
   "notifications": {
     "items": [
       {

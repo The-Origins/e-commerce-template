@@ -5,6 +5,7 @@ import PasswordForm from "../password";
 import Carousel from "../../layout/carousel";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../../state/user";
+import { Box } from "@mui/material";
 
 const ChangePassword = ({ onCancel, onComplete, setStatus }) => {
   const dispatch = useDispatch();
@@ -30,37 +31,29 @@ const ChangePassword = ({ onCancel, onComplete, setStatus }) => {
     );
   };
 
-  return (
-    <Carousel
-      width={"100%"}
-      height={"100%"}
-      index={stage}
-      setIndex={setStage}
-      maxIndex={3}
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
+  const stages = [
+    <ConfirmEmail
+      {...{
+        setStage,
+        setStatus,
+        onCancel,
+        email,
+        setEmail,
       }}
-    >
-      <ConfirmEmail
-        {...{
-          setStage,
-          setStatus,
-          onCancel,
-          email,
-          setEmail,
-        }}
-      />
-      <VerificationComponent
-        data={email}
-        onSuccess={() => setStage(2)}
-        onError={onCancel}
-        setStatus={setStatus}
-      />
-      <PasswordForm handleBack={onCancel} handleNext={handleComplete} />
-    </Carousel>
+    />,
+    <VerificationComponent
+      data={email}
+      onSuccess={() => setStage(2)}
+      onError={onCancel}
+      setStatus={setStatus}
+    />,
+    <PasswordForm handleBack={onCancel} handleNext={handleComplete} />,
+  ];
+
+  return (
+    <Box width={"100%"} height={"100%"}>
+      {stages[stage]}
+    </Box>
   );
 };
 

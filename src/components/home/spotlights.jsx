@@ -10,6 +10,7 @@ const Spotlights = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [spotlights, setSpotlights] = useState([]);
+  const [reloadCounter, setReloadCounter] = useState(0)
 
   useEffect(() => {
     const fetchWorker = new FetchWorker();
@@ -39,7 +40,7 @@ const Spotlights = () => {
       swipeable
     >
       {isError ? (
-        <IsErrorComponent />
+        <IsErrorComponent setReloadCounter={setReloadCounter} />
       ) : (
         spotlights.map((spotlight) => (
           <Box

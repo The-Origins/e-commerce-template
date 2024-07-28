@@ -1,19 +1,19 @@
-import data from "../../lib/data/products.json";
-
 class ProductWorker {
   constructor() {
-    this.products = data;
     this.maxQuantity = 10;
     this.searchExeptions = ["SKU", "weight"];
   }
 
-  getTotal(product, quantity, variants) {
-    let total = product.unitPrice.amount;
+  getTotal(product, quantity, variants, offers) {
+    let total = offers[product.id]
+      ? this.getDiscount(offers[product.id], product.unitPrice.amount)
+      : product.unitPrice.amount;
     total *= quantity;
+
     Object.keys(variants).forEach((variant) => {
       if (Array.isArray(variants[variant])) {
-        variants[variant].forEach((element) => {
-          total += product.variants[variant][element];
+        variants[variant].forEach((option) => {
+          total += product.variants[variant][option];
         });
       } else {
         total += product.variants[variant][variants[variant]];
@@ -27,13 +27,10 @@ class ProductWorker {
   }
 
   getProductDetails(cartItems, favourites, product, offers) {
-    let details = cartItems[product.id] || favourites[product.id];
+    let details = { ...(cartItems[product.id] || favourites[product.id]) };
 
-    if (!details) {
-      details = {
-        quantity: 1,
-        total: offers[product.id] || product.unitPrice.amount,
-      };
+    if (!Object.keys(details).length) {
+      details = { quantity: 1 };
       if (Object.keys(product.variants).length) {
         Object.keys(product.variants).forEach((variant) => {
           details = {
@@ -45,6 +42,10 @@ class ProductWorker {
         });
       }
     }
+
+    let { total, quantity, ...variants } = details;
+    details.total = this.getTotal(product, quantity, variants, offers);
+
     return details;
   }
 
@@ -55,11 +56,6 @@ class ProductWorker {
       distribution[vote]++;
     });
     return distribution;
-  }
-
-  //this is done by the api
-  findProduct(id) {
-    return this.products.find((product) => product.id === Number(id));
   }
 }
 

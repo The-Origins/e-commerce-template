@@ -12,10 +12,9 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import offers from "../../../lib/data/offers.json";
 import ProductWorker from "../../scripts/productWorker";
 import { AddCircle, RemoveCircle } from "@mui/icons-material";
-import { updateUser} from "../../state/user";
+import { updateUser } from "../../state/user";
 import { useDispatch } from "react-redux";
 
 const CustomizeProduct = ({
@@ -24,6 +23,7 @@ const CustomizeProduct = ({
   currency,
   customizeProduct,
   setCustomizeProduct,
+  offers
 }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -68,7 +68,7 @@ const CustomizeProduct = ({
       const { total, quantity, ...variants } = prev;
       return {
         ...prev,
-        total: productWorker.getTotal(product, quantity, variants),
+        total: productWorker.getTotal(product, quantity, variants, offers),
       };
     });
   };

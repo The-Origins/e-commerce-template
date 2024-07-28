@@ -27,10 +27,8 @@ const OrderDetails = ({ user, currency, setIsLoading }) => {
   const [order, setOrder] = useState({});
 
   useEffect(() => {
-    const id = Number(
-      String(window.location.hash).substring(
-        String(window.location.hash).indexOf("/") + 1
-      )
+    const id = String(window.location.hash).substring(
+      String(window.location.hash).indexOf("/") + 1
     );
     const fetchWorker = new FetchWorker();
     setIsLoading(true);
@@ -54,23 +52,6 @@ const OrderDetails = ({ user, currency, setIsLoading }) => {
 
   return (
     <Box
-      width={"100%"}
-      height={"100%"}
-      sx={{
-        overflowY: "scroll",
-        "&::-webkit-scrollbar": {
-          bgcolor: "transparent",
-          width: isNotPhone ? "10px" : 0,
-        },
-        "&::-webkit-scrollbar-thumb": {
-          borderRadius: "25px",
-          bgcolor: theme.palette.grey[300],
-        },
-        "&::-webkit-scrollbar-thumb:hover": {
-          cursor: "pointer",
-          bgcolor: theme.palette.grey[400],
-        },
-      }}
       padding={isNotPhone ? "20px" : "20px 0px"}
       display={"flex"}
       flexDirection={"column"}
@@ -119,7 +100,7 @@ const OrderDetails = ({ user, currency, setIsLoading }) => {
           </Box>
           <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
             <Box display={"flex"} alignItems={"center"} gap={"5px"}>
-              <Typography fontWeight={"bold"}>Order No:</Typography>
+              <Typography fontWeight={"bold"}>Order Id:</Typography>
               <Typography>{order.id}</Typography>
             </Box>
             <Box display={"flex"} alignItems={"center"} gap={"5px"}>

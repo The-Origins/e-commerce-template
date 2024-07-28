@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Link, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { CalendarMonth } from "@mui/icons-material";
 import UserProductCard from "../product/userProductCard";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import FetchWorker from "../../scripts/fetchWorker";
 import { setSnackBar } from "../../state/snackBar";
 
@@ -15,47 +15,32 @@ const UserOrders = ({ user, currency, setIsLoading }) => {
   useEffect(() => {
     const fetchWorker = new FetchWorker();
     setIsLoading(true);
-    fetchWorker
-      .fetchOrders(user.data.orders)
-      .then((res) => {
-        setOrders(res);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        dispatch(
-          setSnackBar({
-            on:true,
-            type: "ERROR",
-            message: `Error fetching orders: ${err}`,
-          })
-        );
-        setIsLoading(false);
-      });
+    if (!user.isFetching) {
+      fetchWorker
+        .fetchOrders(user.data.orders)
+        .then((res) => {
+          setOrders(res);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          dispatch(
+            setSnackBar({
+              on: true,
+              type: "ERROR",
+              message: `Error fetching orders: ${err}`,
+            })
+          );
+          setIsLoading(false);
+        });
+    }
   }, []);
 
   return (
     <Box
-      width={"100%"}
       padding={isNotPhone ? "20px" : "20px 0px"}
       display={"flex"}
       flexDirection={"column"}
       gap={"20px"}
-      height={"100%"}
-      sx={{
-        overflowY: "scroll",
-        "&::-webkit-scrollbar": {
-          bgcolor: "transparent",
-          width: isNotPhone ? "10px" : 0,
-        },
-        "&::-webkit-scrollbar-thumb": {
-          borderRadius: "25px",
-          bgcolor: theme.palette.grey[300],
-        },
-        "&::-webkit-scrollbar-thumb:hover": {
-          cursor: "pointer",
-          bgcolor: theme.palette.grey[400],
-        },
-      }}
     >
       {orders.map((order) => (
         <Link
@@ -92,15 +77,16 @@ const UserOrders = ({ user, currency, setIsLoading }) => {
                   borderRadius={"50%"}
                   bgcolor={theme.palette.status.order[order.status]}
                 />
-                <Typography
-                  color={theme.palette.status.order[order.status]}
-                >
+                <Typography color={theme.palette.status.order[order.status]}>
                   {order.status.charAt(0).toUpperCase() +
                     order.status.substring(1)}
                 </Typography>
               </Box>
-              <Box display={"flex"} gap={"1px"}>
-                <CalendarMonth fontSize={"clamp(0.8rem, 3vw, 1rem)"} />
+              <Box display={"flex"} gap={"1px"} alignItems={"center"}>
+                <CalendarMonth
+                  fontSize={"clamp(0.8rem, 3vw, 1rem)"}
+                  sx={{ color: "text.secondary" }}
+                />
                 <Typography
                   color={"text.secondary"}
                   fontSize={"clamp(0.8rem, 3vw, 1rem)"}
@@ -119,7 +105,7 @@ const UserOrders = ({ user, currency, setIsLoading }) => {
               {Object.keys(order.items).map((id) => {
                 return (
                   <UserProductCard
-                    {...{ id, user, currency}}
+                    {...{ id, user, currency }}
                     details={order.items[id]}
                     type={"orders"}
                   />

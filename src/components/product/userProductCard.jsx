@@ -30,6 +30,7 @@ const UserProductCard = ({
   details,
   type,
   user,
+  offers,
   currency,
   setConfirmationModal,
   isLink = false,
@@ -123,6 +124,7 @@ const UserProductCard = ({
                 {...{
                   product,
                   user,
+                  offers,
                   currency,
                   customizeProduct,
                   setCustomizeProduct,

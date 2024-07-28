@@ -7,7 +7,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, {useState } from "react";
 import AuthWorker from "../../../scripts/authWorker";
 import TelTextField from "../../forms/inputs/telTextField";
 import callingCodes from "../../../../lib/callingCodes.json";
@@ -17,8 +17,8 @@ const GeneralInfo = ({ setStage, setRegisterForm, region }) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const authWorker = new AuthWorker();
   const [form, setForm] = useState({
-    phoneCode: region.country_code || "US",
-    phoneNumber: callingCodes[region.country_code || "US"].callingCode,
+    phoneCode: region.country_code,
+    phoneNumber: callingCodes[region.country_code].callingCode,
   });
   const [touched, setTouched] = useState({});
   const [errors, setErrors] = useState({

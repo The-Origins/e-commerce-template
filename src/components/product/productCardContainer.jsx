@@ -23,8 +23,24 @@ const ProductCardContainer = ({
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [products, setProducts] = useState([]);
+  const [offers, setOffers] = useState({});
+  const [reloadCounter, setReloadCounter] = useState(0);
 
   useEffect(() => {
+    fetchWorker
+      .fetchOffers()
+      .then((res) => {
+        setOffers(res);
+      })
+      .catch((err) => {
+        dispatch(
+          setSnackBar({
+            on: true,
+            type: "ERROR",
+            message: `Error fetching product offers: ${err}`,
+          })
+        );
+      });
     if (!isRecentlyViewedProducts) {
       fetchWorker
         .fetchResults(category, "category", 4)
@@ -37,7 +53,7 @@ const ProductCardContainer = ({
           setIsError(true);
         });
     }
-  }, []);
+  }, [reloadCounter]);
 
   useEffect(() => {
     if (isRecentlyViewedProducts) {
@@ -61,7 +77,7 @@ const ProductCardContainer = ({
           });
       }
     }
-  }, [user, session]);
+  }, [user, session, reloadCounter]);
 
   return (
     <Box
@@ -114,12 +130,21 @@ const ProductCardContainer = ({
                 flexDirection={"row"}
               />
             ) : isError ? (
-              <IsErrorComponent message={"Error fetching products"}/>
+              <IsErrorComponent
+                message={"Error fetching products"}
+                setReloadCounter={setReloadCounter}
+              />
             ) : (
               <Box display={"flex"} gap={"20px"}>
                 {products.map((product) => (
                   <ProductCard
-                    {...{ product, user, currency, setConfirmationModal }}
+                    {...{
+                      product,
+                      user,
+                      currency,
+                      setConfirmationModal,
+                      offers,
+                    }}
                   />
                 ))}
               </Box>

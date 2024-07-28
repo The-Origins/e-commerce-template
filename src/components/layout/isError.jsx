@@ -7,7 +7,7 @@ const IsErrorComponent = ({
   height,
   message,
   flexDirection,
-  onReload,
+  setReloadCounter,
   size,
 }) => {
   return (
@@ -27,7 +27,7 @@ const IsErrorComponent = ({
       />
       <Typography>{message || "Error"}</Typography>
       <Tooltip title="reload">
-        <IconButton onClick={onReload}>
+        <IconButton onClick={() => setReloadCounter((prev) => prev + 1)}>
           <Replay />
         </IconButton>
       </Tooltip>

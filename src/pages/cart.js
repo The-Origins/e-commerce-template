@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Button,
@@ -14,12 +14,16 @@ import { ShoppingCartCheckout } from "@mui/icons-material";
 import SkeletonGroup from "../components/layout/skeletonGroup";
 import ProductCardContainer from "../components/product/productCardContainer";
 import NotLoggedInComponent from "../components/layout/notLoggedInComponent";
+import FetchWorker from "../scripts/fetchWorker";
+import { setSnackBar } from "../state/snackBar";
 
 const CartPage = ({ setConfirmationModal }) => {
+  const dispatch = useDispatch();
   const currency = useSelector((state) => state.currency);
   const user = useSelector((state) => state.user);
   const session = useSelector((state) => state.session);
   const [isLoading, setIsLoading] = useState(true);
+  const [offers, setOffers] = useState({});
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
 
@@ -29,7 +33,26 @@ const CartPage = ({ setConfirmationModal }) => {
 
   useEffect(() => {
     if (!user.isFetching) {
-      setIsLoading(false);
+      if (user.isLoggedIn) {
+        const fetchWorker = new FetchWorker();
+        fetchWorker
+          .fetchOffers()
+          .then((res) => {
+            setOffers(res);
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            dispatch(
+              setSnackBar({
+                on: true,
+                type: "ERROR",
+                message: `Error fetching product offers: ${err}`,
+              })
+            );
+          });
+      } else {
+        setIsLoading(false);
+      }
     }
   }, [user]);
 
@@ -160,7 +183,7 @@ const CartPage = ({ setConfirmationModal }) => {
                       Object.keys(user.data.cart.items).map((cartItem) => {
                         return (
                           <UserProductCard
-                            {...{ user, currency, setConfirmationModal }}
+                            {...{ user, offers, currency, setConfirmationModal }}
                             id={cartItem}
                             details={user.data.cart.items[cartItem]}
                             type="cart"

@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": "1",
     "status": "processing",
     "dateCreated": "13th may 2012",
     "total": 3765,
@@ -44,7 +44,7 @@
     }
   },
   {
-    "id": 2,
+    "id": "2",
     "status": "fulfilling",
     "dateCreated": "13th may 2012",
     "total": 608,
@@ -86,7 +86,7 @@
     }
   },
   {
-    "id": 3,
+    "id": "3",
     "status": "fulfilled",
     "dateCreated": "13th may 2012",
     "total": 630,

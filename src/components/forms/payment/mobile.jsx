@@ -71,15 +71,15 @@ const MobilePayment = ({ mobileValues, setStage, setPayment }) => {
     <form
       onSubmit={handleSubmit}
       style={{
-        width: "min(400px, 90%)",
         height: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-evenly",
+        alignItems:"center",
         gap: "20px",
       }}
     >
-      <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
+      <Box display={"flex"} flexDirection={"column"} gap={"20px"} >
         <Typography
           fontWeight={"bold"}
           fontSize={"1.3rem"}
@@ -89,7 +89,6 @@ const MobilePayment = ({ mobileValues, setStage, setPayment }) => {
           Confirm your mobile number
         </Typography>
         <TelTextField
-          style={{ flexBasis: 200, flexGrow: 1 }}
           {...{ form, errors, touched, handleChange, handleBlur }}
         />
       </Box>

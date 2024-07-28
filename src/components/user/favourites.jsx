@@ -1,29 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import UserProductCard from "../product/userProductCard";
+import { useDispatch } from "react-redux";
+import FetchWorker from "../../scripts/fetchWorker";
+import { setSnackBar } from "../../state/snackBar";
 
-const UserFavourites = ({ user, currency, setConfirmationModal }) => {
+const UserFavourites = ({
+  user,
+  currency,
+  setIsLoading,
+  setConfirmationModal,
+}) => {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
+  const [offers, setOffers] = useState({});
+
+  useEffect(() => {
+    const fetchWorker = new FetchWorker();
+    setIsLoading(true);
+    fetchWorker
+      .fetchOffers()
+      .then((res) => {
+        setOffers(res);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        dispatch(
+          setSnackBar({
+            on: true,
+            type: "ERROR",
+            message: `Error fetching product offers: ${err}`,
+          })
+        );
+      });
+  }, []);
+
   return (
     <Box
-      width={"100%"}
-      height={"100%"}
-      sx={{
-        overflowY: "scroll",
-        "&::-webkit-scrollbar": {
-          bgcolor: "transparent",
-          width: isNotPhone ? "10px" : 0,
-        },
-        "&::-webkit-scrollbar-thumb": {
-          borderRadius: "25px",
-          bgcolor: theme.palette.grey[300],
-        },
-        "&::-webkit-scrollbar-thumb:hover": {
-          cursor: "pointer",
-          bgcolor: theme.palette.grey[400],
-        },
-      }}
       padding={isNotPhone ? "20px" : "20px 7px"}
       display={"flex"}
       flexDirection={"column"}
@@ -32,7 +46,7 @@ const UserFavourites = ({ user, currency, setConfirmationModal }) => {
       {Object.keys(user.data.favourites).map((id) => {
         return (
           <UserProductCard
-            {...{ id, user, currency, setConfirmationModal }}
+            {...{ id, user, offers, currency, setConfirmationModal }}
             details={user.data.favourites[id]}
             type="favourites"
           />

@@ -4,13 +4,8 @@ import { Box, Button, Typography } from "@mui/material";
 import CurrencySelect from "../../forms/inputs/currencySelect";
 import currencies from "../../../../lib/currencies.json";
 
-const Currency = ({
-  region,
-  setStage,
-  setRegisterForm,
-  handleRegister,
-}) => {
-  const [form, setForm] = useState({ currency: region.currency });
+const Currency = ({ region, setStage, setRegisterForm, handleRegister }) => {
+  const [form, setForm] = useState({ currency: region.currency || "USD" });
 
   const handleChange = ({ target }) => {
     setForm({ currency: target.value });
@@ -30,9 +25,9 @@ const Currency = ({
         display: "flex",
         flexDirection: "column",
         gap: "20px",
-        width: "min(300px, 90%)",
         height: "100%",
         justifyContent: "space-evenly",
+        alignItems:"center"
       }}
     >
       <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
@@ -52,7 +47,7 @@ const Currency = ({
         justifyContent={"space-between"}
         alignItems={"center"}
       >
-        <Button variant="outlined" disableElevation onClick={() => setStage(5)}>
+        <Button variant="outlined" disableElevation onClick={() => setStage(4)}>
           Back
         </Button>
         <Button onClick={handleConfirm} variant="contained" disableElevation>

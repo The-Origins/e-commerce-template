@@ -86,8 +86,6 @@ const SearchBar = ({ searchFocus = false, setConfirmationModal }) => {
       onSubmit={handleSubmit}
       style={{
         display: "flex",
-        gap: "5px",
-        alignItems: "center",
         width: "100%",
       }}
     >
@@ -165,28 +163,42 @@ const SearchBar = ({ searchFocus = false, setConfirmationModal }) => {
             InputProps={{
               ...props.InputProps,
               inputRef: searchRef,
-              startAdornment: !search && (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
             }}
-            sx={{ "& > div": { borderRadius: "30px" } }}
+            sx={{ "& > div": { borderRadius: "30px 0px 0px 30px" } }}
           />
         )}
       />
-      {search && (
+      <button
+        disabled={!search}
+        type="submit"
+        style={{
+          padding: "0px",
+          backgroundColor: "transparent",
+          border: "none",
+        }}
+      >
         <Tooltip title="search">
-          <IconButton
-            type="submit"
-            aria-label="search"
-            size={isNotPhone ? "medium" : "small"}
-            sx={{ border: `1px solid ${theme.palette.grey[300]}` }}
+          <Box
+            height={"100%"}
+            display={"flex"}
+            alignItems={"center"}
+            padding={"0px 20px"}
+            borderTop={`1px solid ${theme.palette.grey[400]}`}
+            borderRight={`1px solid ${theme.palette.grey[400]}`}
+            borderBottom={`1px solid ${theme.palette.grey[400]}`}
+            borderRadius={"0px 30px 30px 0px"}
+            sx={{
+              transition: "0.2s",
+              ":hover": {
+                cursor: "pointer",
+                bgcolor: theme.palette.grey[300],
+              },
+            }}
           >
-            <Search />
-          </IconButton>
+            <Search sx={{ color: theme.palette.grey[600] }} />
+          </Box>
         </Tooltip>
-      )}
+      </button>
     </form>
   );
 };

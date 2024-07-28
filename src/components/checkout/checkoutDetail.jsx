@@ -40,8 +40,8 @@ const CheckoutDetail = ({
   return (
     <Box display={"flex"} flexDirection={"column"} flexBasis={300} flexGrow={1}>
       <EditModal
-        width={"min(600px, 90%)"}
-        height={"650px"}
+        width={"min(500px, 90%)"}
+        height={"600px"}
         isEdit={isChange}
         handleClose={() => setIsChange(false)}
       >

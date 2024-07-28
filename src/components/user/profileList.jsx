@@ -29,7 +29,7 @@ const UserProfileList = ({ type, title, icon, data, setConfirmationModal }) => {
       <EditModal
         isEdit={isAdd}
         handleClose={() => setIsAdd(false)}
-        width={"min(600px, 90%)"}
+        width={"min(500px, 90%)"}
         height={"600px"}
       >
         <AddProfileListItem type={type} setIsAdd={setIsAdd} />
