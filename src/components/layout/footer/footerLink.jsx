@@ -5,16 +5,11 @@ const FooterLink = ({ path, children }) => {
   return (
     <Link
       href={path}
-      fontSize={"1rem"}
       sx={{
-        display: "flex",
+        color: "text.secondary",
         textDecoration: "none",
-        color: "black",
-        gap: "10px",
-        transition: "0.3s",
-        ":hover": {
-          color: "primary.main",
-        },
+        transition: "0.2s",
+        ":hover": { color: "primary.main" },
       }}
     >
       {children}

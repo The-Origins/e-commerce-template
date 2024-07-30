@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import UserProductCard from "../product/userProductCard";
 import { useDispatch } from "react-redux";
-import FetchWorker from "../../scripts/fetchWorker";
+import FetchWorker from "../../utils/fetchWorker";
 import { setSnackBar } from "../../state/snackBar";
 
 const UserFavourites = ({

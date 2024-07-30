@@ -11,7 +11,7 @@ import {
   useTheme,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import AuthWorker from "../../scripts/authWorker";
+import AuthWorker from "../../utils/authWorker";
 import TelTextField from "../forms/inputs/telTextField";
 import CurrencySelect from "../forms/inputs/currencySelect";
 import callingCodes from "../../../lib/callingCodes.json";
@@ -76,7 +76,9 @@ const UserProfileDetail = ({
 
   const handleSave = () => {
     setIsEdit(false);
-    dispatch(updateUser({ path: title.split(" ")[0], action: "EDIT", data: form }));
+    dispatch(
+      updateUser({ path: title.split(" ")[0], action: "EDIT", data: form })
+    );
   };
 
   return (

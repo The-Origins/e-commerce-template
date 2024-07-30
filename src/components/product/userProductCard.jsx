@@ -22,7 +22,7 @@ import EditModal from "../layout/modals/edit";
 import { navigate } from "gatsby";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../state/user";
-import FetchWorker from "../../scripts/fetchWorker";
+import FetchWorker from "../../utils/fetchWorker";
 import IsErrorComponent from "../layout/isError";
 
 const UserProductCard = ({

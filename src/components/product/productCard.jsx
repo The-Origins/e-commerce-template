@@ -11,14 +11,20 @@ import {
   Tooltip,
 } from "@mui/material";
 import CustomizeProduct from "./customizeProduct";
-import ProductWorker from "../../scripts/productWorker";
+import ProductWorker from "../../utils/productWorker";
 import EditModal from "../layout/modals/edit";
 import { convertHex } from "../../theme";
 import { navigate } from "gatsby";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../state/user";
 
-const ProductCard = ({ product, user, currency, setConfirmationModal, offers }) => {
+const ProductCard = ({
+  product,
+  user,
+  currency,
+  setConfirmationModal,
+  offers,
+}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -78,7 +84,7 @@ const ProductCard = ({ product, user, currency, setConfirmationModal, offers }) 
       boxShadow={`0px 0px 10px 0px ${theme.palette.grey[300]}`}
       overflow={"hidden"}
       borderRadius={"20px"}
-      width={"clamp(80px, 42vw, 250px)"}
+      width={"clamp(130px, 40vw, 250px)"}
       height={"clamp(300px, 50vw, 350px)"}
       sx={{
         display: "inline-block",

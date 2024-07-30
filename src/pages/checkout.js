@@ -18,21 +18,24 @@ import {
   useTheme,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserProductCard from "../components/product/userProductCard";
 import CheckoutDetail from "../components/checkout/checkoutDetail";
 import SkeletonGroup from "../components/layout/skeletonGroup";
 import EditModal from "../components/layout/modals/edit";
 import ConfirmCheckout from "../components/checkout/confirm";
 import NotLoggedInComponent from "../components/layout/notLoggedInComponent";
+import { setSnackBar } from "../state/snackBar";
 
 const CheckoutPage = () => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
+  const dispatch = useDispatch();
   const currency = useSelector((state) => state.currency);
   const user = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
   const [isConfirm, setIsConfirm] = useState(false);
+  const [errors, setErrors] = useState({});
   const [checkoutDetails, setCheckoutDetails] = useState({});
 
   useEffect(() => {
@@ -40,14 +43,46 @@ const CheckoutPage = () => {
   }, []);
 
   useEffect(() => {
+    const getErrors = (name, value, message) => {
+      if (Object.keys(value || {}).length) {
+        setErrors((prev) => {
+          const { [name]: value, ...remainingErrors } = prev;
+          return remainingErrors;
+        });
+      } else {
+        setErrors((prev) => ({ ...prev, [name]: message }));
+      }
+    };
+
+    getErrors(
+      "items",
+      checkoutDetails.items,
+      "Add items to cart before checkout"
+    );
+    getErrors(
+      "payment",
+      checkoutDetails.payment?.details,
+      "Select a payment method to checkout"
+    );
+    getErrors(
+      "delivery",
+      checkoutDetails.delivery?.details,
+      "Select a delivery method to checkout"
+    );
+  }, [checkoutDetails]);
+
+  console.log(errors);
+
+  useEffect(() => {
     if (!user.isFetching) {
       setIsLoading(false);
       if (user.isLoggedIn && !Object.keys(checkoutDetails).length) {
         setCheckoutDetails({
-          total:
-            user.data.cart.total +
-            user.data.addresses.saved[user.data.addresses.recent].location
-              .deliveryFee.amount,
+          total: user.data.addresses.saved[user.data.addresses.recent]
+            ? user.data.cart.total +
+              user.data.addresses.saved[user.data.addresses.recent].location
+                .deliveryFee.amount
+            : user.data.cart.total,
           itemsTotal: user.data.cart.total,
           items: user.data.cart.items,
           payment: {
@@ -63,7 +98,17 @@ const CheckoutPage = () => {
   }, [user]);
 
   const handleConfirm = () => {
-    setIsConfirm(true);
+    if (Object.keys(errors).length) {
+      dispatch(
+        setSnackBar({
+          on: true,
+          type: "ERROR",
+          message: errors[Object.keys(errors)[0]],
+        })
+      );
+    } else {
+      setIsConfirm(true);
+    }
   };
 
   return (
@@ -130,11 +175,9 @@ const CheckoutPage = () => {
                         Delivery charges
                       </Typography>
                       <Typography fontSize={"0.8rem"}>
-                        {currency.symbol}{" "}
-                        {
-                          checkoutDetails.delivery.details.location.deliveryFee
-                            .amount
-                        }
+                        {checkoutDetails.delivery.details
+                          ? `${currency.symbol} ${checkoutDetails.delivery.details.location.deliveryFee.amount}`
+                          : "$ 0"}
                       </Typography>
                     </Box>
                   </Box>
@@ -182,10 +225,7 @@ const CheckoutPage = () => {
                     startIcon={<ExitToApp />}
                     variant="contained"
                     disableElevation
-                    disabled={
-                      isLoading ||
-                      !Object.keys(checkoutDetails.items || {}).length
-                    }
+                    disabled={isLoading}
                     onClick={handleConfirm}
                   >
                     Confirm
@@ -199,80 +239,92 @@ const CheckoutPage = () => {
                   ml: "10px",
                   display: "flex",
                   gap: "10px",
-                  color: "text.secondary",
+                  color: isLoading
+                    ? "text.secondary"
+                    : errors.items
+                    ? theme.palette.error.main
+                    : "text.secondary",
                   alignItems: "flex-end",
                 }}
               >
                 <ShoppingCart /> Items
               </Typography>
-              <Box
-                border={`1px solid ${theme.palette.grey[400]}`}
-                borderRadius={"25px"}
-                height={"50vh"}
-                sx={{
-                  overflowY: "scroll",
-                  "&::-webkit-scrollbar": {
-                    bgcolor: "transparent",
-                    width: "10px",
-                  },
-                  "&::-webkit-scrollbar-thumb": {
-                    borderRadius: "25px",
-                    bgcolor: theme.palette.grey[300],
-                  },
-                  "&::-webkit-scrollbar-thumb:hover": {
-                    cursor: "pointer",
-                    bgcolor: theme.palette.grey[400],
-                  },
-                }}
-              >
-                {isLoading ? (
-                  <Skeleton
-                    variant="rounded"
-                    width={"100%"}
-                    height={"50vh"}
-                  ></Skeleton>
-                ) : Object.keys(checkoutDetails.items).length ? (
-                  <Box
-                    width={"100%"}
-                    display={"flex"}
-                    flexDirection={"column"}
-                    gap={"20px"}
-                    padding={"20px"}
-                  >
-                    {Object.keys(checkoutDetails.items).map((item) => (
-                      <UserProductCard
-                        id={item}
-                        {...{ user, currency }}
-                        details={checkoutDetails.items[item]}
-                        type="checkout"
-                      />
-                    ))}
-                  </Box>
-                ) : (
-                  <Box
-                    width={"100%"}
-                    height={"100%"}
-                    display={"flex"}
-                    flexDirection={"column"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                    gap={"10px"}
-                  >
-                    <RemoveShoppingCart sx={{ fontSize: "2rem" }} />
-                    <Typography>
-                      Add items to your shopping cart to checkout
-                    </Typography>
-                    <Link>
-                      <Button
-                        variant="contained"
-                        disableElevation
-                        startIcon={<AddShoppingCart />}
-                      >
-                        back to cart
-                      </Button>
-                    </Link>
-                  </Box>
-                )}
+              <Box overflow={"hidden"} borderRadius={"25px"}>
+                <Box
+                  border={`2px solid ${
+                    isLoading
+                      ? theme.palette.grey[400]
+                      : errors.items
+                      ? theme.palette.error.main
+                      : theme.palette.grey[400]
+                  }`}
+                  borderRadius={"25px"}
+                  height={"50vh"}
+                  sx={{
+                    overflowY: "scroll",
+                    "&::-webkit-scrollbar": {
+                      bgcolor: "transparent",
+                      width: "10px",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      borderRadius: "25px",
+                      bgcolor: theme.palette.grey[300],
+                    },
+                    "&::-webkit-scrollbar-thumb:hover": {
+                      cursor: "pointer",
+                      bgcolor: theme.palette.grey[400],
+                    },
+                  }}
+                >
+                  {isLoading ? (
+                    <Skeleton
+                      variant="rounded"
+                      width={"100%"}
+                      height={"50vh"}
+                    ></Skeleton>
+                  ) : Object.keys(checkoutDetails.items).length ? (
+                    <Box
+                      width={"100%"}
+                      display={"flex"}
+                      flexDirection={"column"}
+                      gap={"20px"}
+                      padding={"20px"}
+                    >
+                      {Object.keys(checkoutDetails.items).map((item) => (
+                        <UserProductCard
+                          id={item}
+                          {...{ user, currency }}
+                          details={checkoutDetails.items[item]}
+                          type="checkout"
+                        />
+                      ))}
+                    </Box>
+                  ) : (
+                    <Box
+                      width={"100%"}
+                      height={"100%"}
+                      display={"flex"}
+                      flexDirection={"column"}
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                      gap={"10px"}
+                    >
+                      <RemoveShoppingCart sx={{ fontSize: "2rem" }} />
+                      <Typography>
+                        Add items to your shopping cart to checkout
+                      </Typography>
+                      <Link href="/cart">
+                        <Button
+                          variant="contained"
+                          disableElevation
+                          startIcon={<AddShoppingCart />}
+                        >
+                          back to cart
+                        </Button>
+                      </Link>
+                    </Box>
+                  )}
+                </Box>
               </Box>
             </Box>
             {isLoading ? (
@@ -286,25 +338,26 @@ const CheckoutPage = () => {
             ) : (
               <Box display={"flex"} gap={"20px"} flexWrap={"wrap"}>
                 <CheckoutDetail
-                  icon={<Payments />}
                   type={"payment"}
-                  {...{ user, currency, setCheckoutDetails }}
-                  content={{
-                    title: checkoutDetails.payment.details.type,
-                    description: checkoutDetails.payment.details.number,
-                    icon: <Paid sx={{ fontSize: "2rem" }} />,
-                  }}
+                  {...{ user, errors, currency, setCheckoutDetails }}
+                  content={
+                    checkoutDetails.payment.details && {
+                      title: checkoutDetails.payment.details.type,
+                      description: checkoutDetails.payment.details.number,
+                    }
+                  }
                 />
                 <CheckoutDetail
-                  icon={<LocalShipping />}
                   type={"delivery"}
-                  {...{ user, currency, setCheckoutDetails }}
-                  content={{
-                    title: `${checkoutDetails.delivery.details.name}`,
-                    description: `${checkoutDetails.delivery.details.city}, ${checkoutDetails.delivery.details.country}`,
-                    fee: checkoutDetails.delivery.details.location.deliveryFee,
-                    icon: <Place sx={{ fontSize: "2rem" }} />,
-                  }}
+                  {...{ user, errors, currency, setCheckoutDetails }}
+                  content={
+                    checkoutDetails.delivery.details && {
+                      title: `${checkoutDetails.delivery.details.name}`,
+                      description: `${checkoutDetails.delivery.details.city}, ${checkoutDetails.delivery.details.country}`,
+                      fee: checkoutDetails.delivery.details.location
+                        .deliveryFee,
+                    }
+                  }
                 />
               </Box>
             )}
@@ -347,11 +400,9 @@ const CheckoutPage = () => {
                       Delivery charges
                     </Typography>
                     <Typography fontSize={"0.8rem"}>
-                      {currency.symbol}{" "}
-                      {
-                        checkoutDetails.delivery.details.location.deliveryFee
-                          .amount
-                      }
+                      {checkoutDetails.delivery.details
+                        ? `${currency.symbol} ${checkoutDetails.delivery.details.location.deliveryFee.amount}`
+                        : "$ 0"}
                     </Typography>
                   </Box>
                 </Box>
@@ -374,9 +425,7 @@ const CheckoutPage = () => {
                 startIcon={<ExitToApp />}
                 variant="contained"
                 disableElevation
-                disabled={
-                  isLoading || !Object.keys(checkoutDetails.items || {}).length
-                }
+                disabled={isLoading}
                 onClick={handleConfirm}
               >
                 Confirm

@@ -9,7 +9,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import AuthWorker from "../../../scripts/authWorker";
+import AuthWorker from "../../../utils/authWorker";
 
 const PasswordForm = ({ handleBack, handleNext }) => {
   const theme = useTheme();

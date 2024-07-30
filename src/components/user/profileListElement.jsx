@@ -7,6 +7,7 @@ import { updateUser } from "../../state/user";
 const ProfileListElement = ({
   path,
   type,
+  addressType,
   title,
   icon,
   description,
@@ -18,9 +19,10 @@ const ProfileListElement = ({
   const handleDelete = () => {
     setConfirmationModal({
       on: true,
-      message: `Are you sure you want to delete this ${type}`,
-      onConfirm:() => dispatch(updateUser({path, action:"DELETE", data:type,})),
-      onCancel:() => {}
+      message: `Are you sure you want to remove this ${type}`,
+      onConfirm: () =>
+        dispatch(updateUser({ path, action: "DELETE", data: type })),
+      onCancel: () => {},
     });
   };
 
@@ -37,17 +39,17 @@ const ProfileListElement = ({
       <Box width={"100%"} display={"flex"} flexDirection={"column"} gap={"5px"}>
         <Typography display={"flex"} gap={"10px"} alignItems={"center"}>
           {title}
-          {type === "home" ? (
-            <Tooltip title={type}>
+          {addressType === "home" ? (
+            <Tooltip title={addressType}>
               <Home sx={{ color: "text.secondary", fontSize: "1rem" }} />
             </Tooltip>
-          ) : type === "office" ? (
-            <Tooltip title={type}>
+          ) : addressType === "office" ? (
+            <Tooltip title={addressType}>
               {" "}
               <Business sx={{ color: "text.secondary", fontSize: "1rem" }} />
             </Tooltip>
-          ) : type === "pick-up station" ? (
-            <Tooltip title={type}>
+          ) : addressType === "pick-up station" ? (
+            <Tooltip title={addressType}>
               <LocalShipping
                 sx={{ color: "text.secondary", fontSize: "1rem" }}
               />

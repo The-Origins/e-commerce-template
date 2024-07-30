@@ -20,8 +20,6 @@ import {
   Favorite,
   Home,
   NotificationsSharp,
-  Person,
-  PersonOff,
 } from "@mui/icons-material";
 import SideBarElement from "../components/user/sideBarElement";
 import UserOrders from "../components/user/orders";
@@ -30,11 +28,10 @@ import UserFavourites from "../components/user/favourites";
 import UserProfile from "../components/user/profile";
 import Notifications from "../components/user/notifications";
 import { convertHex } from "../theme";
-import { navigate } from "gatsby";
 import NotLoggedInComponent from "../components/layout/notLoggedInComponent";
 import { logoutUser } from "../state/user";
 
-const UserPage = ({ location, setConfirmationModal }) => {
+const UserPage = ({ setConfirmationModal }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const dispatch = useDispatch();
@@ -235,48 +232,53 @@ const UserPage = ({ location, setConfirmationModal }) => {
             <Box
               width={"100%"}
               height={"100%"}
-              border={
-                isNotPhone ? `1px solid ${theme.palette.grey[400]}` : undefined
-              }
-              borderRadius={isNotPhone ? "0px 25px 25px 0px" : "25px"}
-              position={"relative"}
-              sx={{
-                overflowY: "scroll",
-                "&::-webkit-scrollbar": {
-                  bgcolor: "transparent",
-                  width: isNotPhone ? "10px" : 0,
-                },
-                "&::-webkit-scrollbar-thumb": {
-                  borderRadius: "25px",
-                  bgcolor: theme.palette.grey[300],
-                },
-                "&::-webkit-scrollbar-thumb:hover": {
-                  cursor: "pointer",
-                  bgcolor: theme.palette.grey[400],
-                },
-              }}
+              overflow={"hidden"}
+              borderRadius={isNotPhone && "0px 25px 25px 0px"}
             >
-              {isLoading ? (
-                <Box
-                  position={"absolute"}
-                  width={"100%"}
-                  height={"100%"}
-                  display={"flex"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  bgcolor={"white"}
-                >
-                  <CircularProgress />
-                </Box>
-              ) : !user.isLoggedIn ? (
-                <NotLoggedInComponent
-                  message={"Login to access user info"}
-                  size={"small"}
-                />
-              ) : (
-                <></>
-              )}
-              {stages[stage]}
+              <Box
+                width={"100%"}
+                height={"100%"}
+                border={isNotPhone && `1px solid ${theme.palette.grey[400]}`}
+                borderRadius={isNotPhone && "0px 25px 25px 0px"}
+                position={"relative"}
+                sx={{
+                  overflowY: "scroll",
+                  "&::-webkit-scrollbar": {
+                    bgcolor: "transparent",
+                    width: isNotPhone ? "10px" : 0,
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                    borderRadius: "25px",
+                    bgcolor: theme.palette.grey[300],
+                  },
+                  "&::-webkit-scrollbar-thumb:hover": {
+                    cursor: "pointer",
+                    bgcolor: theme.palette.grey[400],
+                  },
+                }}
+              >
+                {isLoading ? (
+                  <Box
+                    position={"absolute"}
+                    width={"100%"}
+                    height={"100%"}
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    bgcolor={"white"}
+                  >
+                    <CircularProgress />
+                  </Box>
+                ) : !user.isLoggedIn ? (
+                  <NotLoggedInComponent
+                    message={"Login to access user info"}
+                    size={"small"}
+                  />
+                ) : (
+                  <></>
+                )}
+                {user.isLoggedIn && stages[stage]}
+              </Box>
             </Box>
           </Box>
         )}

@@ -8,7 +8,7 @@ import {
 import React, { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import AuthWorker from "../../../scripts/authWorker";
+import AuthWorker from "../../../utils/authWorker";
 import { navigate } from "gatsby";
 import { loginUser } from "../../../state/user";
 

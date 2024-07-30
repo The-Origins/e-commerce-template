@@ -1,7 +1,7 @@
 {
-  "name": "ecommerce-website",
+  "name": "e-commerce-website",
   "private": true,
-  "description": "Find what you're searching for",
+  "description": "A comprehensive template for e-commerce stores",
   "version": "0.1.0",
   "license": "0BSD",
   "scripts": {

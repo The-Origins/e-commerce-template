@@ -21,7 +21,7 @@ const Home = ({ setIsContact, setConfirmationModal }) => {
 
   useEffect(() => {
     document.title = theme.title;
-  }, []);
+  }, [theme.title]);
 
   return (
     <Box display={"flex"} justifyContent={"center"}>
@@ -71,7 +71,7 @@ const Home = ({ setIsContact, setConfirmationModal }) => {
                 sx={{
                   typography: "secondaryFont",
                   fontWeight: "bold",
-                  fontSize: "clamp(1.5rem, 4vw, 2rem)",
+                  fontSize: "clamp(1.2rem, 4vw, 2rem)",
                 }}
               >
                 Explore our catalogue

@@ -7,8 +7,8 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React, {useState } from "react";
-import AuthWorker from "../../../scripts/authWorker";
+import React, { useState } from "react";
+import AuthWorker from "../../../utils/authWorker";
 import TelTextField from "../../forms/inputs/telTextField";
 import callingCodes from "../../../../lib/callingCodes.json";
 

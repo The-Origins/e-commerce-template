@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import SkeletonGroup from "../layout/skeletonGroup";
 import ProductCard from "./productCard";
 import { useDispatch } from "react-redux";
-import FetchWorker from "../../scripts/fetchWorker";
+import FetchWorker from "../../utils/fetchWorker";
 import { setSnackBar } from "../../state/snackBar";
 import IsErrorComponent from "../layout/isError";
 
@@ -102,7 +102,6 @@ const ProductCardContainer = ({
         >
           <Box
             width={"100%"}
-            mb={"10px"}
             display={"flex"}
             justifyContent={"flex-start"}
             alignItems={"center"}

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { navigate } from "gatsby";
 import { useDispatch } from "react-redux";
 import { checkOutUser } from "../../state/user";
-import FetchWorker from "../../scripts/fetchWorker";
+import FetchWorker from "../../utils/fetchWorker";
 import { setSnackBar } from "../../state/snackBar";
 
 const ConfirmCheckout = ({
@@ -41,7 +41,7 @@ const ConfirmCheckout = ({
         setStatus,
         onSuccess: () => {
           setIsConfirm(false);
-          navigate("/user/#orders");
+          navigate("/");
         },
         onError: () => {
           setIsConfirm(false);
@@ -53,11 +53,11 @@ const ConfirmCheckout = ({
   return (
     <Box
       width={"100%"}
-      height={"100%"}
       display={"flex"}
       flexDirection={"column"}
       alignItems={"center"}
       gap={"20px"}
+      padding={"20px 0px"}
     >
       <Typography fontWeight={"bold"}>Confirm checkout</Typography>
       <Box

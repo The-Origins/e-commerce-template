@@ -26,13 +26,13 @@ import {
 import { navigate } from "gatsby";
 import SkeletonGroup from "../layout/skeletonGroup";
 import resultHeaders from "./resultHeaders";
-import ResultsWorker from "../../scripts/resultsWorker";
+import ResultsWorker from "../../utils/resultsWorker";
 import FilterComponent from "./filterComponent";
 import ActiveFiltersComponent from "./activeFiltersComponent";
-import FetchWorker from "../../scripts/fetchWorker";
+import FetchWorker from "../../utils/fetchWorker";
 import { setSnackBar } from "../../state/snackBar";
 
-const ResultsComponent = ({ path }) => {
+const ResultsComponent = ({ path, setConfirmationModal }) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const fetchWorker = new FetchWorker();
   const resultsWorker = new ResultsWorker();
@@ -472,13 +472,15 @@ const ResultsComponent = ({ path }) => {
           ) : results.pageData.length ? (
             <Box
               display={"flex"}
+              justifyContent={isNotPhone ? "flex-start" : "center"}
               flexWrap={"wrap"}
-              padding={"0px 0px 50px 0px"}
               width={"100%"}
               minHeight={"100vh"}
             >
               {results.pageData.map((product) => (
-                <ProductCard {...{ product, user, currency, offers }} />
+                <ProductCard
+                  {...{ setConfirmationModal, product, user, currency, offers }}
+                />
               ))}
             </Box>
           ) : (

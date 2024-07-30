@@ -1,7 +1,7 @@
 import { Payment } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import AuthWorker from "../../../scripts/authWorker";
+import AuthWorker from "../../../utils/authWorker";
 
 const CardPayment = ({ setStage, setPayment, handleComplete }) => {
   const authWorker = new AuthWorker();
@@ -51,7 +51,7 @@ const CardPayment = ({ setStage, setPayment, handleComplete }) => {
       },
     });
     handleComplete();
-    setForm({})
+    setForm({});
   };
 
   return (

@@ -1,7 +1,7 @@
 import { PhoneAndroid } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
 import React, { useState } from "react";
-import AuthWorker from "../../../scripts/authWorker";
+import AuthWorker from "../../../utils/authWorker";
 import TelTextField from "../inputs/telTextField";
 import callingCodes from "../../../../lib/callingCodes.json";
 
@@ -64,7 +64,6 @@ const MobilePayment = ({ mobileValues, setStage, setPayment }) => {
       details: { code: form.phoneCode, number: form.phoneNumber },
     });
     setStage(3);
-    
   };
 
   return (
@@ -75,11 +74,11 @@ const MobilePayment = ({ mobileValues, setStage, setPayment }) => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-evenly",
-        alignItems:"center",
+        alignItems: "center",
         gap: "20px",
       }}
     >
-      <Box display={"flex"} flexDirection={"column"} gap={"20px"} >
+      <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
         <Typography
           fontWeight={"bold"}
           fontSize={"1.3rem"}

@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Copyright,
-  EmailOutlined,
   Facebook,
   Instagram,
+  Language,
   LinkedIn,
   PhoneInTalk,
-  PlaceOutlined,
-  PublicOutlined,
+  Policy,
   Send,
   Twitter,
-  WhatsApp,
+  InsertLink,
 } from "@mui/icons-material";
 import {
   Link,
@@ -20,14 +19,11 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-  Skeleton,
 } from "@mui/material";
 import FooterIconLink from "./iconLink";
-import FooterLegalLink from "./legalLink";
 import FooterLink from "./footerLink";
-import Contact from "../modals/contact";
 
-const Footer = ({ isLoading, setIsContact }) => {
+const Footer = ({ setIsContact }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
 
@@ -106,7 +102,8 @@ const Footer = ({ isLoading, setIsContact }) => {
           <Box
             width={"100%"}
             display={"flex"}
-            flexDirection={isNotPhone ? "row" : "column"}
+            flexWrap={"wrap"}
+            padding={"20px"}
             justifyContent={"space-between"}
             gap={"50px"}
           >
@@ -114,9 +111,7 @@ const Footer = ({ isLoading, setIsContact }) => {
               height={"100%"}
               display={"flex"}
               flexDirection={"column"}
-              alignItems={!isNotPhone && "center"}
               justifyContent={"flex-start"}
-              m={!isNotPhone && "20px 0px"}
             >
               <Link
                 href="/"
@@ -130,50 +125,86 @@ const Footer = ({ isLoading, setIsContact }) => {
               >
                 {theme.title}
               </Link>
-              <Typography color={"text.secondary"}>My motto</Typography>
-              {isNotPhone && (
-                <Box
-                  mt={"20px"}
-                  display={"flex"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  gap={"2px"}
-                >
-                  <FooterLegalLink>Terms of service</FooterLegalLink>
-                  <Typography color={"text.secondary"} fontSize={"12px"}>
-                    {" "}
-                    |{" "}
-                  </Typography>
-                  <FooterLegalLink>Privacy policy</FooterLegalLink>
-                  <Typography color={"text.secondary"} fontSize={"12px"}>
-                    {" "}
-                    |{" "}
-                  </Typography>
-                  <FooterLegalLink>Refund policy</FooterLegalLink>
-                </Box>
-              )}
+              <Typography color={"text.secondary"}>Our slogan</Typography>
             </Box>
             <Box
+              flexBasis={"140px"}
               display={"flex"}
               flexDirection={"column"}
-              gap={"20px"}
-              ml={!isNotPhone && "20px"}
+              gap={"10px"}
             >
-              <FooterLink path="tel:(+254)700000000">
-                <WhatsApp />
-                (+254)700000000
+              <Typography
+                fontWeight={"bold"}
+                display={"flex"}
+                gap={"5px"}
+                alignItems={"center"}
+              >
+                <Language sx={{ fontSize: "1rem" }} />
+                Website
+              </Typography>
+              <FooterLink path={"/"}>Home</FooterLink>
+              <FooterLink path={"/about"}>About</FooterLink>
+              <button
+                onClick={() => setIsContact(true)}
+                style={{
+                  border: "none",
+                  padding: "0px",
+                  textTransform: "none",
+                  display: "flex",
+                  backgroundColor: "transparent",
+                  fontSize: "initial",
+                  marginTop: "2px",
+                }}
+              >
+                <FooterLink>Contact us</FooterLink>
+              </button>
+            </Box>
+            <Box
+              flexBasis={"140px"}
+              display={"flex"}
+              flexDirection={"column"}
+              gap={"10px"}
+            >
+              <Typography
+                fontWeight={"bold"}
+                display={"flex"}
+                gap={"5px"}
+                alignItems={"center"}
+              >
+                <InsertLink />
+                Quick links
+              </Typography>
+              <FooterLink path={"/category?search=electronics"}>
+                Electronics
               </FooterLink>
-              <FooterLink path="mailto:myemail@gmail.com">
-                <EmailOutlined />
-                myemail@gmail.com
+              <FooterLink path={"/category?search=clothing"}>
+                Clothing
               </FooterLink>
-              <FooterLink path="https://www.linkedin.com/in/joshua-kanyori-67b83428b/">
-                <PublicOutlined />
-                www.mywebsite.com
+              <FooterLink path={"/category?search=food"}>Food</FooterLink>
+            </Box>
+            <Box
+              flexBasis={"140px"}
+              display={"flex"}
+              flexDirection={"column"}
+              gap={"10px"}
+            >
+              <Typography
+                fontWeight={"bold"}
+                display={"flex"}
+                gap={"5px"}
+                alignItems={"center"}
+              >
+                <Policy sx={{ fontSize: "1rem" }} />
+                Legal links
+              </Typography>
+              <FooterLink path={"/legal/#terms-of-service"}>
+                Terms of service
               </FooterLink>
-              <FooterLink path="https://www.linkedin.com/in/joshua-kanyori-67b83428b/">
-                <PlaceOutlined />
-                City, Country
+              <FooterLink path={"/legal/#privacy-policy"}>
+                Privacy policy
+              </FooterLink>
+              <FooterLink path={"/legal/#return-policy"}>
+                Return policy
               </FooterLink>
             </Box>
             <Box
@@ -210,27 +241,6 @@ const Footer = ({ isLoading, setIsContact }) => {
                 >
                   Send
                 </Button>
-                {!isNotPhone && (
-                  <Box
-                    mt={"20px"}
-                    display={"flex"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                    gap={"2px"}
-                  >
-                    <FooterLegalLink>Terms of service</FooterLegalLink>
-                    <Typography color={"text.secondary"} fontSize={"12px"}>
-                      {" "}
-                      |{" "}
-                    </Typography>
-                    <FooterLegalLink>Privacy policy</FooterLegalLink>
-                    <Typography color={"text.secondary"} fontSize={"12px"}>
-                      {" "}
-                      |{" "}
-                    </Typography>
-                    <FooterLegalLink>Refund policy</FooterLegalLink>
-                  </Box>
-                )}
               </Box>
             </Box>
           </Box>
@@ -248,9 +258,15 @@ const Footer = ({ isLoading, setIsContact }) => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Box display={"flex"} gap={"2px"}>
+          <Box display={"flex"} gap={"2px"} alignItems={"center"}>
             <Copyright color={"text.secondary"} fontSize={"12px"} />
-            <FooterLegalLink>Copyright 2024 | Wegastudios</FooterLegalLink>
+            <FooterLink
+              path={"https://www.linkedin.com/in/joshua-kanyori-67b83428b/"}
+            >
+              <Typography fontSize={"0.8rem"}>
+                Copyright 2024 | Wegastudios
+              </Typography>
+            </FooterLink>
           </Box>
         </Box>
       </Box>

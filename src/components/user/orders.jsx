@@ -3,7 +3,7 @@ import { Box, Link, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { CalendarMonth } from "@mui/icons-material";
 import UserProductCard from "../product/userProductCard";
 import { useDispatch } from "react-redux";
-import FetchWorker from "../../scripts/fetchWorker";
+import FetchWorker from "../../utils/fetchWorker";
 import { setSnackBar } from "../../state/snackBar";
 
 const UserOrders = ({ user, currency, setIsLoading }) => {

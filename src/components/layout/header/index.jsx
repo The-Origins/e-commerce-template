@@ -96,7 +96,7 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
           />
           <Link
             href="/"
-            fontSize={"clamp(0.5rem, 5vw, 2.7rem)"}
+            fontSize={"clamp(0.5rem, 5vw, 2.2rem)"}
             sx={{
               textDecoration: "none",
               color: "black",
@@ -107,7 +107,7 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
             {theme.title}
           </Link>
           {isNotPhone && (
-            <Box width={"45%"} display={"flex"} flexDirection={"column"}>
+            <Box width={"50%"} display={"flex"} flexDirection={"column"}>
               <SearchBar {...{ setConfirmationModal }} />
             </Box>
           )}

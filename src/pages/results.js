@@ -1,8 +1,8 @@
 import React from "react";
 import ResultsComponent from "../components/results";
 
-const ResultsPage = () => {
-  return <ResultsComponent />;
+const ResultsPage = ({ setConfirmationModal }) => {
+  return <ResultsComponent {...{ setConfirmationModal }} />;
 };
 
 export default ResultsPage;

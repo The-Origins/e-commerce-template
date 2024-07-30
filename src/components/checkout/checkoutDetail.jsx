@@ -9,11 +9,12 @@ import {
 import React, { useState } from "react";
 import EditModal from "../layout/modals/edit";
 import ChangeCheckoutDetail from "./changeCheckoutDetail";
+import { LocalShipping, Paid, Payments, Place } from "@mui/icons-material";
 
 const CheckoutDetail = ({
   type,
-  icon,
   user,
+  errors,
   currency,
   content,
   setCheckoutDetails,
@@ -61,14 +62,23 @@ const CheckoutDetail = ({
           ml: "10px",
           display: "flex",
           gap: "10px",
-          color: "text.secondary",
+          color: errors[type] ? theme.palette.error.main : "text.secondary",
           alignItems: "flex-end",
         }}
       >
-        {icon} {type.charAt(0).toUpperCase() + type.substring(1)}
+        {type === "delivery" ? (
+          <LocalShipping />
+        ) : type === "payment" ? (
+          <Payments />
+        ) : (
+          ""
+        )}{" "}
+        {type.charAt(0).toUpperCase() + type.substring(1)}
       </Typography>
       <Box
-        border={`1px solid ${theme.palette.grey[400]}`}
+        border={`1px solid ${
+          errors[type] ? theme.palette.error.main : theme.palette.grey[400]
+        }`}
         borderRadius={"25px"}
         padding={"20px 40px"}
         display={"flex"}
@@ -82,32 +92,42 @@ const CheckoutDetail = ({
           boxShadow={`0px 0px 10px 0px ${theme.palette.grey[300]}`}
         >
           <Box display={"flex"} gap={"5px"} alignItems={"center"}>
-            {content.icon}
-            <Box
-              width={"100%"}
-              display={"flex"}
-              flexDirection={"column"}
-              gap={"5px"}
-            >
+            {type === "payment" ? (
+              <Paid sx={{ fontSize: "2rem" }} />
+            ) : type === "delivery" ? (
+              <Place sx={{ fontSize: "2rem" }} />
+            ) : (
+              ""
+            )}
+            {content ? (
               <Box
                 width={"100%"}
                 display={"flex"}
-                justifyContent={"space-between"}
+                flexDirection={"column"}
+                gap={"5px"}
               >
-                <Typography>{content.title}</Typography>
-                {content.fee && (
-                  <Tooltip title="fee" placement="left">
-                    <Typography color={"primary.main"}>
-                      +{currency.symbol}
-                      {content.fee.amount}
-                    </Typography>
-                  </Tooltip>
-                )}
+                <Box
+                  width={"100%"}
+                  display={"flex"}
+                  justifyContent={"space-between"}
+                >
+                  <Typography>{content.title}</Typography>
+                  {content.fee && (
+                    <Tooltip title="fee" placement="left">
+                      <Typography color={"primary.main"}>
+                        +{currency.symbol}
+                        {content.fee.amount}
+                      </Typography>
+                    </Tooltip>
+                  )}
+                </Box>
+                <Typography color={"text.secondary"}>
+                  {content.description}
+                </Typography>
               </Box>
-              <Typography color={"text.secondary"}>
-                {content.description}
-              </Typography>
-            </Box>
+            ) : (
+              <Typography padding={"13px 0px"}>None selected</Typography>
+            )}
           </Box>
           <Box display={"flex"} justifyContent={"flex-end"}>
             <Button
@@ -115,7 +135,7 @@ const CheckoutDetail = ({
               disableElevation
               onClick={() => setIsChange(true)}
             >
-              change
+              {content ? "change" : "select"}
             </Button>
           </Box>
         </Box>

@@ -1,99 +1,134 @@
-<!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <p align="center">
   <a href="https://www.gatsbyjs.com">
     <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
   </a>
 </p>
-<h1 align="center">
-  Gatsby's hello-world starter
-</h1>
 
-Kick off your project with this hello-world boilerplate. This starter ships with the main Gatsby configuration files you might need to get up and running blazing fast with the blazing fast app generator for React.
+<h1 align="center">E-commerce Web Template</h1>
 
-_Have another more specific idea? You may want to check out our vibrant collection of [official and community-created starters](https://www.gatsbyjs.com/docs/gatsby-starters/)._
+A comprehensive E-commerce template solution for all stores using [React](https://react.dev/), [Gatsby](https://www.gatsbyjs.com) for static site generation and better SEO, [Redux](https://redux.js.org/) for state management, and [MUI](https://mui.com/material-ui/getting-started/) as the graphic library.
 
-## 🚀 Quick start
+Featuring a simple but stylish theme, this template includes:
 
-1.  **Create a Gatsby site.**
+- All necessary pages
+- User customization dashboard
+- Simple cart logic
+- Simple checkout logic
+- Simple search filter logic
+- Simple Auth components and logic
+- Isolated modular logic approach, allowing you to customize the visuals while retaining the logic using workers
 
-    Use the Gatsby CLI ([install instructions](https://www.gatsbyjs.com/docs/tutorial/getting-started/part-0/#gatsby-cli)) to create a new site, specifying the hello-world starter.
+An overall simple, comprehensive, and customizable setup designed to meet your E-commerce needs.
 
-    ```shell
-    # create a new Gatsby site using the hello-world starter
-    gatsby new my-hello-world-starter https://github.com/gatsbyjs/gatsby-starter-hello-world
-    ```
+## 🚀 Getting Started
 
-1.  **Start developing.**
+1. **Dependencies**
 
-    Navigate into your new site’s directory and start it up.
+   This project relies on several key libraries and frameworks. Ensure you have the following installed:
 
-    ```shell
-    cd my-hello-world-starter/
-    gatsby develop
-    ```
+   - **Node.js** (>= 14.0.0)
+   - **npm** (>= 6.0.0) or **yarn** (>= 1.22.0)
 
-1.  **Open the source code and start editing!**
+   The main libraries and frameworks used in this template are:
 
-    Your site is now running at `http://localhost:8000`!
+   - **React**: [React](https://react.dev/) - Version ^18.2.0
+   - **Gatsby**: [Gatsby](https://www.gatsbyjs.com) - Version ^5.12.4
+   - **Redux**: [Redux](https://redux.js.org/) - Version ^4.x or higher
+   - **MUI (Material-UI)**: [MUI](https://mui.com/material-ui/getting-started/) - Version ^5.14.18
 
-    Note: You'll also see a second link: `http://localhost:8000/___graphql`. This is a tool you can use to experiment with querying your data. Learn more about using this tool in the [Gatsby Tutorial](https://www.gatsbyjs.com/docs/tutorial/getting-started/part-4/#use-graphiql-to-explore-the-data-layer-and-write-graphql-queries).
+   Additional dependencies include:
 
-    Open the `my-hello-world-starter` directory in your code editor of choice and edit `src/pages/index.js`. Save your changes and the browser will update in real time!
+   - **@emotion/react**: ^11.11.1
+   - **@emotion/styled**: ^11.11.0
+   - **@mui/icons-material**: ^5.14.18
+   - **@mui/x-date-pickers**: ^6.18.5
+   - **@reduxjs/toolkit**: ^2.0.1
+   - **axios**: ^1.7.2
+   - **card-validator**: ^10.0.0
+   - **country-data**: ^0.0.31
+   - **dayjs**: ^1.11.10
+   - **gatsby-plugin-layout**: ^4.13.1
+   - **libphonenumber-js**: ^1.11.4
+   - **react-dom**: ^18.2.0
+   - **react-redux**: ^9.0.2
+   - **react-router-dom**: ^6.24.1
+   - **react-swipeable**: ^7.0.1
+   - **redux-persist**: ^6.0.0
 
-## 🚀 Quick start (Netlify)
+2. **Installation**
 
-Deploy this starter with one click on [Netlify](https://app.netlify.com/signup):
+   To install the dependencies, run the following command in the root directory of the project:
 
-[<img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" />](https://app.netlify.com/start/deploy?repository=https://github.com/gatsbyjs/gatsby-starter-hello-world)
+   ```sh
+   npm install
+   # or
+   yarn install
+   ```
 
-## 🧐 What's inside?
+3. **Running the Development Server**
 
-A quick look at the top-level files and directories you'll see in a typical Gatsby project.
+   To start the development server, use the following command:
+
+   ```sh
+   gatsby develop
+   ```
+
+   This will run the site in development mode. Open [http://localhost:8000](http://localhost:8000) to view it in the browser. The page will reload if you make edits.
+
+4. **Building for Production**
+
+   To build the project for production, use the following command:
+
+   ```sh
+   gatsby build
+   ```
+
+   The build outputs will be stored in the `public` directory. You can then use `gatsby serve` to run the production build locally.
+
+5. **Cleaning the Project**
+
+   To clean the project's cache and public directories, use the following command:
+
+   ```sh
+   npm run clean
+   # or
+   yarn clean
+   ```
+
+## Project Structure
+
+The following is the directory structure of the project:
 
     .
-    ├── node_modules
-    ├── src
-    ├── .gitignore
+    ├── .cache/
+    ├── lib/
+    ├── public/
+    ├── src/
+    │ ├── components/
+    │ ├── pages/
+    │ ├── styles/
+    │ └── utils/
+    ├── static/
     ├── gatsby-browser.js
     ├── gatsby-config.js
-    ├── gatsby-node.js
-    ├── gatsby-ssr.js
     ├── LICENSE
     ├── package.json
-    └── README.md
 
-1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
+- **.cache/**: Gatsby's cache directory to speed up builds.
+- **lib/**: Contains compiled JavaScript files.
+- **public/**: Contains the built files for deployment.
+- **src/**: Contains the source code of the application.
 
-1.  **`/src`**: This directory will contain all of the code related to what you will see on the front-end of your site (what you see in the browser) such as your site header or a page template. `src` is a convention for “source code”.
+  - **components/**: Reusable React components.
+  - **pages/**: Page components corresponding to the routes.
+  - **state/**: Redux functionality and state management.
+  - **styles/**: Styling files (e.g., CSS, SCSS).
+  - **theme/**: Theme customization and functions.
+  - **utils/**: Utility functions and helpers.
 
-1.  **`.gitignore`**: This file tells git which files it should not track / not maintain a version history for.
-
-1.  **`gatsby-browser.js`**: This file is where Gatsby expects to find any usage of the [Gatsby browser APIs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-browser/) (if any). These allow customization/extension of default Gatsby settings affecting the browser.
-
-1.  **`gatsby-config.js`**: This is the main configuration file for a Gatsby site. This is where you can specify information about your site (metadata) like the site title and description, which Gatsby plugins you’d like to include, etc. (Check out the [config docs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/) for more detail).
-
-1.  **`gatsby-node.js`**: This file is where Gatsby expects to find any usage of the [Gatsby Node APIs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/) (if any). These allow customization/extension of default Gatsby settings affecting pieces of the site build process.
-
-1.  **`gatsby-ssr.js`**: This file is where Gatsby expects to find any usage of the [Gatsby server-side rendering APIs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-ssr/) (if any). These allow customization of default Gatsby settings affecting server-side rendering.
-
-1.  **`LICENSE`**: This Gatsby starter is licensed under the 0BSD license. This means that you can see this file as a placeholder and replace it with your own license.
-
-1.  **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.
-
-1.  **`README.md`**: A text file containing useful reference information about your project.
-
-## 🎓 Learning Gatsby
-
-Looking for more guidance? Full documentation for Gatsby lives [on the website](https://www.gatsbyjs.com/). Here are some places to start:
-
-- **For most developers, we recommend starting with our [in-depth tutorial for creating a site with Gatsby](https://www.gatsbyjs.com/docs/tutorial/getting-started/).** It starts with zero assumptions about your level of ability and walks through every step of the process.
-
-- **To dive straight into code samples, head [to our documentation](https://www.gatsbyjs.com/docs/).** In particular, check out the _Guides_, _API Reference_, and _Advanced Tutorials_ sections in the sidebar.
-
-## 💫 Deploy
-
-[Build, Deploy, and Host On Netlify](https://netlify.com)
-
-The fastest way to combine your favorite tools and APIs to build the fastest sites, stores, and apps for the web. And also the best place to build, deploy, and host your Gatsby sites.
-
-<!-- AUTO-GENERATED-CONTENT:END -->
+- **static/**: Contains static assets like images and fonts.
+- **gatsby-browser.js**: Customizes and extends default Gatsby settings affecting the browser.
+- **gatsby-config.js**: Configuration file for Gatsby plugins and site metadata.
+- **LICENSE**: The license for the project.
+- **package.json**: Contains project metadata and dependencies.
+- **README.md**: The main readme file for the project.

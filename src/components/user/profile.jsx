@@ -70,15 +70,11 @@ const UserProfile = ({ user, setConfirmationModal }) => {
       </Box>
       <Box display={"flex"} flexWrap={"wrap"} gap={"20px"}>
         <UserProfileList
-          icon={<Payments />}
-          title={"Saved Payments"}
           data={user.payments.saved}
           type="payment"
           setConfirmationModal={setConfirmationModal}
         />
         <UserProfileList
-          icon={<Explore />}
-          title={"Saved Addresses"}
           data={user.addresses.saved}
           type="address"
           setConfirmationModal={setConfirmationModal}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Email } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import AuthWorker from "../../../scripts/authWorker";
+import AuthWorker from "../../../utils/authWorker";
 
 const ConfirmEmail = ({ setStage, email, setEmail, onCancel }) => {
   const authWorker = new AuthWorker();

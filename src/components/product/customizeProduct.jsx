@@ -12,7 +12,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import ProductWorker from "../../scripts/productWorker";
+import ProductWorker from "../../utils/productWorker";
 import { AddCircle, RemoveCircle } from "@mui/icons-material";
 import { updateUser } from "../../state/user";
 import { useDispatch } from "react-redux";
@@ -23,7 +23,7 @@ const CustomizeProduct = ({
   currency,
   customizeProduct,
   setCustomizeProduct,
-  offers
+  offers,
 }) => {
   const dispatch = useDispatch();
   const theme = useTheme();

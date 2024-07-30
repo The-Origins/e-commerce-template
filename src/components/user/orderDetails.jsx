@@ -16,7 +16,7 @@ import {
   Place,
 } from "@mui/icons-material";
 import UserProductCard from "../product/userProductCard";
-import FetchWorker from "../../scripts/fetchWorker";
+import FetchWorker from "../../utils/fetchWorker";
 import { useDispatch } from "react-redux";
 import { setSnackBar } from "../../state/snackBar";
 

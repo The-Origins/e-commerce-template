@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Add, AddCircle, Paid, Place } from "@mui/icons-material";
+import {
+  Add,
+  AddCircle,
+  Explore,
+  Paid,
+  Payments,
+  Place,
+} from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -12,7 +19,7 @@ import ProfileListElement from "./profileListElement";
 import EditModal from "../layout/modals/edit";
 import AddProfileListItem from "./addProfileListItem";
 
-const UserProfileList = ({ type, title, icon, data, setConfirmationModal }) => {
+const UserProfileList = ({ type, data, setConfirmationModal }) => {
   const [isAdd, setIsAdd] = useState(false);
   const theme = useTheme();
   return (
@@ -46,11 +53,20 @@ const UserProfileList = ({ type, title, icon, data, setConfirmationModal }) => {
             display: "flex",
             gap: "5px",
             alignItems: "center",
-            color: "text.secondary",
           }}
         >
-          {icon}
-          {title}
+          {type === "payment" ? (
+            <Payments />
+          ) : type === "address" ? (
+            <Explore />
+          ) : (
+            ""
+          )}
+          {type === "payment"
+            ? "Saved payments"
+            : type === "address"
+            ? "Saved Addresses"
+            : ""}
         </Typography>
         <Tooltip title="add">
           <IconButton onClick={() => setIsAdd(true)}>
@@ -67,7 +83,13 @@ const UserProfileList = ({ type, title, icon, data, setConfirmationModal }) => {
         >
           {data.map((data) => (
             <ProfileListElement
-              path={type === "address" ? "addresses" : type === "payment" ? "payments" : ""}
+              path={
+                type === "address"
+                  ? "addresses"
+                  : type === "payment"
+                  ? "payments"
+                  : ""
+              }
               setConfirmationModal={setConfirmationModal}
               icon={type === "address" ? <Place /> : <Paid />}
               title={type === "address" ? data.name : data.type}
@@ -76,7 +98,8 @@ const UserProfileList = ({ type, title, icon, data, setConfirmationModal }) => {
                   ? `${data.country}, ${data.city}`
                   : data.number
               }
-              type={data.type}
+              addressType={type === "address" && data.location.type}
+              type={type}
             />
           ))}
         </Box>
@@ -88,6 +111,8 @@ const UserProfileList = ({ type, title, icon, data, setConfirmationModal }) => {
           flexDirection={"column"}
           alignItems={"center"}
           justifyContent={"center"}
+          gap={"10px"}
+          padding={"10px"}
         >
           <AddCircle sx={{ color: "text.secondary" }} />
           <Typography>No {type} saved</Typography>

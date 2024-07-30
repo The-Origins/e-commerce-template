@@ -10,11 +10,11 @@ import {
   useTheme,
 } from "@mui/material";
 import UserProductCard from "../components/product/userProductCard";
-import { ShoppingCartCheckout } from "@mui/icons-material";
+import { RemoveShoppingCart, ShoppingCartCheckout } from "@mui/icons-material";
 import SkeletonGroup from "../components/layout/skeletonGroup";
 import ProductCardContainer from "../components/product/productCardContainer";
 import NotLoggedInComponent from "../components/layout/notLoggedInComponent";
-import FetchWorker from "../scripts/fetchWorker";
+import FetchWorker from "../utils/fetchWorker";
 import { setSnackBar } from "../state/snackBar";
 
 const CartPage = ({ setConfirmationModal }) => {
@@ -179,11 +179,34 @@ const CartPage = ({ setConfirmationModal }) => {
                   >
                     {isLoading ? (
                       <SkeletonGroup count={4} width="100%" height={"100px"} />
+                    ) : !Object.keys(user.data.cart.items).length ? (
+                      <Box
+                        width={"100%"}
+                        height={"100%"}
+                        display={"flex"}
+                        alignItems={"center"}
+                        justifyContent={"center"}
+                        flexDirection={"column"}
+                        gap={"20px"}
+                      >
+                        <RemoveShoppingCart />
+                        <Typography>No items in your cart yet</Typography>
+                        <Link href="/">
+                          <Button disableElevation variant="contained">
+                            Start shopping
+                          </Button>
+                        </Link>
+                      </Box>
                     ) : (
                       Object.keys(user.data.cart.items).map((cartItem) => {
                         return (
                           <UserProductCard
-                            {...{ user, offers, currency, setConfirmationModal }}
+                            {...{
+                              user,
+                              offers,
+                              currency,
+                              setConfirmationModal,
+                            }}
                             id={cartItem}
                             details={user.data.cart.items[cartItem]}
                             type="cart"

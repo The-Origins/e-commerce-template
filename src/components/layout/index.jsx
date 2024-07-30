@@ -43,8 +43,10 @@ const Layout = ({ children }) => {
       <ContactModal {...{ isContact, setIsContact }} />
       <ConfirmationModal {...{ confirmationModal, setConfirmationModal }} />
       <Header {...{ user, setHeaderHeight, setConfirmationModal }} />
-      <Box mt={`${headerHeight + 30}px`}>{mappedChildren}</Box>
-      <Footer {...{setIsContact}}/>
+      <Box mt={`${headerHeight + 30}px`} mb={"50px"}>
+        {mappedChildren}
+      </Box>
+      <Footer {...{ setIsContact }} />
     </ThemeProvider>
   );
 };

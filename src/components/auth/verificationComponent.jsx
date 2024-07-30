@@ -1,7 +1,7 @@
 import { Email, PhoneAndroid } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import AuthWorker from "../../scripts/authWorker";
+import AuthWorker from "../../utils/authWorker";
 import { useDispatch } from "react-redux";
 import { verifyCode } from "../../state/user";
 

@@ -20,7 +20,7 @@ import {
   Share,
   ShoppingCartCheckout,
 } from "@mui/icons-material";
-import ProductWorker from "../scripts/productWorker";
+import ProductWorker from "../utils/productWorker";
 import RatingDistributionComponent from "../components/product/ratingDistribution";
 import ReviewComponent from "../components/product/reviewComponent";
 import ProductCardContainer from "../components/product/productCardContainer";
@@ -30,7 +30,7 @@ import EditModal from "../components/layout/modals/edit";
 import Carousel from "../components/layout/carousel";
 import { navigate } from "gatsby";
 import { updateUser } from "../state/user";
-import FetchWorker from "../scripts/fetchWorker";
+import FetchWorker from "../utils/fetchWorker";
 import { setSnackBar } from "../state/snackBar";
 
 const ProductPage = ({ setConfirmationModal }) => {
@@ -61,13 +61,19 @@ const ProductPage = ({ setConfirmationModal }) => {
     const fetchWorker = new FetchWorker();
     Promise.all([fetchWorker.fetchOffers(), fetchWorker.fetchProduct(id)])
       .then((res) => {
-        setOffers(res[0])
-        setProduct(res[1])
-        setIsLoading(false)
+        setOffers(res[0]);
+        setProduct(res[1]);
+        setIsLoading(false);
       })
       .catch((err) => {
-        setIsLoading(false)
-        dispatch(setSnackBar({on:true, type:"ERROR", message:`Error fetching info: ${err}`}))
+        setIsLoading(false);
+        dispatch(
+          setSnackBar({
+            on: true,
+            type: "ERROR",
+            message: `Error fetching info: ${err}`,
+          })
+        );
       });
   }, []);
 
@@ -89,10 +95,6 @@ const ProductPage = ({ setConfirmationModal }) => {
       setIsInCart(false);
     }
   }, [user, product]);
-
-  const changeImageIndex = ({ target }) => {
-    setImageIndex(Number(target.value));
-  };
 
   const handleFavourite = () => {
     if (isLiked) {
@@ -191,48 +193,66 @@ const ProductPage = ({ setConfirmationModal }) => {
                 ))}
               </Carousel>
               <Box
-                padding={"10px"}
-                width={"100%"}
                 display={"flex"}
-                justifyContent={"flex-start"}
+                gap={"10px"}
                 alignItems={"center"}
+                height={"clamp(100px, 7vw, 150px)"}
+                width={"100%"}
+                sx={{
+                  overflowX: "scroll",
+                  "&::-webkit-scrollbar": {
+                    bgcolor: "transparent",
+                    height: "2px",
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                    borderRadius: "25px",
+                    bgcolor: theme.palette.grey[300],
+                  },
+                  "&::-webkit-scrollbar-thumb:hover": {
+                    cursor: "pointer",
+                    bgcolor: theme.palette.grey[400],
+                  },
+                }}
               >
                 {isLoading ? (
                   <SkeletonGroup
-                    width="100px"
-                    height="100px"
+                    width="clamp(50px, 5vw, 100px)"
+                    height="clamp(50px, 5vw, 100px)"
                     count={4}
                     flexDirection={"row"}
                   />
                 ) : (
-                  <Box display={"flex"} gap={"10px"}>
-                    {product.images.map((image, index) => (
-                      <button
-                        onClick={changeImageIndex}
-                        value={index}
-                        style={{
+                  product.images.map((image, index) => (
+                    <button
+                      onClick={() => setImageIndex(index)}
+                      style={{
+                        margin: 0,
+                        padding: 0,
+                        cursor: "pointer",
+                        backgroundColor: "transparent",
+                        border: "none",
+                      }}
+                    >
+                      <Box
+                        sx={{
                           height: "clamp(50px, 5vw, 100px)",
                           width: "clamp(50px, 5vw, 100px)",
-                          transition: "0.3s",
+                          backgroundImage: `url(${image})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                          borderRadius: "10px",
                           border:
                             imageIndex === index
                               ? `2px solid #FF2681`
                               : `2px solid ${theme.palette.grey[400]}`,
-                          margin: 0,
-                          padding: 0,
-                          borderRadius: "10px",
-                          overflow: "hidden",
-                          cursor: "pointer",
-                          backgroundImage: `url(${image})`,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                          color: "transparent",
+                          transition: "0.3s",
+                          ":hover": {
+                            border: `2px solid ${theme.palette.grey[600]}`,
+                          },
                         }}
-                      >
-                        .
-                      </button>
-                    ))}
-                  </Box>
+                      />
+                    </button>
+                  ))
                 )}
               </Box>
             </Box>

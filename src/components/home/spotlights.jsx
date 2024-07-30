@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Carousel from "../layout/carousel";
 import { Box, Button, Link, Typography, useMediaQuery } from "@mui/material";
-import FetchWorker from "../../scripts/fetchWorker";
+import FetchWorker from "../../utils/fetchWorker";
 import IsErrorComponent from "../layout/isError";
 
 const Spotlights = () => {
@@ -10,7 +10,7 @@ const Spotlights = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [spotlights, setSpotlights] = useState([]);
-  const [reloadCounter, setReloadCounter] = useState(0)
+  const [reloadCounter, setReloadCounter] = useState(0);
 
   useEffect(() => {
     const fetchWorker = new FetchWorker();
