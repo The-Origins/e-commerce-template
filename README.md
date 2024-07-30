@@ -222,7 +222,7 @@ This section covers how to customize your e-commerce template, including colors,
 
 ## Placeholder Data
 
-The `lib/data` directory contains placeholder data to simulate various aspects of a database. This directory is to be deleted and but it's data serves as a guidline of what the front end is to recive from the API.
+The `lib/data` directory contains placeholder data to simulate various aspects of a database. This directory is to be deleted and but it's data serves as a guidline of what the front end is to receive from the API.
 
 1. **user**
 
@@ -303,64 +303,65 @@ The `lib/data` directory contains placeholder data to simulate various aspects o
 
    **Attributes**
 
-   - **name**: An object containing the user's first and last name.
-     - **first** (string): The user's first name.
-     - **last** (string): The user's last name.
-   - **email** (string): The user's email address.
-   - **phone**: An object containing the user's phone information.
-     - **code** (string): The country code of the user's phone number.
-     - **number** (string): The user's phone number.
-   - **payments**: An object containing the user's payment information.
-     - **currency** (string): The currency used for payments.
-     - **recent** (number): The most recently used payment method.
-     - **saved**: An array of saved payment methods.
-       - **type** (string): The type of payment method (e.g., mobile, card).
-       - **number** (string): The masked payment method number.
-       - **details**: An object containing detailed payment information.
-         - **number** (string): The payment method number.
-         - **name** (string): The name on the payment method.
-         - **cvv** (string): The CVV code of the payment method.
-         - **expiry** (string): The expiry date of the payment method.
-   - **addresses**: An object containing the user's address information.
-     - **recent** (number): The most recently used address.
-     - **saved**: An array of saved addresses.
-       - **name** (string): The name of the address.
-       - **region** (string): The region of the address.
-       - **country** (string): The country of the address.
-       - **city** (string): The city of the address.
-       - **street** (string): The street of the address.
-       - **address** (string): The full address.
-       - **location**: An object containing detailed location information.
-         - **type** (string): The type of location (e.g., home, pick-up station).
-         - **info** (string): Additional information about the location.
-         - **deliveryFee**: An object containing the delivery fee information.
-           - **amount** (number): The amount of the delivery fee.
-           - **currency** (string): The currency of the delivery fee.
-   - **recent**: An object containing the user's recent activity.
-     - **searches** (array of strings): Recent searches performed by the user.
-     - **viewedProducts** (array of strings): IDs of recently viewed products.
-   - **orders** (array of strings): IDs of the user's orders.
-   - **notifications**: An object containing the user's notifications.
-     - **items**: An array of notification items.
-       - **title** (string): The title of the notification.
-       - **description** (string): The description of the notification.
-       - **dateCreated** (string): The date the notification was created.
-       - **unread** (boolean): Whether the notification is unread.
-     - **new** (boolean): Whether there are new notifications.
-   - **favourites**: An object containing the user's favorite products.
-     - **productID**: An object containing information about the favorited product.
-       - **quantity** (number): The quantity of the favorited product.
-       - **total** (number): The total cost of the favorited product.
+   - `name`: `object` An object containing the user's first and last name.
+     - `first`: `string` The user's first name.
+     - `last`: `string` The user's last name.
+   - `email`: `string` The user's email address.
+   - `phone`: `object` An object containing the user's phone information.
+     - `code`: `string` The country code of the user's phone number.
+     - `number`: `string` The user's phone number.
+   - `payments`: `object` An object containing the user's payment information.
+     - `currency`: `string` The currency used for payments.
+     - `recent`: `number` The most recently used payment method.
+     - `saved`: `array of objects` An array of saved payment methods.
+       - `type`: `string` The type of payment method (e.g., mobile, card).
+       - `number`: `string` The masked payment method number.
+       - `details`: `object` An object containing detailed payment information.
+         - `number`: `string` The payment method number.
+         - `name`: `string` The name on the payment method.
+         - `cvv`: `string` The CVV code of the payment method.
+         - `expiry`: `string` The expiry date of the payment method.
+   - `addresses`: `object` An object containing the user's address information.
+     - `recent`: `number` The most recently used address.
+     - `saved`: `array of objects` An array of saved addresses.
+       - `name`: `string` The name of the address.
+       - `region`: `string` The region of the address.
+       - `country`: `string` The country of the address.
+       - `city`: `string` The city of the address.
+       - `street`: `string` The street of the address.
+       - `address`: `string` The full address.
+       - `location`: `object` An object containing detailed location information.
+         - `type`: `string` The type of location (e.g., home, pick-up station).
+         - `info`: `string` Additional information about the location.
+         - `deliveryFee`: `object` An object containing the delivery fee information.
+           - `amount`: `number` The amount of the delivery fee.
+           - `currency`: `string` The currency of the delivery fee.
+   - `recent`: `object` An object containing the user's recent activity.
+     - `searches`: `array of strings` Recent searches performed by the user.
+     - `viewedProducts`: `array of strings` IDs of recently viewed products.
+   - `orders`: `array of strings` IDs of the user's orders.
+   - `notifications`: `object` An object containing the user's notifications.
+     - `items`: `array of objects` An array of notification items.
+       - `title`: `string` The title of the notification.
+       - `description`: `string` The description of the notification.
+       - `dateCreated`: `string` The date the notification was created.
+       - `unread`: `boolean` Whether the notification is unread.
+     - `new`: `boolean` Whether there are new notifications.
+   - `favourites`: `object` An object containing the user's favorite products.
+     - `productID`: `object` An object containing information about the favorited product.
+       - `quantity`: `number` The quantity of the favorited product.
+       - `total`: `number` The total cost of the favorited product.
        - Other properties (e.g., size, color, etc.).
-   - **cart**: An object containing the user's cart information.
-     - **total** (number): The total cost of items in the cart.
-     - **items**: An object containing the items in the cart.
-       - **productID**: An object containing information about a cart item.
-         - **quantity** (number): The quantity of the cart item.
-         - **total** (number): The total cost of the cart item.
+   - `cart`: `object` An object containing the user's cart information.
+     - `total`: `number` The total cost of items in the cart.
+     - `items`: `object` An object containing the items in the cart.
+       - `productID`: `object` An object containing information about a cart item.
+         - `quantity`: `number` The quantity of the cart item.
+         - `total`: `number` The total cost of the cart item.
          - Other properties (e.g., size, color, etc.).
 
 2. **Product**
+
    The `lib/data/products.json` directory simulates a database of products available in the e-commerce store. This data includes information about each product, below is a javascript object of product data.
 
    ```javascript
@@ -374,23 +375,14 @@ The `lib/data` directory contains placeholder data to simulate various aspects o
        amount: "number",
      },
      features: {
-       SKU: "string",
-       material: "string",
-       color: "string",
+       feature1: "string",
+       feature2: "string",
      },
      variants: {
-       color: {
-         white: "number",
-         black: "number",
-         blue: "number",
-       },
-       size: {
-         s: "number",
-         m: "number",
-         l: "number",
-       },
-       extras: {
-         multiSelect: "boolean", //controlls wether a user can select multiple choices
+       variant: {
+        option1:"number",
+        option2:"number"
+        multiSelect: "boolean", //controlls wether a user can select multiple choices
        },
        //other variants
      },
@@ -419,43 +411,36 @@ The `lib/data` directory contains placeholder data to simulate various aspects o
 
    **Attributes**
 
-   - **images** (array of strings): URLs of the product images.
-   - **id** (string): The unique identifier for the product.
-   - **name** (string): The name of the product.
-   - **description** (string): A description of the product.
-   - **unitPrice**: An object containing the unit price information.
-     - **currency** (string): The currency of the unit price.
-     - **amount** (number): The amount of the unit price.
-   - **features**: An object containing the product's features.
-     - **SKU** (string): The stock-keeping unit identifier.
-     - **material** (string): The material of the product.
-     - **color** (string): The color of the product.
-   - **variants**: An object containing the product's variants.
-     - **color**: An object containing the available colors and their stock.
-       - **white** (number): The stock of the white variant.
-       - **black** (number): The stock of the black variant.
-       - **blue** (number): The stock of the blue variant.
-     - **size**: An object containing the available sizes and their stock.
-       - **s** (number): The stock of the small size variant.
-       - **m** (number): The stock of the medium size variant.
-       - **l** (number): The stock of the large size variant.
-     - **extras**: An object containing additional variant options.
-       - **multiSelect** (boolean): Whether multiple selections are allowed.
-   - **rating**: An object containing the product's rating information.
-     - **votes** (array of numbers): An array of vote numbers.
-     - **score** (number): The average score of the product.
-     - **reviews**: An array of review objects.
-       - **userName** (string): The name of the user who wrote the review.
-       - **dateCreated** (string): The date the review was created.
-       - **rating** (number): The rating given by the user.
-       - **review**: An object containing the review details.
-         - **title** (string): The title of the review.
-         - **body** (string): The body of the review.
-   - **stock** (number): The stock quantity of the product.
-   - **state** (string): The availability state of the product (e.g., In stock).
-   - **brand** (string): The brand of the product.
-   - **categories** (array of strings): The categories the product belongs to.
-   - **type** (string): The type of product.
+   - `images`: `array of strings` URLs of the product images.
+   - `id`: `string` The unique identifier for the product.
+   - `name`: `string` The name of the product.
+   - `description`: `string` A description of the product.
+   - `unitPrice`: An object containing the unit price information.
+     - `currency`: `string` The currency of the unit price.
+     - `amount`: `number` The amount of the unit price.
+   - `features`: `object` An object containing the product's features.
+     - `feature1`: `string` The value of feature 1.
+     - `feature2`: `string` The value of feature 2.
+   - `variants`: An object containing the product's variants.
+     - `variant`: `object` An object containing the available options for the variant and their price increment.
+       - `option1`: `number` The price increment of the option, default is 0.
+       - `option2`: `number` The price increment of the option, default is 0.
+       - `multiSelect`: `boolean` Controls whether a user can select multiple options, default is false.
+   - `rating`: An object containing the product's rating information.
+     - `votes`: `array of numbers` An array of vote numbers.
+     - `score`: `number` The average score of the product.
+     - `reviews`: `array of objects` An array of review objects.
+       - `userName`: `string` The name of the user who wrote the review.
+       - `dateCreated`: `string` The date the review was created.
+       - `rating`: `number` The rating given by the user.
+       - `review`: `object` An object containing the review details.
+         - `title`: `string` The title of the review.
+         - `body`: `string` The body of the review.
+   - `stock`: `number` The stock quantity of the product.
+   - `state`: `string` The availability state of the product (e.g., In stock).
+   - `brand`: `string` The brand of the product.
+   - `categories`: `array of strings` The categories the product belongs to.
+   - `type`: `string` The type of product.
 
 3. **Order**
 
@@ -509,38 +494,39 @@ The `lib/data` directory contains placeholder data to simulate various aspects o
 
    **Attributes**
 
-   - **id**: (string) The unique identifier for the order.
-   - **status**: (string) The current status of the order (e.g., processing, completed).
-   - **dateCreated**: (string) The date when the order was created.
-   - **total**: (number) The total amount for the order.
-   - **payment**: An object containing payment information.
-     - **details**: An object with payment details.
-       - **type**: (string) The type of payment method (e.g., Mobile, Card).
-       - **number**: (string) The payment method number.
-       - **details**: (object) Object containing details such as cvv, name, number if applicable
-     - **status**: (string) The payment status (e.g., pending, completed).
-     - **currency**: (string) The currency used for the payment.
-   - **delivery**: An object containing delivery information.
-     - **status**: (string) The delivery status (e.g., pending, delivered).
-     - **details**: An object with delivery details.
-       - **name**: (string) The name associated with the delivery address.
-       - **region**: (string) The region of the delivery address.
-       - **country**: (string) The country of the delivery address.
-       - **city**: (string) The city of the delivery address.
-       - **street**: (string) The street of the delivery address.
-       - **address**: (string) The full delivery address.
-       - **type**: (string) The type of delivery location (e.g., office, home).
-       - **location**: An object with additional location details.
-         - **info**: (string) Additional information about the location.
-         - **deliveryFee**: An object with delivery fee details.
-           - **amount**: (number) The amount of the delivery fee.
-           - **currency**: (string) The currency of the delivery fee.
-   - **items**: An object where each key is a product ID and the value is an object containing item details.
-     - **quantity**: (number) The quantity of the product.
-     - **total**: (number) The total price for the item.
+   - `id`: `string` The unique identifier for the order.
+   - `status`: `string` The current status of the order (e.g., processing, completed).
+   - `dateCreated`: `string` The date when the order was created.
+   - `total`: `number` The total amount for the order.
+   - `payment`: An object containing payment information.
+     - `details`: An object with payment details.
+       - `type`: `string` The type of payment method (e.g., Mobile, Card).
+       - `number`: `string` The payment method number.
+       - `details`: `object` Object containing details such as cvv, name, number if applicable.
+     - `status`: `string` The payment status (e.g., pending, completed).
+     - `currency`: `string` The currency used for the payment.
+   - `delivery`: An object containing delivery information.
+     - `status`: `string` The delivery status (e.g., pending, delivered).
+     - `details`: An object with delivery details.
+       - `name`: `string` The name associated with the delivery address.
+       - `region`: `string` The region of the delivery address.
+       - `country`: `string` The country of the delivery address.
+       - `city`: `string` The city of the delivery address.
+       - `street`: `string` The street of the delivery address.
+       - `address`: `string` The full delivery address.
+       - `type`: `string` The type of delivery location (e.g., office, home).
+       - `location`: An object with additional location details.
+         - `info`: `string` Additional information about the location.
+         - `deliveryFee`: An object with delivery fee details.
+           - `amount`: `number` The amount of the delivery fee.
+           - `currency`: `string` The currency of the delivery fee.
+   - `items`: An object where each key is a product ID and the value is an object containing item details.
+     - `quantity`: `number` The quantity of the product.
+     - `total`: `number` The total price for the item.
 
 4. **Session**
-   The `lib/data/session.json` directory simulates session storage for user sessions. This data includes information about user sessions, the current implementation is not exhaustive but it shows the approach. `Region` data is fetched from (ipapi)["https://ipapi.co/"] Below is a javascript object of session data.
+
+   The `lib/data/session.json` directory simulates session storage for user sessions. This data includes information about user sessions, the current implementation is not exhaustive but it shows the approach. `Region` data is fetched from [ipapi]("https://ipapi.co/") Below is a javascript object of session data.
 
    ```javascript
    const session = {
@@ -579,34 +565,35 @@ The `lib/data` directory contains placeholder data to simulate various aspects o
 
    - `region`: An object containing details about the user's geographical and network region.
 
-     - `ip`: The IP address of the user (string).
-     - `city`: The city of the user (string).
-     - `region`: The state or region (string).
-     - `region_code`: The region code (string).
-     - `country_code`: The country code (string).
-     - `country_code_iso3`: The ISO 3166-1 alpha-3 country code (string).
-     - `country_name`: The name of the country (string).
-     - `country_capital`: The capital city of the country (string).
-     - `country_tld`: The top-level domain of the country (string).
-     - `continent_code`: The continent code (string).
-     - `in_eu`: Whether the user is in the EU (boolean).
-     - `postal`: The postal or ZIP code (string).
-     - `latitude`: The latitude of the location (number).
-     - `longitude`: The longitude of the location (number).
-     - `timezone`: The time zone ID (string).
-     - `utc_offset`: The UTC offset (string).
-     - `country_calling_code`: The country calling code (string).
-     - `currency`: The currency used in the region (string).
-     - `currency_name`: The name of the currency (string).
-     - `languages`: A comma-separated list of languages spoken (string).
-     - `asn`: The Autonomous System Number (ASN) (string).
-     - `org`: The organization or ISP (string).
+     - `ip`: `string` The IP address of the user.
+     - `city`: `string` The city of the user.
+     - `region`: `string` The state or region.
+     - `region_code`: `string` The region code.
+     - `country_code`: `string` The country code.
+     - `country_code_iso3`: `string` The ISO 3166-1 alpha-3 country code.
+     - `country_name`: `string` The name of the country.
+     - `country_capital`: `string` The capital city of the country.
+     - `country_tld`: `string` The top-level domain of the country.
+     - `continent_code`: `string` The continent code.
+     - `in_eu`: `boolean` Whether the user is in the EU.
+     - `postal`: `string` The postal or ZIP code.
+     - `latitude`: `number` The latitude of the location.
+     - `longitude`: `number` The longitude of the location.
+     - `timezone`: `string` The time zone ID.
+     - `utc_offset`: `string` The UTC offset.
+     - `country_calling_code`: `string` The country calling code.
+     - `currency`: `string` The currency used in the region.
+     - `currency_name`: `string` The name of the currency.
+     - `languages`: `string` A comma-separated list of languages spoken.
+     - `asn`: `string` The Autonomous System Number (ASN).
+     - `org`: `string` The organization or ISP.
 
    - `recent`: An object containing recent user activity.
-     - `searches`: An array of recent search queries (array of strings).
-     - `viewedProducts`: An array of IDs of recently viewed products (array of strings).
+     - `searches`: `array of strings` An array of recent search queries.
+     - `viewedProducts`: `array of strings` An array of IDs of recently viewed products.
 
 5. **Spotlights**
+
    The `/lib/data/spotlights.json` directory contains data for highlighting specific products or updates that the company wants to feature. This may include promotions, featured products, or special announcements. Below is a javascript object of spotlight data.
 
    ```javascript
@@ -623,16 +610,17 @@ The `lib/data` directory contains placeholder data to simulate various aspects o
 
    **Attributes**
 
-   - **title**: `string` The title of the spotlight section.
-   - **description**: `string` A brief description of the spotlight content.
-   - **image**: `string` URL to the image representing the spotlight.
-   - **action**: `object`  
-     **Attributes**
-     - **title**: `string` The text to display for the action button.
-     - **path**: `string` The URL path to navigate when the action button is clicked.
+   - `title`: `string` The title of the spotlight section.
+   - `description`: `string` A brief description of the spotlight content.
+   - `image`: `string` URL to the image representing the spotlight.
+   - `action`: `object`
+     - `title`: `string` The text to display for the action button.
+     - `path`: `string` The URL path to navigate when the action button is clicked.
 
 6. **Offers**
+
    The `/lib/data/offers.json` directory simulates a database of product offers and discounts. This data includes information about special offers, and product promotions. Below is a javascript object of offers data.
+
    ```javascript
    const offers = {
      1: 13,
@@ -644,9 +632,11 @@ The `lib/data` directory contains placeholder data to simulate various aspects o
      10: 15,
    };
    ```
+
    **Offers**  
    **Attributes**
-   - **[productID]**: `number`  
+
+   - `productID`: `number`  
      Represents the product ID as a key with its corresponding offer value (discount or special offer).
 
 Each subdirectory in `lib/data` plays a crucial role in simulating various functionalities of the e-commerce application. Use these placeholders as a guideline to test and develop different features and scenarios.
