@@ -116,6 +116,9 @@ The following is the directory structure of the project:
 
 - **.cache/**: Gatsby's cache directory to speed up builds.
 - **lib/**: Contains compiled JavaScript files.
+
+  - **data/**: Place holder data to simulate a data base.
+
 - **public/**: Contains the built files for deployment.
 - **src/**: Contains the source code of the application.
 
@@ -132,3 +135,87 @@ The following is the directory structure of the project:
 - **LICENSE**: The license for the project.
 - **package.json**: Contains project metadata and dependencies.
 - **README.md**: The main readme file for the project.
+
+## Customization
+
+This section covers how to customize your e-commerce template, including colors, fonts, and the project title. Customization is managed through the `theme.js` file and the `index.css` file.
+
+1. **Customizing Colors**
+
+   To customize the colors used in the application, edit the `palette` section in the `theme.js` file located in the `src/theme` directory. This section allows you to define the primary and secondary colors, text colors, and various status colors.
+
+   ```javascript
+   import { createTheme } from "@mui/material";
+
+   const theme = createTheme({
+     palette: {
+       primary: { main: "#FF2681" },
+       secondary: { main: "#26FFFF" },
+       text: { primary: "#000000", secondary: "#707070" },
+       status: {
+         product: {
+           "In stock": "#707070",
+           "Few left": "#FF9000",
+           "Out of stock": "#FF0000",
+           other: "#FF0000",
+         },
+         order: {
+           processing: "#0382FF",
+           fulfilling: "#FF9000",
+           fulfilled: "#15FF02",
+         },
+         payment: {
+           paid: "#15FF02",
+           failed: "#FF0000",
+           pending: "#FF9000",
+         },
+         delivery: {
+           pending: "#FF9000",
+           delivered: "#15FF02",
+           failed: "#FF0000",
+         },
+       },
+     },
+   });
+   ```
+
+2. **Customizing fonts**
+   To change the fonts used in your application, modify the `typography` section in the `theme.js` file. This allows you to set different font families and weights for the primary and secondary fonts.
+
+   ```javascript
+   const theme = createTheme({
+     typography: {
+       fontFamily: "Your primary font, sans-serif",
+       fontWeightLight: 200,
+       fontWeightRegular: 500,
+       fontWeightBold: 700,
+       secondaryFont: {
+         fontFamily: "Your secondary font, sans-serif",
+         fontWeightLight: 200,
+         fontWeightRegular: 400,
+         fontWeightBold: 700,
+       },
+     },
+   });
+   ```
+
+3. **Importing Fonts**
+
+   The `index.css` file, located in the `src/styles` directory, is used to import fonts. Modify this file to include the fonts you want from [Google Fonts]("https://fonts.google.com/").
+
+   ```css
+   @import url("https://fonts.googleapis.com/css2?family=your+primary+font:ital,wght@0,400;0,700;1,400&family=your+secondary+font:wght@300..700&display=swap");
+
+   ```
+
+4. **Changing the Project Title**
+
+  The project title is specified in the `title` attribute of the theme object in `theme.js`. This is your website name. To update the project title, change the value of the `title` attribute.
+
+  ```javascript
+  const theme = createTheme({
+    title: "Your Custom Title",
+    // other theme settings
+  });
+  ```
+
