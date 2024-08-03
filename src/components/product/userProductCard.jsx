@@ -14,8 +14,6 @@ import {
   AddShoppingCart,
   Delete,
   Edit,
-  NewReleases,
-  Replay,
 } from "@mui/icons-material";
 import CustomizeProduct from "./customizeProduct";
 import EditModal from "../layout/modals/edit";
@@ -111,7 +109,7 @@ const UserProductCard = ({
       {isLoading ? (
         <Skeleton width={"100%"} height={"100px"} variant="rounded" />
       ) : isError ? (
-        <IsErrorComponent size={"small"} flexDirection={"row"} />
+        <IsErrorComponent size={"small"} flexDirection={"row"} setReloadCounter={setReloadCounter}/>
       ) : (
         <>
           {(type === "cart" || type === "favourites") && (

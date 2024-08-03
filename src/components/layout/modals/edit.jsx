@@ -2,7 +2,6 @@ import { Close } from "@mui/icons-material";
 import {
   Backdrop,
   Box,
-  ClickAwayListener,
   IconButton,
   useTheme,
 } from "@mui/material";

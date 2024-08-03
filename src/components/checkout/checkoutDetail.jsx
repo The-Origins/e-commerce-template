@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Skeleton,
   Tooltip,
   Typography,
   useTheme,

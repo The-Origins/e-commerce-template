@@ -1,10 +1,6 @@
 import {
   AddShoppingCart,
   ExitToApp,
-  LocalShipping,
-  Paid,
-  Payments,
-  Place,
   RemoveShoppingCart,
   ShoppingCart,
 } from "@mui/icons-material";
@@ -26,6 +22,7 @@ import EditModal from "../components/layout/modals/edit";
 import ConfirmCheckout from "../components/checkout/confirm";
 import NotLoggedInComponent from "../components/layout/notLoggedInComponent";
 import { setSnackBar } from "../state/snackBar";
+import ProductWorker from "../utils/productWorker";
 
 const CheckoutPage = () => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -40,38 +37,32 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     document.title = `Checkout | ${theme.title}`;
-  }, []);
+  }, [theme.title]);
 
   useEffect(() => {
-    const getErrors = (name, value, message) => {
-      if (Object.keys(value || {}).length) {
-        setErrors((prev) => {
-          const { [name]: value, ...remainingErrors } = prev;
-          return remainingErrors;
-        });
-      } else {
-        setErrors((prev) => ({ ...prev, [name]: message }));
-      }
-    };
+    const productWorker = new ProductWorker();
 
-    getErrors(
-      "items",
-      checkoutDetails.items,
-      "Add items to cart before checkout"
-    );
-    getErrors(
-      "payment",
-      checkoutDetails.payment?.details,
-      "Select a payment method to checkout"
-    );
-    getErrors(
-      "delivery",
-      checkoutDetails.delivery?.details,
-      "Select a delivery method to checkout"
+    setErrors((prev) =>
+      productWorker.getCheckoutErrors(
+        prev,
+        {
+          name: "items",
+          value: checkoutDetails.items,
+          message: "Add items to cart before checkout",
+        },
+        {
+          name: "payment",
+          value: checkoutDetails.payment?.details,
+          message: "Select a payment method to checkout",
+        },
+        {
+          name: "delivery",
+          value: checkoutDetails.delivery?.details,
+          message: "Select a delivery method to checkout",
+        }
+      )
     );
   }, [checkoutDetails]);
-
-  console.log(errors);
 
   useEffect(() => {
     if (!user.isFetching) {
@@ -95,7 +86,7 @@ const CheckoutPage = () => {
         });
       }
     }
-  }, [user]);
+  }, [user, checkoutDetails, currency.code]);
 
   const handleConfirm = () => {
     if (Object.keys(errors).length) {

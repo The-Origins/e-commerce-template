@@ -3,7 +3,6 @@ import SelectPayment from "./select";
 import CardPayment from "./card";
 import MobilePayment from "./mobile";
 import VerificationComponent from "../../auth/verificationComponent";
-import Carousel from "../../layout/carousel";
 import { Box } from "@mui/material";
 
 const Payment = ({

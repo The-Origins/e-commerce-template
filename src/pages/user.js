@@ -47,7 +47,7 @@ const UserPage = ({ setConfirmationModal }) => {
     document.title = `My ${
       stage.charAt(0).toUpperCase() + stage.substring(1)
     } | ${theme.title}`;
-  }, [stage]);
+  }, [stage, theme.title]);
 
   useEffect(() => {
     if (!user.isFetching) {

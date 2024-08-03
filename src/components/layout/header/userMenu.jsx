@@ -15,7 +15,6 @@ import {
   BookmarkAdded,
   Favorite,
   NotificationsSharp,
-  PersonOff,
 } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../../state/user";

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
-import Carousel from "../../components/layout/carousel";
 import LoginIntro from "../../components/auth/login/intro";
 import LoginForm from "../../components/auth/login/loginForm";
 import ChangePassword from "../../components/forms/changePassword";
@@ -13,7 +12,7 @@ const Login = ({ setStatus, location }) => {
 
   useEffect(() => {
     document.title = `Login | ${theme.title}`;
-  }, []);
+  }, [theme.title]);
 
   const stages = [
     <LoginIntro {...{ setStage, tab }} />,

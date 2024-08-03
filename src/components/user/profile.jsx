@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, useMediaQuery} from "@mui/material";
 import {
   AccountCircle,
-  Explore,
   Lock,
   Mail,
   Paid,
-  Payments,
   Phone,
 } from "@mui/icons-material";
 import UserProfileDetail from "./profileDetail";
@@ -17,7 +15,6 @@ import { currencies } from "country-data";
 
 const UserProfile = ({ user, setConfirmationModal }) => {
   user = user.data;
-  const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const [isChangePassword, setIsChangePassword] = useState(false);
 

@@ -53,7 +53,7 @@ const ProductCardContainer = ({
           setIsError(true);
         });
     }
-  }, [reloadCounter]);
+  }, [reloadCounter, category, isRecentlyViewedProducts]);
 
   useEffect(() => {
     if (isRecentlyViewedProducts) {

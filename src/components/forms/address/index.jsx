@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import SelectAddress from "./select";
 import AddressDetails from "./details";
-import Carousel from "../../layout/carousel";
 import { Box } from "@mui/material";
 
 const Address = ({ onComplete, onCancel, enableSkip = false, onSkip }) => {

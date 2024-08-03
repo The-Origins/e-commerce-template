@@ -45,7 +45,7 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
         resizeObserver.unobserve(headerRef.current);
       }
     };
-  }, [headerRef.current]);
+  }, []);
 
   const handleClickAway = (event) => {
     if (

@@ -2,6 +2,7 @@ import { ShoppingCart } from "@mui/icons-material";
 import {
   Box,
   Button,
+  Link,
   Typography,
   useMediaQuery,
   useTheme,
@@ -296,9 +297,11 @@ const About = () => {
           </Box>
         </Box>
 
-        <Button variant="contained" size="large" startIcon={<ShoppingCart />}>
-          Get started shopping
-        </Button>
+        <Link href={"/"}>
+          <Button variant="contained" size="large" startIcon={<ShoppingCart />}>
+            Get started shopping
+          </Button>
+        </Link>
       </Box>
     </Box>
   );

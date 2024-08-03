@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Box, ThemeProvider } from "@mui/material";
 import theme from "../../theme";
-import "../../index.css";
+import "../../styles/index.css";
 import Header from "./header";
 import Footer from "./footer";
 import { useDispatch, useSelector } from "react-redux";
 import SnackBarComponent from "./snackBar";
 import { fetchUser } from "../../state/user";
-import { fetchCurrency } from "../../state/currency";
 import { fetchSession } from "../../state/session";
 import ContactModal from "./modals/contact";
 import ConfirmationModal from "./modals/confirmation";

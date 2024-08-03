@@ -97,7 +97,7 @@ const ResultsComponent = ({ path, setConfirmationModal }) => {
           })
         );
       });
-  }, []);
+  }, [path]);
 
   useEffect(() => {
     if (offers && data.length) {

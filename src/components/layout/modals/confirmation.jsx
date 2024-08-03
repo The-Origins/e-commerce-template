@@ -1,6 +1,5 @@
 import { Backdrop, Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
 import { Close, Info } from "@mui/icons-material";
 
 const ConfirmationModal = ({confirmationModal, setConfirmationModal}) => {

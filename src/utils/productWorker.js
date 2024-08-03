@@ -57,6 +57,19 @@ class ProductWorker {
     });
     return distribution;
   }
+
+  getCheckoutErrors = (errors, ...tests) => {
+    for (let test of tests) {
+      if (Object.keys(test.value || {}).length) {
+        const { [test.name]: value, ...remainingErrors } = errors;
+        errors = remainingErrors;
+      } else {
+        errors = { ...errors, [test.name]: test.message };
+      }
+    }
+
+    return errors;
+  };
 }
 
 export default ProductWorker;

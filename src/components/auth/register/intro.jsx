@@ -1,9 +1,8 @@
 import React from "react";
-import { Box, Button, Link, Typography, useTheme } from "@mui/material";
+import { Box, Button, Link, Typography,} from "@mui/material";
 import { East } from "@mui/icons-material";
 
 const RegisterIntro = ({ setStage, tab }) => {
-  const theme = useTheme();
   return (
     <Box
       height={"100%"}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import UserProductCard from "../product/userProductCard";
 import { useDispatch } from "react-redux";
 import FetchWorker from "../../utils/fetchWorker";
@@ -12,7 +12,6 @@ const UserFavourites = ({
   setConfirmationModal,
 }) => {
   const dispatch = useDispatch();
-  const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const [offers, setOffers] = useState({});
 

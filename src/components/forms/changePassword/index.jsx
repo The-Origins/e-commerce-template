@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import ConfirmEmail from "./confirmEmail";
 import VerificationComponent from "../../auth/verificationComponent";
 import PasswordForm from "../password";
-import Carousel from "../../layout/carousel";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../../state/user";
 import { Box } from "@mui/material";

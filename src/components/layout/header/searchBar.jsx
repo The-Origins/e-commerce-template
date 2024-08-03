@@ -3,7 +3,6 @@ import {
   Autocomplete,
   Box,
   IconButton,
-  InputAdornment,
   TextField,
   Tooltip,
   Typography,

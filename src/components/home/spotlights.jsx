@@ -24,7 +24,7 @@ const Spotlights = () => {
         setIsLoading(false);
         setIsError(true);
       });
-  }, []);
+  }, [reloadCounter]);
 
   return (
     <Carousel

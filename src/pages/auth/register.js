@@ -20,7 +20,7 @@ const Register = ({ setStatus, location }) => {
   const region = useSelector((state) => state.session.region);
   useEffect(() => {
     document.title = `Register | ${theme.title}`;
-  }, []);
+  }, [theme.title]);
 
   const addPassword = (password) => {
     setRegisterForm((prev) => ({ ...prev, password }));
