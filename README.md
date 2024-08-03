@@ -526,7 +526,7 @@ const order = {
 
 ## 4. **Session**
 
-The `lib/data/session.json` directory simulates session storage for user sessions. This data includes information about user sessions, the current implementation is not exhaustive but it shows the approach. `Region` data is fetched from [ipapi]("https://ipapi.co/") Below is a javascript object of session data.
+The `lib/data/session.json` directory simulates session storage for user sessions. This data includes information about user sessions, the current implementation is not exhaustive but it shows the approach. `Region` data is fetched from [IPAPI]("https://ipapi.co/") Below is a javascript object of session data.
 
 ```javascript
 const session = {
