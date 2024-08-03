@@ -5,8 +5,11 @@ import { navigate } from "gatsby";
 
 const Page404 = ({ setConfirmationModal }) => {
   const [counter, setCounter] = useState(5);
-  document.title = "404 Error | Wendoh Cakes";
-  const dispatch = useDispatch();
+
+  useEffect(() => {
+    document.title = "404 Error | Wendoh Cakes";
+  }, []);
+
   setConfirmationModal({
     title: "404 Error",
     message: "Couldn't find the page you're looking for",
