@@ -32,13 +32,13 @@ import ActiveFiltersComponent from "./activeFiltersComponent";
 import FetchWorker from "../../utils/fetchWorker";
 import { setSnackBar } from "../../state/snackBar";
 
-const ResultsComponent = ({ path, setConfirmationModal }) => {
+const ResultsComponent = ({ location, path, setConfirmationModal }) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const fetchWorker = new FetchWorker();
   const resultsWorker = new ResultsWorker();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const searchParams = new URLSearchParams(window.location.search);
+  const searchParams = new URLSearchParams(location.search);
 
   let page = Number(searchParams.get("p")) || 1;
   let search = searchParams.get("search");
@@ -68,7 +68,10 @@ const ResultsComponent = ({ path, setConfirmationModal }) => {
   }, [results]);
 
   useEffect(() => {
-    document.title = `Search results for '${search}'`;
+    if (typeof window === "undefined") {
+      document.title = `Search results for '${search}'`;
+    }
+    
     fetchWorker
       .fetchOffers()
       .then((res) => {

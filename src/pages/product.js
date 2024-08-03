@@ -79,7 +79,9 @@ const ProductPage = ({ setConfirmationModal }) => {
 
   useEffect(() => {
     const productWorker = new ProductWorker();
-    document.title = (product.name || "product page") + ` | ${theme.title}`;
+    if (typeof window !== "undefined") {
+      document.title = `${product.name || ""} | ${theme.title}`;
+    }
 
     if (Object.keys(product).length) {
       setRatingDistribution(productWorker.getRatingDistribution(product));

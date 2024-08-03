@@ -20,7 +20,9 @@ const Home = ({ setIsContact, setConfirmationModal }) => {
   const currency = useSelector((state) => state.currency);
 
   useEffect(() => {
-    document.title = theme.title;
+    if (typeof window !== "undefined") {
+      document.title = `Home | ${theme.title}`;
+    }
   }, [theme.title]);
 
   return (

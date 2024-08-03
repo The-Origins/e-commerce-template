@@ -31,7 +31,7 @@ import { convertHex } from "../theme";
 import NotLoggedInComponent from "../components/layout/notLoggedInComponent";
 import { logoutUser } from "../state/user";
 
-const UserPage = ({ setConfirmationModal }) => {
+const UserPage = ({ location, setConfirmationModal }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const dispatch = useDispatch();
@@ -39,14 +39,16 @@ const UserPage = ({ setConfirmationModal }) => {
   const currency = useSelector((state) => state.currency);
   const [isLoading, setIsLoading] = useState(true);
   const [stages, setStages] = useState({});
-  let stage = String(window.location.hash).includes("/")
-    ? window.location.hash.substring(1, window.location.hash.indexOf("/"))
-    : window.location.hash.substring(1);
+  let stage = String(location.hash).includes("/")
+    ? location.hash.substring(1, location.hash.indexOf("/"))
+    : location.hash.substring(1);
 
   useEffect(() => {
-    document.title = `My ${
-      stage.charAt(0).toUpperCase() + stage.substring(1)
-    } | ${theme.title}`;
+    if (typeof window !== "undefined") {
+      document.title = `My ${
+        stage.charAt(0).toUpperCase() + stage.substring(1)
+      } | ${theme.title}`;
+    }
   }, [stage, theme.title]);
 
   useEffect(() => {
@@ -62,7 +64,7 @@ const UserPage = ({ setConfirmationModal }) => {
           <UserProfile {...{ user, setConfirmationModal, setIsLoading }} />
         ),
         orders: <UserOrders {...{ user, currency, setIsLoading }} />,
-        order: <OrderDetails {...{ user, currency, setIsLoading }} />,
+        order: <OrderDetails {...{ location, user, currency, setIsLoading }} />,
         favourites: (
           <UserFavourites
             {...{ user, currency, setConfirmationModal, setIsLoading }}

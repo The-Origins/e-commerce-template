@@ -20,15 +20,15 @@ import FetchWorker from "../../utils/fetchWorker";
 import { useDispatch } from "react-redux";
 import { setSnackBar } from "../../state/snackBar";
 
-const OrderDetails = ({ user, currency, setIsLoading }) => {
+const OrderDetails = ({location, user, currency, setIsLoading }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const [order, setOrder] = useState({});
 
   useEffect(() => {
-    const id = String(window.location.hash).substring(
-      String(window.location.hash).indexOf("/") + 1
+    const id = String(location.hash).substring(
+      String(location.hash).indexOf("/") + 1
     );
     const fetchWorker = new FetchWorker();
     setIsLoading(true);

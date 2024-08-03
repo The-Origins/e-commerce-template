@@ -12,13 +12,13 @@ import SidebarLink from "../components/legal/sidebarLink";
 import SectionComponent from "../components/legal/sectionComponent";
 import { Menu } from "@mui/icons-material";
 
-const LegalPage = () => {
+const LegalPage = ({location}) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const [isMobileMenu, setIsMobileMenu] = useState(false);
   const containerRef = useRef(null);
   const menuButtonRef = useRef(null);
-  const hash = window.location.hash.substring(1);
+  const hash = location.hash.substring(1);
   const currentPath = hash.includes("/")
     ? hash.substring(0, hash.indexOf("/"))
     : hash;

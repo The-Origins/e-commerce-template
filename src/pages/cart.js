@@ -28,8 +28,10 @@ const CartPage = ({ setConfirmationModal }) => {
   const theme = useTheme();
 
   useEffect(() => {
-    document.title = `Cart | ${theme.title}`;
-  }, []);
+    if (typeof window !== "undefined") {
+      document.title = `Cart | ${theme.title}`;
+    }
+  }, [theme.title]);
 
   useEffect(() => {
     if (!user.isFetching) {

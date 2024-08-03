@@ -11,7 +11,9 @@ const Login = ({ setStatus, location }) => {
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
-    document.title = `Login | ${theme.title}`;
+    if (typeof window !== "undefined") {
+      document.title = `Login | ${theme.title}`;
+    }
   }, [theme.title]);
 
   const stages = [

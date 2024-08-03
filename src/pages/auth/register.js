@@ -18,8 +18,11 @@ const Register = ({ setStatus, location }) => {
   const [stage, setStage] = useState(0);
   const [registerForm, setRegisterForm] = useState({});
   const region = useSelector((state) => state.session.region);
+  
   useEffect(() => {
-    document.title = `Register | ${theme.title}`;
+    if (typeof window !== "undefined") {
+      document.title = `Register | ${theme.title}`;
+    }
   }, [theme.title]);
 
   const addPassword = (password) => {

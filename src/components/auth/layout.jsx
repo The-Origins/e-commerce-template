@@ -18,7 +18,7 @@ const AuthLayout = ({ children }) => {
   const mappedChildren = React.Children.map(children, (child) => {
     // Check if the child is a valid React element
     if (React.isValidElement(child)) {
-      // Clone the child element and add props and loading, success and error info
+      // Clone the child element and add setStatus
       return React.cloneElement(child, {
         setStatus,
       });

@@ -36,7 +36,9 @@ const CheckoutPage = () => {
   const [checkoutDetails, setCheckoutDetails] = useState({});
 
   useEffect(() => {
-    document.title = `Checkout | ${theme.title}`;
+    if(typeof window !== "undefined") {
+      document.title = `Checkout | ${theme.title}`;
+    }
   }, [theme.title]);
 
   useEffect(() => {
