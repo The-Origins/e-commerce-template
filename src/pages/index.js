@@ -13,7 +13,7 @@ import ProductCardContainer from "../components/product/productCardContainer";
 import CategoryCard from "../components/home/categoryCard";
 import Spotlights from "../components/home/spotlights";
 
-const Home = ({ setIsContact, setConfirmationModal }) => {
+const Home = ({ location, setIsContact, setConfirmationModal }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const user = useSelector((state) => state.user);
@@ -83,17 +83,17 @@ const Home = ({ setIsContact, setConfirmationModal }) => {
               </Typography>
             </Box>
             <ProductCardContainer
-              {...{ user, currency, setConfirmationModal }}
+              {...{ location, user, currency, setConfirmationModal }}
               title="Clothing"
               category={"clothing"}
             />
             <ProductCardContainer
-              {...{ user, currency, setConfirmationModal }}
+              {...{ location, user, currency, setConfirmationModal }}
               title="Electronics"
               category={"electronics"}
             />
             <ProductCardContainer
-              {...{ user, currency, setConfirmationModal }}
+              {...{ location, user, currency, setConfirmationModal }}
               title="Food"
               category="food"
             />

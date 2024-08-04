@@ -33,7 +33,7 @@ import { updateUser } from "../state/user";
 import FetchWorker from "../utils/fetchWorker";
 import { setSnackBar } from "../state/snackBar";
 
-const ProductPage = ({ setConfirmationModal }) => {
+const ProductPage = ({ location, setConfirmationModal }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const user = useSelector((state) => state.user);
@@ -42,7 +42,7 @@ const ProductPage = ({ setConfirmationModal }) => {
   const dispatch = useDispatch();
 
   const productWorker = new ProductWorker();
-  let params = new URLSearchParams(window.location.search);
+  let params = new URLSearchParams(location.search);
 
   const [isLiked, setIsLiked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
@@ -128,7 +128,7 @@ const ProductPage = ({ setConfirmationModal }) => {
     if (user.isLoggedIn) {
       setCustomizeProduct((prev) => ({ ...prev, on: true, path, action }));
     } else {
-      navigate(`/auth/login?tab=${window.location.pathname}`);
+      navigate(`/auth/login?tab=${location.pathname}`);
     }
   };
 
@@ -700,12 +700,12 @@ const ProductPage = ({ setConfirmationModal }) => {
           </Box>
         </Box>
         <ProductCardContainer
-          {...{ user, currency, setConfirmationModal }}
+          {...{ location, user, currency, setConfirmationModal }}
           title={`More in ${product.categories?.[0]}`}
           category={product.categories?.[0]}
         />
         <ProductCardContainer
-          {...{ user, session, currency, setConfirmationModal }}
+          {...{ location, user, session, currency, setConfirmationModal }}
           title={`Recently viewed`}
           isRecentlyViewedProducts
         />

@@ -37,15 +37,12 @@ export const fetchSession = createAsyncThunk(
           }, 2000);
         });
       };
-
       // Await the simulated API request
       const data = await simulateApiRequest();
-
       //set currency to the region's currency if it doesn't already have a valu
       if (!Object.keys(state.currency).length) {
         dispatch(setCurrency(currencies[data.region.currency]));
       }
-
       return data;
     } catch (error) {
       dispatch(

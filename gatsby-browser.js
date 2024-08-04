@@ -20,7 +20,7 @@ export const wrapPageElement = ({ element, props }) => {
 
   if (path.startsWith("/auth")) {
     return (
-      <AuthLayout>
+      <AuthLayout >
         <CssBaseline />
         {element}
       </AuthLayout>
@@ -28,7 +28,7 @@ export const wrapPageElement = ({ element, props }) => {
   }
 
   return (
-    <Layout>
+    <Layout location={props.location}>
       <CssBaseline />
       {element}
     </Layout>

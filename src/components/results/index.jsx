@@ -482,7 +482,7 @@ const ResultsComponent = ({ location, path, setConfirmationModal }) => {
             >
               {results.pageData.map((product) => (
                 <ProductCard
-                  {...{ setConfirmationModal, product, user, currency, offers }}
+                  {...{location, setConfirmationModal, product, user, currency, offers }}
                 />
               ))}
             </Box>

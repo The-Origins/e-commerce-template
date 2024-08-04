@@ -17,7 +17,7 @@ import NotLoggedInComponent from "../components/layout/notLoggedInComponent";
 import FetchWorker from "../utils/fetchWorker";
 import { setSnackBar } from "../state/snackBar";
 
-const CartPage = ({ setConfirmationModal }) => {
+const CartPage = ({location, setConfirmationModal }) => {
   const dispatch = useDispatch();
   const currency = useSelector((state) => state.currency);
   const user = useSelector((state) => state.user);
@@ -62,7 +62,7 @@ const CartPage = ({ setConfirmationModal }) => {
     <Box display={"flex"} justifyContent={"center"}>
       <Box minHeight={"100vh"} width={isNotPhone ? "80%" : "90%"}>
         {!isLoading && !user.isLoggedIn ? (
-          <NotLoggedInComponent message={"login to access cart"} size="large" />
+          <NotLoggedInComponent location={location} message={"login to access cart"} size="large" />
         ) : (
           <Box display={"flex"} flexDirection={"column"}>
             <Box
@@ -204,6 +204,7 @@ const CartPage = ({ setConfirmationModal }) => {
                         return (
                           <UserProductCard
                             {...{
+                              location,
                               user,
                               offers,
                               currency,
@@ -301,7 +302,7 @@ const CartPage = ({ setConfirmationModal }) => {
               )}
             </Box>
             <ProductCardContainer
-              {...{ user, session, currency, setConfirmationModal }}
+              {...{ location, user, session, currency, setConfirmationModal }}
               title={`Recently viewed`}
               isRecentlyViewedProducts
             />

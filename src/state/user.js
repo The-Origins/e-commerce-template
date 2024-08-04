@@ -8,7 +8,7 @@ import { currencies } from "country-data";
 // Thunk to fetch user data with simulated delay
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
-  async (props, { dispatch}) => {
+  async (props, { dispatch }) => {
     try {
       // Simulate an API request with a setTimeout wrapped in a Promise
       const simulateApiRequest = () => {
@@ -261,8 +261,7 @@ export const updateRecent = createAsyncThunk(
 
 const updateFavourites = createAsyncThunk(
   "user/updateFavourites",
-  async (props, { dispatch, getState }) => {
-    const state = getState();
+  async (props, { dispatch}) => {
     const { productId, details } = props.data;
 
     dispatch(
@@ -278,8 +277,7 @@ const updateFavourites = createAsyncThunk(
 
 const updateCart = createAsyncThunk(
   "user/updateCart",
-  async (props, { dispatch, getState }) => {
-    const state = getState();
+  async (props, { dispatch }) => {
     const { productId, details } = props.data;
 
     dispatch(

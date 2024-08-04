@@ -8,6 +8,7 @@ import { setSnackBar } from "../../state/snackBar";
 const UserFavourites = ({
   user,
   currency,
+  location,
   setIsLoading,
   setConfirmationModal,
 }) => {
@@ -45,7 +46,7 @@ const UserFavourites = ({
       {Object.keys(user.data.favourites).map((id) => {
         return (
           <UserProductCard
-            {...{ id, user, offers, currency, setConfirmationModal }}
+            {...{ id, user, offers, currency, location, setConfirmationModal }}
             details={user.data.favourites[id]}
             type="favourites"
           />

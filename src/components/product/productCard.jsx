@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { updateUser } from "../../state/user";
 
 const ProductCard = ({
+  location,
   product,
   user,
   currency,
@@ -74,7 +75,7 @@ const ProductCard = ({
     if (user.isLoggedIn) {
       setCustomizeProduct((prev) => ({ ...prev, on: true, path, action }));
     } else {
-      navigate(`/auth/login?tab=${window.location.pathname}`);
+      navigate(`/auth/login?tab=${location.pathname}`);
     }
   };
 

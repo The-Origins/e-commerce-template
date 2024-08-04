@@ -24,7 +24,7 @@ import NotLoggedInComponent from "../components/layout/notLoggedInComponent";
 import { setSnackBar } from "../state/snackBar";
 import ProductWorker from "../utils/productWorker";
 
-const CheckoutPage = () => {
+const CheckoutPage = ({location}) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -107,7 +107,7 @@ const CheckoutPage = () => {
   return (
     <Box minHeight={"100vh"} display={"flex"} justifyContent={"center"}>
       {!user.isFetching && !user.isLoggedIn && (
-        <NotLoggedInComponent message={"login to check out"} size="large" />
+        <NotLoggedInComponent location={location} message={"login to check out"} size="large" />
       )}
       {(user.isLoggedIn || isLoading) && (
         <Box
@@ -283,11 +283,10 @@ const CheckoutPage = () => {
                       gap={"20px"}
                       padding={"20px"}
                     >
-                      {Object.keys(checkoutDetails.items).map((item) => (
+                      {Object.keys(checkoutDetails.items).map((id) => (
                         <UserProductCard
-                          id={item}
-                          {...{ user, currency }}
-                          details={checkoutDetails.items[item]}
+                          {...{id, user, currency, location}}
+                          details={checkoutDetails.items[id]}
                           type="checkout"
                         />
                       ))}

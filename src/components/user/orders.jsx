@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import FetchWorker from "../../utils/fetchWorker";
 import { setSnackBar } from "../../state/snackBar";
 
-const UserOrders = ({ user, currency, setIsLoading }) => {
+const UserOrders = ({ location, user, currency, setIsLoading }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const dispatch = useDispatch();
@@ -105,7 +105,7 @@ const UserOrders = ({ user, currency, setIsLoading }) => {
               {Object.keys(order.items).map((id) => {
                 return (
                   <UserProductCard
-                    {...{ id, user, currency }}
+                    {...{ id, user, currency, location}}
                     details={order.items[id]}
                     type={"orders"}
                   />

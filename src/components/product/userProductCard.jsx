@@ -31,6 +31,7 @@ const UserProductCard = ({
   offers,
   currency,
   setConfirmationModal,
+  location,
   isLink = false,
 }) => {
   const dispatch = useDispatch();
@@ -80,7 +81,7 @@ const UserProductCard = ({
     if (user.isLoggedIn) {
       setCustomizeProduct((prev) => ({ ...prev, on: true, path, action }));
     } else {
-      navigate(`/auth/login?tab=${window.location.pathname}`);
+      navigate(`/auth/login?tab=${location.pathname}`);
     }
   };
 

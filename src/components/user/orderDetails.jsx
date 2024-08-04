@@ -134,7 +134,7 @@ const OrderDetails = ({location, user, currency, setIsLoading }) => {
               {Object.keys(order.items).map((id) => {
                 return (
                   <UserProductCard
-                    {...{ id, user, currency }}
+                    {...{ id, user, currency, location }}
                     details={order.items[id]}
                     isLink
                     type={"orders"}

@@ -12,6 +12,7 @@ const ProductCardContainer = ({
   user,
   session,
   currency,
+  location,
   title,
   category,
   setConfirmationModal,
@@ -138,6 +139,7 @@ const ProductCardContainer = ({
                 {products.map((product) => (
                   <ProductCard
                     {...{
+                      location,
                       product,
                       user,
                       currency,

@@ -19,7 +19,7 @@ import {
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../../state/user";
 
-const UserMenu = ({ isUserMenu, user, setConfirmationModal }) => {
+const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
   const dispatch = useDispatch();
   const menuRef = useRef(null);
 
@@ -149,10 +149,10 @@ const UserMenu = ({ isUserMenu, user, setConfirmationModal }) => {
         </>
       ) : (
         <Box display={"flex"} gap={"20px"}>
-          <Link href={`/auth/register?tab=${window.location.pathname}`}>
+          <Link href={`/auth/register?tab=${location.pathname}`}>
             <Button variant="outlined">Register</Button>
           </Link>
-          <Link href={`/auth/login?tab=${window.location.pathname}`}>
+          <Link href={`/auth/login?tab=${location.pathname}`}>
             <Button variant="contained" disableElevation>
               login
             </Button>

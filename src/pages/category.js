@@ -1,8 +1,8 @@
 import React from "react";
 import ResultsComponent from "../components/results";
 
-const CategoryPage = ({ setConfirmationModal }) => {
-  return <ResultsComponent path={"category"} {...{ setConfirmationModal }} />;
+const CategoryPage = ({location, setConfirmationModal }) => {
+  return <ResultsComponent path={"category"} {...{location, setConfirmationModal }} />;
 };
 
 export default CategoryPage;

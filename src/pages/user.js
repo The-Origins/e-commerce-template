@@ -63,11 +63,11 @@ const UserPage = ({ location, setConfirmationModal }) => {
         profile: (
           <UserProfile {...{ user, setConfirmationModal, setIsLoading }} />
         ),
-        orders: <UserOrders {...{ user, currency, setIsLoading }} />,
+        orders: <UserOrders {...{ location, user, currency, setIsLoading }} />,
         order: <OrderDetails {...{ location, user, currency, setIsLoading }} />,
         favourites: (
           <UserFavourites
-            {...{ user, currency, setConfirmationModal, setIsLoading }}
+            {...{ location, user, currency, setConfirmationModal, setIsLoading }}
           />
         ),
         notifications: <Notifications {...{ user }} />,
@@ -110,6 +110,7 @@ const UserPage = ({ location, setConfirmationModal }) => {
               <>
                 {!stage && (
                   <NotLoggedInComponent
+                    location={location}
                     message={"Login to access user info"}
                     size={"small"}
                   />
@@ -273,6 +274,7 @@ const UserPage = ({ location, setConfirmationModal }) => {
                   </Box>
                 ) : !user.isLoggedIn ? (
                   <NotLoggedInComponent
+                    location={location}
                     message={"Login to access user info"}
                     size={"small"}
                   />

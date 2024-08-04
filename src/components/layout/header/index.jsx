@@ -15,7 +15,7 @@ import {
 import { Search, ShoppingCart } from "@mui/icons-material";
 import SearchBar from "./searchBar";
 
-const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
+const Header = ({location, user, setHeaderHeight, setConfirmationModal }) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
   const [isUserMenu, setIsUserMenu] = useState(false);
@@ -88,6 +88,7 @@ const Header = ({ user, setHeaderHeight, setConfirmationModal }) => {
         >
           <UserMenu
             {...{
+              location,
               isUserMenu,
               setIsUserMenu,
               user,

@@ -11,7 +11,7 @@ import { fetchSession } from "../../state/session";
 import ContactModal from "./modals/contact";
 import ConfirmationModal from "./modals/confirmation";
 
-const Layout = ({ children }) => {
+const Layout = ({location, children }) => {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -41,7 +41,7 @@ const Layout = ({ children }) => {
       <SnackBarComponent />
       <ContactModal {...{ isContact, setIsContact }} />
       <ConfirmationModal {...{ confirmationModal, setConfirmationModal }} />
-      <Header {...{ user, setHeaderHeight, setConfirmationModal }} />
+      <Header {...{location, user, setHeaderHeight, setConfirmationModal }} />
       <Box mt={`${headerHeight + 30}px`} mb={"50px"}>
         {mappedChildren}
       </Box>
