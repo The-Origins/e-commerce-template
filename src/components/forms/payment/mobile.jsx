@@ -104,7 +104,7 @@ const MobilePayment = ({ mobileValues, setStage, setPayment }) => {
           type="submit"
           variant="contained"
           disableElevation
-          disabled={Boolean(errors.number)}
+          disabled={Boolean(errors.phoneNumber)}
         >
           confirm
         </Button>

@@ -28,7 +28,7 @@ const Home = ({ location, setIsContact, setConfirmationModal }) => {
   return (
     <Box display={"flex"} justifyContent={"center"}>
       <Box width={isNotPhone ? "80%" : "90%"}>
-        <Box display={"flex"} flexDirection={"column"} gap={"50px"}>
+        <Box display={"flex"} flexDirection={"column"} gap={"30px"}>
           <Spotlights />
           <Box
             width={"100%"}

@@ -128,7 +128,7 @@ const Footer = ({ setIsContact }) => {
               <Typography color={"text.secondary"}>Our slogan</Typography>
             </Box>
             <Box
-              flexBasis={"140px"}
+              flexBasis={"143px"}
               display={"flex"}
               flexDirection={"column"}
               gap={"10px"}
@@ -160,7 +160,7 @@ const Footer = ({ setIsContact }) => {
               </button>
             </Box>
             <Box
-              flexBasis={"140px"}
+              flexBasis={"143px"}
               display={"flex"}
               flexDirection={"column"}
               gap={"10px"}
@@ -183,7 +183,7 @@ const Footer = ({ setIsContact }) => {
               <FooterLink path={"/category?search=food"}>Food</FooterLink>
             </Box>
             <Box
-              flexBasis={"140px"}
+              flexBasis={"143px"}
               display={"flex"}
               flexDirection={"column"}
               gap={"10px"}
