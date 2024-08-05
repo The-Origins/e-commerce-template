@@ -8,5 +8,10 @@
  * @type {import('gatsby').GatsbyConfig}
  */
 module.exports = {
+  siteMetadata: {
+    title:"E-commerce web template",
+    description: "A web template for an e-commerce website",
+    author: "Wegah Studios",
+  },
   plugins: [],
 }
