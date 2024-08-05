@@ -6,13 +6,13 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import legalData from "../../lib/legal.json";
 import SidebarLink from "../components/legal/sidebarLink";
 import SectionComponent from "../components/legal/sectionComponent";
 import { Menu } from "@mui/icons-material";
 
-const LegalPage = ({location}) => {
+const LegalPage = ({ location }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const [isMobileMenu, setIsMobileMenu] = useState(false);
@@ -35,6 +35,12 @@ const LegalPage = ({location}) => {
     }
     setIsMobileMenu(false);
   };
+
+  useEffect(() => {
+    document.title = `${
+      currentPath.charAt(0).toUpperCase() + currentPath.substring(1)
+    } | ${theme.title}`;
+  }, [currentPath, theme.title]);
 
   return (
     <Box minHeight={"100vh"} display={"flex"} justifyContent={"center"}>

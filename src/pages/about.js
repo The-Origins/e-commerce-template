@@ -7,12 +7,16 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import TeamMemberCard from "../components/about/teamMemberCard";
 
 const About = () => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
+
+  useEffect(() => {
+    document.title = `About us | ${theme.title}`;
+  }, [theme.title]);
 
   return (
     <Box width={"100%"} display={"flex"} justifyContent={"center"}>
