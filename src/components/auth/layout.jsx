@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Link, ThemeProvider, Typography } from "@mui/material";
+import { Box, Button, Link,  Typography, useTheme } from "@mui/material";
 import { PhoneInTalk } from "@mui/icons-material";
-import theme from "../../theme";
 import ContactModal from "../layout/modals/contact";
 import StatusComponent from "../layout/statusComponent";
 import { useDispatch } from "react-redux";
 import { fetchSession } from "../../state/session";
 
 const AuthLayout = ({ children }) => {
+  const theme = useTheme()
   const dispatch = useDispatch();
   const [isContact, setIsContact] = useState(false);
   const [status, setStatus] = useState({
@@ -28,16 +28,15 @@ const AuthLayout = ({ children }) => {
   });
 
   useEffect(() => {
-    const handleSessionFetch = async () =>
-    {
+    const handleSessionFetch = async () => {
       await dispatch(fetchSession()).unwrap();
-      setStatus({on:false,})
-    }
-    handleSessionFetch()
+      setStatus({ on: false });
+    };
+    handleSessionFetch();
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <header
         style={{
           width: "100%",
@@ -104,7 +103,7 @@ const AuthLayout = ({ children }) => {
           Contact us
         </Button>
       </footer>
-    </ThemeProvider>
+    </>
   );
 };
 
