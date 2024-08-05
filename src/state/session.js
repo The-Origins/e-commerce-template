@@ -28,7 +28,6 @@ export const fetchSession = createAsyncThunk(
   async (props, { dispatch, getState }) => {
     try {
       const state = getState();
-      console.log(state.currency);
       // Simulate an API request with a setTimeout wrapped in a Promise
       const simulateApiRequest = () => {
         return new Promise((resolve) => {
@@ -41,7 +40,9 @@ export const fetchSession = createAsyncThunk(
       // Await the simulated API request
       const data = await simulateApiRequest();
       //set currency to the region's currency if it doesn't already have a value
-      dispatch(setCurrency(currencies[data.region.currency]));
+      if (Object.keys(state.currency).length < 5) {
+        dispatch(setCurrency(currencies[data.region.currency]));
+      }
       return data;
     } catch (error) {
       dispatch(
