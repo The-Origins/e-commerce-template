@@ -410,7 +410,7 @@ const ProductPage = ({ location, setConfirmationModal }) => {
                       <Box width={"100%"} display={"flex"} gap={"20px"}>
                         <Button
                           onClick={() =>
-                            changeCustomizeProduct("favourites", "EDIT")
+                            changeCustomizeProduct("cart", "EDIT")
                           }
                           startIcon={<Edit />}
                           variant="outlined"
@@ -530,12 +530,9 @@ const ProductPage = ({ location, setConfirmationModal }) => {
                       }
                     >
                       <Link
-                        href={
-                          !isSearchExeption
-                            ? `/results?${searchString}`
-                            : undefined
-                        }
+                        href={`/results?${searchString}`}
                         sx={{
+                          pointerEvents: isSearchExeption ? "none" : "all",
                           textDecoration: "none",
                           color: theme.palette.text.primary,
                           width: "100%",

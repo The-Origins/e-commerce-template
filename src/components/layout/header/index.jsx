@@ -15,7 +15,7 @@ import {
 import { Search, ShoppingCart } from "@mui/icons-material";
 import SearchBar from "./searchBar";
 
-const Header = ({location, user, setHeaderHeight, setConfirmationModal }) => {
+const Header = ({ location, user, setHeaderHeight, setConfirmationModal }) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
   const [isUserMenu, setIsUserMenu] = useState(false);
@@ -147,33 +147,31 @@ const Header = ({location, user, setHeaderHeight, setConfirmationModal }) => {
               </Tooltip>
             </Link>
             <ClickAwayListener onClickAway={() => setIsUserMenu(false)}>
-              <Link href={isNotPhone ? undefined : "/user"}>
-                <IconButton
-                  disabled={user.isFetching}
-                  onClick={() => {
-                    setIsUserMenu((prev) => !prev);
-                  }}
+              <IconButton
+                disabled={user.isFetching}
+                onClick={() => {
+                  setIsUserMenu((prev) => !prev);
+                }}
+              >
+                <Badge
+                  color="primary"
+                  variant="dot"
+                  overlap="circular"
+                  invisible={
+                    user.isLoggedIn ? !user.data.notifications.new : true
+                  }
+                  badgeContent=" "
                 >
-                  <Badge
-                    color="primary"
-                    variant="dot"
-                    overlap="circular"
-                    invisible={
-                      user.isLoggedIn ? !user.data.notifications.new : true
-                    }
-                    badgeContent=" "
-                  >
-                    <Avatar
-                      alt="profile image"
-                      sx={{
-                        bgcolor: isUserMenu ? "primary.main" : undefined,
-                        width: "clamp(1.8rem, 3vw, 2.3rem)",
-                        height: "clamp(1.8rem, 3vw, 2.3rem)",
-                      }}
-                    />
-                  </Badge>
-                </IconButton>
-              </Link>
+                  <Avatar
+                    alt="profile image"
+                    sx={{
+                      bgcolor: isUserMenu ? "primary.main" : undefined,
+                      width: "clamp(1.8rem, 3vw, 2.3rem)",
+                      height: "clamp(1.8rem, 3vw, 2.3rem)",
+                    }}
+                  />
+                </Badge>
+              </IconButton>
             </ClickAwayListener>
           </Box>
         </Box>

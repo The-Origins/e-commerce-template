@@ -3,18 +3,13 @@ import {
   Box,
   Button,
   IconButton,
-  Link,
   Skeleton,
   Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import {
-  AddShoppingCart,
-  Delete,
-  Edit,
-} from "@mui/icons-material";
+import { AddShoppingCart, Delete, Edit } from "@mui/icons-material";
 import CustomizeProduct from "./customizeProduct";
 import EditModal from "../layout/modals/edit";
 import { navigate } from "gatsby";
@@ -32,7 +27,6 @@ const UserProductCard = ({
   currency,
   setConfirmationModal,
   location,
-  isLink = false,
 }) => {
   const dispatch = useDispatch();
   const { total: value, ...remainingDetails } = details;
@@ -61,7 +55,10 @@ const UserProductCard = ({
       });
   }, [reloadCounter]);
 
-  const handleDelete = (path = "cart") => {
+  const handleDelete = (event, path = "cart") => {
+    event.preventDefault();
+    event.stopPropagation();
+
     setConfirmationModal({
       on: true,
       message: `Are you sure you want to remove '${product.name}' from your ${path}`,
@@ -82,74 +79,93 @@ const UserProductCard = ({
       setCustomizeProduct((prev) => ({ ...prev, on: true, path, action }));
     } else {
       navigate(`/auth/login?tab=${location.pathname}`);
-    }
+    } 
+  };
+
+  const edit = (event, path) => {
+    event.preventDefault();
+    event.stopPropagation();
+    changeCustomizeProduct(path, "EDIT");
+  };
+
+  const add = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    changeCustomizeProduct("cart", "ADD");
   };
 
   return (
-    <Box
-      maxWidth={"100%"}
-      display={"flex"}
-      alignItems={"center"}
-      boxShadow={!isLoading && `0px 0px 10px 0px ${theme.palette.grey[300]}`}
-      borderRadius={"20px"}
-      padding={!isLoading && "20px"}
-      gap={"20px"}
-      sx={{
-        transition: "0.3s",
-        ":hover": {
-          boxShadow:
-            type === "cart"
-              ? `0px 0px 10px 0px ${theme.palette.grey[400]}`
-              : undefined,
-        },
-        ":hover .cart-item-options": {
-          opacity: 1,
-        },
+    <a
+      href={`/product?p=${product.id}`}
+      style={{
+        textDecoration: "none",
+        color: "black",
+      }}
+      onClick={(event) => {
+        if (customizeProduct.on) {
+          event.preventDefault();
+        }
       }}
     >
-      {isLoading ? (
-        <Skeleton width={"100%"} height={"100px"} variant="rounded" />
-      ) : isError ? (
-        <IsErrorComponent size={"small"} flexDirection={"row"} setReloadCounter={setReloadCounter}/>
-      ) : (
-        <>
-          {(type === "cart" || type === "favourites") && (
-            <EditModal
-              isEdit={customizeProduct.on}
-              width={"min(700px, 90%)"}
-              handleClose={() => setCustomizeProduct({ on: false })}
-            >
-              <CustomizeProduct
-                {...{
-                  product,
-                  user,
-                  offers,
-                  currency,
-                  customizeProduct,
-                  setCustomizeProduct,
-                }}
-              />
-            </EditModal>
-          )}
-          <Box
-            height={"90px"}
-            width={"clamp(100px, 2vw, 200px)"}
-            sx={{
-              backgroundImage: `url(${product.images[0]})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              borderRadius: "5px",
-            }}
+      <Box
+        maxWidth={"100%"}
+        display={"flex"}
+        alignItems={"center"}
+        boxShadow={!isLoading && `0px 0px 10px 0px ${theme.palette.grey[300]}`}
+        borderRadius={"20px"}
+        padding={!isLoading && "20px"}
+        gap={"20px"}
+        sx={{
+          transition: "0.3s",
+          ":hover": {
+            boxShadow:
+              type === "cart"
+                ? `0px 0px 10px 0px ${theme.palette.grey[400]}`
+                : undefined,
+          },
+          ":hover .cart-item-options": {
+            opacity: 1,
+          },
+        }}
+      >
+        {isLoading ? (
+          <Skeleton width={"100%"} height={"100px"} variant="rounded" />
+        ) : isError ? (
+          <IsErrorComponent
+            size={"small"}
+            flexDirection={"row"}
+            setReloadCounter={setReloadCounter}
           />
-          <Link
-            href={isLink ? `/product/?p=${id}` : undefined}
-            sx={{
-              color: "black",
-              textDecoration: "none",
-              width: "100%",
-              height: "100%",
-            }}
-          >
+        ) : (
+          <>
+            {(type === "cart" || type === "favourites") && (
+              <EditModal
+                isEdit={customizeProduct.on}
+                width={"min(700px, 90%)"}
+                handleClose={() => setCustomizeProduct({ on: false })}
+              >
+                <CustomizeProduct
+                  {...{
+                    product,
+                    user,
+                    offers,
+                    currency,
+                    customizeProduct,
+                    setCustomizeProduct,
+                  }}
+                />
+              </EditModal>
+            )}
+            <Box
+              height={"90px"}
+              width={"clamp(100px, 2vw, 200px)"}
+              sx={{
+                backgroundImage: `url(${product.images[0]})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                borderRadius: "5px",
+              }}
+            />
             <Box
               pl={"10px"}
               display={"flex"}
@@ -193,7 +209,7 @@ const UserProductCard = ({
                     size="small"
                     sx={{ ":hover": { color: "primary.main" } }}
                     startIcon={isNotPhone ? <Delete /> : undefined}
-                    onClick={() => handleDelete("favourites")}
+                    onClick={(event) => handleDelete(event, type)}
                   >
                     Remove
                   </Button>
@@ -202,7 +218,7 @@ const UserProductCard = ({
                     disableElevation
                     size="small"
                     sx={{ alignSelf: "flex-start" }}
-                    onClick={() => changeCustomizeProduct("cart", "ADD")}
+                    onClick={add}
                     startIcon={isNotPhone ? <AddShoppingCart /> : undefined}
                   >
                     Add to cart
@@ -219,7 +235,7 @@ const UserProductCard = ({
                 >
                   <Button
                     sx={{ ":hover": { color: "primary.main" } }}
-                    onClick={() => changeCustomizeProduct("cart", "EDIT")}
+                    onClick={(event) => edit(event, type)}
                     startIcon={<Edit />}
                     size="small"
                   >
@@ -231,43 +247,43 @@ const UserProductCard = ({
                     size="small"
                     sx={{ ":hover": { color: "primary.main" } }}
                     startIcon={<Delete />}
-                    onClick={() => handleDelete("cart")}
+                    onClick={(event) => handleDelete(event, type)}
                   >
                     Remove
                   </Button>
                 </Box>
               )}
             </Box>
-          </Link>
-          {isNotPhone && type === "cart" && (
-            <Box
-              className={"cart-item-options"}
-              display={"flex"}
-              flexDirection={"column"}
-              gap={"10px"}
-              sx={{ opacity: 0, transition: "0.2s" }}
-            >
-              <Tooltip title="Edit" placement="right">
-                <IconButton
-                  sx={{ ":hover": { color: "primary.main" } }}
-                  onClick={() => changeCustomizeProduct("cart", "EDIT")}
-                >
-                  <Edit />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Remove from cart" placement="right">
-                <IconButton
-                  sx={{ ":hover": { color: "primary.main" } }}
-                  onClick={() => handleDelete("cart")}
-                >
-                  <Delete />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          )}
-        </>
-      )}
-    </Box>
+            {isNotPhone && type === "cart" && (
+              <Box
+                className={"cart-item-options"}
+                display={"flex"}
+                flexDirection={"column"}
+                gap={"10px"}
+                sx={{ opacity: 0, transition: "0.2s" }}
+              >
+                <Tooltip title="Edit" placement="right">
+                  <IconButton
+                    sx={{ ":hover": { color: "primary.main" } }}
+                    onClick={(event) => edit(event, type)}
+                  >
+                    <Edit />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Remove from cart" placement="right">
+                  <IconButton
+                    sx={{ ":hover": { color: "primary.main" } }}
+                    onClick={(event) => handleDelete(event, type)}
+                  >
+                    <Delete />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            )}
+          </>
+        )}
+      </Box>
+    </a>
   );
 };
 

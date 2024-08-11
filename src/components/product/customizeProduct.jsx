@@ -2,18 +2,19 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
   IconButton,
-  Radio,
-  RadioGroup,
   Typography,
   useTheme,
 } from "@mui/material";
 import ProductWorker from "../../utils/productWorker";
-import { AddCircle, RemoveCircle } from "@mui/icons-material";
+import {
+  AddCircle,
+  CheckBox,
+  CheckBoxOutlineBlank,
+  RadioButtonChecked,
+  RadioButtonUnchecked,
+  RemoveCircle,
+} from "@mui/icons-material";
 import { updateUser } from "../../state/user";
 import { useDispatch } from "react-redux";
 
@@ -45,23 +46,23 @@ const CustomizeProduct = ({
     }
   }, [product, user]);
 
-  const handleProductDetailsChange = ({ target }) => {
+  const handleProductDetailsChange = ({ name, value }) => {
     setProductDetails((prev) => {
       if (
-        product.variants[target.name] &&
-        product.variants[target.name].multiSelect
+        product.variants[name] &&
+        product.variants[name].multiSelect
       ) {
-        let selected = prev[target.name] || [];
-        if (target.checked) {
-          selected = [...selected, target.value];
+        let selected = prev[name] || [];
+        if (!selected.includes(value)) {
+          selected = [...selected, value];
         } else {
-          selected = selected.filter((option) => option !== target.value) || [];
+          selected = selected.filter((option) => option !== value) || [];
         }
-        return { ...prev, [target.name]: selected };
+        return { ...prev, [name]: selected };
       }
       return {
         ...prev,
-        [target.name]: target.value,
+        [name]: value,
       };
     });
     setProductDetails((prev) => {
@@ -75,25 +76,21 @@ const CustomizeProduct = ({
 
   const reduceQuantity = () => {
     handleProductDetailsChange({
-      target: {
-        name: "quantity",
-        value:
-          productDetails.quantity > 1
-            ? productDetails.quantity - 1
-            : productDetails.quantity,
-      },
+      name: "quantity",
+      value:
+        productDetails.quantity > 1
+          ? productDetails.quantity - 1
+          : productDetails.quantity,
     });
   };
 
   const increaseQuantity = () => {
     handleProductDetailsChange({
-      target: {
-        name: "quantity",
-        value:
-          productDetails.quantity < maxQuantity
-            ? productDetails.quantity + 1
-            : productDetails.quantity,
-      },
+      name: "quantity",
+      value:
+        productDetails.quantity < maxQuantity
+          ? productDetails.quantity + 1
+          : productDetails.quantity,
     });
   };
 
@@ -208,86 +205,78 @@ const CustomizeProduct = ({
               </Box>
             </Box>
             {Object.keys(product.variants) &&
-              Object.keys(product.variants).map((variant, index) => (
+              Object.keys(product.variants).map((variant) => (
                 <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
                   <Typography fontWeight={"bold"}>
                     {`${
                       variant.charAt(0).toUpperCase() + variant.substring(1)
                     }:`}
                   </Typography>
-                  <Box display={"flex"} alignItems={"center"} gap={"20px"}>
-                    {product.variants[variant].multiSelect &&
-                    productDetails[variant] ? (
-                      <FormControl>
-                        <FormGroup name={variant} sx={{ flexDirection: "row" }}>
-                          {Object.keys(product.variants[variant]).map(
-                            (option) => {
-                              if (option === "multiSelect") {
-                                return <></>;
-                              }
-                              return (
-                                <FormControlLabel
-                                  name={variant}
-                                  value={option}
-                                  checked={productDetails[variant].includes(
-                                    option
-                                  )}
-                                  onChange={handleProductDetailsChange}
-                                  control={<Checkbox />}
-                                  label={
-                                    <Box display={"flex"} gap={"5px"}>
-                                      <Typography>
-                                        {option.charAt(0).toUpperCase() +
-                                          option.substring(1)}
-                                      </Typography>
-                                      {product.variants[variant][option] >
-                                        0 && (
-                                        <Typography color={"primary.main"}>
-                                          (+{product.variants[variant][option]})
-                                        </Typography>
-                                      )}
-                                    </Box>
-                                  }
-                                />
-                              );
-                            }
-                          )}
-                        </FormGroup>
-                      </FormControl>
-                    ) : (
-                      <FormControl>
-                        <RadioGroup
-                          row
-                          aria-labelledby={`product-${product.id}-variant-${index}-options`}
-                          name={variant}
-                          value={productDetails[variant]}
-                          onChange={handleProductDetailsChange}
+                  <Box display={"flex"} gap={"10px"} flexWrap={"wrap"}>
+                    {Object.keys(product.variants[variant]).map((option) => {
+                      if (option === "multiSelect") {
+                        return <></>;
+                      }
+                      return (
+                        <button
+                          onClick={() =>
+                            handleProductDetailsChange({
+                              name: variant,
+                              value: option,
+                            })
+                          }
+                          style={{
+                            cursor: "pointer",
+                            padding: "0px",
+                            margin: "0px",
+                            textTransform: "none",
+                            textAlign: "left",
+                            backgroundColor: "transparent",
+                            border: "none",
+                          }}
                         >
-                          {Object.keys(product.variants[variant]).map(
-                            (option) => (
-                              <FormControlLabel
-                                value={option}
-                                control={<Radio />}
-                                label={
-                                  <Box display={"flex"} gap={"5px"}>
-                                    <Typography>
-                                      {option.charAt(0).toUpperCase() +
-                                        option.substring(1)}
-                                    </Typography>
-                                    {product.variants[variant][option] > 0 && (
-                                      <Typography color={"primary.main"}>
-                                        (+{product.variants[variant][option]})
-                                      </Typography>
-                                    )}
-                                  </Box>
-                                }
-                                checked={productDetails[variant] === option}
+                          <Box
+                            display={"flex"}
+                            alignItems={"center"}
+                            gap={"5px"}
+                            sx={{
+                              ":hover": { bgcolor: theme.palette.grey[100] },
+                            }}
+                          >
+                            {product.variants[variant].multiSelect ? (
+                              productDetails[variant] &&
+                              productDetails[variant].includes(option) ? (
+                                <CheckBox sx={{ color: "primary.main" }} />
+                              ) : (
+                                <CheckBoxOutlineBlank
+                                  sx={{ color: theme.palette.grey[600] }}
+                                />
+                              )
+                            ) : productDetails[variant] === option ? (
+                              <RadioButtonChecked
+                                sx={{ color: "primary.main" }}
                               />
-                            )
-                          )}
-                        </RadioGroup>
-                      </FormControl>
-                    )}
+                            ) : (
+                              <RadioButtonUnchecked
+                                sx={{ color: theme.palette.grey[600] }}
+                              />
+                            )}
+                            <Box display={"flex"} gap={"5px"}>
+                              <Typography>
+                                {option.charAt(0).toUpperCase() +
+                                  option.substring(1)}
+                              </Typography>
+                              {Number(product.variants[variant][option]) !==
+                                0 && (
+                                <Typography color={"primary.main"}>
+                                  (+{product.variants[variant][option]})
+                                </Typography>
+                              )}
+                            </Box>
+                          </Box>
+                        </button>
+                      );
+                    })}
                   </Box>
                 </Box>
               ))}

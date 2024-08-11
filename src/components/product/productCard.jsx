@@ -6,10 +6,10 @@ import {
   IconButton,
   Rating,
   Typography,
-  Link,
   useMediaQuery,
   Tooltip,
 } from "@mui/material";
+import { Link } from "gatsby";
 import CustomizeProduct from "./customizeProduct";
 import ProductWorker from "../../utils/productWorker";
 import EditModal from "../layout/modals/edit";
@@ -47,12 +47,26 @@ const ProductCard = ({
     }
   }, [user, product]);
 
-  const handleFavourite = () => {
+  const handleFavourite = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     if (isLiked) {
       handleDelete();
     } else {
       changeCustomizeProduct("favourites", "ADD");
     }
+  };
+
+  const edit = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    changeCustomizeProduct("cart", "EDIT");
+  };
+
+  const add = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    changeCustomizeProduct("cart", "ADD");
   };
 
   const handleDelete = (path = "favourites") => {
@@ -80,129 +94,116 @@ const ProductCard = ({
   };
 
   return (
-    <Box
-      margin={"10px"}
-      boxShadow={`0px 0px 10px 0px ${theme.palette.grey[300]}`}
-      overflow={"hidden"}
-      borderRadius={"20px"}
-      width={"clamp(130px, 40vw, 250px)"}
-      height={"clamp(300px, 50vw, 350px)"}
-      sx={{
-        display: "inline-block",
-        transition: "0.3s",
-        ":hover": {
-          boxShadow: `0px 0px 10px 0px ${theme.palette.grey[400]}`,
-        },
+    <a
+      href={`/product?p=${product.id}`}
+      style={{ textDecoration: "none", color: "black", padding: "10px" }}
+      onClick={(event) => {
+        if (customizeProduct.on) {
+          event.preventDefault();
+        }
       }}
     >
-      <EditModal
-        isEdit={customizeProduct.on}
-        width={"min(700px, 90%)"}
-        handleClose={() => setCustomizeProduct({ on: false })}
-      >
-        <CustomizeProduct
-          {...{
-            product,
-            user,
-            offers,
-            currency,
-            customizeProduct,
-            setCustomizeProduct,
-          }}
-        />
-      </EditModal>
       <Box
-        display={"flex"}
-        flexDirection={"column"}
-        width={"100%"}
-        height={"100%"}
-        position={"relative"}
+        boxShadow={`0px 0px 10px 0px ${theme.palette.grey[300]}`}
+        overflow={"hidden"}
+        borderRadius={"20px"}
+        width={"clamp(130px, 40vw, 250px)"}
+        height={"clamp(300px, 50vw, 350px)"}
+        sx={{
+          transition: "0.3s",
+          ":hover": {
+            boxShadow: `0px 0px 10px 0px ${theme.palette.grey[400]}`,
+          },
+        }}
       >
-        <Box
-          position={"absolute"}
-          width={"100%"}
-          height={"100%"}
-          display={"flex"}
-          flexDirection={"column"}
+        <EditModal
+          isEdit={customizeProduct.on}
+          width={"min(700px, 90%)"}
+          handleClose={() => setCustomizeProduct({ on: false })}
         >
-          <Box
-            top={0}
-            width={"100%"}
-            display={"flex"}
-            justifyContent={"space-between"}
-            alignItems={"center"}
-          >
-            <Tooltip title={isLiked ? "Favourited" : "Add to favourites"}>
-              <IconButton onClick={handleFavourite}>
-                <Favorite sx={{ color: isLiked ? "primary.main" : "white" }} />
-              </IconButton>
-            </Tooltip>
-            {isInCart ? (
-              <Box display={"flex"} gap={"2px"}>
-                <Tooltip title="edit">
-                  <IconButton
-                    sx={{ transition: "0.2s" }}
-                    onClick={() => changeCustomizeProduct("cart", "EDIT")}
-                  >
-                    <Edit sx={{ color: "white" }} />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="go to cart">
-                  <Link href="/cart">
-                    <IconButton>
-                      <ShoppingCart
-                        sx={{
-                          color: "white",
-                        }}
-                      />
-                    </IconButton>
-                  </Link>
-                </Tooltip>
-              </Box>
-            ) : (
-              <Tooltip title={"add to cart"}>
-                <IconButton
-                  onClick={() => changeCustomizeProduct("cart", "ADD")}
-                  sx={{ color: "white" }}
-                >
-                  <AddCircle />
-                </IconButton>
-              </Tooltip>
-            )}
-          </Box>
-          <Link
-            href={`/product?p=${product.id}`}
-            sx={{ width: "100%", height: "100%" }}
-          />
-        </Box>
-        <Box width={"100%"} height={"50%"}>
-          <Box
-            sx={{
-              width: "100%",
-              height: "100%",
-              backgroundImage: `url(${product.images[0]})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              borderRadius: "20px",
+          <CustomizeProduct
+            {...{
+              product,
+              user,
+              offers,
+              currency,
+              customizeProduct,
+              setCustomizeProduct,
             }}
           />
-        </Box>
+        </EditModal>
         <Box
-          width={"100%"}
-          height={"50%"}
           display={"flex"}
-          justifyContent={"center"}
-          alignItems={"center"}
+          flexDirection={"column"}
+          width={"100%"}
+          height={"100%"}
         >
+          <Box width={"100%"} height={"50%"} position={"relative"}>
+            <Box
+              top={0}
+              width={"100%"}
+              display={"flex"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              position={"absolute"}
+            >
+              <Tooltip title={isLiked ? "Favourited" : "Add to favourites"}>
+                <IconButton onClick={handleFavourite}>
+                  <Favorite
+                    sx={{ color: isLiked ? "primary.main" : "white" }}
+                  />
+                </IconButton>
+              </Tooltip>
+              {isInCart ? (
+                <Box display={"flex"} gap={"2px"}>
+                  <Tooltip title="edit">
+                    <IconButton sx={{ transition: "0.2s" }} onClick={edit}>
+                      <Edit sx={{ color: "white" }} />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="go to cart">
+                    <Link
+                      href="/cart"
+                      onClick={(event) => event.stopPropagation()}
+                    >
+                      <IconButton>
+                        <ShoppingCart
+                          sx={{
+                            color: "white",
+                          }}
+                        />
+                      </IconButton>
+                    </Link>
+                  </Tooltip>
+                </Box>
+              ) : (
+                <IconButton onClick={add} sx={{ color: "white" }}>
+                  <AddCircle />
+                </IconButton>
+              )}
+            </Box>
+            <Box
+              sx={{
+                width: "100%",
+                height: "100%",
+                backgroundImage: `url(${product.images[0]})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                borderRadius: "20px",
+              }}
+            />
+          </Box>
           <Box
-            height={"90%"}
-            width={"90%"}
+            padding={"10px"}
+            width={"100%"}
+            height={"50%"}
             display={"flex"}
             flexDirection={"column"}
             justifyContent={"space-evenly"}
           >
-            <Box display={"flex"} flexDirection={"column"} gap={"1px"}>
+            <Box display={"flex"} flexDirection={"column"} width={"100%"}>
               <Box
+                width={"100%"}
                 display={"flex"}
                 justifyContent={"space-between"}
                 alignItems={"center"}
@@ -271,7 +272,7 @@ const ProductCard = ({
           </Box>
         </Box>
       </Box>
-    </Box>
+    </a>
   );
 };
 

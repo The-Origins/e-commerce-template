@@ -213,7 +213,6 @@ const CartPage = ({location, setConfirmationModal }) => {
                             id={cartItem}
                             details={user.data.cart.items[cartItem]}
                             type="cart"
-                            isLink
                           />
                         );
                       })

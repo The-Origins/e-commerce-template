@@ -24,13 +24,14 @@ const OrderDetails = ({location, user, currency, setIsLoading }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
-  const [order, setOrder] = useState({});
+  const [order, setOrder] = useState();
 
   useEffect(() => {
-    const id = String(location.hash).substring(
-      String(location.hash).indexOf("/") + 1
+    const id = String(window.location.hash).substring(
+      String(window.location.hash).indexOf("/") + 1
     );
     const fetchWorker = new FetchWorker();
+    console.log(id)
     setIsLoading(true);
     fetchWorker
       .fetchOrder(id)
@@ -48,7 +49,9 @@ const OrderDetails = ({location, user, currency, setIsLoading }) => {
           })
         );
       });
-  }, []);
+  }, [location ]);
+
+  console.log(order)
 
   return (
     <Box
@@ -63,7 +66,7 @@ const OrderDetails = ({location, user, currency, setIsLoading }) => {
           </IconButton>
         </Link>
       </Box>
-      {Boolean(Object.keys(order).length) && (
+      {order && (
         <Box
           borderRadius={"25px"}
           display={"flex"}
@@ -136,7 +139,6 @@ const OrderDetails = ({location, user, currency, setIsLoading }) => {
                   <UserProductCard
                     {...{ id, user, currency, location }}
                     details={order.items[id]}
-                    isLink
                     type={"orders"}
                   />
                 );
