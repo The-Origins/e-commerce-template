@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { Search, ShoppingCart } from "@mui/icons-material";
 import SearchBar from "./searchBar";
+import { navigate } from "gatsby";
 
 const Header = ({ location, user, setHeaderHeight, setConfirmationModal }) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -150,7 +151,11 @@ const Header = ({ location, user, setHeaderHeight, setConfirmationModal }) => {
               <IconButton
                 disabled={user.isFetching}
                 onClick={() => {
-                  setIsUserMenu((prev) => !prev);
+                  if (isNotPhone) {
+                    setIsUserMenu((prev) => !prev);
+                  } else {
+                    navigate("/user");
+                  }
                 }}
               >
                 <Badge

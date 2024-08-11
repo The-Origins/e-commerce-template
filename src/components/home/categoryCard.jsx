@@ -10,22 +10,22 @@ import {
 import React from "react";
 import SkeletonGroup from "../layout/skeletonGroup";
 
-const CategoryCard = ({isLoading, subTitle, title, image, description}) => {
+const CategoryCard = ({ isLoading, subTitle, title, image, description }) => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
-  const search = new URLSearchParams(title.toLowerCase()).toString().replace("=", "")
+  const search = new URLSearchParams(title.toLowerCase())
+    .toString()
+    .replace("=", "");
 
   return (
     <Box
-      maxWidth={"400px"}
       borderRadius={"25px"}
       boxShadow={`0px 0px 10px 0px ${theme.palette.grey[400]}`}
       padding={"30px 20px"}
-      flexBasis={300}
+      flexBasis={200}
       flexGrow={1}
       display={"flex"}
       alignItems={"center"}
-      justifyContent={"center"}
     >
       <Box
         width={"100%"}
@@ -35,13 +35,9 @@ const CategoryCard = ({isLoading, subTitle, title, image, description}) => {
         gap={"20px"}
         flexDirection={isNotPhone ? "row" : "row-reverse"}
       >
-        <Box
-          display={"flex"}
-          flexDirection={"column"}
-          gap={"20px"}
-        >
+        <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
           {isLoading ? (
-            <SkeletonGroup count={3}  width={"100%"} />
+            <SkeletonGroup count={3} width={"100%"} />
           ) : (
             <Box
               display={"flex"}
