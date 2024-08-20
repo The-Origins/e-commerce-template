@@ -44,7 +44,7 @@ const UserOrders = ({ location, user, currency, setIsLoading }) => {
     >
       {orders.map((order) => (
         <Link
-          href={`/user/#order/${order.id}`}
+          href={`/user/order/${order.id}`}
           width={"100%"}
           sx={{ textDecoration: "none", color: "black" }}
         >

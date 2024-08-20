@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Box} from "@mui/material";
 import "../../styles/index.css";
 import Header from "./header";
 import Footer from "./footer";
@@ -13,7 +12,6 @@ import ConfirmationModal from "./modals/confirmation";
 const Layout = ({ location, children }) => {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
-  const [headerHeight, setHeaderHeight] = useState(0);
   const [confirmationModal, setConfirmationModal] = useState({ on: false });
   const [isContact, setIsContact] = useState();
 
@@ -40,10 +38,8 @@ const Layout = ({ location, children }) => {
       <SnackBarComponent />
       <ContactModal {...{ isContact, setIsContact }} />
       <ConfirmationModal {...{ confirmationModal, setConfirmationModal }} />
-      <Header {...{ location, user, setHeaderHeight, setConfirmationModal }} />
-      <Box mt={`${headerHeight + 30}px`} mb={"50px"}>
-        {mappedChildren}
-      </Box>
+      <Header {...{ location, user, setConfirmationModal }} />
+      <main style={{marginBottom:"50px"}}>{mappedChildren}</main>
       <Footer {...{ setIsContact }} />
     </>
   );

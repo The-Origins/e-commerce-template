@@ -31,6 +31,7 @@ import FilterComponent from "./filterComponent";
 import ActiveFiltersComponent from "./activeFiltersComponent";
 import FetchWorker from "../../utils/fetchWorker";
 import { setSnackBar } from "../../state/snackBar";
+import { Helmet } from "react-helmet";
 
 const ResultsComponent = ({ location, path, setConfirmationModal }) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -68,10 +69,6 @@ const ResultsComponent = ({ location, path, setConfirmationModal }) => {
   }, [results]);
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      document.title = `Search results for '${search}'`;
-    }
-    
     fetchWorker
       .fetchOffers()
       .then((res) => {
@@ -215,336 +212,358 @@ const ResultsComponent = ({ location, path, setConfirmationModal }) => {
   };
 
   return (
-    <Box display={"flex"} justifyContent={"center"}>
-      <Box
-        minHeight={"100vh"}
-        display={"flex"}
-        width={isNotPhone ? "87%" : "95%"}
-      >
-        <ClickAwayListener onClickAway={handleClickAway}>
-          <Box
-            position={isNotPhone ? "static" : "fixed"}
-            width={isNotPhone ? "290px" : "95%"}
-            borderRadius={"25px 25px 0px 0px"}
-            height={isNotPhone ? undefined : isMobileFilters ? "70%" : "0px"}
-            bottom={0}
-            display={"flex"}
-            flexDirection={"column"}
-            bgcolor={"white"}
-            zIndex={!isNotPhone && isMobileFilters ? 1 : 0}
-            sx={{ transformOrigin: "bottom", transition: "0.4s" }}
-            boxShadow={
-              isNotPhone
-                ? undefined
-                : `0px 0px 10px 0px ${theme.palette.grey[400]}`
-            }
-          >
-            {!isNotPhone && (
-              <>
-                <Box
-                  padding={"10px"}
-                  width={"100%"}
-                  display={"flex"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  position={"relative"}
-                >
-                  <Typography
-                    sx={{ typography: "secondaryFont", fontWeight: "bold" }}
-                  >
-                    Filters
-                  </Typography>
-                  <IconButton
-                    onClick={() => setIsMobileFilters(false)}
-                    sx={{ position: "absolute", right: 5 }}
-                  >
-                    <Close />
-                  </IconButton>
-                </Box>
-              </>
-            )}
-            <Box height={"100%"} overflow={isNotPhone ? undefined : "scroll"}>
-              {isLoading ? (
-                <SkeletonGroup count={3} height="200px" width={"200px"} />
-              ) : (
-                <Box
-                  display={"flex"}
-                  flexDirection={"column"}
-                  gap={"20px"}
-                  padding={"20px"}
-                >
-                  <Box
-                    width={"100%"}
-                    boxShadow={`0px 0px 10px 0px ${theme.palette.grey[400]}`}
-                    display={"flex"}
-                    flexDirection={"column"}
-                    alignItems={"center"}
-                    borderRadius={"10px"}
-                    gap={"20px"}
-                    padding={"30px"}
-                    position={"relative"}
-                  >
-                    <Typography justifySelf={"center"} fontWeight={"bold"}>
-                      Price
-                    </Typography>
-                    {(filters.min !== price.min ||
-                      filters.max !== price.max) && (
-                      <Box position={"absolute"} right={5} top={25}>
-                        <IconButton onClick={() => resetFilter("price")}>
-                          <RotateLeft />
-                        </IconButton>
-                      </Box>
-                    )}
-                    <TextField
-                      fullWidth
-                      step="10"
-                      type="number"
-                      size="small"
-                      label="min"
-                      name="min"
-                      value={priceFilter.min}
-                      onChange={handlePriceChange}
-                      sx={{ "& > div": { fontSize: "13px" } }}
-                      InputProps={{
-                        min: price.min,
-                        max: price.max,
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Typography>{currency.symbol}</Typography>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <TextField
-                      fullWidth
-                      step="10"
-                      type="number"
-                      size="small"
-                      label="max"
-                      name="max"
-                      value={priceFilter.max}
-                      onChange={handlePriceChange}
-                      sx={{ "& > div": { fontSize: "13px" } }}
-                      InputProps={{
-                        min: price.min,
-                        max: price.max,
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Typography>{currency.symbol}</Typography>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <Slider
-                      name="priceSlider"
-                      max={price.max}
-                      min={price.min}
-                      value={[priceFilter.min, priceFilter.max]}
-                      onChange={handlePriceChange}
-                      valueLabelDisplay="auto"
-                      step={10}
-                    />
-                    {(priceFilter.min !== price.min ||
-                      priceFilter.max !== price.max) &&
-                      (filters.min !== priceFilter.min ||
-                        filters.max !== priceFilter.max) && (
-                        <Button
-                          variant="contained"
-                          disableElevation
-                          onClick={handlePriceSave}
-                        >
-                          save
-                        </Button>
-                      )}
-                  </Box>
-                  {Object.keys(filterOptions).map((option) => (
-                    <FilterComponent
-                      {...{
-                        option,
-                        filterOptions,
-                        filters,
-                        handleFilterChange,
-                        resetFilter,
-                      }}
-                    />
-                  ))}
-                </Box>
-              )}
-            </Box>
-          </Box>
-        </ClickAwayListener>
-        <Box width={"100%"} display={"flex"} flexDirection={"column"}>
-          {isLoading ? (
-            <Skeleton
-              width={"100%"}
-              height={"50px"}
-              sx={{ mb: "20px" }}
-              variant="rounded"
-            />
-          ) : resultHeaders[search] ? (
-            <Box width={"100%"} display={"flex"} flexDirection={"column"}>
-              <Box
-                position={"relative"}
-                display={"flex"}
-                flexDirection={"column"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                gap={"20px"}
-                padding={"10px"}
-                height={"30vh"}
-                width={"100%"}
-                borderRadius={"20px"}
-                overflow={"hidden"}
-              >
-                <Box
-                  position={"absolute"}
-                  width={"100%"}
-                  height={"100%"}
-                  zIndex={-1}
-                  sx={{
-                    backgroundImage: `url(${resultHeaders[search].image})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    filter: "blur(2px) brightness(50%)",
-                  }}
-                />
-                <Typography
-                  color={"white"}
-                  fontSize={"clamp(1rem, 10vw, 3rem)"}
-                >
-                  {search.charAt(0).toUpperCase() + search.substring(1)}
-                </Typography>
-                <Typography
-                  color={theme.palette.grey[300]}
-                  textAlign={"center"}
-                >
-                  {resultHeaders[search].description}
-                </Typography>
-              </Box>
-              <ActiveFiltersComponent
-                resultCount={results.all.length}
-                {...{ filters, price, currency, resetFilter }}
-              />
-            </Box>
-          ) : (
+    <>
+      <Helmet>
+        <title>
+          Search results for '{search}' | {theme.title}
+        </title>
+        <meta name="description" content={`Search results for '${search}'`} />
+      </Helmet>
+      <Box display={"flex"} justifyContent={"center"}>
+        <Box
+          minHeight={"100vh"}
+          display={"flex"}
+          width={isNotPhone ? "87%" : "95%"}
+        >
+          <ClickAwayListener onClickAway={handleClickAway}>
             <Box
-              border={`1px solid ${theme.palette.grey[400]}`}
-              borderRadius={"25px"}
-              width={"100%"}
+              position={isNotPhone ? "static" : "fixed"}
+              width={isNotPhone ? "290px" : "95%"}
+              borderRadius={"25px 25px 0px 0px"}
+              height={isNotPhone ? undefined : isMobileFilters ? "70%" : "0px"}
+              bottom={0}
               display={"flex"}
               flexDirection={"column"}
-              gap={"20px"}
-              padding={"10px 20px"}
+              bgcolor={"white"}
+              zIndex={!isNotPhone && isMobileFilters ? 1 : 0}
+              sx={{ transformOrigin: "bottom", transition: "0.4s" }}
+              boxShadow={
+                isNotPhone
+                  ? undefined
+                  : `0px 0px 10px 0px ${theme.palette.grey[400]}`
+              }
             >
-              <Box display={"flex"} flexDirection={"column"}>
-                <Typography
-                  fontWeight={"bold"}
-                  fontSize={"clamp(0.7rem, 4vw, 1.3rem)"}
+              {!isNotPhone && (
+                <>
+                  <Box
+                    padding={"10px"}
+                    width={"100%"}
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    position={"relative"}
+                  >
+                    <Typography
+                      sx={{ typography: "secondaryFont", fontWeight: "bold" }}
+                    >
+                      Filters
+                    </Typography>
+                    <IconButton
+                      onClick={() => setIsMobileFilters(false)}
+                      sx={{ position: "absolute", right: 5 }}
+                    >
+                      <Close />
+                    </IconButton>
+                  </Box>
+                </>
+              )}
+              <Box height={"100%"} overflow={isNotPhone ? undefined : "scroll"}>
+                {isLoading ? (
+                  <SkeletonGroup count={3} height="200px" width={"200px"} />
+                ) : (
+                  <Box
+                    display={"flex"}
+                    flexDirection={"column"}
+                    gap={"20px"}
+                    padding={"20px"}
+                  >
+                    <Box
+                      width={"100%"}
+                      boxShadow={`0px 0px 10px 0px ${theme.palette.grey[400]}`}
+                      display={"flex"}
+                      flexDirection={"column"}
+                      alignItems={"center"}
+                      borderRadius={"10px"}
+                      gap={"20px"}
+                      padding={"30px"}
+                      position={"relative"}
+                    >
+                      <Typography justifySelf={"center"} fontWeight={"bold"}>
+                        Price
+                      </Typography>
+                      {(filters.min !== price.min ||
+                        filters.max !== price.max) && (
+                        <Box position={"absolute"} right={5} top={25}>
+                          <IconButton onClick={() => resetFilter("price")}>
+                            <RotateLeft />
+                          </IconButton>
+                        </Box>
+                      )}
+                      <TextField
+                        fullWidth
+                        step="10"
+                        type="number"
+                        size="small"
+                        label="min"
+                        name="min"
+                        value={priceFilter.min}
+                        onChange={handlePriceChange}
+                        sx={{ "& > div": { fontSize: "13px" } }}
+                        InputProps={{
+                          min: price.min,
+                          max: price.max,
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <Typography>{currency.symbol}</Typography>
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                      <TextField
+                        fullWidth
+                        step="10"
+                        type="number"
+                        size="small"
+                        label="max"
+                        name="max"
+                        value={priceFilter.max}
+                        onChange={handlePriceChange}
+                        sx={{ "& > div": { fontSize: "13px" } }}
+                        InputProps={{
+                          min: price.min,
+                          max: price.max,
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <Typography>{currency.symbol}</Typography>
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                      <Slider
+                        name="priceSlider"
+                        max={price.max}
+                        min={price.min}
+                        value={[priceFilter.min, priceFilter.max]}
+                        onChange={handlePriceChange}
+                        valueLabelDisplay="auto"
+                        step={10}
+                      />
+                      {(priceFilter.min !== price.min ||
+                        priceFilter.max !== price.max) &&
+                        (filters.min !== priceFilter.min ||
+                          filters.max !== priceFilter.max) && (
+                          <Button
+                            variant="contained"
+                            disableElevation
+                            onClick={handlePriceSave}
+                          >
+                            save
+                          </Button>
+                        )}
+                    </Box>
+                    {Object.keys(filterOptions).map((option) => (
+                      <FilterComponent
+                        {...{
+                          option,
+                          filterOptions,
+                          filters,
+                          handleFilterChange,
+                          resetFilter,
+                        }}
+                      />
+                    ))}
+                  </Box>
+                )}
+              </Box>
+            </Box>
+          </ClickAwayListener>
+          <Box width={"100%"} display={"flex"} flexDirection={"column"}>
+            {isLoading ? (
+              <Skeleton
+                width={"100%"}
+                height={"50px"}
+                sx={{ mb: "20px" }}
+                variant="rounded"
+              />
+            ) : resultHeaders[search] ? (
+              <Box width={"100%"} display={"flex"} flexDirection={"column"}>
+                <Box
+                  position={"relative"}
+                  display={"flex"}
+                  flexDirection={"column"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  gap={"20px"}
+                  padding={"10px"}
+                  height={"30vh"}
+                  width={"100%"}
+                  borderRadius={"20px"}
+                  overflow={"hidden"}
                 >
-                  Search results for "{search}"
-                </Typography>
+                  <Box
+                    position={"absolute"}
+                    width={"100%"}
+                    height={"100%"}
+                    zIndex={-1}
+                    sx={{
+                      backgroundImage: `url(${resultHeaders[search].image})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      filter: "blur(2px) brightness(50%)",
+                    }}
+                  />
+                  <Typography
+                    color={"white"}
+                    fontSize={"clamp(1rem, 10vw, 3rem)"}
+                  >
+                    {search.charAt(0).toUpperCase() + search.substring(1)}
+                  </Typography>
+                  <Typography
+                    color={theme.palette.grey[300]}
+                    textAlign={"center"}
+                  >
+                    {resultHeaders[search].description}
+                  </Typography>
+                </Box>
                 <ActiveFiltersComponent
                   resultCount={results.all.length}
                   {...{ filters, price, currency, resetFilter }}
                 />
               </Box>
-            </Box>
-          )}
-          {!isNotPhone && (
-            <Box padding={"10px"} display={"flex"} justifyContent={"flex-end"}>
-              <Button
-                ref={mobileFiltersButtonRef}
-                onClick={() => setIsMobileFilters((prev) => !prev)}
-                size="small"
-                variant="outlined"
-                sx={{ textTransform: "none" }}
-                endIcon={<FilterAlt />}
+            ) : (
+              <Box
+                border={`1px solid ${theme.palette.grey[400]}`}
+                borderRadius={"25px"}
+                width={"100%"}
+                display={"flex"}
+                flexDirection={"column"}
+                gap={"20px"}
+                padding={"10px 20px"}
               >
-                filter results
-              </Button>
-            </Box>
-          )}
-          {isLoading ? (
-            <SkeletonGroup
-              count={8}
-              flexDirection={"row"}
-              flexWrap="wrap"
-              width={"clamp(80px, 42vw, 250px)"}
-              height={"clamp(300px, 50vw, 350px)"}
-            />
-          ) : results.pageData.length ? (
-            <Box
-              display={"flex"}
-              justifyContent={"flex-start"}
-              flexWrap={"wrap"}
-              width={"100%"}
-              minHeight={"100vh"}
-            >
-              {results.pageData.map((product) => (
-                <ProductCard
-                  {...{location, setConfirmationModal, product, user, currency, offers }}
-                />
-              ))}
-            </Box>
-          ) : (
-            <Box
-              margin={"50px 0px"}
-              width={"100%"}
-              display={"flex"}
-              flexDirection={"column"}
-              alignItems={"center"}
-              gap={"20px "}
-            >
-              <Box display={"flex"} gap={"10px"} flexDirection={"column"}>
-                <Typography
-                  fontSize={"1.3rem"}
-                  display={"flex"}
-                  gap={"10px"}
-                  alignItems={"center"}
-                >
-                  <SearchOff
-                    sx={{ fontSize: "3rem", color: theme.palette.grey[400] }}
-                  />
-                  No results for search:
-                </Typography>
-                <Typography fontWeight={"bold"} fontSize={"1.3rem"}>
-                  "{search}"
-                </Typography>
-                <Typography>
-                  Try searching using broad keywords and correct spelling
-                </Typography>
-                <Link href="/" sx={{ textDecoration: "none", color: "black" }}>
-                  <Button
-                    size="large"
-                    variant="contained"
-                    disableElevation
-                    startIcon={<Home />}
+                <Box display={"flex"} flexDirection={"column"}>
+                  <Typography
+                    fontWeight={"bold"}
+                    fontSize={"clamp(0.7rem, 4vw, 1.3rem)"}
                   >
-                    Back home
-                  </Button>
-                </Link>
+                    Search results for "{search}"
+                  </Typography>
+                  <ActiveFiltersComponent
+                    resultCount={results.all.length}
+                    {...{ filters, price, currency, resetFilter }}
+                  />
+                </Box>
               </Box>
+            )}
+            {!isNotPhone && (
+              <Box
+                padding={"10px"}
+                display={"flex"}
+                justifyContent={"flex-end"}
+              >
+                <Button
+                  ref={mobileFiltersButtonRef}
+                  onClick={() => setIsMobileFilters((prev) => !prev)}
+                  size="small"
+                  variant="outlined"
+                  sx={{ textTransform: "none" }}
+                  endIcon={<FilterAlt />}
+                >
+                  filter results
+                </Button>
+              </Box>
+            )}
+            {isLoading ? (
+              <SkeletonGroup
+                count={8}
+                flexDirection={"row"}
+                flexWrap="wrap"
+                width={"clamp(80px, 42vw, 250px)"}
+                height={"clamp(300px, 50vw, 350px)"}
+              />
+            ) : results.pageData.length ? (
+              <Box
+                display={"flex"}
+                justifyContent={"flex-start"}
+                flexWrap={"wrap"}
+                width={"100%"}
+                minHeight={"100vh"}
+              >
+                {results.pageData.map((product) => (
+                  <ProductCard
+                    {...{
+                      location,
+                      setConfirmationModal,
+                      product,
+                      user,
+                      currency,
+                      offers,
+                    }}
+                  />
+                ))}
+              </Box>
+            ) : (
+              <Box
+                margin={"50px 0px"}
+                width={"100%"}
+                display={"flex"}
+                flexDirection={"column"}
+                alignItems={"center"}
+                gap={"20px "}
+              >
+                <Box display={"flex"} gap={"10px"} flexDirection={"column"}>
+                  <Typography
+                    fontSize={"1.3rem"}
+                    display={"flex"}
+                    gap={"10px"}
+                    alignItems={"center"}
+                  >
+                    <SearchOff
+                      sx={{ fontSize: "3rem", color: theme.palette.grey[400] }}
+                    />
+                    No results for search:
+                  </Typography>
+                  <Typography fontWeight={"bold"} fontSize={"1.3rem"}>
+                    "{search}"
+                  </Typography>
+                  <Typography>
+                    Try searching using broad keywords and correct spelling
+                  </Typography>
+                  <Link
+                    href="/"
+                    sx={{ textDecoration: "none", color: "black" }}
+                  >
+                    <Button
+                      size="large"
+                      variant="contained"
+                      disableElevation
+                      startIcon={<Home />}
+                    >
+                      Back home
+                    </Button>
+                  </Link>
+                </Box>
+              </Box>
+            )}
+            <Box
+              width={"100%"}
+              display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              m={"30px 0px"}
+            >
+              <Pagination
+                page={page}
+                count={results.pages}
+                variant="outlined"
+                shape="rounded"
+                onChange={handlePageChange}
+                color="primary"
+              />
             </Box>
-          )}
-          <Box
-            width={"100%"}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            m={"30px 0px"}
-          >
-            <Pagination
-              page={page}
-              count={results.pages}
-              variant="outlined"
-              shape="rounded"
-              onChange={handlePageChange}
-              color="primary"
-            />
           </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

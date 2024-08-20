@@ -63,7 +63,7 @@ const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
       {user.isLoggedIn ? (
         <>
           <Link
-            href={"/user/#profile"}
+            href={"/user/profile"}
             sx={{
               textDecoration: "none",
               color: "black",
@@ -86,7 +86,7 @@ const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
             </MenuItem>
           </Link>
           <Link
-            href={"/user/#notifications"}
+            href={"/user/notifications"}
             sx={{
               textDecoration: "none",
               color: "black",
@@ -108,7 +108,7 @@ const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
             </MenuItem>
           </Link>
           <Link
-            href={"/user/#orders"}
+            href={"/user/orders"}
             sx={{
               textDecoration: "none",
               color: "black",
@@ -123,7 +123,7 @@ const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
             </MenuItem>
           </Link>
           <Link
-            href={"/user/#favourites"}
+            href={"/user/favourites"}
             sx={{
               textDecoration: "none",
               color: "black",

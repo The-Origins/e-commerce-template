@@ -203,15 +203,49 @@ This section covers how to customize your e-commerce template, including colors,
 
 3. **Importing Fonts**
 
-   The `index.css` file, located in the `src/styles` directory, is used to import fonts. Modify this file to include the fonts you want from [Google Fonts]("https://fonts.google.com/").
+   The `onRenderBody()` funtion located in the `gatsby-ssr.js` file is used to import fonts and set the default document title and description. Modify this file to change [fonts]("https://fonts.google.com/"), title, and description.
 
-   ```css
-   @import url("https://fonts.googleapis.com/css2?family=your+primary+font:ital,wght@0,400;0,700;1,400&family=your+secondary+font:wght@300..700&display=swap");
+   ```javascript
+   export function onRenderBody({ setHeadComponents }, pluginOptions) {
+     setHeadComponents([
+       // Add preconnects
+       <link
+         key="preconnect-google"
+         rel="preconnect"
+         href="https://fonts.googleapis.com"
+       />,
+       <link
+         key="preconnect-google-2"
+         rel="preconnect"
+         href="https://fonts.gstatic.com"
+         crossOrigin="true"
+       />,
+
+       // Add font styles
+       <link
+         key="google-fonts"
+         href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Quicksand:wght@300..700&display=swap"
+         rel="stylesheet"
+       />,
+
+       //preconnect to the images api
+       <link key="pexels-images" rel="preconnect" href="https://images.pexels.com" />,
+
+       <title key="title">E-Commerce</title>,
+       <meta
+         key="description"
+         name="description"
+         content="An e-commerce website template"
+       />,
+       <meta key="keywords" name="keywords" content="e-commerce, website" />,
+       <meta key="author" name="author" content="Wega Studios" />,
+     ]);
+   }
    ```
 
 4. **Changing the Project Title**
 
-   The project title is specified in the `title` attribute of the theme object in `theme.js`. This is your website name. To update the project title, change the value of the `title` attribute.
+   The project title is specified in the `title` attribute of the theme object in `theme.js`. This value is used throughout the website as the website name. To update the project title, change the value of the `title` attribute.
 
    ```javascript
    const theme = createTheme({

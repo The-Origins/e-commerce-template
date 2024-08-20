@@ -6,8 +6,11 @@ import { PersistGate } from "redux-persist/integration/react";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/system";
 import theme from "./src/theme";
+import "./src/styles/index.css";
 import Layout from "./src/components/layout";
 import AuthLayout from "./src/components/auth/layout";
+import UserPage from "./src/pages/user";
+import ProductPage from "./src/pages/product";
 
 export const wrapRootElement = ({ element }) => {
   return (
@@ -25,9 +28,17 @@ export const wrapRootElement = ({ element }) => {
 export const wrapPageElement = ({ element, props }) => {
   const path = props.location.pathname;
 
-  if (path.startsWith("/auth")) {
-    return <AuthLayout>{element}</AuthLayout>;
+  if (path.startsWith("/product")) {
+    element = <ProductPage {...props} />;
   }
 
-  return <Layout location={props.location}>{element}</Layout>;
+  if (path.startsWith("/user")) {
+    element = <UserPage {...props} />;
+  }
+
+  if (path.startsWith("/auth")) {
+    return <AuthLayout {...props}>{element}</AuthLayout>;
+  }
+
+  return <Layout {...props}>{element}</Layout>;
 };

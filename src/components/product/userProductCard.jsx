@@ -53,7 +53,7 @@ const UserProductCard = ({
         setIsLoading(false);
         setIsError(true);
       });
-  }, [reloadCounter]);
+  }, [id, reloadCounter]);
 
   const handleDelete = (event, path = "cart") => {
     event.preventDefault();
@@ -96,7 +96,7 @@ const UserProductCard = ({
 
   return (
     <a
-      href={`/product?p=${product.id}`}
+      href={`/product/${product.id}`}
       style={{
         textDecoration: "none",
         color: "black",

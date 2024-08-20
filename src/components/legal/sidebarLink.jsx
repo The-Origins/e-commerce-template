@@ -1,10 +1,5 @@
 import { Add, Remove } from "@mui/icons-material";
-import {
-  Collapse,
-  List,
-  MenuItem,
-  useTheme,
-} from "@mui/material";
+import { Collapse, List, MenuItem, useTheme } from "@mui/material";
 import { navigate } from "gatsby";
 import React, { useEffect, useState } from "react";
 import legalData from "../../../lib/legal.json";

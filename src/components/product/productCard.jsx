@@ -95,7 +95,7 @@ const ProductCard = ({
 
   return (
     <a
-      href={`/product?p=${product.id}`}
+      href={`/product/${product.id}`}
       style={{ textDecoration: "none", color: "black", padding: "10px" }}
       onClick={(event) => {
         if (customizeProduct.on) {

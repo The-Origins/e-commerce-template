@@ -5,7 +5,7 @@ const SideBarElement = ({ path, stage, title, icon }) => {
   const theme = useTheme();
   return (
     <Link
-      href={`/user/#${path}`}
+      href={`/user/${path}`}
       sx={{
         textDecoration: "none",
         color: "black",

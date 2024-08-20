@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { navigate } from "gatsby";
+import { useDispatch } from "react-redux";
+import { setSnackBar } from "../state/snackBar";
+import { Helmet } from "react-helmet";
 
 const Page404 = () => {
   const theme = useTheme();
   const [counter, setCounter] = useState(5);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      document.title = `404 Error | ${theme.title}`;
-    }
+    dispatch(
+      setSnackBar({
+        on: true,
+        type:"ERROR",
+        title: "404 Error",
+        message: "Couldn't find the page you're looking for",
+      })
+    );
 
     const counterInterval = setInterval(() => {
       setCounter((prev) => prev - 1);
@@ -25,18 +34,24 @@ const Page404 = () => {
   }, []);
 
   return (
-    <Box
-      height={"100vh"}
-      width={"100%"}
-      display={"flex"}
-      flexDirection={"column"}
-      justifyContent={"center"}
-      alignItems={"center"}
-    >
-      <Typography variant="h1">404</Typography>
-      <Typography variant="h3">error</Typography>
-      <Typography>redirecting in 00:0{counter}s</Typography>
-    </Box>
+    <>
+      <Helmet>
+        <title>404 Error</title>
+        <meta name="description" content="404 Error| Page not found" />
+      </Helmet>
+      <Box
+        height={"100vh"}
+        width={"100%"}
+        display={"flex"}
+        flexDirection={"column"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <Typography variant="h1">404</Typography>
+        <Typography variant="h3">error</Typography>
+        <Typography>redirecting in 00:0{counter}s</Typography>
+      </Box>
+    </>
   );
 };
 
