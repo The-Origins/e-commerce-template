@@ -1,11 +1,12 @@
 {
   "name": "e-commerce-website",
+  "homepage": "https://the-origins.github.io/e-commerce-web-template/",
   "private": true,
   "description": "A comprehensive template for e-commerce stores",
   "version": "0.1.0",
   "license": "0BSD",
   "scripts": {
-    "build": "gatsby build",
+    "build": "gatsby build",ga
     "develop": "gatsby develop",
     "start": "gatsby develop",
     "serve": "gatsby serve",
