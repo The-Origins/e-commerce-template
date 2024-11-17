@@ -8,7 +8,7 @@
  * @type {import('gatsby').GatsbyConfig}
  */
 module.exports = {
-  pathPrefix: "/e-commerce-template",  // Replace with your repo name
+  pathPrefix: "/e-commerce-template",  
   siteMetadata: {
     title: "E-commerce web template",
     description: "A web template for an e-commerce website",
