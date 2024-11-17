@@ -1,18 +1,25 @@
 import React from "react";
-import { Link } from "@mui/material";
+import { Link } from "gatsby";
+import { Typography } from "@mui/material";
 
 const FooterLink = ({ path, children }) => {
   return (
     <Link
-      href={`${__PATH_PREFIX__}${path}`}
-      sx={{
-        color: "text.secondary",
+      to={path}
+      style={{
+        color: "black",
         textDecoration: "none",
-        transition: "0.2s",
-        ":hover": { color: "primary.main" },
       }}
     >
-      {children}
+      <Typography
+        sx={{
+          color: "text.secondary",
+          transition: "0.2s",
+          ":hover": { color: "primary.main" },
+        }}
+      >
+        {children}
+      </Typography>
     </Link>
   );
 };

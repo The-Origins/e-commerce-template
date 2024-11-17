@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Link,  Typography, useTheme } from "@mui/material";
+import { Box, Button,  Typography, useTheme } from "@mui/material";
 import { PhoneInTalk } from "@mui/icons-material";
 import ContactModal from "../layout/modals/contact";
 import StatusComponent from "../layout/statusComponent";
 import { useDispatch } from "react-redux";
 import { fetchSession } from "../../state/session";
+import { Link } from "gatsby";
 
 const AuthLayout = ({ children }) => {
   const theme = useTheme()
@@ -47,12 +48,12 @@ const AuthLayout = ({ children }) => {
         }}
       >
         <Link
-          href={`${__PATH_PREFIX__}/`}
-          fontSize={"clamp(0.4rem, 5vw, 3rem)"}
-          sx={{
+          to={`/`}
+          style={{
+            fontSize:"clamp(0.4rem, 5vw, 3rem)",
+            fontFamily: theme.typography.secondaryFont,
             textDecoration: "none",
             color: "black",
-            typography: "secondaryFont",
             fontWeight: "bold",
           }}
         >

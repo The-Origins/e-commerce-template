@@ -11,7 +11,6 @@ import {
   Pagination,
   Skeleton,
   Button,
-  Link,
   InputAdornment,
   ClickAwayListener,
 } from "@mui/material";
@@ -32,6 +31,7 @@ import ActiveFiltersComponent from "./activeFiltersComponent";
 import FetchWorker from "../../utils/fetchWorker";
 import { setSnackBar } from "../../state/snackBar";
 import { Helmet } from "react-helmet";
+import { Link } from "gatsby";
 
 const ResultsComponent = ({ location, path, setConfirmationModal }) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -529,8 +529,8 @@ const ResultsComponent = ({ location, path, setConfirmationModal }) => {
                     Try searching using broad keywords and correct spelling
                   </Typography>
                   <Link
-                    href={`${__PATH_PREFIX__}/`}
-                    sx={{ textDecoration: "none", color: "black" }}
+                    to={`/`}
+                    style={{ textDecoration: "none", color: "black" }}
                   >
                     <Button
                       size="large"

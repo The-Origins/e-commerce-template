@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Link, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { CalendarMonth } from "@mui/icons-material";
 import UserProductCard from "../product/userProductCard";
 import { useDispatch } from "react-redux";
 import FetchWorker from "../../utils/fetchWorker";
 import { setSnackBar } from "../../state/snackBar";
+import { Link } from "gatsby";
 
 const UserOrders = ({ location, user, currency, setIsLoading }) => {
   const theme = useTheme();
@@ -44,9 +45,8 @@ const UserOrders = ({ location, user, currency, setIsLoading }) => {
     >
       {orders.map((order) => (
         <Link
-          href={`${__PATH_PREFIX__}/user/order/${order.id}`}
-          width={"100%"}
-          sx={{ textDecoration: "none", color: "black" }}
+          to={`/user/order/${order.id}`}
+          style={{ width:"100%", textDecoration: "none", color: "black" }}
         >
           <Box
             mb={"10px"}

@@ -5,16 +5,16 @@ import {
   Badge,
   Box,
   IconButton,
-  Link,
   useMediaQuery,
   useTheme,
   LinearProgress,
   ClickAwayListener,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { Search, ShoppingCart } from "@mui/icons-material";
 import SearchBar from "./searchBar";
-import { navigate } from "gatsby";
+import { navigate, Link } from "gatsby";
 
 const Header = ({ location, user, setConfirmationModal }) => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -87,17 +87,16 @@ const Header = ({ location, user, setConfirmationModal }) => {
                 setConfirmationModal,
               }}
             />
-            <Link
-              href={`${__PATH_PREFIX__}/`}
-              fontSize={"clamp(0.5rem, 5vw, 2.2rem)"}
-              sx={{
-                textDecoration: "none",
-                color: "black",
-                typography: "secondaryFont",
-                fontWeight: "bold",
-              }}
-            >
-              {theme.title}
+            <Link to={`/`} style={{ textDecoration: "none", color: "black" }}>
+              <Typography
+                fontSize={"clamp(0.5rem, 5vw, 2.2rem)"}
+                sx={{
+                  typography: "secondaryFont",
+                  fontWeight: "bold",
+                }}
+              >
+                {theme.title}
+              </Typography>
             </Link>
             {isNotPhone && (
               <Box width={"50%"} display={"flex"} flexDirection={"column"}>
@@ -120,7 +119,7 @@ const Header = ({ location, user, setConfirmationModal }) => {
                   <Search />
                 </IconButton>
               )}
-              <Link href={`${__PATH_PREFIX__}/cart`}>
+              <Link to={`/cart`}>
                 <Tooltip title="cart">
                   <IconButton>
                     <Badge

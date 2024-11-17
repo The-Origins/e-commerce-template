@@ -1,6 +1,7 @@
 import React from "react";
 import { Email, Facebook, Google } from "@mui/icons-material";
-import { Box, Button, Link } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import { Link } from "gatsby";
 
 const LoginIntro = ({ setStage, tab }) => {
   return (
@@ -35,7 +36,7 @@ const LoginIntro = ({ setStage, tab }) => {
       >
         Email
       </Button>
-      <Link href={`${__PATH_PREFIX__}/auth/register${tab ? "?tab=" + tab : ""}`}>
+      <Link to={`/auth/register${tab ? "?tab=" + tab : ""}`}>
         <Button
           sx={{
             mt: "50px",

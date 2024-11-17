@@ -163,7 +163,7 @@ const ProductCard = ({
                   </Tooltip>
                   <Tooltip title="go to cart">
                     <Link
-                      href={`${__PATH_PREFIX__}/cart`}	
+                      to={`/cart`}	
                       onClick={(event) => event.stopPropagation()}
                     >
                       <IconButton>

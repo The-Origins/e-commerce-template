@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Carousel from "../layout/carousel";
-import { Box, Button, Link, Typography, useMediaQuery } from "@mui/material";
+import { Box, Button, Typography, useMediaQuery } from "@mui/material";
 import FetchWorker from "../../utils/fetchWorker";
 import IsErrorComponent from "../layout/isError";
+import { Link } from "gatsby";
 
 const Spotlights = () => {
   const isNotPhone = useMediaQuery("(min-width:1000px)");
@@ -79,7 +80,7 @@ const Spotlights = () => {
                   </Typography>
                   <Typography>{spotlight.description}</Typography>
                 </Box>
-                <Link href={`${__PATH_PREFIX__}${spotlight.action.path}`}>
+                <Link to={spotlight.action.path}>
                   <Button variant="outlined">{spotlight.action.title}</Button>
                 </Link>
               </Box>

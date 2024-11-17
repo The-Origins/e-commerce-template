@@ -8,12 +8,12 @@ import {
   CircularProgress,
   Divider,
   IconButton,
-  Link,
   MenuItem,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { Link } from "gatsby";
 import {
   BookmarkAdded,
   ChevronRight,
@@ -135,12 +135,12 @@ const UserPage = ({ location, setConfirmationModal }) => {
               ) : (
                 <>
                   <Link
-                    href={`${__PATH_PREFIX__}/user/profile`}
-                    sx={{
+                    to={`/user/profile`}
+                    style={{
                       height: "40%",
                       color: "black",
                       textDecoration: "none",
-                      bgcolor:
+                      backgroundColor:
                         stage === "profile"
                           ? theme.palette.grey[300]
                           : undefined,
@@ -236,7 +236,7 @@ const UserPage = ({ location, setConfirmationModal }) => {
                   alignItems={"center"}
                   gap={"5px"}
                 >
-                  <Link href={`${__PATH_PREFIX__}/user`}>
+                  <Link to={`/user`}>
                     <IconButton>
                       <Home />
                     </IconButton>

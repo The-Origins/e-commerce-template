@@ -1,4 +1,4 @@
-import { useTheme, Box, Typography, Link, Button } from "@mui/material";
+import { useTheme, Box, Typography, Button } from "@mui/material";
 import { ArrowRightAlt } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import SkeletonGroup from "../layout/skeletonGroup";
@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import FetchWorker from "../../utils/fetchWorker";
 import { setSnackBar } from "../../state/snackBar";
 import IsErrorComponent from "../layout/isError";
+import { Link } from "gatsby";
 
 const ProductCardContainer = ({
   user,
@@ -159,8 +160,8 @@ const ProductCardContainer = ({
               alignItems={"center"}
             >
               <Link
-                href={`${__PATH_PREFIX__}/category?search=${category}`}
-                sx={{
+                to={`/category?search=${category}`}
+                style={{
                   textDecoration: "none",
                 }}
               >

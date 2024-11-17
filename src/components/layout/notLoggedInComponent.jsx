@@ -1,6 +1,7 @@
 import { PersonOff } from "@mui/icons-material";
-import { Box, Button, Link, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import React from "react";
+import { Link } from "gatsby";
 
 const NotLoggedInComponent = ({location, message, size }) => {
   return (
@@ -16,12 +17,12 @@ const NotLoggedInComponent = ({location, message, size }) => {
       <PersonOff sx={{ fontSize: "3rem" }} />
       <Typography>{message}</Typography>
       <Box display={"flex"} gap={"20px"}>
-        <Link href={`${__PATH_PREFIX__}/auth/register?tab=${location.pathname}`}>
+        <Link to={`/auth/register?tab=${location.pathname}`}>
           <Button size={size} variant="outlined">
             register
           </Button>
         </Link>
-        <Link href={`${__PATH_PREFIX__}/auth/login?tab=${location.pathname}`}>
+        <Link to={`/auth/login?tab=${location.pathname}`}>
           <Button size={size} variant="contained" disableElevation>
             Login
           </Button>

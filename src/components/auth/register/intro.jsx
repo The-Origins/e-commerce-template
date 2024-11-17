@@ -1,6 +1,7 @@
 import React from "react";
-import { Box, Button, Link, Typography,} from "@mui/material";
+import { Box, Button, Typography,} from "@mui/material";
 import { East } from "@mui/icons-material";
+import { Link } from "gatsby";
 
 const RegisterIntro = ({ setStage, tab }) => {
   return (
@@ -38,7 +39,7 @@ const RegisterIntro = ({ setStage, tab }) => {
       >
         Start
       </Button>
-      <Link href={`${__PATH_PREFIX__}/auth/login${tab ? "?tab=" + tab : ""}`}>
+      <Link to={`/auth/login${tab ? "?tab=" + tab : ""}`}>
         <Button
           sx={{
             mt: "50px",

@@ -7,12 +7,12 @@ import {
 import {
   Box,
   Button,
-  Link,
   Skeleton,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { Link } from "gatsby";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import UserProductCard from "../components/product/userProductCard";
@@ -313,7 +313,7 @@ const CheckoutPage = ({ location }) => {
                         <Typography>
                           Add items to your shopping cart to checkout
                         </Typography>
-                        <Link href={`${__PATH_PREFIX__}/cart`}>
+                        <Link to={`/cart`}>
                           <Button
                             variant="contained"
                             disableElevation

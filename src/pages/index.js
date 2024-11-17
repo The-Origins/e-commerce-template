@@ -6,8 +6,8 @@ import {
   useMediaQuery,
   Typography,
   Button,
-  Link,
 } from "@mui/material";
+import { Link } from "gatsby";
 import { PhoneInTalk } from "@mui/icons-material";
 import ProductCardContainer from "../components/product/productCardContainer";
 import CategoryCard from "../components/home/categoryCard";
@@ -187,7 +187,7 @@ const Home = ({ location, setIsContact, setConfirmationModal }) => {
                     Suspendisse potenti.
                   </Typography>
                 </Box>
-                <Link href={`${__PATH_PREFIX__}/about`}>
+                <Link to={`/about`}>
                   <Button variant="contained" disableElevation>
                     More details
                   </Button>

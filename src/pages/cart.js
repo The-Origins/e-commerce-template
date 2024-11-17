@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Button,
-  Link,
   Skeleton,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { Link } from "gatsby";
 import UserProductCard from "../components/product/userProductCard";
 import { RemoveShoppingCart, ShoppingCartCheckout } from "@mui/icons-material";
 import SkeletonGroup from "../components/layout/skeletonGroup";
@@ -150,7 +150,7 @@ const CartPage = ({ location, setConfirmationModal }) => {
                             SubTotal: {currency.symbol} {user.data.cart.total}
                           </Typography>
                         )}
-                        <Link href={`${__PATH_PREFIX__}/checkout`}>
+                        <Link to={`/checkout`}>
                           <Button
                             startIcon={<ShoppingCartCheckout />}
                             variant="contained"
@@ -206,7 +206,7 @@ const CartPage = ({ location, setConfirmationModal }) => {
                         >
                           <RemoveShoppingCart />
                           <Typography>No items in your cart yet</Typography>
-                          <Link href={`${__PATH_PREFIX__}/`}>
+                          <Link to={`/`}>
                             <Button disableElevation variant="contained">
                               Start shopping
                             </Button>
@@ -300,7 +300,7 @@ const CartPage = ({ location, setConfirmationModal }) => {
                         </Typography>
                       </Box>
                     )}
-                    <Link href={`${__PATH_PREFIX__}/checkout`}>
+                    <Link to={`/checkout`}>
                       <Button
                         startIcon={<ShoppingCartCheckout />}
                         variant="contained"

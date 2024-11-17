@@ -10,8 +10,8 @@ import {
   Rating,
   Tooltip,
   Skeleton,
-  Link,
 } from "@mui/material";
+import { Link } from "gatsby";
 import {
   AddShoppingCart,
   Edit,
@@ -294,7 +294,7 @@ const ProductPage = ({ location, setConfirmationModal }) => {
                         >
                           edit
                         </Button>
-                        <Link href={`${__PATH_PREFIX__}/cart`} width={"100%"}>
+                        <Link to={`/cart`} style={{ width: "100%" }}>
                           <Button
                             fullWidth
                             disableElevation
@@ -418,7 +418,7 @@ const ProductPage = ({ location, setConfirmationModal }) => {
                           >
                             edit
                           </Button>
-                          <Link href={`${__PATH_PREFIX__}/cart`} width={"100%"}>
+                          <Link to={`/cart`} style={{ width: "100%" }}>
                             <Button
                               fullWidth
                               disableElevation
@@ -533,32 +533,39 @@ const ProductPage = ({ location, setConfirmationModal }) => {
                         }
                       >
                         <Link
-                          href={`${__PATH_PREFIX__}/results?${searchString}`}
-                          sx={{
-                            pointerEvents: isSearchExeption ? "none" : "all",
+                          to={`/results?${searchString}`}
+                          style={{
                             textDecoration: "none",
-                            color: theme.palette.text.primary,
-                            width: "100%",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "10px",
-                            padding: "10px 20px",
-                            borderRadius: "10px",
-                            boxShadow: `0px 0px 10px 0px ${theme.palette.grey[300]}`,
-                            transition: "0.3s",
-                            ":hover": !isSearchExeption
-                              ? {
-                                  cursor: "pointer",
-                                  color: "primary.main",
-                                  boxShadow: `0px 0px 10px 0px ${theme.palette.grey[400]}`,
-                                }
-                              : {},
+                            color: "black",
                           }}
                         >
-                          <Typography fontWeight={"bold"} fontSize={"1.1rem"}>
-                            {feature}:
-                          </Typography>
-                          <Typography>{product.features[feature]}</Typography>
+                          <Box
+                            sx={{
+                              pointerEvents: isSearchExeption ? "none" : "all",
+                              textDecoration: "none",
+                              color: theme.palette.text.primary,
+                              width: "100%",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "10px",
+                              padding: "10px 20px",
+                              borderRadius: "10px",
+                              boxShadow: `0px 0px 10px 0px ${theme.palette.grey[300]}`,
+                              transition: "0.3s",
+                              ":hover": !isSearchExeption
+                                ? {
+                                    cursor: "pointer",
+                                    color: "primary.main",
+                                    boxShadow: `0px 0px 10px 0px ${theme.palette.grey[400]}`,
+                                  }
+                                : {},
+                            }}
+                          >
+                            <Typography fontWeight={"bold"} fontSize={"1.1rem"}>
+                              {feature}:
+                            </Typography>
+                            <Typography>{product.features[feature]}</Typography>
+                          </Box>
                         </Link>
                       </Tooltip>
                     );

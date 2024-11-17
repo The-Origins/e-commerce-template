@@ -2,11 +2,11 @@ import { ShoppingCart } from "@mui/icons-material";
 import {
   Box,
   Button,
-  Link,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { Link } from "gatsby";
 import React from "react";
 import TeamMemberCard from "../components/about/teamMemberCard";
 import { Helmet } from "react-helmet";
@@ -312,7 +312,7 @@ const About = () => {
             </Box>
           </Box>
 
-          <Link href={`${__PATH_PREFIX__}/`}>
+          <Link to={`/`}>
             <Button
               variant="contained"
               size="large"

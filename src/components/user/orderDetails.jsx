@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   IconButton,
-  Link,
   Typography,
   useMediaQuery,
   useTheme,
@@ -19,6 +18,7 @@ import UserProductCard from "../product/userProductCard";
 import FetchWorker from "../../utils/fetchWorker";
 import { useDispatch } from "react-redux";
 import { setSnackBar } from "../../state/snackBar";
+import { Link } from "gatsby";
 
 const OrderDetails = ({location, user, currency, setIsLoading }) => {
   const theme = useTheme();
@@ -58,7 +58,7 @@ const OrderDetails = ({location, user, currency, setIsLoading }) => {
       flexDirection={"column"}
     >
       <Box width={"100%"} display={"flex"}>
-        <Link href={`${__PATH_PREFIX__}/user/orders`} sx={{ mb: "10px" }}>
+        <Link to={`/user/orders`} style={{ mb: "10px" }}>
           <IconButton>
             <ArrowBackIosRounded />
           </IconButton>

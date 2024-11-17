@@ -7,7 +7,6 @@ import {
   ListItemIcon,
   Typography,
   Avatar,
-  Link,
   Badge,
   Paper,
 } from "@mui/material";
@@ -18,6 +17,7 @@ import {
 } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../../state/user";
+import { Link } from "gatsby";
 
 const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
   const dispatch = useDispatch();
@@ -63,8 +63,8 @@ const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
       {user.isLoggedIn ? (
         <>
           <Link
-            href={`${__PATH_PREFIX__}/user/profile`}
-            sx={{
+            to={`/user/profile`}
+            style={{
               textDecoration: "none",
               color: "black",
             }}
@@ -86,14 +86,13 @@ const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
             </MenuItem>
           </Link>
           <Link
-            href={`${__PATH_PREFIX__}/user/notifications`}
-            sx={{
+            to={`/user/notifications`}
+            style={{
               textDecoration: "none",
               color: "black",
-              ":hover": { color: "primary.main" },
             }}
           >
-            <MenuItem>
+            <MenuItem sx={{ ":hover": { color: "primary.main" } }}>
               <ListItemIcon>
                 <Badge
                   color="primary"
@@ -108,14 +107,13 @@ const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
             </MenuItem>
           </Link>
           <Link
-            href={`${__PATH_PREFIX__}/user/orders`}
-            sx={{
+            to={`/user/orders`}
+            style={{
               textDecoration: "none",
               color: "black",
-              ":hover": { color: "primary.main" },
             }}
           >
-            <MenuItem>
+            <MenuItem sx={{ ":hover": { color: "primary.main" } }}>
               <ListItemIcon>
                 <BookmarkAdded />
               </ListItemIcon>
@@ -123,14 +121,13 @@ const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
             </MenuItem>
           </Link>
           <Link
-            href={`${__PATH_PREFIX__}/user/favourites`}	
-            sx={{
+            to={`/user/favourites`}
+            style={{
               textDecoration: "none",
               color: "black",
-              ":hover": { color: "primary.main" },
             }}
           >
-            <MenuItem>
+            <MenuItem sx={{ ":hover": { color: "primary.main" } }}>
               <ListItemIcon>
                 <Favorite />
               </ListItemIcon>
@@ -149,10 +146,10 @@ const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
         </>
       ) : (
         <Box display={"flex"} gap={"20px"}>
-          <Link href={`${__PATH_PREFIX__}/auth/register?tab=${location.pathname}`}>
+          <Link to={`/auth/register?tab=${location.pathname}`}>
             <Button variant="outlined">Register</Button>
           </Link>
-          <Link href={`${__PATH_PREFIX__}/auth/login?tab=${location.pathname}`}>
+          <Link to={`/auth/login?tab=${location.pathname}`}>
             <Button variant="contained" disableElevation>
               login
             </Button>

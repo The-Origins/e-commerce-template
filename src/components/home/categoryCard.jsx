@@ -3,12 +3,12 @@ import {
   useMediaQuery,
   useTheme,
   Box,
-  Link,
   Typography,
   Skeleton,
 } from "@mui/material";
 import React from "react";
 import SkeletonGroup from "../layout/skeletonGroup";
+import { Link } from "gatsby"; // Change this line
 
 const CategoryCard = ({ isLoading, subTitle, title, image, description }) => {
   const theme = useTheme();
@@ -59,41 +59,43 @@ const CategoryCard = ({ isLoading, subTitle, title, image, description }) => {
             </Box>
           )}
           <Link
-            href={`${__PATH_PREFIX__}/category?search=${search}`}
-            sx={{
-              borderRadius: "25px",
-              color: "black",
-              width: "160px",
-              height: "50px",
-              position: "relative",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              textDecoration: "none",
-              ":hover .shop-now-btn": {
-                width: "100%",
-                justifyContent: "flex-end",
-              },
-              ":hover": { color: "white", cursor: "pointer" },
-              ":hover .arrow": { margin: "10px" },
-            }}
+            to={`/category?search=${search}`}
+            style={{textDecoration: "none", color: "black"}}
           >
-            Shop now
             <Box
-              className={"shop-now-btn"}
-              bgcolor={"primary.main"}
-              position={"absolute"}
-              left={0}
-              zIndex={-1}
-              width={"40px"}
-              height={"40px"}
-              display={"flex"}
-              alignItems={"center"}
-              justifyContent={"center"}
-              sx={{ transition: "0.3s", transformOrigin: "left" }}
-              borderRadius={"25px"}
+              sx={{
+                borderRadius: "25px",
+                width: "160px",
+                height: "50px",
+                position: "relative",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                ":hover .shop-now-btn": {
+                  width: "100%",
+                  justifyContent: "flex-end",
+                },
+                ":hover": { color: "white", cursor: "pointer" },
+                ":hover .arrow": { margin: "10px" },
+              }}
             >
-              <ArrowForward className="arrow" />
+              Shop now
+              <Box
+                className={"shop-now-btn"}
+                bgcolor={"primary.main"}
+                position={"absolute"}
+                left={0}
+                zIndex={-1}
+                width={"40px"}
+                height={"40px"}
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+                sx={{ transition: "0.3s", transformOrigin: "left" }}
+                borderRadius={"25px"}
+              >
+                <ArrowForward className="arrow" />
+              </Box>
             </Box>
           </Link>
         </Box>

@@ -12,7 +12,6 @@ import {
   InsertLink,
 } from "@mui/icons-material";
 import {
-  Link,
   Box,
   Button,
   TextField,
@@ -20,6 +19,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { Link } from "gatsby";
 import FooterIconLink from "./iconLink";
 import FooterLink from "./footerLink";
 
@@ -114,16 +114,18 @@ const Footer = ({ setIsContact }) => {
               justifyContent={"flex-start"}
             >
               <Link
-                href={`${__PATH_PREFIX__}/`}
-                fontSize={"2rem"}
-                sx={{
-                  textDecoration: "none",
-                  color: "black",
-                  typography: "secondaryFont",
-                  fontWeight: "bold",
-                }}
+                to={`/`}
+                style={{ textDecoration: "none", color: "black" }}
               >
-                {theme.title}
+                <Typography
+                  fontSize={"2rem"}
+                  sx={{
+                    typography: "secondaryFont",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {theme.title}
+                </Typography>
               </Link>
               <Typography color={"text.secondary"}>Our slogan</Typography>
             </Box>

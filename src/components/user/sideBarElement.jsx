@@ -1,12 +1,13 @@
 import React from "react";
-import { MenuItem, Link, ListItemIcon, useTheme } from "@mui/material";
+import { MenuItem, ListItemIcon, useTheme } from "@mui/material";
+import { Link } from "gatsby";
 
 const SideBarElement = ({ path, stage, title, icon }) => {
   const theme = useTheme();
   return (
     <Link
-      href={`${__PATH_PREFIX__}/user/${path}`}
-      sx={{
+      to={`/user/${path}`}
+      style={{
         textDecoration: "none",
         color: "black",
       }}
