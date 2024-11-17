@@ -10,6 +10,7 @@ import Layout from "./src/components/layout";
 import AuthLayout from "./src/components/auth/layout";
 import ProductPage from "./src/pages/product";
 import UserPage from "./src/pages/user";
+import LegalPage from "./src/pages/legal";
 
 export function onRenderBody({ setHeadComponents }, pluginOptions) {
   setHeadComponents([
@@ -32,7 +33,11 @@ export function onRenderBody({ setHeadComponents }, pluginOptions) {
       href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Quicksand:wght@300..700&display=swap"
       rel="stylesheet"
     />,
-    <link key="pexels-images" rel="preconnect" href="https://images.pexels.com" />,
+    <link
+      key="pexels-images"
+      rel="preconnect"
+      href="https://images.pexels.com"
+    />,
 
     <title key="title">E-Commerce</title>,
     <meta
@@ -59,7 +64,7 @@ export const wrapRootElement = ({ element }) => {
 };
 
 export const wrapPageElement = ({ element, props }) => {
-  const path = props.location.pathname;
+  const path = props.location.pathname.replace(__PATH_PREFIX__, "");
 
   if (path.startsWith("/product")) {
     element = <ProductPage {...props} />;
@@ -67,6 +72,10 @@ export const wrapPageElement = ({ element, props }) => {
 
   if (path.startsWith("/user")) {
     element = <UserPage {...props} />;
+  }
+
+  if(path.startsWith("/legal")) {
+    element = <LegalPage {...props} />;
   }
 
   if (path.startsWith("/auth")) {

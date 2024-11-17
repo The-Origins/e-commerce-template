@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, } from "@mui/material";
 import { navigate } from "gatsby";
 import { useDispatch } from "react-redux";
 import { setSnackBar } from "../state/snackBar";
 import { Helmet } from "react-helmet";
 
 const Page404 = () => {
-  const theme = useTheme();
   const [counter, setCounter] = useState(5);
   const dispatch = useDispatch();
 
@@ -31,7 +30,7 @@ const Page404 = () => {
       clearTimeout(counterTimeout);
       clearInterval(counterInterval);
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

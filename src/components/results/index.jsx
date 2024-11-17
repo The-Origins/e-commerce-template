@@ -126,7 +126,7 @@ const ResultsComponent = ({ location, path, setConfirmationModal }) => {
       setFilterOptions(resultsWorker.filterOptions);
       resetPage();
     }
-  }, [filters, data]);
+  }, [filters, data, params, offers]);
 
   const resetPage = (page = 1) => {
     setParams((prev) => ({ ...prev, p: page }));

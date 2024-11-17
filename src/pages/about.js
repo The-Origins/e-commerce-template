@@ -7,13 +7,17 @@ import {
   useTheme,
 } from "@mui/material";
 import { Link } from "gatsby";
-import React from "react";
+import React, { useEffect } from "react";
 import TeamMemberCard from "../components/about/teamMemberCard";
 import { Helmet } from "react-helmet";
 
 const About = () => {
   const theme = useTheme();
   const isNotPhone = useMediaQuery("(min-width:1000px)");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
 
   return (
     <>

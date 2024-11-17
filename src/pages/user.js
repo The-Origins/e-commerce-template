@@ -44,6 +44,7 @@ const UserPage = ({ location, setConfirmationModal }) => {
   const [stage] = location.pathname.split("/").slice(2);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (
       stage &&
       !["profile", "orders", "order", "favourites", "notifications"].includes(
@@ -82,7 +83,7 @@ const UserPage = ({ location, setConfirmationModal }) => {
         notifications: <Notifications {...{ user }} />,
       });
     }
-  }, [user, currency, location]);
+  }, [user, currency, location, setConfirmationModal]);
 
   const handleLogout = () => {
     setConfirmationModal({

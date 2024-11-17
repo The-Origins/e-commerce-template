@@ -11,6 +11,7 @@ import Layout from "./src/components/layout";
 import AuthLayout from "./src/components/auth/layout";
 import UserPage from "./src/pages/user";
 import ProductPage from "./src/pages/product";
+import LegalPage from "./src/pages/legal";
 
 export const wrapRootElement = ({ element }) => {
   return (
@@ -34,6 +35,10 @@ export const wrapPageElement = ({ element, props }) => {
 
   if (path.startsWith("/user")) {
     element = <UserPage {...props} />;
+  }
+
+  if(path.startsWith("/legal")) {
+    element = <LegalPage {...props} />;
   }
 
   if (path.startsWith("/auth")) {

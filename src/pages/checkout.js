@@ -37,6 +37,10 @@ const CheckoutPage = ({ location }) => {
   const [checkoutDetails, setCheckoutDetails] = useState({});
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
+
+  useEffect(() => {
     const productWorker = new ProductWorker();
 
     setErrors((prev) =>

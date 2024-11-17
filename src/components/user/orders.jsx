@@ -34,7 +34,7 @@ const UserOrders = ({ location, user, currency, setIsLoading }) => {
           setIsLoading(false);
         });
     }
-  }, []);
+  }, [ user.data.orders, user.isFetching, dispatch, setIsLoading]);
 
   return (
     <Box

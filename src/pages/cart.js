@@ -29,6 +29,10 @@ const CartPage = ({ location, setConfirmationModal }) => {
   const theme = useTheme();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (!user.isFetching) {
       if (user.isLoggedIn) {
         const fetchWorker = new FetchWorker();
@@ -51,7 +55,7 @@ const CartPage = ({ location, setConfirmationModal }) => {
         setIsLoading(false);
       }
     }
-  }, [user]);
+  }, [user, dispatch]);
 
   return (
     <>

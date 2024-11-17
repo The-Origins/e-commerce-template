@@ -5,11 +5,11 @@ import spotlights from "../../lib/data/spotlights.json";
 
 class FetchWorker {
   async fetchResults(query, scope, limit) {
-    const searchString = new URLSearchParams({
-      query,
-      scope,
-      limit,
-    }).toString();
+    // const searchString = new URLSearchParams({
+    //   query,
+    //   scope,
+    //   limit,
+    // }).toString();
     // /myapi/search?${searchString}
 
     //this is all done by the api

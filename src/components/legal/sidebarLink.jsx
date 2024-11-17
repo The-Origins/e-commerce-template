@@ -32,7 +32,7 @@ const SidebarLink = ({
   };
 
   const changePath = (path) => {
-    navigate(`/legal/#${path}`);
+    navigate(`/legal/${path}`);
   };
 
   return (

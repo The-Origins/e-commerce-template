@@ -47,9 +47,7 @@ const OrderDetails = ({location, user, currency, setIsLoading }) => {
           })
         );
       });
-  }, [location ]);
-
-  console.log(order)
+  }, [location, dispatch, setIsLoading]);
 
   return (
     <Box

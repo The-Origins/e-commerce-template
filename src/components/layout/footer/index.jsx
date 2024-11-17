@@ -113,10 +113,7 @@ const Footer = ({ setIsContact }) => {
               flexDirection={"column"}
               justifyContent={"flex-start"}
             >
-              <Link
-                to={`/`}
-                style={{ textDecoration: "none", color: "black" }}
-              >
+              <Link to={`/`} style={{ textDecoration: "none", color: "black" }}>
                 <Typography
                   fontSize={"2rem"}
                   sx={{
@@ -199,13 +196,13 @@ const Footer = ({ setIsContact }) => {
                 <Policy sx={{ fontSize: "1rem" }} />
                 Legal links
               </Typography>
-              <FooterLink path={"/legal/#terms-of-service"}>
+              <FooterLink path={"/legal/terms-of-service"}>
                 Terms of service
               </FooterLink>
-              <FooterLink path={"/legal/#privacy-policy"}>
+              <FooterLink path={"/legal/privacy-policy"}>
                 Privacy policy
               </FooterLink>
-              <FooterLink path={"/legal/#return-policy"}>
+              <FooterLink path={"/legal/return-policy"}>
                 Return policy
               </FooterLink>
             </Box>
@@ -260,16 +257,24 @@ const Footer = ({ setIsContact }) => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Box display={"flex"} gap={"2px"} alignItems={"center"}>
-            <Copyright color={"text.secondary"} fontSize={"12px"} />
-            <FooterIconLink
-              path={"https://www.linkedin.com/in/joshua-kanyori-67b83428b/"}
+          <Link
+            to={"https://www.linkedin.com/in/joshua-kanyori-67b83428b/"}
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            <Typography
+              fontSize={"0.8rem"}
+              sx={{
+                display: "flex",
+                gap: "5px",
+                alignItems: "center",
+                transition: "0.3s",
+                ":hover": { color: "primary.main" },
+              }}
             >
-              <Typography fontSize={"0.8rem"}>
-                Copyright 2024 | Wegastudios
-              </Typography>
-            </FooterIconLink>
-          </Box>
+              <Copyright color={"text.secondary"} fontSize={"12px"} />
+              Copyright 2024 | Wegastudios
+            </Typography>
+          </Link>
         </Box>
       </Box>
     </footer>

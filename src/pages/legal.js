@@ -20,19 +20,20 @@ const LegalPage = ({ location }) => {
   const [isMobileMenu, setIsMobileMenu] = useState(false);
   const containerRef = useRef(null);
   const menuButtonRef = useRef(null);
-  let [currentPath, currentSection] = location.hash.split("/");
-  currentPath = currentPath.replace("#", "");
-  currentSection = String(currentSection).split("+").join(" ");
+  const [currentPath, setCurrentPath] = useState("");
+  const [currentSection, setCurrentSection] = useState("");
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    const [path, section] = location.pathname.split("/").slice(2);
     if (
-      !["terms-of-service", "privacy-policy", "return-policy"].includes(
-        currentPath
-      )
+      !["terms-of-service", "privacy-policy", "return-policy"].includes(path)
     ) {
       navigate("/404");
     }
-  }, [currentPath]);
+    setCurrentPath(path);
+    setCurrentSection(section.split("+").join(" "));
+  }, [location.pathname]);
 
   const handleClickAway = (event) => {
     if (menuButtonRef.current && menuButtonRef.current.contains(event.target)) {

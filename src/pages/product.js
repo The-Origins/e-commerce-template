@@ -56,7 +56,9 @@ const ProductPage = ({ location, setConfirmationModal }) => {
   const [ratingDistribution, setRatingDistribution] = useState({});
 
   useEffect(() => {
-    const [id] = location.pathname.split("/").slice(-1);
+    window.scrollTo(0, 0);
+    setIsLoading(true);
+    const [id] = location.pathname.split("/").slice(2);
     const fetchWorker = new FetchWorker();
     Promise.all([fetchWorker.fetchOffers(), fetchWorker.fetchProduct(id)])
       .then((res) => {
@@ -74,9 +76,10 @@ const ProductPage = ({ location, setConfirmationModal }) => {
           })
         );
       });
-  }, []);
+  }, [location.pathname, dispatch]);
 
   useEffect(() => {
+    const productWorker = new ProductWorker();
     if (Object.keys(product).length) {
       setRatingDistribution(productWorker.getRatingDistribution(product));
     }
