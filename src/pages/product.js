@@ -294,7 +294,7 @@ const ProductPage = ({ location, setConfirmationModal }) => {
                         >
                           edit
                         </Button>
-                        <Link href="/cart" width={"100%"}>
+                        <Link href={`${__PATH_PREFIX__}/cart`} width={"100%"}>
                           <Button
                             fullWidth
                             disableElevation
@@ -418,7 +418,7 @@ const ProductPage = ({ location, setConfirmationModal }) => {
                           >
                             edit
                           </Button>
-                          <Link href="/cart" width={"100%"}>
+                          <Link href={`${__PATH_PREFIX__}/cart`} width={"100%"}>
                             <Button
                               fullWidth
                               disableElevation
@@ -533,7 +533,7 @@ const ProductPage = ({ location, setConfirmationModal }) => {
                         }
                       >
                         <Link
-                          href={`/results?${searchString}`}
+                          href={`${__PATH_PREFIX__}/results?${searchString}`}
                           sx={{
                             pointerEvents: isSearchExeption ? "none" : "all",
                             textDecoration: "none",

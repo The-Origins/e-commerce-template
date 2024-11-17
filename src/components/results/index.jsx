@@ -529,7 +529,7 @@ const ResultsComponent = ({ location, path, setConfirmationModal }) => {
                     Try searching using broad keywords and correct spelling
                   </Typography>
                   <Link
-                    href="/"
+                    href={`${__PATH_PREFIX__}/`}
                     sx={{ textDecoration: "none", color: "black" }}
                   >
                     <Button

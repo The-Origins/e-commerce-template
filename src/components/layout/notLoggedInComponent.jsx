@@ -16,12 +16,12 @@ const NotLoggedInComponent = ({location, message, size }) => {
       <PersonOff sx={{ fontSize: "3rem" }} />
       <Typography>{message}</Typography>
       <Box display={"flex"} gap={"20px"}>
-        <Link href={`/auth/register?tab=${location.pathname}`}>
+        <Link href={`${__PATH_PREFIX__}/auth/register?tab=${location.pathname}`}>
           <Button size={size} variant="outlined">
             register
           </Button>
         </Link>
-        <Link href={`/auth/login?tab=${location.pathname}`}>
+        <Link href={`${__PATH_PREFIX__}/auth/login?tab=${location.pathname}`}>
           <Button size={size} variant="contained" disableElevation>
             Login
           </Button>

@@ -135,7 +135,7 @@ const UserPage = ({ location, setConfirmationModal }) => {
               ) : (
                 <>
                   <Link
-                    href={"/user/profile"}
+                    href={`${__PATH_PREFIX__}/user/profile`}
                     sx={{
                       height: "40%",
                       color: "black",
@@ -236,7 +236,7 @@ const UserPage = ({ location, setConfirmationModal }) => {
                   alignItems={"center"}
                   gap={"5px"}
                 >
-                  <Link href="/user">
+                  <Link href={`${__PATH_PREFIX__}/user`}>
                     <IconButton>
                       <Home />
                     </IconButton>

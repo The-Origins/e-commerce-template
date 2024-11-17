@@ -88,7 +88,7 @@ const Header = ({ location, user, setConfirmationModal }) => {
               }}
             />
             <Link
-              href="/"
+              href={`${__PATH_PREFIX__}/`}
               fontSize={"clamp(0.5rem, 5vw, 2.2rem)"}
               sx={{
                 textDecoration: "none",
@@ -120,7 +120,7 @@ const Header = ({ location, user, setConfirmationModal }) => {
                   <Search />
                 </IconButton>
               )}
-              <Link href="/cart">
+              <Link href={`${__PATH_PREFIX__}/cart`}>
                 <Tooltip title="cart">
                   <IconButton>
                     <Badge

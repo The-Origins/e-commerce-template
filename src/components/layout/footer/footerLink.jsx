@@ -4,7 +4,7 @@ import { Link } from "@mui/material";
 const FooterLink = ({ path, children }) => {
   return (
     <Link
-      href={path}
+      href={`${__PATH_PREFIX__}${path}`}
       sx={{
         color: "text.secondary",
         textDecoration: "none",

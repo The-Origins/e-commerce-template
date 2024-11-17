@@ -35,7 +35,7 @@ const LoginIntro = ({ setStage, tab }) => {
       >
         Email
       </Button>
-      <Link href={`/auth/register${tab ? "?tab=" + tab : ""}`}>
+      <Link href={`${__PATH_PREFIX__}/auth/register${tab ? "?tab=" + tab : ""}`}>
         <Button
           sx={{
             mt: "50px",

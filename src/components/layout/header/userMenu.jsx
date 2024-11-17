@@ -63,7 +63,7 @@ const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
       {user.isLoggedIn ? (
         <>
           <Link
-            href={"/user/profile"}
+            href={`${__PATH_PREFIX__}/user/profile`}
             sx={{
               textDecoration: "none",
               color: "black",
@@ -86,7 +86,7 @@ const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
             </MenuItem>
           </Link>
           <Link
-            href={"/user/notifications"}
+            href={`${__PATH_PREFIX__}/user/notifications`}
             sx={{
               textDecoration: "none",
               color: "black",
@@ -108,7 +108,7 @@ const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
             </MenuItem>
           </Link>
           <Link
-            href={"/user/orders"}
+            href={`${__PATH_PREFIX__}/user/orders`}
             sx={{
               textDecoration: "none",
               color: "black",
@@ -123,7 +123,7 @@ const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
             </MenuItem>
           </Link>
           <Link
-            href={"/user/favourites"}
+            href={`${__PATH_PREFIX__}/user/favourites`}	
             sx={{
               textDecoration: "none",
               color: "black",
@@ -149,10 +149,10 @@ const UserMenu = ({ location, isUserMenu, user, setConfirmationModal }) => {
         </>
       ) : (
         <Box display={"flex"} gap={"20px"}>
-          <Link href={`/auth/register?tab=${location.pathname}`}>
+          <Link href={`${__PATH_PREFIX__}/auth/register?tab=${location.pathname}`}>
             <Button variant="outlined">Register</Button>
           </Link>
-          <Link href={`/auth/login?tab=${location.pathname}`}>
+          <Link href={`${__PATH_PREFIX__}/auth/login?tab=${location.pathname}`}>
             <Button variant="contained" disableElevation>
               login
             </Button>

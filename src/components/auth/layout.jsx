@@ -47,7 +47,7 @@ const AuthLayout = ({ children }) => {
         }}
       >
         <Link
-          href="/"
+          href={`${__PATH_PREFIX__}/`}
           fontSize={"clamp(0.4rem, 5vw, 3rem)"}
           sx={{
             textDecoration: "none",

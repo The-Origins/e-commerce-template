@@ -313,7 +313,7 @@ const CheckoutPage = ({ location }) => {
                         <Typography>
                           Add items to your shopping cart to checkout
                         </Typography>
-                        <Link href="/cart">
+                        <Link href={`${__PATH_PREFIX__}/cart`}>
                           <Button
                             variant="contained"
                             disableElevation

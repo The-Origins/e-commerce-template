@@ -79,7 +79,7 @@ const Spotlights = () => {
                   </Typography>
                   <Typography>{spotlight.description}</Typography>
                 </Box>
-                <Link href={spotlight.action.path}>
+                <Link href={`${__PATH_PREFIX__}${spotlight.action.path}`}>
                   <Button variant="outlined">{spotlight.action.title}</Button>
                 </Link>
               </Box>

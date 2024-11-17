@@ -159,7 +159,7 @@ const ProductCardContainer = ({
               alignItems={"center"}
             >
               <Link
-                href={`/category?search=${category}`}
+                href={`${__PATH_PREFIX__}/category?search=${category}`}
                 sx={{
                   textDecoration: "none",
                 }}

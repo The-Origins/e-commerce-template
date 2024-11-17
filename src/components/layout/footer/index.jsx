@@ -114,7 +114,7 @@ const Footer = ({ setIsContact }) => {
               justifyContent={"flex-start"}
             >
               <Link
-                href="/"
+                href={`${__PATH_PREFIX__}/`}
                 fontSize={"2rem"}
                 sx={{
                   textDecoration: "none",
@@ -260,13 +260,13 @@ const Footer = ({ setIsContact }) => {
         >
           <Box display={"flex"} gap={"2px"} alignItems={"center"}>
             <Copyright color={"text.secondary"} fontSize={"12px"} />
-            <FooterLink
+            <FooterIconLink
               path={"https://www.linkedin.com/in/joshua-kanyori-67b83428b/"}
             >
               <Typography fontSize={"0.8rem"}>
                 Copyright 2024 | Wegastudios
               </Typography>
-            </FooterLink>
+            </FooterIconLink>
           </Box>
         </Box>
       </Box>

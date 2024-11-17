@@ -1,10 +1,10 @@
 import React from "react";
 import { Link, IconButton } from "@mui/material";
 
-const FooterIconLink = ({path, icon}) => {
+const FooterIconLink = ({path, icon, children}) => {
   return (
     <Link
-      href={path}
+      href={`${path}`}
       sx={{ textDecoration: "none", color: "black" }}
     >
       <IconButton
@@ -16,6 +16,7 @@ const FooterIconLink = ({path, icon}) => {
       >
         {icon}
       </IconButton>
+      {children}
     </Link>
   );
 };

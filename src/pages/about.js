@@ -312,7 +312,7 @@ const About = () => {
             </Box>
           </Box>
 
-          <Link href={"/"}>
+          <Link href={`${__PATH_PREFIX__}/`}>
             <Button
               variant="contained"
               size="large"

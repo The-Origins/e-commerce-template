@@ -38,7 +38,7 @@ const RegisterIntro = ({ setStage, tab }) => {
       >
         Start
       </Button>
-      <Link href={`/auth/login${tab ? "?tab=" + tab : ""}`}>
+      <Link href={`${__PATH_PREFIX__}/auth/login${tab ? "?tab=" + tab : ""}`}>
         <Button
           sx={{
             mt: "50px",

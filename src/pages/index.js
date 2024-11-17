@@ -187,7 +187,7 @@ const Home = ({ location, setIsContact, setConfirmationModal }) => {
                     Suspendisse potenti.
                   </Typography>
                 </Box>
-                <Link href="/about">
+                <Link href={`${__PATH_PREFIX__}/about`}>
                   <Button variant="contained" disableElevation>
                     More details
                   </Button>

@@ -58,7 +58,7 @@ const OrderDetails = ({location, user, currency, setIsLoading }) => {
       flexDirection={"column"}
     >
       <Box width={"100%"} display={"flex"}>
-        <Link href="/user/#orders" sx={{ mb: "10px" }}>
+        <Link href={`${__PATH_PREFIX__}/user/orders`} sx={{ mb: "10px" }}>
           <IconButton>
             <ArrowBackIosRounded />
           </IconButton>

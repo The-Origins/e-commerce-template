@@ -59,7 +59,7 @@ const CategoryCard = ({ isLoading, subTitle, title, image, description }) => {
             </Box>
           )}
           <Link
-            href={`/category?search=${search}`}
+            href={`${__PATH_PREFIX__}/category?search=${search}`}
             sx={{
               borderRadius: "25px",
               color: "black",

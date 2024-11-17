@@ -150,7 +150,7 @@ const CartPage = ({ location, setConfirmationModal }) => {
                             SubTotal: {currency.symbol} {user.data.cart.total}
                           </Typography>
                         )}
-                        <Link href="/checkout">
+                        <Link href={`${__PATH_PREFIX__}/checkout`}>
                           <Button
                             startIcon={<ShoppingCartCheckout />}
                             variant="contained"
@@ -206,7 +206,7 @@ const CartPage = ({ location, setConfirmationModal }) => {
                         >
                           <RemoveShoppingCart />
                           <Typography>No items in your cart yet</Typography>
-                          <Link href="/">
+                          <Link href={`${__PATH_PREFIX__}/`}>
                             <Button disableElevation variant="contained">
                               Start shopping
                             </Button>
@@ -300,7 +300,7 @@ const CartPage = ({ location, setConfirmationModal }) => {
                         </Typography>
                       </Box>
                     )}
-                    <Link href="/checkout">
+                    <Link href={`${__PATH_PREFIX__}/checkout`}>
                       <Button
                         startIcon={<ShoppingCartCheckout />}
                         variant="contained"
