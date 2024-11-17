@@ -94,8 +94,8 @@ const ProductCard = ({
   };
 
   return (
-    <a
-      href={`/product/${product.id}`}
+    <Link
+      to={`/product/${product.id}`}
       style={{ textDecoration: "none", color: "black", padding: "10px" }}
       onClick={(event) => {
         if (customizeProduct.on) {
@@ -163,7 +163,7 @@ const ProductCard = ({
                   </Tooltip>
                   <Tooltip title="go to cart">
                     <Link
-                      to={`/cart`}	
+                      to={`/cart`}
                       onClick={(event) => event.stopPropagation()}
                     >
                       <IconButton>
@@ -272,7 +272,7 @@ const ProductCard = ({
           </Box>
         </Box>
       </Box>
-    </a>
+    </Link>
   );
 };
 

@@ -9,6 +9,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { Link } from "gatsby";
 import { AddShoppingCart, Delete, Edit } from "@mui/icons-material";
 import CustomizeProduct from "./customizeProduct";
 import EditModal from "../layout/modals/edit";
@@ -95,8 +96,8 @@ const UserProductCard = ({
   };
 
   return (
-    <a
-      href={`/product/${product.id}`}
+    <Link
+      to={`/product/${product.id}`}
       style={{
         textDecoration: "none",
         color: "black",
@@ -283,7 +284,7 @@ const UserProductCard = ({
           </>
         )}
       </Box>
-    </a>
+    </Link>
   );
 };
 

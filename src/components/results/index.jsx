@@ -483,7 +483,7 @@ const ResultsComponent = ({ location, path, setConfirmationModal }) => {
             ) : results.pageData.length ? (
               <Box
                 display={"flex"}
-                justifyContent={"space-between"}
+                justifyContent={isNotPhone ? "flex-start" : "space-between"}
                 flexWrap={"wrap"}
                 width={"100%"}
                 minHeight={"100vh"}

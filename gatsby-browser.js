@@ -26,7 +26,7 @@ export const wrapRootElement = ({ element }) => {
 };
 
 export const wrapPageElement = ({ element, props }) => {
-  const path = props.location.pathname;
+  const path = props.location.pathname.replace(__PATH_PREFIX__, "");
 
   if (path.startsWith("/product")) {
     element = <ProductPage {...props} />;

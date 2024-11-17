@@ -12,7 +12,7 @@
     "title": "New Product!",
     "description": "Check out this new product",
     "image": "https://images.pexels.com/photos/2112648/pexels-photo-2112648.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    "action": { "title": "View Details", "path": "/product?p=5" }
+    "action": { "title": "View Details", "path": "/product/5" }
   },
   {
     "title": "50% off all foods!",
