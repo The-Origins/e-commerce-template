@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunke_commerce_website=self.webpackChunke_commerce_website||[]).push([[365],{9331:function(e,t,o){o.r(t);var a=o(7294),c=o(3872);t.default=e=>{let{location:t,setConfirmationModal:o}=e;return a.createElement(c.Z,{path:"category",location:t,setConfirmationModal:o})}}}]);
+//# sourceMappingURL=component---src-pages-category-js-da6f124a6f20fa549863.js.map
