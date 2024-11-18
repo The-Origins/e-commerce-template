@@ -58,7 +58,7 @@ const ProductPage = ({ location, setConfirmationModal }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setIsLoading(true);
-    const [id] = location.pathname.split("/").slice(2);
+    const [id] = location.pathname.replace(__PATH_PREFIX__, "").split("/").slice(2);
     const fetchWorker = new FetchWorker();
     Promise.all([fetchWorker.fetchOffers(), fetchWorker.fetchProduct(id)])
       .then((res) => {

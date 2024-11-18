@@ -25,11 +25,11 @@ const LegalPage = ({ location }) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const [path, section] = location.pathname.split("/").slice(2);
+    const [path, section] = location.pathname.replace(__PATH_PREFIX__, "").split("/").slice(2);
     if (
       !["terms-of-service", "privacy-policy", "return-policy"].includes(path)
     ) {
-      navigate("/404");
+      navigate("/legal/terms-of-service");
     }
     setCurrentPath(path);
     setCurrentSection(section.split("+").join(" "));

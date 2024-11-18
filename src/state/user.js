@@ -169,7 +169,6 @@ export const checkOutUser = createAsyncThunk(
         });
       };
       const orderId = await simulateApiRequest();
-      console.log(props.data);
       props.setStatus({
         on: true,
         type: "SUCCESS",

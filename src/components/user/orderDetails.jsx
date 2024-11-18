@@ -27,9 +27,8 @@ const OrderDetails = ({location, user, currency, setIsLoading }) => {
   const [order, setOrder] = useState();
 
   useEffect(() => {
-    const [id] = window.location.pathname.split("/").slice(3)
+    const [id] = location.pathname.replace(__PATH_PREFIX__, "").split("/").slice(3)
     const fetchWorker = new FetchWorker();
-    console.log(id)
     setIsLoading(true);
     fetchWorker
       .fetchOrder(id)

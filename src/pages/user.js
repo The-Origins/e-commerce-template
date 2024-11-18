@@ -41,7 +41,7 @@ const UserPage = ({ location, setConfirmationModal }) => {
   const currency = useSelector((state) => state.currency);
   const [isLoading, setIsLoading] = useState(true);
   const [stages, setStages] = useState({});
-  const [stage] = location.pathname.split("/").slice(2);
+  const [stage] = location.pathname.replace(__PATH_PREFIX__, "").split("/").slice(2);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -51,7 +51,7 @@ const UserPage = ({ location, setConfirmationModal }) => {
         stage
       )
     ) {
-      navigate("/404");
+      navigate("/user/profile");
     }
   }, [stage]);
 
