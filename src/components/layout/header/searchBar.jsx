@@ -81,7 +81,7 @@ const SearchBar = ({ searchFocus = false, setConfirmationModal }) => {
   return (
     <form
       ref={formRef}
-      action="/results"
+      action={`${__PATH_PREFIX__}/results`}
       onSubmit={handleSubmit}
       style={{
         display: "flex",
