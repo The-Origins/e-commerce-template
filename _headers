@@ -8,11 +8,11 @@
   Content-Security-Policy: frame-ancestors *
 /styles.b566a85f3d7f97c66330.css
   Cache-Control: public, max-age=31536000, immutable
-/app-9b629357a598997c1495.js.LICENSE.txt
+/app-367e6b9166c9a34b7151.js.LICENSE.txt
   Cache-Control: public, max-age=31536000, immutable
 /framework-99b6e3ad162350adb1c9.js.LICENSE.txt
   Cache-Control: public, max-age=31536000, immutable
-/app-9b629357a598997c1495.js
+/app-367e6b9166c9a34b7151.js
   Cache-Control: public, max-age=31536000, immutable
 /webpack-runtime-b6b3a57206bccd7966ad.js
   Cache-Control: public, max-age=31536000, immutable
@@ -38,7 +38,7 @@
   Cache-Control: public, max-age=31536000, immutable
 /b5addb3de136ad562aafc33db27e07675c07225f-2eafba9f27081677ec67.js
   Cache-Control: public, max-age=31536000, immutable
-/app-9b629357a598997c1495.js.map
+/app-367e6b9166c9a34b7151.js.map
   Cache-Control: public, max-age=31536000, immutable
 /webpack-runtime-b6b3a57206bccd7966ad.js.map
   Cache-Control: public, max-age=31536000, immutable
